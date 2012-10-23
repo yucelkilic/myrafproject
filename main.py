@@ -531,7 +531,7 @@ class MyForm(QtGui.QWidget):
 	balue=balue.replace("\"","")
 	self.ui.lineEditEdiorHeditFeild.setText(QtGui.QApplication.translate("Form", field, None, QtGui.QApplication.UnicodeUTF8))
 	self.ui.lineEditEdiorHeditValue.setText(QtGui.QApplication.translate("Form", balue, None, QtGui.QApplication.UnicodeUTF8))
-#get coordinate of clicked pxiel
+#get coordinate of clicked pixel
   def pixelSelect(self, event):
 	
 	

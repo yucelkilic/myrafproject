@@ -826,6 +826,7 @@ class MyForm(QtGui.QWidget):
           fc.input = "@tmp/flatList"
           fc.output = "tmp/Flat.fits"
           fc.process = "no"
+          fc.subsets = "no"
           fc.ccdtype = ""
           self.ui.labelCalibPro.setText(QtGui.QApplication.translate("Form", "Processing flat files...", None, QtGui.QApplication.UnicodeUTF8))
           try:

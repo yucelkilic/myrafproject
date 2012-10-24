@@ -858,7 +858,7 @@ class MyForm(QtGui.QWidget):
           try:
 			  
 			  hd= iraf.images.imutil.hedit
-			  hd (id.ukn.filepath, "myraf2", "Calibrated via MYRaf V1Beta", add="yes", verify="no", show="no", update="yes")
+			  hd (img, "myraf2", "Calibrated via MYRaf V1Beta", add="yes", verify="no", show="no", update="yes")
 			  cp(images = img)
           except:
 			  QtGui.QMessageBox.critical( self,  ("Error"), ("Check your Image(s). Maybe restarting will help!"))

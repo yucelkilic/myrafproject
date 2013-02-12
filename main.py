@@ -79,6 +79,7 @@ class MyForm(QtGui.QWidget):
     self.ui.tabWidgetCalibration.setTabEnabled(1,False)
     self.ui.tabWidgetCalibration.setTabEnabled(2,False)
     self.ui.tabWidgetCalibration.setTabEnabled(3,False)
+    self.ui.checkBoxAlign.setEnabled(False)
     
     f = open('./log.my', 'r')
     a=""

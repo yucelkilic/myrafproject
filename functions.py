@@ -14,3 +14,6 @@ def add(self, flist):
 def Rm(self, flist):
 	for x in flist.selectedItems():
 		flist.takeItem(flist.row(x))
+
+def filecount(self, fnumber, display):
+	display.setText(QtGui.QApplication.translate("Form", str(fnumber) + " Files selected", None, QtGui.QApplication.UnicodeUTF8))

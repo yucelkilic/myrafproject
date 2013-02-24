@@ -24,7 +24,7 @@ MYRaf:--------------------------------------------------------------------------
 		For further imformation:	http://myrafproject.org/
 ----------------------------------------------------------------------------------------------------
 """
-#Muhammed
+
 import sys , os, time, string, math, signal, datetime
 
 today = datetime.datetime.now()
@@ -32,7 +32,7 @@ os.system("echo ----------------------------------------------------------------
 os.system("echo \"- Try to start at: " + str(today) + "\" >>log.my")
 
 try:
-	from MYRaf import Ui_Form
+	from myraf import Ui_Form
 	os.system("echo -- MYRaf GUI imported >>log.my")
 except:
 	print("MYRaf is not installed properly.\nTry remove pyraf/, uparm/ and login.cl\nrm -rf pyraf/ uparm/ login.cl\n and remake them with:\n mkiraf\npyraf\ncommands")
@@ -76,9 +76,9 @@ class MyForm(QtGui.QWidget):
     self.ui = Ui_Form()
     self.ui.setupUi(self)
     
-    #self.ui.tabWidget_2.setTabEnabled(1,False)
-    #self.ui.tabWidget_2.setTabEnabled(2,False)
-    #self.ui.tabWidget_2.setTabEnabled(3,False)
+    self.ui.tabWidget_2.setTabEnabled(1,False)
+    self.ui.tabWidget_2.setTabEnabled(2,False)
+    self.ui.tabWidget_2.setTabEnabled(3,False)
     
     self.ui.pushButton_2.clicked.connect(self.ImageAdd)
     self.ui.pushButton_4.clicked.connect(self.BiasAdd)
@@ -101,37 +101,53 @@ class MyForm(QtGui.QWidget):
     
   def ImageAdd(self):
 	functions.add(self, self.ui.listWidget)
+	functions.filecount(self, self.ui.listWidget.count(), self.ui.label_26)
   def BiasAdd(self):
 	functions.add(self, self.ui.listWidget_2)
+	functions.filecount(self, self.ui.listWidget_2.count(), self.ui.label_27)
   def DarkAdd(self):
 	functions.add(self, self.ui.listWidget_3)
+	functions.filecount(self, self.ui.listWidget_3.count(), self.ui.label_28)
   def FlatAdd(self):
 	functions.add(self, self.ui.listWidget_4)
+	functions.filecount(self, self.ui.listWidget_4.count(), self.ui.label_29)
   def AlignAdd(self):
 	functions.add(self, self.ui.listWidget_13)
+	functions.filecount(self, self.ui.listWidget_13.count(), self.ui.label_32)
   def AlignManAdd(self):
 	functions.add(self, self.ui.listWidget_7)
+	functions.filecount(self, self.ui.listWidget_7.count(), self.ui.label_31)
   def PhotAdd(self):
 	functions.add(self, self.ui.listWidget_5)
+	functions.filecount(self, self.ui.listWidget_5.count(), self.ui.label_33)
   def HeaderAdd(self):
 	functions.add(self, self.ui.listWidget_9)
+	functions.filecount(self, self.ui.listWidget_9.count(), self.ui.label_34)
     
   def ImageRm(self):
 	functions.Rm(self, self.ui.listWidget)
+	functions.filecount(self, self.ui.listWidget.count(), self.ui.label_26)
   def BiasRm(self):
 	functions.Rm(self, self.ui.listWidget_2)
+	functions.filecount(self, self.ui.listWidget_2.count(), self.ui.label_27)
   def DarkRm(self):
 	functions.Rm(self, self.ui.listWidget_3)
+	functions.filecount(self, self.ui.listWidget_3.count(), self.ui.label_28)
   def FlatRm(self):
 	functions.Rm(self, self.ui.listWidget_4)
+	functions.filecount(self, self.ui.listWidget_4.count(), self.ui.label_29)
   def AlignRm(self):
 	functions.Rm(self, self.ui.listWidget_13)
+	functions.filecount(self, self.ui.listWidget_13.count(), self.ui.label_32)
   def AlignManRm(self):
 	functions.Rm(self, self.ui.listWidget_7)
+	functions.filecount(self, self.ui.listWidget_7.count(), self.ui.label_31)
   def PhotRm(self):
 	functions.Rm(self, self.ui.listWidget_5)
+	functions.filecount(self, self.ui.listWidget_5.count(), self.ui.label_33)
   def HeaderRm(self):
 	functions.Rm(self, self.ui.listWidget_9)
+	functions.filecount(self, self.ui.listWidget_9.count(), self.ui.label_34)
 	  
 ###################
 	

@@ -103,12 +103,12 @@ class MyForm(QtGui.QWidget):
     self.ui.checkBox_3.clicked.connect(self.UnlockFlat)
     self.ui.checkBox_5.clicked.connect(self.HeaderGetVal)
     
-    self.ui.pushButton.clicked.connect(self.PhotometryGo)
+    self.ui.pushButton.clicked.connect(self.CalibrationGo)
   
-  def PhotometryGo(self):
+  def CalibrationGo(self):
 	
 	if self.ui.listWidget.count() == 0:
-		QtGui.QMessageBox.critical( self,  ("Error"), ("Select IMAGE..."))
+		QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nSelect IMAGE..."))
 	else:
 	
 		biaSta = self.ui.checkBox.checkState()
@@ -121,24 +121,24 @@ class MyForm(QtGui.QWidget):
 		flaCou = self.ui.listWidget_4.count()
 		
 		if biaSta != QtCore.Qt.Checked and darSta != QtCore.Qt.Checked and flaSta != QtCore.Qt.Checked:
-			QtGui.QMessageBox.critical( self,  ("Error"), ("Nothing to do..."))
+			QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nNothing to do..."))
 		
 		err = ""
 		
 		if biaSta == QtCore.Qt.Checked and biaCou == 0:
-			err = err + "---Bias\n"
+			err = err + "-Bias\n"
 			isBia = False
 		else:
 			isBia =True
 			
 		if darSta == QtCore.Qt.Checked and darCou == 0:
-			err = err + "---Dark\n"
+			err = err + "-Dark\n"
 			isDar = False
 		else:
 			isDar = True
 			
 		if flaSta == QtCore.Qt.Checked and flaCou == 0:
-			err = err + "---Flat\n"
+			err = err + "-Flat\n"
 			isFla = False
 		else:
 			isFla=True
@@ -146,7 +146,7 @@ class MyForm(QtGui.QWidget):
 		if isBia and isDar and isFla:
 			print("Do fotometry.")
 		else:
-			QtGui.QMessageBox.critical( self,  ("Error"), ("Oops\nSelect \n" + err + "and retry..."))
+			QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nSelect \n" + err + "and retry..."))
 	
   def HeaderGetVal(self):
 	if self.ui.checkBox_5.checkState() == QtCore.Qt.Checked:

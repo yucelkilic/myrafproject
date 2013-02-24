@@ -100,54 +100,54 @@ class MyForm(QtGui.QWidget):
     
     
   def ImageAdd(self):
-	functions.add(self, self.ui.listWidget)
-	functions.filecount(self, self.ui.listWidget.count(), self.ui.label_26)
+	functions.add(self, self.ui.listWidget, self.ui.label_26)
+	
   def BiasAdd(self):
-	functions.add(self, self.ui.listWidget_2)
-	functions.filecount(self, self.ui.listWidget_2.count(), self.ui.label_27)
+	functions.add(self, self.ui.listWidget_2, self.ui.label_27)
+	
   def DarkAdd(self):
-	functions.add(self, self.ui.listWidget_3)
-	functions.filecount(self, self.ui.listWidget_3.count(), self.ui.label_28)
+	functions.add(self, self.ui.listWidget_3, self.ui.label_28)
+	
   def FlatAdd(self):
-	functions.add(self, self.ui.listWidget_4)
-	functions.filecount(self, self.ui.listWidget_4.count(), self.ui.label_29)
+	functions.add(self, self.ui.listWidget_4, self.ui.label_29)
+	
   def AlignAdd(self):
-	functions.add(self, self.ui.listWidget_13)
-	functions.filecount(self, self.ui.listWidget_13.count(), self.ui.label_32)
+	functions.add(self, self.ui.listWidget_13, self.ui.label_32)
+	
   def AlignManAdd(self):
-	functions.add(self, self.ui.listWidget_7)
-	functions.filecount(self, self.ui.listWidget_7.count(), self.ui.label_31)
+	functions.add(self, self.ui.listWidget_7, self.ui.label_31)
+	
   def PhotAdd(self):
-	functions.add(self, self.ui.listWidget_5)
-	functions.filecount(self, self.ui.listWidget_5.count(), self.ui.label_33)
+	functions.add(self, self.ui.listWidget_5, self.ui.label_33)
+	
   def HeaderAdd(self):
-	functions.add(self, self.ui.listWidget_9)
-	functions.filecount(self, self.ui.listWidget_9.count(), self.ui.label_34)
+	functions.add(self, self.ui.listWidget_9, self.ui.label_34)
+	
     
   def ImageRm(self):
-	functions.Rm(self, self.ui.listWidget)
-	functions.filecount(self, self.ui.listWidget.count(), self.ui.label_26)
+	functions.Rm(self, self.ui.listWidget, self.ui.label_26)
+	
   def BiasRm(self):
-	functions.Rm(self, self.ui.listWidget_2)
-	functions.filecount(self, self.ui.listWidget_2.count(), self.ui.label_27)
+	functions.Rm(self, self.ui.listWidget_2, self.ui.label_27)
+	
   def DarkRm(self):
-	functions.Rm(self, self.ui.listWidget_3)
-	functions.filecount(self, self.ui.listWidget_3.count(), self.ui.label_28)
+	functions.Rm(self, self.ui.listWidget_3, self.ui.label_28)
+	
   def FlatRm(self):
-	functions.Rm(self, self.ui.listWidget_4)
-	functions.filecount(self, self.ui.listWidget_4.count(), self.ui.label_29)
+	functions.Rm(self, self.ui.listWidget_4, self.ui.label_29)
+	
   def AlignRm(self):
-	functions.Rm(self, self.ui.listWidget_13)
-	functions.filecount(self, self.ui.listWidget_13.count(), self.ui.label_32)
+	functions.Rm(self, self.ui.listWidget_13, self.ui.label_32)
+	
   def AlignManRm(self):
-	functions.Rm(self, self.ui.listWidget_7)
-	functions.filecount(self, self.ui.listWidget_7.count(), self.ui.label_31)
+	functions.Rm(self, self.ui.listWidget_7, self.ui.label_31)
+	
   def PhotRm(self):
-	functions.Rm(self, self.ui.listWidget_5)
-	functions.filecount(self, self.ui.listWidget_5.count(), self.ui.label_33)
+	functions.Rm(self, self.ui.listWidget_5, self.ui.label_33)
+	
   def HeaderRm(self):
-	functions.Rm(self, self.ui.listWidget_9)
-	functions.filecount(self, self.ui.listWidget_9.count(), self.ui.label_34)
+	functions.Rm(self, self.ui.listWidget_9, self.ui.label_34)
+	
 	  
 ###################
 	

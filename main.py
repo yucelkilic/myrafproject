@@ -104,35 +104,49 @@ class MyForm(QtGui.QWidget):
     self.ui.checkBox_5.clicked.connect(self.HeaderGetVal)
     
     self.ui.pushButton.clicked.connect(self.CalibrationGo)
+    self.ui.pushButton_58.clicked.connect(self.HeaderEditGo)
     
     self.ui.listWidget_13.clicked.connect(self.AutoAlignDisplayImage)
     self.ui.listWidget_7.clicked.connect(self.ManualAlignDisplayImage)
     self.ui.listWidget_5.clicked.connect(self.PhotDisplayImage)
-   
-    self.ui.pushButton_67.clicked.connect(self.ZoomOutAutoAlign)
-    self.ui.pushButton_66.clicked.connect(self.ZoomInAutoAlign)
     
-    self.ui.pushButton_64.clicked.connect(self.ZoomOutManAlign)
-    self.ui.pushButton_65.clicked.connect(self.ZoomInManAlign)
+    self.ui.listWidget_9.clicked.connect(self.ShowHEader)
+    self.ui.listWidget_8.clicked.connect(self.GetHFieldValue)
     
-    self.ui.pushButton_68.clicked.connect(self.ZoomOutPhot)
-    self.ui.pushButton_69.clicked.connect(self.ZoomInPhot)
+    self.ui.graphicsView_6.wheelEvent = self.ZoomAutoAlign
+    self.ui.graphicsView_7.wheelEvent = self.ZoomManAlign
+    self.ui.graphicsView_2.wheelEvent = self.ZoomPhot
  
-	
-  def ZoomOutAutoAlign(self):
-	functions.zoom(self, self.ui.graphicsView_6, 0.9)
-  def ZoomInAutoAlign(self):
-	functions.zoom(self, self.ui.graphicsView_6, 1.1)
-	
-  def ZoomOutManAlign(self):
-	functions.zoom(self, self.ui.graphicsView_7, 0.9)
-  def ZoomInManAlign(self):
-	functions.zoom(self, self.ui.graphicsView_7, 1.1)
-	
-  def ZoomOutPhot(self):
-	functions.zoom(self, self.ui.graphicsView_2, 0.9)
-  def ZoomInPhot(self):
-	functions.zoom(self, self.ui.graphicsView_2, 1.1)
+  def GetHFieldValue(self):
+	ValueField = self.ui.listWidget_8.currentItem()
+	ValueField=ValueField.text()
+	Field, Value = ValueField.split(" = ")
+	Value = Value.replace("\"","")
+	self.ui.lineEdit_3.setText(QtGui.QApplication.translate("Form", Field, None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_4.setText(QtGui.QApplication.translate("Form", Value, None, QtGui.QApplication.UnicodeUTF8))
+ 
+  def ShowHEader(self):
+	Path=self.ui.listWidget_9.currentItem()
+	Path=Path.text()
+	functions.headerDisplay(self,Path)
+ 
+  def ZoomAutoAlign(self, ev):
+	if ev.delta() < 0:
+		functions.zoom(self, self.ui.graphicsView_6, 0.9)
+	else:
+		functions.zoom(self, self.ui.graphicsView_6, 1.1)
+		
+  def ZoomManAlign(self, ev):
+	if ev.delta() < 0:
+		functions.zoom(self, self.ui.graphicsView_7, 0.9)
+	else:
+		functions.zoom(self, self.ui.graphicsView_7, 1.1)
+		
+  def ZoomPhot(self, ev):
+	if ev.delta() < 0:
+		functions.zoom(self, self.ui.graphicsView_2, 0.9)
+	else:
+		functions.zoom(self, self.ui.graphicsView_2, 1.1)
 	
   def AutoAlignDisplayImage(self):
 	ImgPath = self.ui.listWidget_13.currentItem()
@@ -151,6 +165,34 @@ class MyForm(QtGui.QWidget):
 	ImgPath = str(ImgPath.text())
 	functions.ImgCopyDisplay(self, ImgPath)
 	functions.display(self, "./tmp/display.png", self.ui.graphicsView_2)
+	
+  def HeaderEditGo(self):
+	if self.ui.listWidget_9.count() == 0:
+		QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nPlease select files for header edit."))
+	else:
+		Field = self.ui.lineEdit_3.text()
+		Field = Field.replace(" ", "")
+		if Field == "":
+			QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nWrite a Field."))
+		else:
+			 if self.ui.checkBox_5.checkState() != QtCore.Qt.Checked:
+				 Value = self.ui.lineEdit_4.text()
+				 he = iraf.images.imutil.hedit
+				 for x in xrange(self.ui.listWidget_9.count()):
+					 Path = self.ui.listWidget_9.item(x)
+					 Path = Path.text()
+					 he (str(Path), str(Field), str(Value), add="yes", verify="no", show="no", update="yes")
+					 self.ui.progressBar_5.setProperty("value", math.ceil(100*(x+1)/self.ui.listWidget_9.count()))
+			 else:
+				 FH = self.ui.comboBox_2.currentText()
+				 selectedField, selectedValue = FH.split(" = ")
+				 he = iraf.images.imutil.hedit
+				 for x in xrange(self.ui.listWidget_9.count()):
+					 Path = self.ui.listWidget_9.item(x)
+					 Path = Path.text()
+					 he (str(Path), str(Field), str("'(@\""+selectedField+"\")'"), add="yes", verify="no", show="no", update="yes")
+					 self.ui.progressBar_5.setProperty("value", math.ceil(100*(x+1)/self.ui.listWidget_9.count()))
+	self.ShowHEader()
 	
   def CalibrationGo(self):
 	
@@ -223,44 +265,41 @@ class MyForm(QtGui.QWidget):
     
 #Image Add functions. Take a look to add function under functions.py file.
   def ImageAdd(self):
-	functions.add(self, self.ui.listWidget, self.ui.label_26)
+	functions.add(self, self.ui.listWidget)
   def BiasAdd(self):
-	functions.add(self, self.ui.listWidget_2, self.ui.label_27)
+	functions.add(self, self.ui.listWidget_2)
   def DarkAdd(self):
-	functions.add(self, self.ui.listWidget_3, self.ui.label_28)
+	functions.add(self, self.ui.listWidget_3)
   def FlatAdd(self):
-	functions.add(self, self.ui.listWidget_4, self.ui.label_29)
+	functions.add(self, self.ui.listWidget_4)
   def AlignAdd(self):
-	functions.add(self, self.ui.listWidget_13, self.ui.label_32)
+	functions.add(self, self.ui.listWidget_13)
   def AlignManAdd(self):
-	functions.add(self, self.ui.listWidget_7, self.ui.label_31)
+	functions.add(self, self.ui.listWidget_7)
   def PhotAdd(self):
-	functions.add(self, self.ui.listWidget_5, self.ui.label_33)
+	functions.add(self, self.ui.listWidget_5)
   def HeaderAdd(self):
-	functions.add(self, self.ui.listWidget_9, self.ui.label_34)
-	
-	
+	functions.add(self, self.ui.listWidget_9)
+
 #Image Remove functions. Take a look to Rm function under functions.py file.
   def ImageRm(self):
-	functions.Rm(self, self.ui.listWidget, self.ui.label_26)
+	functions.Rm(self, self.ui.listWidget)
   def BiasRm(self):
-	functions.Rm(self, self.ui.listWidget_2, self.ui.label_27)
+	functions.Rm(self, self.ui.listWidget_2)
   def DarkRm(self):
-	functions.Rm(self, self.ui.listWidget_3, self.ui.label_28)
+	functions.Rm(self, self.ui.listWidget_3)
   def FlatRm(self):
-	functions.Rm(self, self.ui.listWidget_4, self.ui.label_29)
+	functions.Rm(self, self.ui.listWidget_4)
   def AlignRm(self):
-	functions.Rm(self, self.ui.listWidget_13, self.ui.label_32)
+	functions.Rm(self, self.ui.listWidget_13)
   def AlignManRm(self):
-	functions.Rm(self, self.ui.listWidget_7, self.ui.label_31)
+	functions.Rm(self, self.ui.listWidget_7)
   def PhotRm(self):
-	functions.Rm(self, self.ui.listWidget_5, self.ui.label_33)
+	functions.Rm(self, self.ui.listWidget_5)
   def HeaderRm(self):
-	functions.Rm(self, self.ui.listWidget_9, self.ui.label_34)
+	functions.Rm(self, self.ui.listWidget_9)
 	
-	  
 ###################
-	
 	
 app = QtGui.QApplication(sys.argv)
 f = MyForm()

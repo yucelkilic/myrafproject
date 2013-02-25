@@ -1,3 +1,4 @@
+import os
 from PyQt4 import QtGui
 from PyQt4 import QtCore
 
@@ -19,3 +20,12 @@ def Rm(self, flist, display):
 	fnumber = flist.count()
 	display.setText(QtGui.QApplication.translate("Form", str(fnumber) + " Files selected", None, QtGui.QApplication.UnicodeUTF8))
 	
+def ImgCopyDisplay(self,ImgPath):
+	os.popen("convert -normalize " + ImgPath + " ./tmp/display.png")
+
+def display(self, FilePath, displayDevice):
+	if os.path.isfile(FilePath):
+		scene = QtGui.QGraphicsScene()
+		scene.addPixmap(QtGui.QPixmap(FilePath))
+		displayDevice.scale(1,1)
+		displayDevice.setScene(scene) 

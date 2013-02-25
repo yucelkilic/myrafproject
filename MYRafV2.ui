@@ -362,6 +362,62 @@
            <string>Auto Align</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_9">
+           <item row="6" column="4">
+            <widget class="QPushButton" name="pushButton_44">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>:go</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>img/go.png</normaloff>img/go.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="2" colspan="3">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Alignment method
+selection</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2" colspan="3">
+            <widget class="Line" name="line_6">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" rowspan="6">
+            <widget class="Line" name="line_5">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="4">
+            <widget class="QPushButton" name="pushButton_49">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Add</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>img/list-add.png</normaloff>img/list-add.png</iconset>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0" rowspan="6">
             <widget class="QFrame" name="frame_6">
              <property name="frameShape">
@@ -371,138 +427,6 @@
               <enum>QFrame::Raised</enum>
              </property>
              <layout class="QGridLayout" name="gridLayout_18">
-              <item row="0" column="0" rowspan="3" colspan="7">
-               <widget class="QGraphicsView" name="graphicsView_6"/>
-              </item>
-              <item row="0" column="7">
-               <widget class="QLabel" name="label_12">
-                <property name="maximumSize">
-                 <size>
-                  <width>40</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>100%</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="7">
-               <widget class="QSlider" name="verticalSlider_6">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>25</width>
-                  <height>140</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>25</width>
-                  <height>140</height>
-                 </size>
-                </property>
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="7" rowspan="2">
-               <spacer name="verticalSpacer_6">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>193</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="3" column="0">
-               <spacer name="horizontalSpacer_25">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>46</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="3" column="1">
-               <widget class="QPushButton" name="pushButton_45">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>25</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset>
-                  <normaloff>img/rr.png</normaloff>img/rr.png</iconset>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="2">
-               <widget class="QPushButton" name="pushButton_46">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>25</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset>
-                  <normaloff>img/fh.png</normaloff>img/fh.png</iconset>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="3">
-               <widget class="QLineEdit" name="lineEdit_7">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>75</width>
-                  <height>25</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
               <item row="3" column="4">
                <widget class="QPushButton" name="pushButton_47">
                 <property name="sizePolicy">
@@ -549,222 +473,8 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="6">
-               <spacer name="horizontalSpacer_26">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>46</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="0" column="1" rowspan="6">
-            <widget class="Line" name="line_5">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>Images:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2" colspan="3">
-            <widget class="QListWidget" name="listWidget_13">
-             <property name="selectionMode">
-              <enum>QAbstractItemView::ExtendedSelection</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="3">
-            <widget class="QPushButton" name="pushButton_50">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Remove</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>img/list-remove.png</normaloff>img/list-remove.png</iconset>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="4">
-            <widget class="QPushButton" name="pushButton_49">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Add</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>img/list-add.png</normaloff>img/list-add.png</iconset>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="2" colspan="3">
-            <widget class="Line" name="line_6">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="2">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>Method:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="3" colspan="2">
-            <widget class="QComboBox" name="comboBox">
-             <item>
-              <property name="text">
-               <string>Method 1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Method 2</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="5" column="2" colspan="3">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>Alignment method
-selection</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0" colspan="4">
-            <widget class="QLabel" name="label_32">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="4">
-            <widget class="QPushButton" name="pushButton_44">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>:go</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>img/go.png</normaloff>img/go.png</iconset>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="tab_22">
-          <attribute name="title">
-           <string>Manual Align</string>
-          </attribute>
-          <layout class="QGridLayout" name="gridLayout_10">
-           <item row="0" column="0" rowspan="6">
-            <widget class="QFrame" name="frame_7">
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_19">
-              <item row="0" column="0" rowspan="3" colspan="7">
-               <widget class="QGraphicsView" name="graphicsView_7"/>
-              </item>
-              <item row="0" column="7">
-               <widget class="QLabel" name="label_13">
-                <property name="maximumSize">
-                 <size>
-                  <width>40</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>100%</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="7">
-               <widget class="QSlider" name="verticalSlider_7">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>25</width>
-                  <height>140</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>25</width>
-                  <height>140</height>
-                 </size>
-                </property>
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="7" rowspan="2">
-               <spacer name="verticalSpacer_7">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>193</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="3" column="0">
-               <spacer name="horizontalSpacer_27">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>46</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
               <item row="3" column="1">
-               <widget class="QPushButton" name="pushButton_51">
+               <widget class="QPushButton" name="pushButton_45">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -786,8 +496,78 @@ selection</string>
                 </property>
                </widget>
               </item>
+              <item row="0" column="0" rowspan="3" colspan="7">
+               <widget class="QGraphicsView" name="graphicsView_6">
+                <property name="verticalScrollBarPolicy">
+                 <enum>Qt::ScrollBarAlwaysOff</enum>
+                </property>
+                <property name="horizontalScrollBarPolicy">
+                 <enum>Qt::ScrollBarAlwaysOff</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="6">
+               <spacer name="horizontalSpacer_26">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>46</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="1" column="7">
+               <widget class="QSlider" name="verticalSlider_6">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>25</width>
+                  <height>140</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>25</width>
+                  <height>140</height>
+                 </size>
+                </property>
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="pageStep">
+                 <number>1</number>
+                </property>
+                <property name="value">
+                 <number>50</number>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <spacer name="horizontalSpacer_25">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>46</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
               <item row="3" column="2">
-               <widget class="QPushButton" name="pushButton_52">
+               <widget class="QPushButton" name="pushButton_46">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -810,6 +590,180 @@ selection</string>
                </widget>
               </item>
               <item row="3" column="3">
+               <widget class="QLineEdit" name="lineEdit_7">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>75</width>
+                  <height>25</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="7">
+               <widget class="QLabel" name="label_12">
+                <property name="maximumSize">
+                 <size>
+                  <width>40</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>100%</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="7" rowspan="2">
+               <spacer name="verticalSpacer_6">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>193</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="4" column="3" colspan="2">
+            <widget class="QComboBox" name="comboBox">
+             <item>
+              <property name="text">
+               <string>Method 1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Method 2</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Method:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2" colspan="3">
+            <widget class="QListWidget" name="listWidget_13">
+             <property name="selectionMode">
+              <enum>QAbstractItemView::ExtendedSelection</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Images:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" colspan="4">
+            <widget class="QLabel" name="label_32">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3">
+            <widget class="QPushButton" name="pushButton_50">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Remove</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>img/list-remove.png</normaloff>img/list-remove.png</iconset>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab_22">
+          <attribute name="title">
+           <string>Manual Align</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_10">
+           <item row="5" column="2" colspan="4">
+            <widget class="QLineEdit" name="lineEdit">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="4" colspan="2">
+            <widget class="QPushButton" name="pushButton_57">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Add</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>img/list-add.png</normaloff>img/list-add.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="5">
+            <widget class="QPushButton" name="pushButton_55">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>:go</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>img/go.png</normaloff>img/go.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" rowspan="6">
+            <widget class="Line" name="line_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" rowspan="6">
+            <widget class="QFrame" name="frame_7">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_19">
+              <item row="3" column="3">
                <widget class="QLineEdit" name="lineEdit_8">
                 <property name="enabled">
                  <bool>false</bool>
@@ -825,6 +779,45 @@ selection</string>
                   <width>75</width>
                   <height>25</height>
                  </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" rowspan="3" colspan="7">
+               <widget class="QGraphicsView" name="graphicsView_7"/>
+              </item>
+              <item row="3" column="0">
+               <spacer name="horizontalSpacer_27">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>46</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="3" column="5">
+               <widget class="QPushButton" name="pushButton_54">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>25</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>img/r.png</normaloff>img/r.png</iconset>
                 </property>
                </widget>
               </item>
@@ -851,8 +844,8 @@ selection</string>
                 </property>
                </widget>
               </item>
-              <item row="3" column="5">
-               <widget class="QPushButton" name="pushButton_54">
+              <item row="3" column="1">
+               <widget class="QPushButton" name="pushButton_51">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -870,7 +863,90 @@ selection</string>
                 </property>
                 <property name="icon">
                  <iconset>
-                  <normaloff>img/r.png</normaloff>img/r.png</iconset>
+                  <normaloff>img/rr.png</normaloff>img/rr.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="7" rowspan="2">
+               <spacer name="verticalSpacer_7">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>193</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="0" column="7">
+               <widget class="QLabel" name="label_13">
+                <property name="maximumSize">
+                 <size>
+                  <width>40</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>100%</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="2">
+               <widget class="QPushButton" name="pushButton_52">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>25</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>img/fh.png</normaloff>img/fh.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="7">
+               <widget class="QSlider" name="verticalSlider_7">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>25</width>
+                  <height>140</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>25</width>
+                  <height>140</height>
+                 </size>
+                </property>
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="pageStep">
+                 <number>1</number>
+                </property>
+                <property name="value">
+                 <number>50</number>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
                 </property>
                </widget>
               </item>
@@ -888,20 +964,6 @@ selection</string>
                </spacer>
               </item>
              </layout>
-            </widget>
-           </item>
-           <item row="0" column="1" rowspan="6">
-            <widget class="Line" name="line_3">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>Images:</string>
-             </property>
             </widget>
            </item>
            <item row="1" column="2" colspan="4">
@@ -928,20 +990,10 @@ selection</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="4" colspan="2">
-            <widget class="QPushButton" name="pushButton_57">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+           <item row="6" column="0" colspan="5">
+            <widget class="QLabel" name="label_31">
              <property name="text">
-              <string>Add</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>img/list-add.png</normaloff>img/list-add.png</iconset>
+              <string>TextLabel</string>
              </property>
             </widget>
            </item>
@@ -952,44 +1004,17 @@ selection</string>
              </property>
             </widget>
            </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>Images:</string>
+             </property>
+            </widget>
+           </item>
            <item row="4" column="2" colspan="2">
             <widget class="QLabel" name="label_9">
              <property name="text">
               <string>Coordinates:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="2" colspan="4">
-            <widget class="QLineEdit" name="lineEdit">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0" colspan="5">
-            <widget class="QLabel" name="label_31">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="5">
-            <widget class="QPushButton" name="pushButton_55">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>:go</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>img/go.png</normaloff>img/go.png</iconset>
              </property>
             </widget>
            </item>
@@ -1052,6 +1077,15 @@ selection</string>
               <width>25</width>
               <height>140</height>
              </size>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="pageStep">
+             <number>1</number>
+            </property>
+            <property name="value">
+             <number>50</number>
             </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>

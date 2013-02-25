@@ -104,6 +104,24 @@ class MyForm(QtGui.QWidget):
     self.ui.checkBox_5.clicked.connect(self.HeaderGetVal)
     
     self.ui.pushButton.clicked.connect(self.CalibrationGo)
+    
+    self.ui.listWidget_13.clicked.connect(self.DisplayImage)
+    
+    #self.ui.verticalSlider_6.valueChanged.connect(self.AutoAlignZoom)
+    
+  
+  def wheelEvent(self, event):
+	print(str(event.delta()))
+	factor = 1.41 ** (event.delta() / 240.0)
+	self.ui.graphicsView_6.scale(factor, factor)
+	
+  
+  def DisplayImage(self):
+	ImgPath = self.ui.listWidget_13.currentItem()
+	ImgPath = str(ImgPath.text())
+	functions.ImgCopyDisplay(self, ImgPath)
+	functions.display(self, "./tmp/display.png", self.ui.graphicsView_6)
+	
   
   def CalibrationGo(self):
 	

@@ -105,24 +105,53 @@ class MyForm(QtGui.QWidget):
     
     self.ui.pushButton.clicked.connect(self.CalibrationGo)
     
-    self.ui.listWidget_13.clicked.connect(self.DisplayImage)
+    self.ui.listWidget_13.clicked.connect(self.AutoAlignDisplayImage)
+    self.ui.listWidget_7.clicked.connect(self.ManualAlignDisplayImage)
+    self.ui.listWidget_5.clicked.connect(self.PhotDisplayImage)
+   
+    self.ui.pushButton_67.clicked.connect(self.ZoomOutAutoAlign)
+    self.ui.pushButton_66.clicked.connect(self.ZoomInAutoAlign)
     
-    #self.ui.verticalSlider_6.valueChanged.connect(self.AutoAlignZoom)
+    self.ui.pushButton_64.clicked.connect(self.ZoomOutManAlign)
+    self.ui.pushButton_65.clicked.connect(self.ZoomInManAlign)
     
-  
-  def wheelEvent(self, event):
-	print(str(event.delta()))
-	factor = 1.41 ** (event.delta() / 240.0)
-	self.ui.graphicsView_6.scale(factor, factor)
+    self.ui.pushButton_68.clicked.connect(self.ZoomOutPhot)
+    self.ui.pushButton_69.clicked.connect(self.ZoomInPhot)
+ 
 	
-  
-  def DisplayImage(self):
+  def ZoomOutAutoAlign(self):
+	functions.zoom(self, self.ui.graphicsView_6, 0.9)
+  def ZoomInAutoAlign(self):
+	functions.zoom(self, self.ui.graphicsView_6, 1.1)
+	
+  def ZoomOutManAlign(self):
+	functions.zoom(self, self.ui.graphicsView_7, 0.9)
+  def ZoomInManAlign(self):
+	functions.zoom(self, self.ui.graphicsView_7, 1.1)
+	
+  def ZoomOutPhot(self):
+	functions.zoom(self, self.ui.graphicsView_2, 0.9)
+  def ZoomInPhot(self):
+	functions.zoom(self, self.ui.graphicsView_2, 1.1)
+	
+  def AutoAlignDisplayImage(self):
 	ImgPath = self.ui.listWidget_13.currentItem()
 	ImgPath = str(ImgPath.text())
 	functions.ImgCopyDisplay(self, ImgPath)
 	functions.display(self, "./tmp/display.png", self.ui.graphicsView_6)
 	
-  
+  def ManualAlignDisplayImage(self):
+	ImgPath = self.ui.listWidget_7.currentItem()
+	ImgPath = str(ImgPath.text())
+	functions.ImgCopyDisplay(self, ImgPath)
+	functions.display(self, "./tmp/display.png", self.ui.graphicsView_7)
+
+  def PhotDisplayImage(self):
+	ImgPath = self.ui.listWidget_5.currentItem()
+	ImgPath = str(ImgPath.text())
+	functions.ImgCopyDisplay(self, ImgPath)
+	functions.display(self, "./tmp/display.png", self.ui.graphicsView_2)
+	
   def CalibrationGo(self):
 	
 	if self.ui.listWidget.count() == 0:

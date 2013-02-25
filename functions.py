@@ -27,5 +27,7 @@ def display(self, FilePath, displayDevice):
 	if os.path.isfile(FilePath):
 		scene = QtGui.QGraphicsScene()
 		scene.addPixmap(QtGui.QPixmap(FilePath))
-		displayDevice.scale(1,1)
-		displayDevice.setScene(scene) 
+		displayDevice.setScene(scene)
+
+def zoom(self, display, val):
+	display.scale(val, val)

@@ -320,7 +320,7 @@
        <item row="2" column="0" colspan="4">
         <widget class="QProgressBar" name="progressBar">
          <property name="value">
-          <number>24</number>
+          <number>0</number>
          </property>
         </widget>
        </item>
@@ -362,7 +362,14 @@
            <string>Auto Align</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_18">
-           <item row="0" column="0" rowspan="6">
+           <item row="0" column="2" colspan="2">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Images:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" rowspan="4">
             <widget class="QFrame" name="frame_6">
              <property name="frameShape">
               <enum>QFrame::StyledPanel</enum>
@@ -521,17 +528,10 @@
              </layout>
             </widget>
            </item>
-           <item row="0" column="1" rowspan="6">
+           <item row="0" column="1" rowspan="4">
             <widget class="Line" name="line_5">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2" colspan="2">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>Images:</string>
              </property>
             </widget>
            </item>
@@ -576,50 +576,14 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="2" colspan="4">
-            <widget class="Line" name="line_6">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="3">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>Method:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="4" colspan="2">
-            <widget class="QComboBox" name="comboBox">
-             <item>
-              <property name="text">
-               <string>Method 1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Method 2</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="5" column="3" colspan="3">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>Alignment method
-selection</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0" colspan="5">
+           <item row="4" column="0" colspan="5">
             <widget class="QProgressBar" name="progressBar_2">
              <property name="value">
-              <number>24</number>
+              <number>0</number>
              </property>
             </widget>
            </item>
-           <item row="6" column="5">
+           <item row="4" column="5">
             <widget class="QPushButton" name="pushButton_44">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -1232,7 +1196,7 @@ selection</string>
        <item row="10" column="0" colspan="5">
         <widget class="QProgressBar" name="progressBar_4">
          <property name="value">
-          <number>24</number>
+          <number>0</number>
          </property>
         </widget>
        </item>
@@ -1369,7 +1333,7 @@ selection</string>
        <item row="10" column="0" colspan="5">
         <widget class="QProgressBar" name="progressBar_5">
          <property name="value">
-          <number>24</number>
+          <number>0</number>
          </property>
         </widget>
        </item>
@@ -1542,7 +1506,7 @@ selection</string>
        <item row="17" column="0" colspan="5">
         <widget class="QProgressBar" name="progressBar_6">
          <property name="value">
-          <number>24</number>
+          <number>0</number>
          </property>
         </widget>
        </item>

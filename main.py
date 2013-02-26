@@ -6,7 +6,7 @@ Created-------------------------------------------------------------------------
 			Yücel KILIÇ				Developer
 		at:
 			Begin					24.02.2013
-			Last update				24.02.2013
+			Last update				26.02.2013
 
 Importing things:-----------------------------------------------------------------------------------
 	Must have as installed:
@@ -105,6 +105,7 @@ class MyForm(QtGui.QWidget):
     
     self.ui.pushButton.clicked.connect(self.CalibrationGo)
     self.ui.pushButton_58.clicked.connect(self.HeaderEditGo)
+    self.ui.pushButton_44.clicked.connect(self.AutoAlignGo)
     
     self.ui.listWidget_13.clicked.connect(self.AutoAlignDisplayImage)
     self.ui.listWidget_7.clicked.connect(self.ManualAlignDisplayImage)
@@ -166,9 +167,39 @@ class MyForm(QtGui.QWidget):
 	functions.ImgCopyDisplay(self, ImgPath)
 	functions.display(self, "./tmp/display.png", self.ui.graphicsView_2)
 	
+  def AutoAlignGo(self):
+	if self.ui.listWidget_13.count() == 0:
+		QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nPlease select files for Auto Align."))
+	else:
+		Ch = self.ui.listWidget_13.currentItem()
+		
+		if Ch == None:
+			QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nPlease select reference IMAGE."))
+		else:
+			fn, fp = functions.fileNamePath(Ch.text())
+			i=0
+			if os.path.exists(fp + "/aligned"):
+				os.popen("rm -rf " + str(fp) + "/aligned")
+				
+			os.popen("mkdir " + str(fp) + "/aligned")
+				
+			for x in xrange(self.ui.listWidget_13.count()):
+				i=i+1
+				imgFile = self.ui.listWidget_13.item(x)
+				imgFile = imgFile.text()
+				Ref = Ch.text()
+				functions.align(self, imgFile, Ref)
+				name, pth = functions.fileNamePath(imgFile)
+				FirstName, LastName =  name.split(".")
+				NewFileName = FirstName + "_gregister.fits"
+				os.popen("mv ./alipy_out/" + str(NewFileName) + " " + str(pth) + "/aligned/" + str(name))
+				self.ui.progressBar_2.setProperty("value", math.ceil(100*(x+1)/self.ui.listWidget_13.count()))
+			
+				
+	
   def HeaderEditGo(self):
 	if self.ui.listWidget_9.count() == 0:
-		QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nPlease select files for header edit."))
+		QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nPlease select files for Header Edit."))
 	else:
 		Field = self.ui.lineEdit_3.text()
 		Field = Field.replace(" ", "")
@@ -193,6 +224,7 @@ class MyForm(QtGui.QWidget):
 					 he (str(Path), str(Field), str("'(@\""+selectedField+"\")'"), add="yes", verify="no", show="no", update="yes")
 					 self.ui.progressBar_5.setProperty("value", math.ceil(100*(x+1)/self.ui.listWidget_9.count()))
 	self.ShowHEader()
+	self.ui.progressBar_5.setProperty("value", 0)
 	
   def CalibrationGo(self):
 	

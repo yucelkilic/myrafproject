@@ -86,3 +86,180 @@ def align(self, ImagePath, RefPath):
 				os.system("echo \"--Error with aling." + str(id.ukn.filepath.replace) + " is not alignable\">>log.my")
 				QtGui.QMessageBox.critical( self,  ("Error"), ("Can not align image " + str(id.ukn.filepath.replace("./tmp/","") + " skipping ...")))
 				
+def biasCombine(self, BiasListDevice):
+	if os.path.isfile("./tmp/biasList"):
+		os.popen("rm -rf ./tmp/biasList")
+		
+	if os.path.isfile("./tmp/Zero.fits"):
+		os.popen("rm -rf ./tmp/Zero.fits")
+		
+	for x in xrange(BiasListDevice.count()):
+		BiasName = BiasListDevice.item(x)
+		BiasName = BiasName.text()
+		BiasListFile = open("./tmp/darkList", "a")
+		BiasListFile.write(str(BiasName) + "\n")
+		BiasListFile.close()
+		
+	zc = iraf.noao.imred.ccdred.zerocombine
+	zc.input = "@tmp/darkList"
+	zc.output = "tmp/Zero.fits"
+	zc.process = "no"
+	zc.ccdtype = ""
+	zc._runCode()
+		
+def darkCombine(self, DarakListDevice):
+	if os.path.isfile("./tmp/darkList"):
+		os.popen("rm -rf ./tmp/darkList")
+
+	if os.path.isfile("./tmp/Dark.fits"):
+		os.popen("rm -rf ./tmp/Dark.fits")
+		
+	for x in xrange(DarakListDevice.count()):
+		DarkName = DarakListDevice.item(x)
+		DarkName = DarkName.text()
+		DarkListFile = open("./tmp/darkList", "a")
+		DarkListFile.write(str(DarkName) + "\n")
+		DarkListFile.close()
+		
+	dc = iraf.noao.imred.ccdred.darkcombine
+	dc.input = "@tmp/darkList"
+	dc.output = "tmp/Dark.fits"
+	dc.process = "no"
+	dc.ccdtype = ""
+	dc.scale = "exposure"
+	dc._runCode()
+			
+			
+def flatCombine(self, FlatListDevice):
+	if os.path.isfile("./tmp/flatList"):
+		os.popen("rm -rf ./tmp/flatList")
+		
+	if os.path.isfile("./tmp/Flat.fits"):
+		os.popen("rm -rf ./tmp/Flat.fits")
+		
+	for x in xrange(FlatListDevice.count()):
+		FlatName = FlatListDevice.item(x)
+		FlatName = FlatName.text()
+		FlatListFile = open("./tmp/flatList", "a")
+		FlatListFile.write(str(FlatName) + "\n")
+		FlatListFile.close()
+		
+	fc = iraf.noao.imred.ccdred.flatcombine
+	fc.input = "@tmp/flatList"
+	fc.output = "tmp/Flat.fits"
+	fc.process = "no"
+	fc.subsets = "no"
+	fc.ccdtype = ""
+	fc._runCode()
+		
+def calibration(self, Image, BiasFile, DarkFile, FlatFile):
+	isBias = "no"
+	isDark = "no"
+	isFlat = "no"
+	
+	if os.path.isfile(str(BiasFile)):
+		isBias = "yes"
+		
+	if os.path.isfile(str(DarkFile)):
+		isDark = "yes"
+		
+	if os.path.isfile(str(FlatFile)):
+		isFlat = "yes"
+	
+	cp = iraf.noao.imred.ccdred.ccdproc
+	cp.images = Image
+	cp.output = ""
+	cp.ccdtype = ""
+	cp.fixpix = "no"
+	cp.overscan = "no"
+	cp.trim = "no"
+	cp.zerocor = isBias
+	cp.darkcor = isDark
+	cp.flatcor = isFlat
+	cp.zero = str(BiasFile)
+	cp.dark = str(DarkFile)
+	cp.flat = str(FlatFile)
+	cp(images = Image)
+
+def observatRefresh(self):
+	
+	count = self.ui.listWidget_10.count()
+	for i in xrange(count):
+		self.ui.listWidget_10.takeItem(0)
+	
+	if os.path.isfile("./tmp/obsdb.dat"):
+		os.popen("rm ./tmp/obsdb.dat")
+	
+	for files in os.popen("ls ./obsdat"):
+		files = files.replace("\n","")
+		f = open("./obsdat/" + files)
+		for line in f:
+			if line.startswith("name") or line.startswith("longitude") or line.startswith("latitude") or line.startswith("altitude") or line.startswith("timezone"):
+				line = "\t" + line
+
+				dosya = open("tmp/obsdb.dat", "a")
+				dosya.write(line)
+				dosya.close()
+
+
+			if line.startswith("observatory"):
+				line = "\n" + line
+				
+				dosya = open("tmp/obsdb.dat", "a")
+				dosya.write(line)
+				dosya.close()
+	
+	if os.path.isfile("./tmp/obs"):
+		os.popen("rm ./tmp/obs")
+		
+	i=-1
+	for files in os.popen("ls ./obsdat"):
+		i = i+ 1
+		item = QtGui.QListWidgetItem()
+		self.ui.listWidget_10.addItem(item)
+		item = self.ui.listWidget_10.item(i)
+		files = files.replace("\n","")
+		item.setText(QtGui.QApplication.translate("Form", str(files), None, QtGui.QApplication.UnicodeUTF8))
+		self.ui.comboBox.addItem(str(files))
+					
+def bringObservatory(self, Name):
+	f = open("./obsdat/" + Name)
+	first = ""
+	for line in f:
+		li=line.strip()
+		if li.startswith("#"):
+			li = li.replace("#","\n")
+			first = str(first) + str(li)
+			self.ui.textEdit.setHtml(QtGui.QApplication.translate("Form", first + "</br>", None, QtGui.QApplication.UnicodeUTF8))
+			
+		if li.startswith("name"):
+			left, right = li.split("=")
+			right = right.replace("\"","")
+			self.ui.lineEdit_10.setText(QtGui.QApplication.translate("Form", str(right), None, QtGui.QApplication.UnicodeUTF8))
+			
+		if li.startswith("longitude"):
+			left, right = li.split("=")
+			right = right.replace("\"","")
+			self.ui.lineEdit_11.setText(QtGui.QApplication.translate("Form", str(right), None, QtGui.QApplication.UnicodeUTF8))
+			
+		if li.startswith("latitude"):
+			left, right = li.split("=")
+			right = right.replace("\"","")
+			self.ui.lineEdit_12.setText(QtGui.QApplication.translate("Form", str(right), None, QtGui.QApplication.UnicodeUTF8))
+			
+		if li.startswith("altitude"):
+			left, right = li.split("=")
+			right = right.replace("\"","")
+			self.ui.lineEdit_13.setText(QtGui.QApplication.translate("Form", str(right), None, QtGui.QApplication.UnicodeUTF8))
+			
+		if li.startswith("timezone"):
+			left, right = li.split("=")
+			right = right.replace("\"","")
+			self.ui.lineEdit_14.setText(QtGui.QApplication.translate("Form", str(right), None, QtGui.QApplication.UnicodeUTF8))
+			
+		if li.startswith("observatory"):
+			left, right = li.split("=")
+			right = right.replace("\"","")
+			self.ui.lineEdit_9.setText(QtGui.QApplication.translate("Form", str(right), None, QtGui.QApplication.UnicodeUTF8))
+			
+			

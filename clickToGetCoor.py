@@ -8,7 +8,7 @@ class DrawImage(QMainWindow):
         super(QMainWindow, self).__init__(parent)
 
         self.setWindowTitle('Select Window')
-        self.local_image = QImage('image_file_name.JPG')
+        self.local_image = QImage('/home/msh/Pictures/url.png')
 
         self.local_grview = QGraphicsView()
         self.setCentralWidget( self.local_grview )

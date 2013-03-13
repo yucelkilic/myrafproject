@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>802</width>
+    <height>601</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -155,7 +155,7 @@
            <string>Bias</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_4">
-           <item row="0" column="0" colspan="3">
+           <item row="0" column="0" colspan="4">
             <widget class="QListWidget" name="listWidget_2">
              <property name="selectionMode">
               <enum>QAbstractItemView::ExtendedSelection</enum>
@@ -170,6 +170,22 @@
             </widget>
            </item>
            <item row="1" column="1">
+            <widget class="QPushButton" name="pushButton_10">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Export Bias</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
             <widget class="QPushButton" name="pushButton_5">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -186,7 +202,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="2">
+           <item row="1" column="3">
             <widget class="QPushButton" name="pushButton_4">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -210,7 +226,7 @@
            <string>Dark</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_5">
-           <item row="0" column="0" colspan="3">
+           <item row="0" column="0" colspan="4">
             <widget class="QListWidget" name="listWidget_3">
              <property name="selectionMode">
               <enum>QAbstractItemView::ExtendedSelection</enum>
@@ -225,6 +241,22 @@
             </widget>
            </item>
            <item row="1" column="1">
+            <widget class="QPushButton" name="pushButton_11">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Export Dark</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
             <widget class="QPushButton" name="pushButton_7">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -241,7 +273,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="2">
+           <item row="1" column="3">
             <widget class="QPushButton" name="pushButton_6">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -265,7 +297,7 @@
            <string>Flat</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_6">
-           <item row="0" column="0" colspan="3">
+           <item row="0" column="0" colspan="4">
             <widget class="QListWidget" name="listWidget_4">
              <property name="selectionMode">
               <enum>QAbstractItemView::ExtendedSelection</enum>
@@ -280,6 +312,22 @@
             </widget>
            </item>
            <item row="1" column="1">
+            <widget class="QPushButton" name="pushButton_12">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Export Flat</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
             <widget class="QPushButton" name="pushButton_9">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -296,7 +344,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="2">
+           <item row="1" column="3">
             <widget class="QPushButton" name="pushButton_8">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -362,14 +410,7 @@
            <string>Auto Align</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_18">
-           <item row="0" column="2" colspan="2">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>Images:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0" rowspan="4">
+           <item row="0" column="0" rowspan="3">
             <widget class="QFrame" name="frame_6">
              <property name="frameShape">
               <enum>QFrame::StyledPanel</enum>
@@ -528,21 +569,28 @@
              </layout>
             </widget>
            </item>
-           <item row="0" column="1" rowspan="4">
+           <item row="0" column="1" rowspan="3">
             <widget class="Line" name="line_5">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
             </widget>
            </item>
-           <item row="1" column="2" colspan="4">
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Images:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2" colspan="3">
             <widget class="QListWidget" name="listWidget_13">
              <property name="selectionMode">
               <enum>QAbstractItemView::ExtendedSelection</enum>
              </property>
             </widget>
            </item>
-           <item row="2" column="4">
+           <item row="2" column="3">
             <widget class="QPushButton" name="pushButton_50">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -559,7 +607,7 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="5">
+           <item row="2" column="4">
             <widget class="QPushButton" name="pushButton_49">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -576,14 +624,21 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0" colspan="5">
+           <item row="3" column="0" colspan="5">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" colspan="4">
             <widget class="QProgressBar" name="progressBar_2">
              <property name="value">
               <number>0</number>
              </property>
             </widget>
            </item>
-           <item row="4" column="5">
+           <item row="4" column="4">
             <widget class="QPushButton" name="pushButton_44">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -835,7 +890,7 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="2" colspan="2">
+           <item row="5" column="2" colspan="3">
             <widget class="QLineEdit" name="lineEdit">
              <property name="enabled">
               <bool>false</bool>
@@ -845,14 +900,21 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="0" colspan="4">
-            <widget class="QProgressBar" name="progressBar_3">
-             <property name="value">
-              <number>24</number>
+           <item row="6" column="0" colspan="5">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>TextLabel</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="4">
+           <item row="7" column="0" colspan="4">
+            <widget class="QProgressBar" name="progressBar_3">
+             <property name="value">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="4">
             <widget class="QPushButton" name="pushButton_55">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -891,21 +953,21 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1" rowspan="10" colspan="2">
+       <item row="0" column="1" rowspan="11">
         <widget class="Line" name="line">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
         </widget>
        </item>
-       <item row="0" column="3">
+       <item row="0" column="2">
         <widget class="QLabel" name="label_4">
          <property name="text">
           <string>Images:</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0" rowspan="9">
+       <item row="1" column="0" rowspan="10">
         <widget class="QFrame" name="frame_2">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -1064,14 +1126,14 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="3" colspan="3">
+       <item row="1" column="2" colspan="4">
         <widget class="QListWidget" name="listWidget_5">
          <property name="selectionMode">
           <enum>QAbstractItemView::ExtendedSelection</enum>
          </property>
         </widget>
        </item>
-       <item row="2" column="4">
+       <item row="2" column="3" colspan="2">
         <widget class="QPushButton" name="pushButton_36">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -1105,28 +1167,35 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="3" colspan="3">
+       <item row="3" column="2" colspan="4">
         <widget class="Line" name="line_2">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
-       <item row="4" column="3">
+       <item row="4" column="2" colspan="3">
+        <widget class="QCheckBox" name="checkBox_8">
+         <property name="text">
+          <string>All Sky Photometry</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
         <widget class="QLabel" name="label_5">
          <property name="text">
           <string>Coor List:</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="3" colspan="3">
+       <item row="6" column="2" colspan="4">
         <widget class="QListWidget" name="listWidget_6">
          <property name="selectionMode">
           <enum>QAbstractItemView::ExtendedSelection</enum>
          </property>
         </widget>
        </item>
-       <item row="6" column="2" colspan="3">
+       <item row="7" column="2" colspan="2">
         <widget class="QCheckBox" name="checkBox_7">
          <property name="text">
           <string>Auto Add</string>
@@ -1183,7 +1252,7 @@
          </property>
         </widget>
        </item>
-       <item row="9" column="2" colspan="3">
+       <item row="9" column="2" colspan="2">
         <widget class="QCheckBox" name="checkBox_4">
          <property name="text">
           <string>Auto Align</string>
@@ -1193,14 +1262,31 @@
          </property>
         </widget>
        </item>
-       <item row="10" column="0" colspan="5">
+       <item row="10" column="2" colspan="2">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Observatory</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="4" colspan="2">
+        <widget class="QComboBox" name="comboBox"/>
+       </item>
+       <item row="11" column="0" colspan="6">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="0" colspan="5">
         <widget class="QProgressBar" name="progressBar_4">
          <property name="value">
           <number>0</number>
          </property>
         </widget>
        </item>
-       <item row="10" column="5">
+       <item row="12" column="5">
         <widget class="QPushButton" name="pushButton_39">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -1241,13 +1327,6 @@
         <widget class="QLabel" name="label_10">
          <property name="text">
           <string>Header:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1" rowspan="10">
-        <widget class="Line" name="line_7">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
          </property>
         </widget>
        </item>
@@ -1367,6 +1446,13 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="1" rowspan="10">
+        <widget class="Line" name="line_7">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab_11">
@@ -1378,86 +1464,11 @@
        <string>Observatory Editor</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_13">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_17">
-         <property name="text">
-          <string>Observatory List:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1" rowspan="17">
-        <widget class="Line" name="line_9">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2" colspan="2">
-        <widget class="QLabel" name="label_18">
-         <property name="text">
-          <string>Details:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2" colspan="2">
-        <widget class="QLabel" name="label_20">
-         <property name="text">
-          <string>Observatory:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="3" colspan="3">
-        <widget class="QLineEdit" name="lineEdit_9"/>
-       </item>
-       <item row="4" column="3">
-        <widget class="QLabel" name="label_21">
-         <property name="text">
-          <string>Name:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="3" colspan="3">
-        <widget class="QLineEdit" name="lineEdit_10"/>
-       </item>
-       <item row="6" column="3">
-        <widget class="QLabel" name="label_22">
-         <property name="text">
-          <string>Longitude:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="3" colspan="3">
-        <widget class="QLineEdit" name="lineEdit_11"/>
-       </item>
-       <item row="8" column="3">
-        <widget class="QLabel" name="label_23">
-         <property name="text">
-          <string>Latitude:</string>
-         </property>
-        </widget>
+       <item row="13" column="3" colspan="3">
+        <widget class="QLineEdit" name="lineEdit_14"/>
        </item>
        <item row="9" column="3" colspan="3">
         <widget class="QLineEdit" name="lineEdit_12"/>
-       </item>
-       <item row="10" column="3">
-        <widget class="QLabel" name="label_24">
-         <property name="text">
-          <string>Atitude:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="3" colspan="3">
-        <widget class="QLineEdit" name="lineEdit_13"/>
-       </item>
-       <item row="12" column="3">
-        <widget class="QLabel" name="label_25">
-         <property name="text">
-          <string>Time zone:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="3" colspan="3">
-        <widget class="QLineEdit" name="lineEdit_14"/>
        </item>
        <item row="14" column="3">
         <widget class="QLabel" name="label_19">
@@ -1466,23 +1477,13 @@
          </property>
         </widget>
        </item>
-       <item row="15" column="3" colspan="3">
-        <widget class="QTextEdit" name="textEdit"/>
+       <item row="3" column="3" colspan="3">
+        <widget class="QLineEdit" name="lineEdit_9"/>
        </item>
-       <item row="16" column="4">
-        <widget class="QPushButton" name="pushButton_63">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+       <item row="10" column="3">
+        <widget class="QLabel" name="label_24">
          <property name="text">
-          <string>Remove</string>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>img/list-remove.png</normaloff>img/list-remove.png</iconset>
+          <string>Atitude:</string>
          </property>
         </widget>
        </item>
@@ -1503,15 +1504,33 @@
          </property>
         </widget>
        </item>
-       <item row="17" column="0" colspan="5">
-        <widget class="QProgressBar" name="progressBar_6">
-         <property name="value">
-          <number>0</number>
+       <item row="15" column="3" colspan="3">
+        <widget class="QTextEdit" name="textEdit">
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:italic;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
-       <item row="17" column="5">
-        <widget class="QPushButton" name="pushButton_61">
+       <item row="8" column="3">
+        <widget class="QLabel" name="label_23">
+         <property name="text">
+          <string>Latitude:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1" rowspan="17">
+        <widget class="Line" name="line_9">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="4">
+        <widget class="QPushButton" name="pushButton_63">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1519,13 +1538,64 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>:go</string>
+          <string>Remove</string>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>img/go.png</normaloff>img/go.png</iconset>
+           <normaloff>img/list-remove.png</normaloff>img/list-remove.png</iconset>
          </property>
         </widget>
+       </item>
+       <item row="5" column="3" colspan="3">
+        <widget class="QLineEdit" name="lineEdit_10"/>
+       </item>
+       <item row="12" column="3">
+        <widget class="QLabel" name="label_25">
+         <property name="text">
+          <string>Time zone:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2" colspan="2">
+        <widget class="QLabel" name="label_18">
+         <property name="text">
+          <string>Details:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_17">
+         <property name="text">
+          <string>Observatory List:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="3">
+        <widget class="QLabel" name="label_22">
+         <property name="text">
+          <string>Longitude:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2" colspan="2">
+        <widget class="QLabel" name="label_20">
+         <property name="text">
+          <string>Observatory:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="3">
+        <widget class="QLabel" name="label_21">
+         <property name="text">
+          <string>Name:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="3" colspan="3">
+        <widget class="QLineEdit" name="lineEdit_13"/>
+       </item>
+       <item row="7" column="3" colspan="3">
+        <widget class="QLineEdit" name="lineEdit_11"/>
        </item>
        <item row="1" column="0" rowspan="16">
         <widget class="QListWidget" name="listWidget_10"/>

@@ -39,8 +39,9 @@ except:
 	os.system("echo \"-- Error: Where is myraf.py file?\">>log.my")
 	raise SystemExit
 try:
-	from PyQt4 import QtGui
-	from PyQt4 import QtCore
+	from PyQt4 import QtGui, QtCore
+	from PyQt4.QtGui import *
+	from PyQt4.QtCore import * 
 	os.system("echo -- PyQT4 stuff imported >>log.my")
 except:
 	print("pyqt4-dev-tools'? To install\nsudo apt-get install pyqt4-dev-tools")
@@ -80,6 +81,9 @@ class MyForm(QtGui.QWidget):
     self.ui.tabWidget_2.setTabEnabled(2,False)
     self.ui.tabWidget_2.setTabEnabled(3,False)
     
+    
+    functions.observatRefresh(self)
+    
     self.ui.pushButton_2.clicked.connect(self.ImageAdd)
     self.ui.pushButton_4.clicked.connect(self.BiasAdd)
     self.ui.pushButton_6.clicked.connect(self.DarkAdd)
@@ -88,6 +92,9 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_57.clicked.connect(self.AlignManAdd)
     self.ui.pushButton_35.clicked.connect(self.PhotAdd)
     self.ui.pushButton_59.clicked.connect(self.HeaderAdd)
+    
+    self.ui.pushButton_37.clicked.connect(self.coorAdd)
+    self.ui.pushButton_38.clicked.connect(self.coorRm)
     
     self.ui.pushButton_3.clicked.connect(self.ImageRm)
     self.ui.pushButton_5.clicked.connect(self.BiasRm)
@@ -103,6 +110,9 @@ class MyForm(QtGui.QWidget):
     self.ui.checkBox_3.clicked.connect(self.UnlockFlat)
     self.ui.checkBox_5.clicked.connect(self.HeaderGetVal)
     
+    self.ui.checkBox_8.clicked.connect(self.AllSkyPhoto)
+    self.ui.checkBox_7.clicked.connect(self.AutoAddPhoto)
+    
     self.ui.pushButton.clicked.connect(self.CalibrationGo)
     self.ui.pushButton_58.clicked.connect(self.HeaderEditGo)
     self.ui.pushButton_44.clicked.connect(self.AutoAlignGo)
@@ -114,10 +124,140 @@ class MyForm(QtGui.QWidget):
     self.ui.listWidget_9.clicked.connect(self.ShowHEader)
     self.ui.listWidget_8.clicked.connect(self.GetHFieldValue)
     
+    self.ui.listWidget_10.clicked.connect(self.GetObservatory)
+    
     self.ui.graphicsView_6.wheelEvent = self.ZoomAutoAlign
     self.ui.graphicsView_7.wheelEvent = self.ZoomManAlign
     self.ui.graphicsView_2.wheelEvent = self.ZoomPhot
+    
+    self.ui.pushButton_10.clicked.connect(self.ExportBias)
+    self.ui.pushButton_11.clicked.connect(self.ExportDark)
+    self.ui.pushButton_12.clicked.connect(self.ExportFlat)
+    
+    self.ui.pushButton_63.clicked.connect(self.ObsDell)
+    self.ui.pushButton_62.clicked.connect(self.ObsAdd)
+    
+     
+  def pixelSelectPhot(self, event):
+	  print(str(event.pos().x()) + " - " + str(event.pos().y()))
+	  if self.ui.checkBox_8.checkState() != QtCore.Qt.Checked:
+		  if self.ui.checkBox_7.checkState() == QtCore.Qt.Checked:
+			  rows = self.ui.listWidget_6.count()
+			  item = QtGui.QListWidgetItem()
+			  self.ui.listWidget_6.addItem(item)
+			  item = self.ui.listWidget_6.item(rows)
+			  item.setText(QtGui.QApplication.translate("Form", str(event.pos().x()) + " - " + str(event.pos().y()), None, QtGui.QApplication.UnicodeUTF8))
+		  else:
+			  self.ui.lineEdit_5.setText(QtGui.QApplication.translate("Form", str(event.pos().x()) + " - " + str(event.pos().y()), None, QtGui.QApplication.UnicodeUTF8))
+			
+    
+  def pixelSelectManualAlign(self, event):
+	  ImageName = self.ui.listWidget_7.currentItem()
+	  ImageName = str(ImageName.text())
+	  Name, Path = functions.fileNamePath(ImageName)
+	  if os.path.isfile("./tmp/ManualAlign/" + str(Name)):
+		  os.popen("rm ./tmp/ManualAlign/" + str(Name))
+	  
+	  coorFile = open("./tmp/ManualAlign/" + str(Name), "a")
+	  coorFile.write(str(ImageName) + "|" + str(event.pos().x()) + "|" + str(event.pos().y()))
+	  coorFile.close()
+	  
+	  allFilesCount = self.ui.listWidget_7.count()
+	  lineCount = self.ui.listWidget_7.currentRow()
+	  allFilesCount = allFilesCount -1
+	  
+	  print(str(allFilesCount) + " > " + str(lineCount))
+	  if allFilesCount > lineCount:
+		  self.ui.listWidget_7.setCurrentRow(lineCount+1)
+		  self.ManualAlignDisplayImage()
+	  else:
+		  QtGui.QMessageBox.warning(self, 'End', "It's end of list...", QtGui.QMessageBox.Ok)
+		  
  
+  def ObsDell(self):
+	OBSName = self.ui.listWidget_10.currentItem()
+	OBSName = str(OBSName.text())
+	
+	os.popen("rm ./obsdat/" + OBSName)
+	functions.observatRefresh(self)
+	
+	self.ui.textEdit.setHtml(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_10.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_11.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_12.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_13.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_14.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_9.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	
+ 
+  def ObsAdd(self):
+	notes = self.ui.textEdit.toPlainText()
+	name = self.ui.lineEdit_10.text()
+	longitude = self.ui.lineEdit_11.text()
+	latitude = self.ui.lineEdit_12.text()
+	atitude = self.ui.lineEdit_13.text()
+	timezone = self.ui.lineEdit_14.text()
+	observatory = self.ui.lineEdit_9.text()
+	
+	count = notes.count("\n")
+	notesApart = notes.split("\n")
+	
+	if os.path.isfile("./obsdat/" + str(observatory)):
+		os.popen("rm ./obsdat/" + str(observatory))
+	
+	obsFile = open("./obsdat/" + observatory, "a")
+	for i in xrange(count):
+		obsFile.write("#" + notesApart[i] + "\n")
+		print(notesApart[i])
+		
+	obsFile.write("observatory=\"" + observatory + "\"\n")
+	obsFile.write("name=\"" + name + "\"\n")
+	obsFile.write("longitude=" + longitude + "\n")
+	obsFile.write("latitude=" + latitude + "\n")
+	obsFile.write("altitude=" + atitude + "\n")
+	obsFile.write("timezone=" + timezone)
+	obsFile.close()
+	
+	functions.observatRefresh(self)
+	
+	self.ui.textEdit.setHtml(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_10.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_11.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_12.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_13.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_14.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_9.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	
+ 
+  def GetObservatory(self):
+	OBSName = self.ui.listWidget_10.currentItem()
+	OBSName = str(OBSName.text())
+	functions.bringObservatory(self, OBSName)
+	 
+  def ExportBias(self):
+	try:
+		functions.biasCombine(self, self.ui.listWidget_2)
+		ZeroFile = QtGui.QFileDialog.getSaveFileName( self, 'Save Master Zero File', 'zero.fits', 'MYRaf Result File (*.fits)')
+		os.popen("cp ./tmp/Zero.fits " + str(ZeroFile))
+	except:
+		QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nCheck your Bias files."))
+	
+  def ExportDark(self):
+	try:
+		functions.darkCombine(self, self.ui.listWidget_3)
+		DarkFile = QtGui.QFileDialog.getSaveFileName( self, 'Save Master Dark File', 'dark.fits', 'MYRaf Result File (*.fits)')
+		os.popen("cp ./tmp/Dark.fits " + str(DarkFile))
+	except:
+		QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nCheck your Dark files."))
+	
+  def ExportFlat(self):
+	try:
+		functions.flatCombine(self, self.ui.listWidget_4)
+		FlatFile = QtGui.QFileDialog.getSaveFileName( self, 'Save Master Flat File', 'flat.fits', 'MYRaf Result File (*.fits)')
+		os.popen("cp ./tmp/Flat.fits " + str(FlatFile))
+	except:
+		QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nCheck your Flat files."))
+		
   def GetHFieldValue(self):
 	ValueField = self.ui.listWidget_8.currentItem()
 	ValueField=ValueField.text()
@@ -144,7 +284,7 @@ class MyForm(QtGui.QWidget):
 		functions.zoom(self, self.ui.graphicsView_7, 1.1)
 		
   def ZoomPhot(self, ev):
-	if ev.delta() < 0:
+	if ev.delta() < 0: 
 		functions.zoom(self, self.ui.graphicsView_2, 0.9)
 	else:
 		functions.zoom(self, self.ui.graphicsView_2, 1.1)
@@ -154,18 +294,41 @@ class MyForm(QtGui.QWidget):
 	ImgPath = str(ImgPath.text())
 	functions.ImgCopyDisplay(self, ImgPath)
 	functions.display(self, "./tmp/display.png", self.ui.graphicsView_6)
-	
+		
   def ManualAlignDisplayImage(self):
 	ImgPath = self.ui.listWidget_7.currentItem()
 	ImgPath = str(ImgPath.text())
 	functions.ImgCopyDisplay(self, ImgPath)
-	functions.display(self, "./tmp/display.png", self.ui.graphicsView_7)
+	self.ui.local_image = QImage("./tmp/display.png")
+	self.ui.local_sceneManualAlign = QGraphicsScene()
+	self.ui.pixMapItemManualAlign = QGraphicsPixmapItem(QPixmap(self.ui.local_image), None, self.ui.local_sceneManualAlign)
+	self.ui.graphicsView_7.setScene( self.ui.local_sceneManualAlign )
+	self.ui.pixMapItemManualAlign.mousePressEvent = self.pixelSelectManualAlign
+	Name, Path = functions.fileNamePath(ImgPath)
+	if os.path.isfile("./tmp/ManualAlign/" + str(Name)):
+		f = open("./tmp/ManualAlign/" + str(Name))
+		for line in f:
+			coorLine = line.split("|")
+			self.ui.lineEdit.setText(QtGui.QApplication.translate("Form", str(coorLine[1]) + " - " + str(coorLine[1]), None, QtGui.QApplication.UnicodeUTF8))
+	else:
+		self.ui.lineEdit.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	
 
   def PhotDisplayImage(self):
 	ImgPath = self.ui.listWidget_5.currentItem()
 	ImgPath = str(ImgPath.text())
 	functions.ImgCopyDisplay(self, ImgPath)
-	functions.display(self, "./tmp/display.png", self.ui.graphicsView_2)
+	self.ui.local_image = QImage("./tmp/display.png")
+	self.ui.local_scenePhot = QGraphicsScene()
+	self.ui.pixMapItemPhot = QGraphicsPixmapItem(QPixmap(self.ui.local_image), None, self.ui.local_scenePhot)
+	self.ui.graphicsView_2.setScene( self.ui.local_scenePhot)
+	self.ui.pixMapItemPhot.mousePressEvent = self.pixelSelectPhot
+	
+	
+	#ImgPath = self.ui.listWidget_5.currentItem()
+	#ImgPath = str(ImgPath.text())
+	#functions.ImgCopyDisplay(self, ImgPath)
+	#functions.display(self, "./tmp/display.png", self.ui.graphicsView_2)
 	
   def AutoAlignGo(self):
 	if self.ui.listWidget_13.count() == 0:
@@ -195,8 +358,6 @@ class MyForm(QtGui.QWidget):
 				os.popen("mv ./alipy_out/" + str(NewFileName) + " " + str(pth) + "/aligned/" + str(name))
 				self.ui.progressBar_2.setProperty("value", math.ceil(100*(x+1)/self.ui.listWidget_13.count()))
 			
-				
-	
   def HeaderEditGo(self):
 	if self.ui.listWidget_9.count() == 0:
 		QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nPlease select files for Header Edit."))
@@ -265,10 +426,51 @@ class MyForm(QtGui.QWidget):
 			isFla=True
 			
 		if isBia and isDar and isFla:
-			print("Do fotometry.")
+			biasFile = ""
+			darkFile = ""
+			flatFile = ""
+			if biaSta == QtCore.Qt.Checked:
+				functions.biasCombine(self, self.ui.listWidget_2)
+				biasFile = "./tmp/Zero.fits"
+				
+			if darSta == QtCore.Qt.Checked:
+				functions.darkCombine(self, self.ui.listWidget_3)
+				darkFile = "./tmp/Dark.fits"
+								
+			if flaSta == QtCore.Qt.Checked:
+				functions.flatCombine(self, self.ui.listWidget_4)
+				flatFile = "./tmp/Flat.fits"
+				
+			for x in xrange(self.ui.listWidget.count()):
+				ImageName = self.ui.listWidget.item(x)
+				ImageName = ImageName.text()
+				functions.calibration(self, ImageName, biasFile, darkFile, flatFile)
+				he = iraf.images.imutil.hedit
+				he (str(ImageName), str("MYRaf"), str("Calibrated Via MYRaf V2."), add="yes", verify="no", show="no", update="yes")
+				self.ui.progressBar.setProperty("value", math.ceil(100*(x+1)/self.ui.listWidget.count()))
+				
 		else:
 			QtGui.QMessageBox.critical( self,  ("Error"), ("Oops!\nSelect \n" + err + "and retry..."))
-	
+
+  def AutoAddPhoto(self):
+	if self.ui.checkBox_7.checkState() == QtCore.Qt.Checked:
+		self.ui.pushButton_37.setEnabled(False)
+	else:
+		self.ui.pushButton_37.setEnabled(True)
+
+  def AllSkyPhoto(self):
+	if self.ui.checkBox_8.checkState() == QtCore.Qt.Checked:
+		self.ui.listWidget_6.setEnabled(False)
+		self.ui.checkBox_7.setEnabled(False)
+		self.ui.pushButton_38.setEnabled(False)
+		self.ui.pushButton_37.setEnabled(False)
+	else:
+		self.ui.listWidget_6.setEnabled(True)
+		self.ui.checkBox_7.setEnabled(True)
+		self.ui.pushButton_38.setEnabled(True)
+		self.AutoAddPhoto()
+
+		
   def HeaderGetVal(self):
 	if self.ui.checkBox_5.checkState() == QtCore.Qt.Checked:
 		self.ui.lineEdit_4.setEnabled(False)
@@ -298,12 +500,29 @@ class MyForm(QtGui.QWidget):
 #Image Add functions. Take a look to add function under functions.py file.
   def ImageAdd(self):
 	functions.add(self, self.ui.listWidget)
+	
   def BiasAdd(self):
 	functions.add(self, self.ui.listWidget_2)
+	if self.ui.listWidget_2.count() == 0:
+		self.ui.pushButton_10.setEnabled(False)
+	else:
+		self.ui.pushButton_10.setEnabled(True)
+		
   def DarkAdd(self):
 	functions.add(self, self.ui.listWidget_3)
+	if self.ui.listWidget_3.count() == 0:
+		self.ui.pushButton_11.setEnabled(False)
+	else:
+		self.ui.pushButton_11.setEnabled(True)
+		
+		
   def FlatAdd(self):
 	functions.add(self, self.ui.listWidget_4)
+	if self.ui.listWidget_4.count() == 0:
+		self.ui.pushButton_12.setEnabled(False)
+	else:
+		self.ui.pushButton_12.setEnabled(True)
+	
   def AlignAdd(self):
 	functions.add(self, self.ui.listWidget_13)
   def AlignManAdd(self):
@@ -312,16 +531,42 @@ class MyForm(QtGui.QWidget):
 	functions.add(self, self.ui.listWidget_5)
   def HeaderAdd(self):
 	functions.add(self, self.ui.listWidget_9)
+	
+  def coorAdd(self):
+	coorinates = self.ui.lineEdit_5.text()
+	
+	rows = self.ui.listWidget_6.count()
+	item = QtGui.QListWidgetItem()
+	self.ui.listWidget_6.addItem(item)
+	item = self.ui.listWidget_6.item(rows)
+	item.setText(QtGui.QApplication.translate("Form", str(coorinates), None, QtGui.QApplication.UnicodeUTF8))
+	
 
 #Image Remove functions. Take a look to Rm function under functions.py file.
   def ImageRm(self):
 	functions.Rm(self, self.ui.listWidget)
+	
   def BiasRm(self):
 	functions.Rm(self, self.ui.listWidget_2)
+	if self.ui.listWidget_2.count() == 0:
+		self.ui.pushButton_10.setEnabled(False)
+	else:
+		self.ui.pushButton_10.setEnabled(True)
+		
   def DarkRm(self):
 	functions.Rm(self, self.ui.listWidget_3)
+	if self.ui.listWidget_3.count() == 0:
+		self.ui.pushButton_11.setEnabled(False)
+	else:
+		self.ui.pushButton_11.setEnabled(True)
+	
   def FlatRm(self):
 	functions.Rm(self, self.ui.listWidget_4)
+	if self.ui.listWidget_4.count() == 0:
+		self.ui.pushButton_12.setEnabled(False)
+	else:
+		self.ui.pushButton_12.setEnabled(True)
+	
   def AlignRm(self):
 	functions.Rm(self, self.ui.listWidget_13)
   def AlignManRm(self):
@@ -330,6 +575,10 @@ class MyForm(QtGui.QWidget):
 	functions.Rm(self, self.ui.listWidget_5)
   def HeaderRm(self):
 	functions.Rm(self, self.ui.listWidget_9)
+	
+  def coorRm(self):
+	functions.Rm(self, self.ui.listWidget_6)
+	
 	
 ###################
 	

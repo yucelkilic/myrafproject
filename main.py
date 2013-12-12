@@ -6,7 +6,7 @@ Created:------------------------------------------------------------------------
 			Yücel KILIÇ				Developer
 		at:
 			Begin					4.12.2013
-			Last update				10.12.2013
+			Last update				12.12.2013
 Importing things:-----------------------------------------------------------------------------------
 		Must have as installed:
 			python-2.7
@@ -88,7 +88,15 @@ class MyForm(QtGui.QWidget):
 		self.ui.listWidget_10.addItem(item)
 		item = self.ui.listWidget_10.item(it)
 		item.setText(QtGui.QApplication.translate("Form", str(li), None, QtGui.QApplication.UnicodeUTF8))
-    
+
+    it = self.ui.listWidget_12.count()-1
+    for files in glob.glob("./obsdat/*"):
+		fn = ntpath.basename(str(files))
+		it = it+1
+		item = QtGui.QListWidgetItem()
+		self.ui.listWidget_12.addItem(item)
+		item = self.ui.listWidget_12.item(it)
+		item.setText(QtGui.QApplication.translate("Form", str(fn), None, QtGui.QApplication.UnicodeUTF8))
     
     self.ui.radioButton.clicked.connect(self.unlockIrafPhot)
     self.ui.radioButton_2.clicked.connect(self.unlockEnsfPhot)
@@ -147,6 +155,11 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_39.clicked.connect(self.goHeaderAdd)
     self.ui.pushButton_38.clicked.connect(self.goHeaderDel)
     
+    
+    self.ui.listWidget_12.clicked.connect(self.getObservat)
+    self.ui.pushButton_41.clicked.connect(self.rmObservatory)
+    self.ui.pushButton_40.clicked.connect(self.addObservatory)
+    
     self.ui.pushButton_7.clicked.connect(self.masterZero)
     self.ui.pushButton_9.clicked.connect(self.masterDark)
     self.ui.pushButton_12.clicked.connect(self.masterFlat)
@@ -155,6 +168,98 @@ class MyForm(QtGui.QWidget):
   
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     self.applySettings()
+
+
+#Pohtometry#############################################
+  def getObservat(self):
+	fl = self.ui.listWidget_12.currentItem()
+	fl = fl.text()
+	
+	self.ui.lineEdit_3.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_4.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_5.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_6.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_7.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_8.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.plainTextEdit.setPlainText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
+	
+	f = open("obsdat/%s" %str(fl), "r")
+	for i in f:
+		ln = i.replace("\n","")
+		if ln.replace("	","").startswith("observatory"):
+			self.ui.lineEdit_3.setText(QtGui.QApplication.translate("Form", str(ln).split("=")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
+
+		if ln.replace("	","").startswith("name"):
+			self.ui.lineEdit_4.setText(QtGui.QApplication.translate("Form", str(ln).split("=")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
+
+		if ln.replace("	","").startswith("longitude"):
+			self.ui.lineEdit_5.setText(QtGui.QApplication.translate("Form", str(ln).split("=")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
+
+		if ln.replace("	","").startswith("latitude"):
+			self.ui.lineEdit_6.setText(QtGui.QApplication.translate("Form", str(ln).split("=")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
+
+		if ln.replace("	","").startswith("altitude"):
+			self.ui.lineEdit_7.setText(QtGui.QApplication.translate("Form", str(ln).split("=")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
+
+		if ln.replace("	","").startswith("timezone"):
+			self.ui.lineEdit_8.setText(QtGui.QApplication.translate("Form", str(ln).split("=")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
+			
+		if ln.replace("	","").startswith("#"):
+			self.ui.plainTextEdit.setPlainText(QtGui.QApplication.translate("Form", "%s" %(ln.replace("#","")), None, QtGui.QApplication.UnicodeUTF8))
+			
+	
+  def rmObservatory(self):
+	fl = self.ui.listWidget_12.currentItem()
+	fl = fl.text()
+	os.popen("rm -rf ./obsdat/%s" %(str(fl)))
+	c=self.ui.listWidget_12.count()
+	for i in xrange(c):
+		self.ui.listWidget_12.takeItem(0)
+	
+	it = self.ui.listWidget_12.count()-1
+	for files in glob.glob("./obsdat/*"):
+		fn = ntpath.basename(str(files))
+		it = it+1
+		item = QtGui.QListWidgetItem()
+		self.ui.listWidget_12.addItem(item)
+		item = self.ui.listWidget_12.item(it)
+		item.setText(QtGui.QApplication.translate("Form", str(fn), None, QtGui.QApplication.UnicodeUTF8))
+
+  def addObservatory(self):
+	fl = self.ui.listWidget_12.currentItem()
+	
+	observatory = self.ui.lineEdit_3.text()
+	name = self.ui.lineEdit_4.text()
+	longitude = self.ui.lineEdit_5.text()
+	latitude = self.ui.lineEdit_6.text()
+	altitude = self.ui.lineEdit_7.text()
+	timeZone = self.ui.lineEdit_8.text()
+	other = self.ui.plainTextEdit.toPlainText()
+	
+	f = open("./obsdat/%s" %observatory, "w")
+	f.write("#%s\n" %other.replace("\n"," "))
+	f.write("observatory=\"%s\"\n" %observatory)
+	f.write("\tname=\"%s\"\n" %name)
+	f.write("\tlongitude=%s\n" %longitude)
+	f.write("\tlatitude=%s\n" %latitude)
+	f.write("\taltitude=%s\n" %altitude)
+	f.write("\ttimezone=%s\n" %timeZone)
+	f.close()
+	
+	c=self.ui.listWidget_12.count()
+	for i in xrange(c):
+		self.ui.listWidget_12.takeItem(0)
+	
+	it = self.ui.listWidget_12.count()-1
+	for files in glob.glob("./obsdat/*"):
+		fn = ntpath.basename(str(files))
+		it = it+1
+		item = QtGui.QListWidgetItem()
+		self.ui.listWidget_12.addItem(item)
+		item = self.ui.listWidget_12.item(it)
+		item.setText(QtGui.QApplication.translate("Form", str(fn), None, QtGui.QApplication.UnicodeUTF8))
+		
+########################################################
 #Header Editor############################################
   def getHeader(self):
 	
@@ -765,7 +870,7 @@ class MyForm(QtGui.QWidget):
 			  
 		  if l.startswith("ppZMag"):
 			  ppZMag = l.split(":")[1].replace("\n","")
-			  self.ui.lineEdit_16.setText(QtGui.QApplication.translate("ppZMag", str(ppZMag), None, QtGui.QApplication.UnicodeUTF8))
+			  self.ui.lineEdit_16.setText(QtGui.QApplication.translate("Form", str(ppZMag), None, QtGui.QApplication.UnicodeUTF8))
 	
 			  
 		  if l.startswith("photType"):

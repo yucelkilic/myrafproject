@@ -1,8 +1,4 @@
-#Gemini Observatory-Submitted by Inger Jorgensen
-#
-#Gemini-North
-#The sevaluesare from the aerial survey made Sept 25, 1996
-#http://www.ifa.hawaii.edu/mko/coordinates.html
+#Gemini Observatory-Submitted by Inger Jorgensen, Gemini-North, The sevaluesare from the aerial survey made Sept 25, 1996, http://www.ifa.hawaii.edu/mko/coordinates.html
 observatory="gemini-north"
 	name="Gemini North Observatory"
 	longitude=155:28.142805

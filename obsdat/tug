@@ -1,11 +1,4 @@
 #Submitted by Zeki Aslan 8/15/05 who said the"tno" entry was wrong.
-#observatory="tno"
-#name="TurkiyeNationalObservatory"
-#longitude=-30:21:11
-#latitude=36:49:28
-#altitude=2555.
-#timezone=2
-#
 observatory="tug"
 	name="TUBITAK National Observatory, Turkey"
 	longitude=-30:20:00

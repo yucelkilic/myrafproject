@@ -1709,9 +1709,9 @@
                </spacer>
               </item>
               <item row="0" column="0" colspan="3">
-               <widget class="QListView" name="listView_10">
+               <widget class="QListWidget" name="listWidget_12">
                 <property name="selectionMode">
-                 <enum>QAbstractItemView::ExtendedSelection</enum>
+                 <enum>QAbstractItemView::SingleSelection</enum>
                 </property>
                </widget>
               </item>
@@ -1738,16 +1738,6 @@
              <layout class="QGridLayout" name="gridLayout_31">
               <item row="0" column="0">
                <layout class="QGridLayout" name="gridLayout_34">
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_20">
-                  <property name="text">
-                   <string>Observatory</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLineEdit" name="lineEdit_3"/>
-                </item>
                 <item row="2" column="0">
                  <widget class="QLabel" name="label_21">
                   <property name="text">
@@ -1758,6 +1748,12 @@
                 <item row="3" column="0">
                  <widget class="QLineEdit" name="lineEdit_4"/>
                 </item>
+                <item row="7" column="0">
+                 <widget class="QLineEdit" name="lineEdit_6"/>
+                </item>
+                <item row="9" column="0">
+                 <widget class="QLineEdit" name="lineEdit_7"/>
+                </item>
                 <item row="4" column="0">
                  <widget class="QLabel" name="label_23">
                   <property name="text">
@@ -1765,8 +1761,12 @@
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="0">
-                 <widget class="QLineEdit" name="lineEdit_5"/>
+                <item row="13" column="0">
+                 <widget class="QPlainTextEdit" name="plainTextEdit">
+                  <property name="plainText">
+                   <string/>
+                  </property>
+                 </widget>
                 </item>
                 <item row="6" column="0">
                  <widget class="QLabel" name="label_22">
@@ -1775,30 +1775,13 @@
                   </property>
                  </widget>
                 </item>
-                <item row="7" column="0">
-                 <widget class="QLineEdit" name="lineEdit_6"/>
+                <item row="5" column="0">
+                 <widget class="QLineEdit" name="lineEdit_5"/>
                 </item>
                 <item row="8" column="0">
                  <widget class="QLabel" name="label_25">
                   <property name="text">
                    <string>Altitude</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="9" column="0">
-                 <widget class="QLineEdit" name="lineEdit_7"/>
-                </item>
-                <item row="10" column="0">
-                 <widget class="QLabel" name="label_26">
-                  <property name="text">
-                   <string>Time Zone</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="11" column="0">
-                 <widget class="QLineEdit" name="lineEdit_8">
-                  <property name="text">
-                   <string/>
                   </property>
                  </widget>
                 </item>
@@ -1809,8 +1792,29 @@
                   </property>
                  </widget>
                 </item>
-                <item row="13" column="0">
-                 <widget class="QPlainTextEdit" name="plainTextEdit"/>
+                <item row="11" column="0">
+                 <widget class="QLineEdit" name="lineEdit_8">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="10" column="0">
+                 <widget class="QLabel" name="label_26">
+                  <property name="text">
+                   <string>Time Zone</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_20">
+                  <property name="text">
+                   <string>Observatory</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLineEdit" name="lineEdit_3"/>
                 </item>
                </layout>
               </item>
@@ -1836,7 +1840,7 @@
        <item row="0" column="0" colspan="2">
         <widget class="QTabWidget" name="tabWidget_6">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab_21">
           <attribute name="title">
@@ -1853,7 +1857,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
+                <width>96</width>
                 <height>95</height>
                </rect>
               </property>
@@ -1994,7 +1998,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
+                <width>96</width>
                 <height>95</height>
                </rect>
               </property>
@@ -2171,7 +2175,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
+                <width>96</width>
                 <height>95</height>
                </rect>
               </property>
@@ -2337,8 +2341,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
-                <height>95</height>
+                <width>706</width>
+                <height>406</height>
                </rect>
               </property>
               <attribute name="label">
@@ -2355,8 +2359,8 @@
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>79</width>
-                    <height>79</height>
+                    <width>690</width>
+                    <height>390</height>
                    </rect>
                   </property>
                   <widget class="QLabel" name="label_34">
@@ -2917,8 +2921,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
-                <height>95</height>
+                <width>706</width>
+                <height>406</height>
                </rect>
               </property>
               <attribute name="label">
@@ -2935,8 +2939,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>79</width>
-                    <height>79</height>
+                    <width>690</width>
+                    <height>390</height>
                    </rect>
                   </property>
                  </widget>
@@ -2949,7 +2953,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
+                <width>96</width>
                 <height>95</height>
                </rect>
               </property>
@@ -2967,8 +2971,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>79</width>
-                    <height>79</height>
+                    <width>96</width>
+                    <height>26</height>
                    </rect>
                   </property>
                  </widget>
@@ -2981,7 +2985,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
+                <width>96</width>
                 <height>95</height>
                </rect>
               </property>
@@ -2999,8 +3003,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>79</width>
-                    <height>79</height>
+                    <width>96</width>
+                    <height>26</height>
                    </rect>
                   </property>
                  </widget>
@@ -3013,7 +3017,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
+                <width>96</width>
                 <height>95</height>
                </rect>
               </property>
@@ -3031,8 +3035,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>79</width>
-                    <height>79</height>
+                    <width>96</width>
+                    <height>26</height>
                    </rect>
                   </property>
                  </widget>
@@ -3045,7 +3049,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
+                <width>96</width>
                 <height>95</height>
                </rect>
               </property>
@@ -3063,8 +3067,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>79</width>
-                    <height>79</height>
+                    <width>96</width>
+                    <height>26</height>
                    </rect>
                   </property>
                  </widget>

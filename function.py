@@ -217,20 +217,11 @@ def phot(inFile, outPath, cooFile, expTime = "exptime", Filter = "subset", cente
 
 def txDump(inFile, outFile, fields="id, otime, mag , merr, xairmass"):
 	print("txDump started.")
-	che = 0
-	for i in fields.split(", "):
-		OBS = headerRead(inFile, i).split("-")[0]
-		if OBS != "":
-			che = che + 1
-	if che == 0:
-		try:
-			tx=iraf.txdump
-			tx (inFile, fields, "yes", Stdout= outFile)
-			return True
-			print("txDump succeed.")
-		except:
-			return False
-			print("txDump failed.")
-	else:
+	try:
+		tx=iraf.txdump
+		tx (inFile, fields, "yes", Stdout= outFile)
+		return True
+		print("txDump succeed.")
+	except:
 		return False
-		print("Fields we looking for are not available")
+		print("txDump failed.")

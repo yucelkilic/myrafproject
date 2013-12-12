@@ -7,8 +7,8 @@
 #timezone=2
 #
 observatory="tug"
-name="TUBITAK National Observatory, Turkey"
-longitude=-30:20:00
-latitude=36:49:30
-altitude=2547.
-timezone=-2
+	name="TUBITAK National Observatory, Turkey"
+	longitude=-30:20:00
+	latitude=36:49:30
+	altitude=2547.
+	timezone=-2

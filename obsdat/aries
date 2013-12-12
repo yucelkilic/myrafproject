@@ -2,8 +2,8 @@
 #ChangedtoWlongitudeMJF4/1/06)
 #(E)longitude=79.45639
 observatory="aries"
-name="Aryabhatta Research Instituteof Observational Sciences"
-longitude=280.54361
-latitude=29.36
-altitude=1950.
-timezone=-5.5
+	name="Aryabhatta Research Instituteof Observational Sciences"
+	longitude=280.54361
+	latitude=29.36
+	altitude=1950.
+	timezone=-5.5

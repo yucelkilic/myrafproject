@@ -1400,7 +1400,7 @@
           <attribute name="title">
            <string>Header Editor</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_35">
+          <layout class="QGridLayout" name="gridLayout_72">
            <item row="0" column="0">
             <widget class="QGroupBox" name="groupBox_8">
              <property name="title">
@@ -1614,6 +1614,27 @@
               </item>
              </layout>
             </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <layout class="QGridLayout" name="gridLayout_35">
+             <item row="1" column="0">
+              <widget class="QProgressBar" name="progressBar_4">
+               <property name="value">
+                <number>0</number>
+               </property>
+               <property name="textDirection">
+                <enum>QProgressBar::TopToBottom</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_41">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -1832,7 +1853,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -1973,7 +1994,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -2150,7 +2171,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -2316,7 +2337,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -2334,8 +2355,8 @@
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>96</width>
-                    <height>26</height>
+                    <width>79</width>
+                    <height>79</height>
                    </rect>
                   </property>
                   <widget class="QLabel" name="label_34">
@@ -2896,7 +2917,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -2914,8 +2935,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>96</width>
-                    <height>26</height>
+                    <width>79</width>
+                    <height>79</height>
                    </rect>
                   </property>
                  </widget>
@@ -2928,7 +2949,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -2946,8 +2967,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>96</width>
-                    <height>26</height>
+                    <width>79</width>
+                    <height>79</height>
                    </rect>
                   </property>
                  </widget>
@@ -2960,7 +2981,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -2978,8 +2999,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>96</width>
-                    <height>26</height>
+                    <width>79</width>
+                    <height>79</height>
                    </rect>
                   </property>
                  </widget>
@@ -2992,7 +3013,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -3010,8 +3031,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>96</width>
-                    <height>26</height>
+                    <width>79</width>
+                    <height>79</height>
                    </rect>
                   </property>
                  </widget>
@@ -3024,7 +3045,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -3042,8 +3063,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>96</width>
-                    <height>26</height>
+                    <width>79</width>
+                    <height>79</height>
                    </rect>
                   </property>
                  </widget>

@@ -19,6 +19,16 @@ def headerWrite(filename, field, text):
 	except:
 		return False
 		print("Hedit failed")
+	
+def headerDel(filename, field):
+	try:
+		hd= iraf.images.imutil.hedit
+		hd (filename, field, delete="yes", verify="no", show="no")
+		return True
+		print("Hedit succeed")
+	except:
+		return False
+		print("Hedit failed")
 		
 def zeroCombine(fileList, out, com="median", rej="none", cty=""):
 	zc = iraf.noao.imred.ccdred.zerocombine
@@ -127,7 +137,7 @@ def autoAlign(inFile, refImage, outFile, mkPNG=False, visu=False):
 				print "%20s : %20s, flux ratio %.2f" % (id.ukn.name, id.trans, id.medfluxratio)
 				alipy.align.affineremap(id.ukn.filepath, id.trans, shape=outputshape, makepng=mkPNG)
 				
-		alipy_out = "./alipy_out/%s" %(ntpath.basename(str(inFile)).replace(".fit","_affineremap.fits"))
+		alipy_out = "./alipy_out/%s_affineremap.fits" %(ntpath.basename(str(inFile)).split(".")[0])
 		mkh(alipy_out, inFile)
 		headerWrite(alipy_out, "MYRafALI", "Aligned Via MYRaf V2.0 Beta using Alipy @ %s" %(datetime.datetime.utcnow()))
 		os.popen("mv %s %s/%s" %(alipy_out, outFile, ntpath.basename(str(inFile))))

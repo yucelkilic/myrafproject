@@ -145,6 +145,7 @@ class MyForm(QtGui.QWidget):
     self.ui.listWidget_11.clicked.connect(self.getVlueFromHeader)
     self.ui.checkBox_5.clicked.connect(self.unlockGetHeaderFromValue)
     self.ui.pushButton_39.clicked.connect(self.goHeaderAdd)
+    self.ui.pushButton_38.clicked.connect(self.goHeaderDel)
     
     self.ui.pushButton_7.clicked.connect(self.masterZero)
     self.ui.pushButton_9.clicked.connect(self.masterDark)
@@ -192,7 +193,9 @@ class MyForm(QtGui.QWidget):
   def goHeaderAdd(self):
 	if self.ui.listWidget_9.count() != 0:
 		headErr = ""
+		it = 0
 		for x in xrange(self.ui.listWidget_9.count()):
+			it = it + 1
 			img = self.ui.listWidget_9.item(x)
 			img = str(img.text())
 			field = self.ui.lineEdit.text()
@@ -203,14 +206,43 @@ class MyForm(QtGui.QWidget):
 				selectedField = h.split(" = ")[0]
 				val = str("'(@\"%s\")'" %selectedField)
 			
+			self.ui.progressBar_4.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_9.count())))))
+			self.ui.label_41.setText(QtGui.QApplication.translate("Form", "Header delete: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
+				
 			if function.headerWrite(img, field, val):
 				self.getHeader()
 			else:
 				headErr = "%s\n%s" %(headErr, ntpath.basename(str(img)))
 					
-		if headErr != "":
+		if headErr != "" :
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>hedit</b> can not handle this job for images below\n%s" %(headErr)))
+	else:
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some images."))
+	
+  def goHeaderDel(self):
+	if self.ui.listWidget_9.count() != 0:
+		f = self.ui.listWidget_11.currentItem()
+		f = f.text()
+		field = f.split(" = ")[0]
+		heErr = ""
+		it = 0
+		for x in xrange(self.ui.listWidget_9.count()):
+			it = it + 1
+			img = self.ui.listWidget_9.item(x)
+			img = str(img.text())
+			if function.headerDel(img, field):
+				self.getHeader()
+			else:
+				heErr = "%s\n%s" %(headErr, ntpath.basename(str(img)))					
+				
+			self.ui.progressBar_4.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_9.count())))))
+			self.ui.label_41.setText(QtGui.QApplication.translate("Form", "Header delete: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
 
+		if heErr != "":
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>hedit</b> can not handle this job for images below\n%s" %(heErr)))
+			
+	else:
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some images."))
 ########################################################
 #Pohtometry#############################################
   def displayPhot(self):
@@ -498,18 +530,20 @@ class MyForm(QtGui.QWidget):
 			ref = str(ref.text())
 			it = 0
 			odir = QtGui.QFileDialog.getExistingDirectory( self, 'Select Directory to Save Aligned File(s)')
+			aliErr = ""
 			for x in xrange(self.ui.listWidget_5.count()):
 				it = it + 1
 				img = self.ui.listWidget_5.item(x)
 				img = str(img.text())
 				self.ui.label_7.setText(QtGui.QApplication.translate("Form", "Aligning: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
 				if not function.autoAlign(img, ref, odir):
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>alipy</b> can not handle this job."))
-					gui.logging(self, "--- %s - alipy failed." %(datetime.datetime.utcnow()))
-					
+					aliErr = "%s\%s" %(aliErr, ntpath.basename(str(img)))
+					gui.logging(self, "--- %s - alipy failed." %(datetime.datetime.utcnow()))					
 				self.ui.progressBar_2.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_5.count())))))
 				os.popen("rm -rf ./alipy_cats/ ./alipy_out/")
 			gui.logging(self, "-- %s - AutoAlign finished aligning." %(datetime.datetime.utcnow()))
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>alipy</b> can not align images below\n%s") %aliErr)
+
 		else:
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select a reference image first."))
 	else:

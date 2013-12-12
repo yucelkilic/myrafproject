@@ -107,9 +107,13 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_16.clicked.connect(self.autAlignRm)
     self.ui.pushButton_22.clicked.connect(self.manAlignAdd)
     self.ui.pushButton_21.clicked.connect(self.manAlignRm)
-    
     self.ui.pushButton_33.clicked.connect(self.photAdd)
     self.ui.pushButton_32.clicked.connect(self.photRm)
+    
+    
+    self.ui.pushButton_36.clicked.connect(self.heditAdd)
+    self.ui.pushButton_37.clicked.connect(self.heditRm)
+    
     
     self.ui.listWidget_5.clicked.connect(self.displayAutAlign)
     self.ui.graphicsView.wheelEvent = self.zoomAutAlign
@@ -137,6 +141,10 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_45.clicked.connect(self.photCooRm)
     self.ui.pushButton_35.clicked.connect(self.goPhot)
     
+    self.ui.listWidget_9.clicked.connect(self.getHeader)
+    self.ui.listWidget_11.clicked.connect(self.getVlueFromHeader)
+    self.ui.checkBox_5.clicked.connect(self.unlockGetHeaderFromValue)
+    self.ui.pushButton_39.clicked.connect(self.goHeaderAdd)
     
     self.ui.pushButton_7.clicked.connect(self.masterZero)
     self.ui.pushButton_9.clicked.connect(self.masterDark)
@@ -146,7 +154,64 @@ class MyForm(QtGui.QWidget):
   
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     self.applySettings()
+#Header Editor############################################
+  def getHeader(self):
+	
+	img = self.ui.listWidget_9.currentItem()
+	img = img.text()
+	h = iraf.hedit(img, "*", ".", Stdout=1)
+	
+	c=self.ui.listWidget_11.count()
+	for i in xrange(c):
+		self.ui.listWidget_11.takeItem(0)
+		
+	it = self.ui.listWidget_11.count()-1
+	for i in h:
+		it = it+1
+		item = QtGui.QListWidgetItem()
+		self.ui.listWidget_11.addItem(item)
+		item = self.ui.listWidget_11.item(it)
+		item.setText(QtGui.QApplication.translate("Form", i.split(",")[1], None, QtGui.QApplication.UnicodeUTF8))
+		self.ui.comboBox.addItem(i.split(",")[1])
+		
+  def getVlueFromHeader(self):
+	hed = self.ui.listWidget_11.currentItem()
+	hed = hed.text()
+	field, val = hed.split(" = ")
+	self.ui.lineEdit.setText(QtGui.QApplication.translate("Form", str(field), None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.lineEdit_2.setText(QtGui.QApplication.translate("Form", str(val), None, QtGui.QApplication.UnicodeUTF8))
+	
+  def unlockGetHeaderFromValue(self):
+	if self.ui.checkBox_5.checkState() == QtCore.Qt.Checked:
+		self.ui.lineEdit_2.setEnabled(False)
+		self.ui.comboBox.setEnabled(True)
+	else:
+		self.ui.lineEdit_2.setEnabled(True)
+		self.ui.comboBox.setEnabled(False)
+		
+  def goHeaderAdd(self):
+	if self.ui.listWidget_9.count() != 0:
+		headErr = ""
+		for x in xrange(self.ui.listWidget_9.count()):
+			img = self.ui.listWidget_9.item(x)
+			img = str(img.text())
+			field = self.ui.lineEdit.text()
+			if self.ui.checkBox_5.checkState() != QtCore.Qt.Checked:
+				val = self.ui.lineEdit_2.text()
+			else:
+				h = self.ui.comboBox.currentText()
+				selectedField = h.split(" = ")[0]
+				val = str("'(@\"%s\")'" %selectedField)
+			
+			if function.headerWrite(img, field, val):
+				self.getHeader()
+			else:
+				headErr = "%s\n%s" %(headErr, ntpath.basename(str(img)))
+					
+		if headErr != "":
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>hedit</b> can not handle this job for images below\n%s" %(headErr)))
 
+########################################################
 #Pohtometry#############################################
   def displayPhot(self):
 	if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
@@ -230,60 +295,71 @@ class MyForm(QtGui.QWidget):
 			self.ui.listWidget_8.setEnabled(False)
 			
   def goPhot(self):
-	
-	if self.ui.checkBox_4.checkState() != QtCore.Qt.Checked:
-		if os.path.exists("./tmp/photCoo"):
-			gui.logging(self, "-- %s - phot started." %(datetime.datetime.utcnow()))
-			if self.ui.listWidget_7.count() != 0:
-				for x in xrange(self.ui.listWidget_7.count()):
-					img = self.ui.listWidget_7.item(x)
-					img = str(img.text())
-					OBS = function.headerRead(img, "observat").split("-")[0]
-					jdErr=""
-					srErr=""
-					amErr=""
-					phErr=""
-					obsTime = self.ui.lineEdit_17.text()
-					
-					exp = str(self.ui.lineEdit_13.text())
-					fil = str(self.ui.lineEdit_14.text())
-					ann = str(self.ui.dial.value())
-					dan = str(self.ui.dial_2.value())
-					cbo = str(self.ui.dial_3.value())
-					ape = str(self.ui.lineEdit_15.text())
-					zma = str(self.ui.lineEdit_16.text())
-					observatory = str(self.ui.lineEdit_18.text())
-					oti = str(self.ui.lineEdit_17.text())
-					print(zma)
-					if function.JD(img, OBS, time=oti):
-						if function.sideReal(img, OBS):
-							if function.airmass(img, OBS, time=oti):
-								if not function.phot(img, "./tmp/analyzed/", "./tmp/photCoo", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
-									phErr = "%s\n%s" %(phErr, ntpath.basename(str(img)))
-									gui.logging(self, "--- %s - phot failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
+	if os.path.exists("./tmp/photCoo"):
+		gui.logging(self, "-- %s - phot started." %(datetime.datetime.utcnow()))
+		if self.ui.listWidget_7.count() != 0:
+			it = 0
+			for x in xrange(self.ui.listWidget_7.count()):
+				it = it + 1
+				img = self.ui.listWidget_7.item(x)
+				img = str(img.text())
+				OBS = function.headerRead(img, "observat").split("-")[0]
+				jdErr=""
+				srErr=""
+				amErr=""
+				phErr=""
+				exp = str(self.ui.lineEdit_13.text())
+				fil = str(self.ui.lineEdit_14.text())
+				ann = str(self.ui.dial.value())
+				dan = str(self.ui.dial_2.value())
+				cbo = str(self.ui.dial_3.value())
+				ape = str(self.ui.lineEdit_15.text())
+				zma = str(self.ui.lineEdit_16.text())
+				observatory = str(self.ui.lineEdit_18.text())
+				oti = str(self.ui.lineEdit_17.text())
+				print(zma)
+				if function.JD(img, OBS, time=oti):
+					if function.sideReal(img, OBS):
+						if function.airmass(img, OBS, time=oti):
+							if function.phot(img, "./tmp/analyzed/", "./tmp/photCoo", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
+								if function.txDump("./tmp/analyzed/%s.mag.1" %(ntpath.basename(str(img))), "./tmp/out%s" %str(it)):
+									os.popen("cat ./tmp/out%s >> tmp/res.my" %str(it))
+									os.popen("rm -rf ./tmp/out%s" %str(it))
 							else:
-								amErr = "%s\%s" %(amErr, ntpath.basename(str(img)))
-								gui.logging(self, "--- %s - airmass failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
+								phErr = "%s\n%s" %(phErr, ntpath.basename(str(img)))
+								gui.logging(self, "--- %s - phot failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
 						else:
-							srErr = "%s\%s" %(srErr, ntpath.basename(str(img)))
-							gui.logging(self, "--- %s - sidereal time calculator failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
+							amErr = "%s\%s" %(amErr, ntpath.basename(str(img)))
+							gui.logging(self, "--- %s - airmass failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
 					else:
-						jdErr = "%s\%s" %(ahErr, ntpath.basename(str(img)))
-						gui.logging(self, "--- %s - JD failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
+						srErr = "%s\%s" %(srErr, ntpath.basename(str(img)))
+						gui.logging(self, "--- %s - sidereal time calculator failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
+				else:
+					jdErr = "%s\%s" %(ahErr, ntpath.basename(str(img)))
+					gui.logging(self, "--- %s - JD failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
 				
+				self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
+				self.ui.label_14.setText(QtGui.QApplication.translate("Form", "Phpotometry: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
 				
-				if phErr != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>phot</b> can not handle this job for images below\n%s" %(phErr)))
+			if phErr != "":
+				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>phot</b> can not handle this job for images below\n%s" %(phErr)))
 
-				if amErr != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>airmass</b> can not handle this job for images below\n%s" %(amErr)))
+			if amErr != "":
+				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>airmass</b> can not handle this job for images below\n%s" %(amErr)))
 
-				if srErr != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>AstHedit</b> can not handle this job for images below\n%s" %(srErr)))
+			if srErr != "":
+				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>AstHedit</b> can not handle this job for images below\n%s" %(srErr)))
 
-				if jdErr != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>JD</b> can not handle this job for images below\n%s" %(jdErr)))
-
+			if jdErr != "":
+				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>JD</b> can not handle this job for images below\n%s" %(jdErr)))
+		
+			ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save resoult file', 'res.my', 'Text (*.my)')
+			os.popen("mv ./tmp/res.my %s" %ofile)
+		
+		else:
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some images."))
+	else:
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select coordinates for photometry."))
 			
 ########################################################
 #Manual Align############################################
@@ -767,6 +843,10 @@ class MyForm(QtGui.QWidget):
 	gui.rm(self, self.ui.listWidget_7)
   def photCooRm(self):
 	gui.rm(self, self.ui.listWidget_8)
+  def heditAdd(self):
+	gui.add(self, self.ui.listWidget_9)
+  def heditRm(self):
+	gui.rm(self, self.ui.listWidget_9)
 ########################################################
 ########################################################
   def display(self, FilePath, displayDevice):

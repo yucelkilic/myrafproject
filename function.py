@@ -11,9 +11,15 @@ def headerRead(filename, field):
 		return ""
 	
 def headerWrite(filename, field, text):
-	hd= iraf.images.imutil.hedit
-	hd (filename, field, text, add="yes", verify="no", show="no", update="yes")
-
+	try:
+		hd= iraf.images.imutil.hedit
+		hd (filename, field, text, add="yes", verify="no", show="no", update="yes")
+		return True
+		print("Hedit succeed")
+	except:
+		return False
+		print("Hedit failed")
+		
 def zeroCombine(fileList, out, com="median", rej="none", cty=""):
 	zc = iraf.noao.imred.ccdred.zerocombine
 	zc.input = "@%s" %(fileList)
@@ -31,7 +37,6 @@ def zeroCombine(fileList, out, com="median", rej="none", cty=""):
 		return False
 
 def darkCombine(fileList, out, com="median", rej="none", cty="", scl="exposure"):
-	print(scl)
 	dc = iraf.noao.imred.ccdred.darkcombine
 	dc.input = "@%s" %(fileList)
 	dc.output = out
@@ -181,11 +186,13 @@ def airmass(inFile, OBS, time="time-obs"):
 		return False
 		print("Setairmass failed.")
 
-def phot(inFile, outPath, cooFile, expTime = "exptime", Filter = "subset", centerBOX = "10.0", annulus = "25.0", dannulus = "5.0", apertur = "10,15,20,25,30", zmag = "25"):
-	print("setParam started via: \n\timg=%s \n\tOutfile=%s \n\tcooFile=%s \n\texpTime=%s \n\tFilter=%s \n\tcenterBOX=%s \n\tannulus=%s \n\tdannulus=%s \n\tapertur=%s \n\tzmag=%s" %(inFile, outPath, cooFile, expTime, Filter, centerBOX, annulus, dannulus, apertur, zmag))
+def phot(inFile, outPath, cooFile, expTime = "exptime", Filter = "subset", centerBOX = "10.0", annulus = "25.0", dannulus = "5.0", apertur = "10,15,20,25,30", zmag = "25", airmass = "airmass", otime = "hjd"):
+	print("setParam started via: \n\timg=%s \n\tOutfile=%s \n\tcooFile=%s \n\texpTime=%s \n\tFilter=%s \n\tcenterBOX=%s \n\tannulus=%s \n\tdannulus=%s \n\tapertur=%s \n\tzmag=%s \n\tairmass=%s \n\tobstime=%s" %(inFile, outPath, cooFile, expTime, Filter, centerBOX, annulus, dannulus, apertur, zmag, airmass, otime))
 	try:
 		iraf.datapars.setParam("exposur", expTime)
 		iraf.datapars.setParam("filter", Filter)
+		iraf.datapars.setParam("airmass", airmass)
+		iraf.datapars.setParam("obstime", otime)
 		iraf.datapars.saveParList(filename="./uparm/aptdataps.par")
 		
 		iraf.centerpars.setParam("cbox", centerBOX)
@@ -198,7 +205,7 @@ def phot(inFile, outPath, cooFile, expTime = "exptime", Filter = "subset", cente
 		iraf.photpars.setParam("apertur", apertur)
 		iraf.photpars.setParam("zmag", zmag)
 		iraf.photpars.saveParList(filename="./uparm/aptphot.par")
-
+		
 		pt = iraf.phot
 		pt(inFile, coords =  cooFile, output = outPath , interac = "no", verify = "no", Stdout=1)
 
@@ -208,6 +215,22 @@ def phot(inFile, outPath, cooFile, expTime = "exptime", Filter = "subset", cente
 		return False
 		print("setParam failed.")
 
-def txDUMP():
-	tx=iraf.txdump
-	tx ("./tmp/analyzed/*.mag.1", "id, otime, mag , merr, xairmass", "yes", Stdout= "./tmp/result.my")
+def txDump(inFile, outFile, fields="id, otime, mag , merr, xairmass"):
+	print("txDump started.")
+	che = 0
+	for i in fields.split(", "):
+		OBS = headerRead(inFile, i).split("-")[0]
+		if OBS != "":
+			che = che + 1
+	if che == 0:
+		try:
+			tx=iraf.txdump
+			tx (inFile, fields, "yes", Stdout= outFile)
+			return True
+			print("txDump succeed.")
+		except:
+			return False
+			print("txDump failed.")
+	else:
+		return False
+		print("Fields we looking for are not available")

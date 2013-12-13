@@ -74,7 +74,6 @@ def flatCombine(fileList, out, com="median", rej="none", cty="", sub="yes"):
 	fc.subsets = sub
 	try:
 		fc	._runCode()
-		#print("%s/flat" %(out))
 		print("flatcombine succeed.")
 		return True
 	except:

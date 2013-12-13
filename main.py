@@ -5,8 +5,8 @@ Created:------------------------------------------------------------------------
 			Muhammed SHEMUNI		Developer
 			Yücel KILIÇ				Developer
 		at:
-			Begin					4.12.2013
-			Last update				12.12.2013
+			Begin					04.12.2013
+			Last update				13.12.2013
 Importing things:-----------------------------------------------------------------------------------
 		Must have as installed:
 			python-2.7
@@ -70,14 +70,6 @@ class MyForm(QtGui.QWidget):
     os.system("mkdir -p ./tmp/alipy/")
     os.system("mkdir -p ./tmp/analyzed/")
       
-    self.ui.tabWidget_2.setTabEnabled(1,False)
-    self.ui.tabWidget_2.setTabEnabled(2,False)
-    self.ui.tabWidget_2.setTabEnabled(3,False)
-
-    self.ui.checkBox.clicked.connect(self.unlockBias)
-    self.ui.checkBox_2.clicked.connect(self.unlockDark)
-    self.ui.checkBox_3.clicked.connect(self.unlockFlat)
-    
     f = open('./log.my', 'r')
     it = self.ui.listWidget_10.count()-1
     for line in f:
@@ -97,7 +89,19 @@ class MyForm(QtGui.QWidget):
 		self.ui.listWidget_12.addItem(item)
 		item = self.ui.listWidget_12.item(it)
 		item.setText(QtGui.QApplication.translate("Form", str(fn), None, QtGui.QApplication.UnicodeUTF8))
+    self.ui.listWidget_12.sortItems()
+      
+    self.ui.tabWidget_2.setTabEnabled(1,False)
+    self.ui.tabWidget_2.setTabEnabled(2,False)
+    self.ui.tabWidget_2.setTabEnabled(3,False)
+
+
+    self.ui.checkBox.clicked.connect(self.unlockBias)
+    self.ui.checkBox_2.clicked.connect(self.unlockDark)
+    self.ui.checkBox_3.clicked.connect(self.unlockFlat)
     
+
+
     self.ui.radioButton.clicked.connect(self.unlockIrafPhot)
     self.ui.radioButton_2.clicked.connect(self.unlockEnsfPhot)
     
@@ -118,10 +122,8 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_33.clicked.connect(self.photAdd)
     self.ui.pushButton_32.clicked.connect(self.photRm)
     
-    
     self.ui.pushButton_36.clicked.connect(self.heditAdd)
     self.ui.pushButton_37.clicked.connect(self.heditRm)
-    
     
     self.ui.listWidget_5.clicked.connect(self.displayAutAlign)
     self.ui.graphicsView.wheelEvent = self.zoomAutAlign
@@ -130,7 +132,6 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_19.clicked.connect(self.fvAutAlign)
     self.ui.pushButton_20.clicked.connect(self.rrAutAlign)
     self.ui.pushButton_14.clicked.connect(self.goAutAlign)
-    
     
     self.ui.listWidget_6.clicked.connect(self.displayManAlign)
     self.ui.graphicsView_2.wheelEvent = self.zoomManAlign
@@ -155,7 +156,6 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_39.clicked.connect(self.goHeaderAdd)
     self.ui.pushButton_38.clicked.connect(self.goHeaderDel)
     
-    
     self.ui.listWidget_12.clicked.connect(self.getObservat)
     self.ui.pushButton_41.clicked.connect(self.rmObservatory)
     self.ui.pushButton_40.clicked.connect(self.addObservatory)
@@ -168,7 +168,6 @@ class MyForm(QtGui.QWidget):
   
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     self.applySettings()
-
 
 #Pohtometry#############################################
   def getObservat(self):
@@ -224,6 +223,7 @@ class MyForm(QtGui.QWidget):
 		self.ui.listWidget_12.addItem(item)
 		item = self.ui.listWidget_12.item(it)
 		item.setText(QtGui.QApplication.translate("Form", str(fn), None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.listWidget_12.sortItems()
 
   def addObservatory(self):
 	fl = self.ui.listWidget_12.currentItem()
@@ -234,7 +234,7 @@ class MyForm(QtGui.QWidget):
 	latitude = self.ui.lineEdit_6.text()
 	altitude = self.ui.lineEdit_7.text()
 	timeZone = self.ui.lineEdit_8.text()
-	other = self.ui.plainTextEdit.toPlainText()
+	other = self.ui.plainTextEdit.toPlainText
 	
 	f = open("./obsdat/%s" %observatory, "w")
 	f.write("#%s\n" %other.replace("\n"," "))
@@ -258,9 +258,10 @@ class MyForm(QtGui.QWidget):
 		self.ui.listWidget_12.addItem(item)
 		item = self.ui.listWidget_12.item(it)
 		item.setText(QtGui.QApplication.translate("Form", str(fn), None, QtGui.QApplication.UnicodeUTF8))
+	self.ui.listWidget_12.sortItems()
 		
 ########################################################
-#Header Editor############################################
+#Header Editor##########################################
   def getHeader(self):
 	
 	img = self.ui.listWidget_9.currentItem()
@@ -432,72 +433,75 @@ class MyForm(QtGui.QWidget):
 			self.ui.listWidget_8.setEnabled(False)
 			
   def goPhot(self):
-	if os.path.exists("./tmp/photCoo"):
-		gui.logging(self, "-- %s - phot started." %(datetime.datetime.utcnow()))
-		if self.ui.listWidget_7.count() != 0:
-			it = 0
-			for x in xrange(self.ui.listWidget_7.count()):
-				it = it + 1
-				img = self.ui.listWidget_7.item(x)
-				img = str(img.text())
-				OBS = function.headerRead(img, "observat").split("-")[0]
-				jdErr=""
-				srErr=""
-				amErr=""
-				phErr=""
-				exp = str(self.ui.lineEdit_13.text())
-				fil = str(self.ui.lineEdit_14.text())
-				ann = str(self.ui.dial.value())
-				dan = str(self.ui.dial_2.value())
-				cbo = str(self.ui.dial_3.value())
-				ape = str(self.ui.lineEdit_15.text())
-				zma = str(self.ui.lineEdit_16.text())
-				observatory = str(self.ui.lineEdit_18.text())
-				oti = str(self.ui.lineEdit_17.text())
-				print(zma)
-				if function.JD(img, OBS, time=oti):
-					if function.sideReal(img, OBS):
-						if function.airmass(img, OBS, time=oti):
-							if function.phot(img, "./tmp/analyzed/", "./tmp/photCoo", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
-								if function.txDump("./tmp/analyzed/%s.mag.1" %(ntpath.basename(str(img))), "./tmp/out%s" %str(it)):
-									os.popen("cat ./tmp/out%s >> tmp/res.my" %str(it))
-									os.popen("rm -rf ./tmp/out%s" %str(it))
+	if self.ui.radioButton.isChecked():		
+		if os.path.exists("./tmp/photCoo"):
+			gui.logging(self, "-- %s - phot started." %(datetime.datetime.utcnow()))
+			if self.ui.listWidget_7.count() != 0:
+				it = 0
+				for x in xrange(self.ui.listWidget_7.count()):
+					it = it + 1
+					img = self.ui.listWidget_7.item(x)
+					img = str(img.text())
+					OBS = function.headerRead(img, "observat").split("-")[0]
+					jdErr=""
+					srErr=""
+					amErr=""
+					phErr=""
+					exp = str(self.ui.lineEdit_13.text())
+					fil = str(self.ui.lineEdit_14.text())
+					ann = str(self.ui.dial.value())
+					dan = str(self.ui.dial_2.value())
+					cbo = str(self.ui.dial_3.value())
+					ape = str(self.ui.lineEdit_15.text())
+					zma = str(self.ui.lineEdit_16.text())
+					observatory = str(self.ui.lineEdit_18.text())
+					oti = str(self.ui.lineEdit_17.text())
+					print(zma)
+					if function.JD(img, OBS, time=oti):
+						if function.sideReal(img, OBS):
+							if function.airmass(img, OBS, time=oti):
+								if function.phot(img, "./tmp/analyzed/", "./tmp/photCoo", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
+									if function.txDump("./tmp/analyzed/%s.mag.1" %(ntpath.basename(str(img))), "./tmp/out%s" %str(it)):
+										os.popen("cat ./tmp/out%s >> tmp/res.my" %str(it))
+										os.popen("rm -rf ./tmp/out%s" %str(it))
+								else:
+									phErr = "%s\n%s" %(phErr, ntpath.basename(str(img)))
+									gui.logging(self, "--- %s - phot failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
 							else:
-								phErr = "%s\n%s" %(phErr, ntpath.basename(str(img)))
-								gui.logging(self, "--- %s - phot failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
+								amErr = "%s\%s" %(amErr, ntpath.basename(str(img)))
+								gui.logging(self, "--- %s - airmass failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
 						else:
-							amErr = "%s\%s" %(amErr, ntpath.basename(str(img)))
-							gui.logging(self, "--- %s - airmass failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
+							srErr = "%s\%s" %(srErr, ntpath.basename(str(img)))
+							gui.logging(self, "--- %s - sidereal time calculator failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
 					else:
-						srErr = "%s\%s" %(srErr, ntpath.basename(str(img)))
-						gui.logging(self, "--- %s - sidereal time calculator failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
-				else:
-					jdErr = "%s\%s" %(ahErr, ntpath.basename(str(img)))
-					gui.logging(self, "--- %s - JD failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
-				
-				self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
-				self.ui.label_14.setText(QtGui.QApplication.translate("Form", "Phpotometry: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-				
-			if phErr != "":
-				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>phot</b> can not handle this job for images below\n%s" %(phErr)))
+						jdErr = "%s\%s" %(ahErr, ntpath.basename(str(img)))
+						gui.logging(self, "--- %s - JD failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
+					
+					self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
+					self.ui.label_14.setText(QtGui.QApplication.translate("Form", "Phpotometry: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
+					
+				if phErr != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>phot</b> can not handle this job for images below\n%s" %(phErr)))
 
-			if amErr != "":
-				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>airmass</b> can not handle this job for images below\n%s" %(amErr)))
+				if amErr != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>airmass</b> can not handle this job for images below\n%s" %(amErr)))
 
-			if srErr != "":
-				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>AstHedit</b> can not handle this job for images below\n%s" %(srErr)))
+				if srErr != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>AstHedit</b> can not handle this job for images below\n%s" %(srErr)))
 
-			if jdErr != "":
-				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>JD</b> can not handle this job for images below\n%s" %(jdErr)))
-		
-			ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save resoult file', 'res.my', 'Text (*.my)')
-			os.popen("mv ./tmp/res.my %s" %ofile)
-		
-		else:
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some images."))
-	else:
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select coordinates for photometry."))
+				if jdErr != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>JD</b> can not handle this job for images below\n%s" %(jdErr)))
 			
+				ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save resoult file', 'res.my', 'Text (*.my)')
+				os.popen("mv ./tmp/res.my %s" %ofile)
+			
+			else:
+				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some images."))
+		else:
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select coordinates for photometry."))
+	else:
+		print("ens phot")
+		
 ########################################################
 #Manual Align############################################
   def displayManAlign(self):
@@ -676,7 +680,7 @@ class MyForm(QtGui.QWidget):
 				rej = self.ui.comboBox_5.currentText()
 				scl = self.ui.comboBox_8.currentText()
 				cty = self.ui.lineEdit_10.text()
-				if not function.zeroCombine("./tmp/zeroLST", "./tmp/zero.fits", com, rej, cty, scl):
+				if not function.zeroCombine("./tmp/zeroLST", "./tmp/zero.fits", com=com, rej=rej, cty=cty):
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>zerocombine</b> can not handle this job."))
 					gui.logging(self, "--- %s - zerocombine failed." %(datetime.datetime.utcnow()))
 				else:
@@ -692,7 +696,7 @@ class MyForm(QtGui.QWidget):
 				rej = self.ui.comboBox_5.currentText()
 				scl = self.ui.comboBox_8.currentText()
 				cty = self.ui.lineEdit_10.text()
-				if not function.darkCombine("./tmp/darkLST", "./tmp/dark.fits", com, rej, cty, scl):
+				if not function.darkCombine("./tmp/darkLST", "./tmp/dark.fits", com=com, rej=rej, cty=cty, scl=scl):
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>darkcombine</b> can not handle this job."))
 					gui.logging(self, "--- %s - darkcombine failed." %(datetime.datetime.utcnow()))
 				else:
@@ -708,7 +712,7 @@ class MyForm(QtGui.QWidget):
 				rej = self.ui.comboBox_7.currentText()
 				sub = self.ui.comboBox_9.currentText()
 				cty = self.ui.lineEdit_11.text()
-				if not function.flatCombine("./tmp/flatLST", "./tmp", com, rej, cty, sub):
+				if not function.flatCombine("./tmp/flatLST", "./tmp", com=com, rej=rej, cty=cty, sub=sub):
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error") ("Due to an error <b>flatcombine</b> can not handle this job."))
 					gui.logging(self, "--- %s - flatcombine failed." %(datetime.datetime.utcnow()))
 				else:
@@ -724,9 +728,7 @@ class MyForm(QtGui.QWidget):
 				ln = self.ui.listWidget.item(x)
 				img = ln.text()
 				self.ui.label.setText(QtGui.QApplication.translate("Form", "Calibration: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-				if not function.calibration(img, zeroFilePath, darkFilePath, flatFilePath, odir):
-					err = "%s\n%s" %(err, img)
-					gui.logging(self, "--- %s - ccdproc failed for %s image." %(datetime.datetime.utcnow(), img))
+				function.calibration(img, zeroFilePath, darkFilePath, flatFilePath, odir)
 					
 				self.ui.progressBar.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget.count())))))
 			if err != "":
@@ -745,7 +747,7 @@ class MyForm(QtGui.QWidget):
 	com = self.ui.comboBox_2.currentText()
 	rej = self.ui.comboBox_3.currentText()
 	cty = self.ui.lineEdit_9.text()
-	if not function.zeroCombine("./tmp/zeroLST", ofile, com, rej, cty):
+	if not function.zeroCombine("./tmp/zeroLST", ofile, com=com, rej=rej, cty=cty):
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>zerocombine</b> can not handle this job."))
 		gui.logging(self, "-- %s - zerocombine failed." %(datetime.datetime.utcnow()))
 	else:
@@ -761,7 +763,7 @@ class MyForm(QtGui.QWidget):
 	rej = self.ui.comboBox_5.currentText()
 	scl = self.ui.comboBox_8.currentText()
 	cty = self.ui.lineEdit_10.text()
-	if not function.darkCombine("./tmp/darkLST", foile, com, rej, cty, scl):
+	if not function.darkCombine("./tmp/darkLST", foile, com=com, rej=rej, cty=cty, scl=scl):
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>darkcombine</b> can not handle this job."))
 		gui.logging(self, "-- %s - darkcombine failed." %(datetime.datetime.utcnow()))
 	else:
@@ -777,7 +779,7 @@ class MyForm(QtGui.QWidget):
 	rej = self.ui.comboBox_7.currentText()
 	sub = self.ui.comboBox_9.currentText()
 	cty = self.ui.lineEdit_11.text()
-	if not function.flatCombine("./tmp/flatLST", odir, com, rej, cty, sub):
+	if not function.flatCombine("./tmp/flatLST", odir, com=com, rej=rej, cty=cty, sub=sub):
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error") ("Due to an error <b>flatcombine</b> can not handle this job."))
 		gui.logging(self, "-- %s - flatcombine failed." %(datetime.datetime.utcnow()))
 	else:

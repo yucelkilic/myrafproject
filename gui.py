@@ -1,7 +1,14 @@
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-import os, datetime
+import os, datetime,  dateutil,  time
+import datetime as dt
+import matplotlib.pyplot as plt
+import matplotlib.dates as md
+
+def PlotFunc(self,  chartDevice,  Phase,  diffMag,  residual):
+    chartDevice.ax.plot(Phase, diffMag, "o-")
+    chartDevice.draw()
 
 def add(self, flist):
 	filename = QtGui.QFileDialog.getOpenFileNames(self ,"Images...","",("Fit or Fits (*.fits *.fit)"))

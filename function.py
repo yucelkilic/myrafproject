@@ -2,6 +2,15 @@ import os, datetime, ntpath, alipy, glob
 from pyraf import iraf
 from pyraf.iraf import noao, imred, ccdred, darkcombine, flatcombine, ccdproc ,astutil, setjd, setairmass, asthedit, digiphot, apphot, phot, ptools, txdump, artdata, imgeom
 
+def readResultFile(filename,  starID, apIndex):
+    try:
+        os.popen("cat %s |awk '{if ($1 == %s) print $1, $2, $%s}' > tmp/idjdmag_%s.my" %(filename, starID, apIndex, starID))
+        print "Result file is succesfuly read."
+        return True
+    except:
+        print "Result file did not read"
+        return False
+        
 def headerRead(filename, field):
 	res = iraf.hedit(filename, field, ".", Stdout=1)
 	if res != []:

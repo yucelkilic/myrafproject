@@ -23,9 +23,15 @@
    <iconset>
     <normaloff>img/MYRaf.png</normaloff>img/MYRaf.png</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
+  <layout class="QGridLayout" name="gridLayout_79">
+   <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
+     <property name="minimumSize">
+      <size>
+       <width>738</width>
+       <height>641</height>
+      </size>
+     </property>
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>
      </property>
@@ -33,7 +39,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -1394,15 +1400,16 @@
       <attribute name="title">
        <string>Graph</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_75">
+      <layout class="QGridLayout" name="gridLayout_76">
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox_16">
          <property name="title">
           <string>Graph</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_76">
+         <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="0">
            <widget class="matplotlibWidget" name="disp_chart" native="true">
+            <zorder>groupBox_18</zorder>
             <zorder>groupBox_18</zorder>
            </widget>
           </item>
@@ -1420,11 +1427,11 @@
          <property name="title">
           <string>Light Curve Plot</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_81">
+         <layout class="QGridLayout" name="gridLayout_78">
           <item row="0" column="0">
-           <layout class="QGridLayout" name="gridLayout_80">
+           <layout class="QGridLayout" name="gridLayout_77">
             <item row="0" column="0">
-             <layout class="QGridLayout" name="gridLayout_74">
+             <layout class="QGridLayout" name="gridLayout_75">
               <item row="0" column="0">
                <layout class="QGridLayout" name="gridLayout_70">
                 <item row="0" column="0">
@@ -1483,29 +1490,6 @@
               </item>
               <item row="1" column="0">
                <layout class="QGridLayout" name="gridLayout_73">
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_52">
-                  <property name="text">
-                   <string>Epoch</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QLineEdit" name="lineEdit_19">
-                  <property name="inputMask">
-                   <string>2448500.014; </string>
-                  </property>
-                  <property name="text">
-                   <string>2448500.014</string>
-                  </property>
-                  <property name="maxLength">
-                   <number>11</number>
-                  </property>
-                  <property name="readOnly">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="2">
                  <widget class="QLabel" name="label_53">
                   <property name="text">
@@ -1513,46 +1497,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="3">
-                 <widget class="QLineEdit" name="lineEdit_20">
-                  <property name="inputMask">
-                   <string>0.796713; </string>
-                  </property>
-                  <property name="text">
-                   <string>0.796713</string>
-                  </property>
-                  <property name="maxLength">
-                   <number>8</number>
-                  </property>
-                  <property name="readOnly">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="4">
-                 <widget class="QPushButton" name="pushButton_42">
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>save</string>
-                  </property>
-                  <property name="icon">
-                   <iconset>
-                    <normaloff>img/sav.png</normaloff>img/sav.png</iconset>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="5">
+                <item row="0" column="8">
                  <widget class="QPushButton" name="pushButton_44">
                   <property name="minimumSize">
                    <size>
@@ -1575,14 +1520,128 @@
                   </property>
                  </widget>
                 </item>
+                <item row="0" column="1">
+                 <widget class="QLineEdit" name="lineEdit_19">
+                  <property name="minimumSize">
+                   <size>
+                    <width>95</width>
+                    <height>21</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>95</width>
+                    <height>21</height>
+                   </size>
+                  </property>
+                  <property name="inputMask">
+                   <string>2448500.014; </string>
+                  </property>
+                  <property name="text">
+                   <string>2448500.014</string>
+                  </property>
+                  <property name="maxLength">
+                   <number>11</number>
+                  </property>
+                  <property name="readOnly">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="7">
+                 <widget class="QPushButton" name="pushButton_42">
+                  <property name="minimumSize">
+                   <size>
+                    <width>100</width>
+                    <height>25</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>100</width>
+                    <height>25</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>save</string>
+                  </property>
+                  <property name="icon">
+                   <iconset>
+                    <normaloff>img/sav.png</normaloff>img/sav.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="3">
+                 <widget class="QLineEdit" name="lineEdit_20">
+                  <property name="maximumSize">
+                   <size>
+                    <width>71</width>
+                    <height>21</height>
+                   </size>
+                  </property>
+                  <property name="inputMask">
+                   <string>0.796713; </string>
+                  </property>
+                  <property name="text">
+                   <string>0.796713</string>
+                  </property>
+                  <property name="maxLength">
+                   <number>8</number>
+                  </property>
+                  <property name="readOnly">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="5">
+                 <widget class="QLabel" name="label_55">
+                  <property name="text">
+                   <string>P.Color</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_52">
+                  <property name="text">
+                   <string>Epoch</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="4">
+                 <widget class="QPushButton" name="pushButton_2">
+                  <property name="text">
+                   <string>Point Color</string>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </item>
               <item row="2" column="0">
-               <widget class="QLabel" name="label_43">
-                <property name="text">
-                 <string>File path</string>
-                </property>
-               </widget>
+               <layout class="QGridLayout" name="gridLayout_74">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_43">
+                  <property name="minimumSize">
+                   <size>
+                    <width>361</width>
+                    <height>16</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>File path</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLabel" name="label_56">
+                  <property name="text">
+                   <string>Legend Name</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="QLineEdit" name="lineEdit_21"/>
+                </item>
+               </layout>
               </item>
              </layout>
             </item>
@@ -2082,8 +2141,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>706</width>
-                <height>418</height>
+                <width>95</width>
+                <height>95</height>
                </rect>
               </property>
               <attribute name="label">
@@ -2100,8 +2159,8 @@
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>690</width>
-                    <height>402</height>
+                    <width>176</width>
+                    <height>99</height>
                    </rect>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_55">
@@ -2223,8 +2282,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>706</width>
-                <height>418</height>
+                <width>95</width>
+                <height>95</height>
                </rect>
               </property>
               <attribute name="label">
@@ -2241,8 +2300,8 @@
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>690</width>
-                    <height>402</height>
+                    <width>181</width>
+                    <height>128</height>
                    </rect>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_61">

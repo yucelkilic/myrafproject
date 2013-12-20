@@ -41,8 +41,10 @@ except:
 	raise SystemExit
 
 try:
-	from pyraf import iraf
-	from pyraf.iraf import noao, imred, ccdred, darkcombine, flatcombine, ccdproc ,astutil, setjd, setairmass, asthedit, digiphot, apphot, phot, ptools, txdump, artdata, imgeom
+    from pyraf import iraf
+    from pyraf.iraf import noao, imred, ccdred, darkcombine, flatcombine, ccdproc ,astutil, setjd, setairmass, asthedit, digiphot, apphot, phot, ptools, txdump, artdata, imgeom
+    from astropy.stats import sigma_clip
+    from numpy import mean
 except:
 	print("Can not load PyRAF, iraf")
 	gui.logging(self, "-- %s - Did you install PyRAF, iraf?" %(datetime.datetime.utcnow()))
@@ -163,6 +165,7 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_7.clicked.connect(self.masterZero)
     self.ui.pushButton_9.clicked.connect(self.masterDark)
     self.ui.pushButton_12.clicked.connect(self.masterFlat)
+    self.ui.pushButton_2.clicked.connect(self.choosePointCol)
     
     self.ui.pushButton.clicked.connect(self.calib)
     
@@ -171,7 +174,13 @@ class MyForm(QtGui.QWidget):
   
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     self.applySettings()
-
+#Choose Point Color of Chart###################################
+  def choosePointCol(self):
+      col = QtGui.QColorDialog.getColor()
+      if col.isValid():
+          pcol = self.ui.label_55.setText(QtGui.QApplication.translate("Form", "%s" %(str(col.name())), None, QtGui.QApplication.UnicodeUTF8))
+          return pcol
+      
 #Read Stars ID to Graph Tab###################################
   def readStars(self):
       filename = QtGui.QFileDialog.getOpenFileName(self ,"MYRaf Result File...","",("My Files (*.my *.myf)"))
@@ -203,7 +212,8 @@ class MyForm(QtGui.QWidget):
       checkStarID = self.ui.comboBox_12.currentText()
       refStarID = self.ui.comboBox_13.currentText()
       apertureIndex = self.ui.comboBox_14.currentIndex() + 3
-      
+      legendName = self.ui.lineEdit_21.text().replace(" ",  "")
+
       # reading result file
       neednt,  filename = self.ui.label_43.text().split(":")
       filename = filename.replace("\n", "")
@@ -237,31 +247,42 @@ class MyForm(QtGui.QWidget):
               varPhase1.append(((float(vData[1]) - float(self.ui.lineEdit_19.text()))/(float(self.ui.lineEdit_20.text()))) - int(((float(vData[1]) - float(self.ui.lineEdit_19.text()))/(float(self.ui.lineEdit_20.text())))))
               varMag1.append(float(vData[2]))
           except:
-              varMag1.append(float(0))
+              varMag1.append(np.nan)
       # Check
       for checkData in checkDatas:
           cData = checkData.split()
           try:
               checkMag1.append(float(cData[2]))
           except:
-              checkMag1.append(float(0))
+              checkMag1.append(np.nan)
       # Ref
       for refData in refDatas:
           rData = refData.split()
           try:
               refMag1.append(float(rData[2]))
           except:
-              refMag1.append(float(0))
-          
+              refMag1.append(np.nan)
+       
+    # Masking INDEF content
       varPhase = np.array(varPhase1)
-      varMag = np.array(varMag1)
-      checkMag = np.array(checkMag1)
-      refMag = np.array(refMag1)
-      diffMag = varMag - checkMag
-      residuMag = checkMag - refMag
+      varMag2 = np.array(varMag1)
+      varMag = np.ma.masked_array(varMag2, np.isnan(varMag2))
+      
+      checkMag2 = np.array(checkMag1)
+      checkMag = np.ma.masked_array(checkMag2, np.isnan(checkMag2))
+      
+      refMag2 = np.array(refMag1)
+      refMag = np.ma.masked_array(refMag2, np.isnan(refMag2))
+      # Rejecting scattered points from array
+      diffMag1 = varMag - checkMag
+      diffMag = sigma_clip(diffMag1, 3, None, mean, copy=False)
+      
+      residuMag1 = checkMag - refMag
+      residuMag = sigma_clip(residuMag1, 3, None, mean, copy=False)
       
       #Plot
-      gui.PlotFunc(self,  self.ui.disp_chart.canvas, varPhase, diffMag,  residuMag)
+      pointColor = self.ui.label_55.text()
+      gui.PlotFunc(self,  self.ui.disp_chart.canvas, varPhase, (diffMag*(-1)),  residuMag, pointColor,  legendName)
   
 ########################################################
 

@@ -6,7 +6,7 @@ Created:------------------------------------------------------------------------
 			Yücel KILIÇ				Developer
 		at:
 			Begin					04.12.2013
-			Last update				13.12.2013
+			Last update				21.12.2013
 Importing things:-----------------------------------------------------------------------------------
 		Must have as installed:
 			python-2.7

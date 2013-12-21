@@ -1,6 +1,6 @@
 from PyQt4 import QtGui
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
 from matplotlib.figure import Figure
 
 class MplCanvas(FigureCanvas):
@@ -15,7 +15,8 @@ class MplCanvas(FigureCanvas):
         self.ax = self.fig.add_subplot(111)
         self.ax.set_title('Phase - Diff. Mag.', fontdict=font)
         self.ax.set_xlabel("Phase", fontdict=font)
-        self.ax.set_ylabel("Diff. Mag.", fontdict=font)        
+        self.ax.set_ylabel("Diff. Mag.", fontdict=font)
+        self.ax.grid()
         FigureCanvas.__init__(self, self.fig)
         FigureCanvas.setSizePolicy(self, QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
@@ -29,3 +30,5 @@ class matplotlibWidget(QtGui.QWidget):
         self.vbl = QtGui.QVBoxLayout()
         self.vbl.addWidget(self.canvas)
         self.setLayout(self.vbl)
+        self.toolbar = NavigationToolbar(self.canvas, self)
+        self.toolbar.show()

@@ -39,7 +39,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -1401,21 +1401,6 @@
        <string>Graph</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_76">
-       <item row="0" column="0">
-        <widget class="QGroupBox" name="groupBox_16">
-         <property name="title">
-          <string>Graph</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="matplotlibWidget" name="disp_chart" native="true">
-            <zorder>groupBox_18</zorder>
-            <zorder>groupBox_18</zorder>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="1" column="0">
         <widget class="QGroupBox" name="groupBox_18">
          <property name="maximumSize">
@@ -1535,13 +1520,13 @@
                    </size>
                   </property>
                   <property name="inputMask">
-                   <string>2448500.014; </string>
+                   <string/>
                   </property>
                   <property name="text">
-                   <string>2448500.014</string>
+                   <string>2455412.2940</string>
                   </property>
                   <property name="maxLength">
-                   <number>11</number>
+                   <number>32767</number>
                   </property>
                   <property name="readOnly">
                    <bool>false</bool>
@@ -1571,28 +1556,6 @@
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="3">
-                 <widget class="QLineEdit" name="lineEdit_20">
-                  <property name="maximumSize">
-                   <size>
-                    <width>71</width>
-                    <height>21</height>
-                   </size>
-                  </property>
-                  <property name="inputMask">
-                   <string>0.796713; </string>
-                  </property>
-                  <property name="text">
-                   <string>0.796713</string>
-                  </property>
-                  <property name="maxLength">
-                   <number>8</number>
-                  </property>
-                  <property name="readOnly">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="5">
                  <widget class="QLabel" name="label_55">
                   <property name="text">
@@ -1611,6 +1574,28 @@
                  <widget class="QPushButton" name="pushButton_2">
                   <property name="text">
                    <string>Point Color</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="3">
+                 <widget class="QLineEdit" name="lineEdit_20">
+                  <property name="maximumSize">
+                   <size>
+                    <width>71</width>
+                    <height>21</height>
+                   </size>
+                  </property>
+                  <property name="inputMask">
+                   <string/>
+                  </property>
+                  <property name="text">
+                   <string>0.7967102</string>
+                  </property>
+                  <property name="maxLength">
+                   <number>32767</number>
+                  </property>
+                  <property name="readOnly">
+                   <bool>false</bool>
                   </property>
                  </widget>
                 </item>
@@ -1669,6 +1654,18 @@
              </widget>
             </item>
            </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_16">
+         <property name="title">
+          <string>Graph</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="matplotlibWidget" name="disp_chart" native="true"/>
           </item>
          </layout>
         </widget>

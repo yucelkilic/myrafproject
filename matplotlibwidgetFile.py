@@ -6,17 +6,9 @@ from matplotlib.figure import Figure
 class MplCanvas(FigureCanvas):
 
     def __init__(self):
-        font = {'family' : 'serif',
-            'color'  : 'darkred',
-            'weight' : 'normal',
-            'size'   : 12,
-            }
+
         self.fig = Figure()
         self.ax = self.fig.add_subplot(111)
-        self.ax.set_title('Phase - Diff. Mag.', fontdict=font)
-        self.ax.set_xlabel("Phase", fontdict=font)
-        self.ax.set_ylabel("Diff. Mag.", fontdict=font)
-        self.ax.grid()
         FigureCanvas.__init__(self, self.fig)
         FigureCanvas.setSizePolicy(self, QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)

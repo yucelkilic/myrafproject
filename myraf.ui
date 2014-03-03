@@ -39,7 +39,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -639,108 +639,177 @@
                <property name="flat">
                 <bool>true</bool>
                </property>
-               <layout class="QGridLayout" name="gridLayout_14">
-                <item row="0" column="0" colspan="5">
-                 <widget class="QGraphicsView" name="graphicsView"/>
+               <layout class="QGridLayout" name="gridLayout_82">
+                <item row="0" column="0">
+                 <widget class="matplotlibWidget" name="dispAuto" native="true">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
                 </item>
                 <item row="1" column="0">
-                 <widget class="QLabel" name="label_8">
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QPushButton" name="pushButton_17">
-                  <property name="minimumSize">
-                   <size>
-                    <width>25</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>25</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset>
-                    <normaloff>img/rac.png</normaloff>img/rac.png</iconset>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="2">
-                 <widget class="QPushButton" name="pushButton_18">
-                  <property name="minimumSize">
-                   <size>
-                    <width>25</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>25</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset>
-                    <normaloff>img/flv.png</normaloff>img/flv.png</iconset>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="3">
-                 <widget class="QPushButton" name="pushButton_19">
-                  <property name="minimumSize">
-                   <size>
-                    <width>25</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>25</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset>
-                    <normaloff>img/flh.png</normaloff>img/flh.png</iconset>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="4">
-                 <widget class="QPushButton" name="pushButton_20">
-                  <property name="minimumSize">
-                   <size>
-                    <width>25</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>25</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset>
-                    <normaloff>img/rcw.png</normaloff>img/rcw.png</iconset>
-                  </property>
-                 </widget>
+                 <layout class="QGridLayout" name="gridLayout_81">
+                  <item row="0" column="0">
+                   <layout class="QGridLayout" name="gridLayout_80">
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_57">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>Clip Point</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QSlider" name="horizontalSlider">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="maximum">
+                       <number>100</number>
+                      </property>
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="invertedControls">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="1" column="0">
+                   <layout class="QGridLayout" name="gridLayout_14">
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_8">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QPushButton" name="pushButton_17">
+                      <property name="minimumSize">
+                       <size>
+                        <width>25</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>25</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="icon">
+                       <iconset>
+                        <normaloff>img/rac.png</normaloff>img/rac.png</iconset>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="2">
+                     <widget class="QPushButton" name="pushButton_18">
+                      <property name="minimumSize">
+                       <size>
+                        <width>25</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>25</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="icon">
+                       <iconset>
+                        <normaloff>img/flv.png</normaloff>img/flv.png</iconset>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="3">
+                     <widget class="QPushButton" name="pushButton_19">
+                      <property name="minimumSize">
+                       <size>
+                        <width>25</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>25</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="icon">
+                       <iconset>
+                        <normaloff>img/flh.png</normaloff>img/flh.png</iconset>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="4">
+                     <widget class="QPushButton" name="pushButton_20">
+                      <property name="minimumSize">
+                       <size>
+                        <width>25</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>25</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="icon">
+                       <iconset>
+                        <normaloff>img/rcw.png</normaloff>img/rcw.png</iconset>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
                 </item>
                </layout>
               </widget>
@@ -956,7 +1025,7 @@
                </property>
                <layout class="QGridLayout" name="gridLayout_17">
                 <item row="0" column="0" colspan="5">
-                 <widget class="QGraphicsView" name="graphicsView_2"/>
+                 <widget class="matplotlibWidget" name="dispManual" native="true"/>
                 </item>
                 <item row="1" column="0">
                  <widget class="QLabel" name="label_9">
@@ -1073,119 +1142,46 @@
        <string>Photometry</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_25">
-       <item row="0" column="0">
-        <widget class="QGroupBox" name="groupBox_5">
-         <property name="title">
-          <string>Display:</string>
-         </property>
-         <property name="flat">
-          <bool>true</bool>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_20">
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_12">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QPushButton" name="pushButton_30">
-            <property name="minimumSize">
-             <size>
-              <width>25</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>25</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>img/flh.png</normaloff>img/flh.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" colspan="5">
-           <widget class="QGraphicsView" name="graphicsView_3"/>
-          </item>
-          <item row="1" column="2">
-           <widget class="QPushButton" name="pushButton_29">
-            <property name="minimumSize">
-             <size>
-              <width>25</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>25</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>img/flv.png</normaloff>img/flv.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="pushButton_28">
-            <property name="minimumSize">
-             <size>
-              <width>25</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>25</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>img/rac.png</normaloff>img/rac.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QPushButton" name="pushButton_31">
-            <property name="minimumSize">
-             <size>
-              <width>25</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>25</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>img/rcw.png</normaloff>img/rcw.png</iconset>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
+       <item row="1" column="0" colspan="2">
+        <layout class="QGridLayout" name="gridLayout_24">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" rowspan="2">
+          <widget class="QPushButton" name="pushButton_35">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>:go</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>img/run.png</normaloff>img/run.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QProgressBar" name="progressBar_5">
+           <property name="value">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="0" column="1">
         <layout class="QGridLayout" name="gridLayout_22">
@@ -1353,46 +1349,119 @@
          </item>
         </layout>
        </item>
-       <item row="1" column="0" colspan="2">
-        <layout class="QGridLayout" name="gridLayout_24">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_14">
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" rowspan="2">
-          <widget class="QPushButton" name="pushButton_35">
-           <property name="minimumSize">
-            <size>
-             <width>50</width>
-             <height>50</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>50</width>
-             <height>50</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>:go</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>img/run.png</normaloff>img/run.png</iconset>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QProgressBar" name="progressBar_5">
-           <property name="value">
-            <number>0</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_5">
+         <property name="title">
+          <string>Display:</string>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_20">
+          <item row="0" column="0" colspan="5">
+           <widget class="matplotlibWidget" name="dispPhoto" native="true"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="pushButton_28">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>img/rac.png</normaloff>img/rac.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="pushButton_29">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>img/flv.png</normaloff>img/flv.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QPushButton" name="pushButton_30">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>img/flh.png</normaloff>img/flh.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QPushButton" name="pushButton_31">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>img/rcw.png</normaloff>img/rcw.png</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
       </layout>
      </widget>

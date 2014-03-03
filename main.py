@@ -6,7 +6,7 @@ Created:------------------------------------------------------------------------
 			Yücel KILIÇ				Developer
 		at:
 			Begin					04.12.2013
-			Last update				21.12.2013
+			Last update				26.02.2013
 Importing things:-----------------------------------------------------------------------------------
 		Must have as installed:
 			python-2.7
@@ -25,13 +25,6 @@ import sys , os, time, string, math, signal, datetime, ntpath
 os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - MYRaf started.\" >>log.my")
 
 try:
-	from myraf import Ui_Form
-	import function, gui
-except:
-	print("Can not load MYRaf.")
-	os.system("echo \"-- " + str(datetime.datetime.utcnow()) + " - MYRaf is not installed properly.\">>log.my")
-	raise SystemExit
-try:
 	from PyQt4 import QtGui, QtCore
 	from PyQt4.QtGui import *
 	from PyQt4.QtCore import *
@@ -41,10 +34,25 @@ except:
 	raise SystemExit
 
 try:
+	from myraf import Ui_Form
+	import function, gui
+except:
+	print("Can not load MYRaf.")
+	os.system("echo \"-- " + str(datetime.datetime.utcnow()) + " - MYRaf is not installed properly.\">>log.my")
+	raise SystemExit
+
+try:
+    from fPlot import *
+except:
+	print("Where is fPlot?")
+	raise SystemExit
+
+try:
     from pyraf import iraf
     from pyraf.iraf import noao, imred, ccdred, darkcombine, flatcombine, ccdproc ,astutil, setjd, setairmass, asthedit, digiphot, apphot, phot, ptools, txdump, artdata, imgeom
     from astropy.stats import sigma_clip
     from numpy import mean
+    import numpy as np
 except:
 	print("Can not load PyRAF, iraf")
 	gui.logging(self, "-- %s - Did you install PyRAF, iraf?" %(datetime.datetime.utcnow()))
@@ -128,7 +136,7 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_37.clicked.connect(self.heditRm)
     
     self.ui.listWidget_5.clicked.connect(self.displayAutAlign)
-    self.ui.graphicsView.wheelEvent = self.zoomAutAlign
+    #self.ui.graphicsView.wheelEvent = self.zoomAutAlign
     self.ui.pushButton_17.clicked.connect(self.rlAutAlign)
     self.ui.pushButton_18.clicked.connect(self.fhAutAlign)
     self.ui.pushButton_19.clicked.connect(self.fvAutAlign)
@@ -136,14 +144,14 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_14.clicked.connect(self.goAutAlign)
     
     self.ui.listWidget_6.clicked.connect(self.displayManAlign)
-    self.ui.graphicsView_2.wheelEvent = self.zoomManAlign
+    #self.ui.graphicsView_2.wheelEvent = self.zoomManAlign
     self.ui.pushButton_23.clicked.connect(self.rlManAlign)
     self.ui.pushButton_24.clicked.connect(self.fhManAlign)
     self.ui.pushButton_25.clicked.connect(self.fvManAlign)
     self.ui.pushButton_27.clicked.connect(self.goManAlign)
     
     self.ui.listWidget_7.clicked.connect(self.displayPhot)
-    self.ui.graphicsView_3.wheelEvent = self.zoomPhot
+    #self.ui.graphicsView_3.wheelEvent = self.zoomPhot
     self.ui.pushButton_28.clicked.connect(self.rlPhot)
     self.ui.pushButton_29.clicked.connect(self.fhPhot)
     self.ui.pushButton_30.clicked.connect(self.fvPhot)
@@ -174,6 +182,8 @@ class MyForm(QtGui.QWidget):
   
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     self.applySettings()
+    
+    self.ui.horizontalSlider.sliderReleased.connect(self.reDraw)
 #Choose Point Color of Chart###################################
   def choosePointCol(self):
       col = QtGui.QColorDialog.getColor()
@@ -206,7 +216,6 @@ class MyForm(QtGui.QWidget):
 
 #Plot Chart#############################################
   def plotChart(self):
-      import numpy as np
       # reading form
       varStarID = self.ui.comboBox_11.currentText()
       checkStarID = self.ui.comboBox_12.currentText()
@@ -719,17 +728,24 @@ class MyForm(QtGui.QWidget):
 	
 ########################################################
 #Auto Align#############################################
+
+  def reDraw(self):
+	img = self.ui.listWidget_5.currentItem()
+	img = img.text()
+	plotF = FitsPlot(str(img), self.ui.dispAuto.canvas, self.ui)
+	plotF.drawim()  	
+
   def displayAutAlign(self):
 	gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
 	img = self.ui.listWidget_5.currentItem()
 	img = img.text()
-	if not function.fits2png(img, "./tmp/display.png"):
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>imagemagick</b> can not handle this job."))
-		gui.logging(self, "--- %s - imagemagick failed." %(datetime.datetime.utcnow()))
+	plotF = FitsPlot(str(img), self.ui.dispAuto.canvas, self.ui)
+	if plotF.drawFits(plotF.dataFits(), dvmin = 0, dvmax = 65535):
+		self.ui.dispAuto.canvas.ax.draw()
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
+		gui.logging(self, "--- %s - matplotlib failed." %(datetime.datetime.utcnow()))
 	else:
-		gui.logging(self, "--- %s - imagemagick succeed." %(datetime.datetime.utcnow()))
-		gui.display(self, "./tmp/display.png", self.ui.graphicsView)
-
+		gui.logging(self, "--- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
   def zoomAutAlign(self, ev):
 	if ev.delta() < 0:
 		gui.zoom(self, self.ui.graphicsView, 0.9)

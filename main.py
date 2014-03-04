@@ -136,26 +136,14 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_37.clicked.connect(self.heditRm)
     
     self.ui.listWidget_5.clicked.connect(self.displayAutAlign)
-    #self.ui.graphicsView.wheelEvent = self.zoomAutAlign
-    self.ui.pushButton_17.clicked.connect(self.rlAutAlign)
-    self.ui.pushButton_18.clicked.connect(self.fhAutAlign)
-    self.ui.pushButton_19.clicked.connect(self.fvAutAlign)
-    self.ui.pushButton_20.clicked.connect(self.rrAutAlign)
     self.ui.pushButton_14.clicked.connect(self.goAutAlign)
     
     self.ui.listWidget_6.clicked.connect(self.displayManAlign)
     #self.ui.graphicsView_2.wheelEvent = self.zoomManAlign
-    self.ui.pushButton_23.clicked.connect(self.rlManAlign)
-    self.ui.pushButton_24.clicked.connect(self.fhManAlign)
-    self.ui.pushButton_25.clicked.connect(self.fvManAlign)
     self.ui.pushButton_27.clicked.connect(self.goManAlign)
     
     self.ui.listWidget_7.clicked.connect(self.displayPhot)
     #self.ui.graphicsView_3.wheelEvent = self.zoomPhot
-    self.ui.pushButton_28.clicked.connect(self.rlPhot)
-    self.ui.pushButton_29.clicked.connect(self.fhPhot)
-    self.ui.pushButton_30.clicked.connect(self.fvPhot)
-    self.ui.pushButton_31.clicked.connect(self.rrPhot)
     self.ui.checkBox_4.clicked.connect(self.photChange)
     self.ui.pushButton_45.clicked.connect(self.photCooRm)
     self.ui.pushButton_35.clicked.connect(self.goPhot)
@@ -183,7 +171,12 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     self.applySettings()
     
-    self.ui.horizontalSlider.sliderReleased.connect(self.reDraw)
+    self.ui.horizontalSlider.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_5.currentItem(), self.ui.dispAuto.canvas, "horizontalSlider"))
+    self.ui.horizontalSlider_2.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_6.currentItem(), self.ui.dispManual.canvas, "horizontalSlider_2"))
+    self.ui.horizontalSlider_3.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_7.currentItem(), self.ui.dispPhoto.canvas, "horizontalSlider_3"))
+    self.ui.dispAuto.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
+    self.ui.dispManual.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
+    self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
 #Choose Point Color of Chart###################################
   def choosePointCol(self):
       col = QtGui.QColorDialog.getColor()
@@ -490,37 +483,32 @@ class MyForm(QtGui.QWidget):
 		dotPic = "alipy_visu/%s_stars.png" %(ntpath.basename(str(img)).split(".")[0])
 		print(dotPic)
 		os.popen("cp " + dotPic + " ./tmp/display.png")
-		gui.display(self, "./tmp/display.png", self.ui.graphicsView_3)
+		#gui.display(self, "./tmp/display.png", self.ui.graphicsView_3)
+		plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
+		if plotF.drawFits(plotF.dataFits(), dvmin = 0, dvmax = 65535):
+			self.ui.dispPhoto.canvas.ax.draw()
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
+			gui.logging(self, "--- %s - matplotlib failed." %(datetime.datetime.utcnow()))
 		os.popen("cat %s | grep -v '#' | awk '{print $1,$2}' > tmp/photCoo" %(coorFile))
 		os.popen("rm -rf ./alipy_cats/ ./alipy_out/ ./alipy_visu/")
 	else:
 		gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
 		img = self.ui.listWidget_7.currentItem()
 		img = img.text()
-		if not function.fits2png(img, "./tmp/display.png"):
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>imagemagick</b> can not handle this job."))
-			gui.logging(self, "--- %s - imagemagick failed." %(datetime.datetime.utcnow()))
+		plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
+		if plotF.drawFits(plotF.dataFits(), dvmin = 0, dvmax = 65535):
+			self.ui.dispPhoto.canvas.ax.draw()
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
+			gui.logging(self, "--- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
 		else:
-			gui.logging(self, "--- %s - imagemagick succeed." %(datetime.datetime.utcnow()))
-			self.display("./tmp/display.png", self.ui.graphicsView_3)
+			gui.logging(self, "--- %s - imagemagick failed." %(datetime.datetime.utcnow()))
+
 			
   def zoomPhot(self, ev):
 	if ev.delta() < 0:
 		gui.zoom(self, self.ui.graphicsView_3, 0.9)
 	else:
 		 gui.zoom(self, self.ui.graphicsView_3, 1.1)
-		 
-  def rlPhot(self):
-	gui.rot(self, self.ui.graphicsView_3, -90)
-	
-  def rrPhot(self):
-	gui.rot(self, self.ui.graphicsView_3, 90)
-	
-  def fvPhot(self):
-	gui.flip(self, self.ui.graphicsView_3, "v")
-
-  def fhPhot(self):
-	gui.flip(self, self.ui.graphicsView_3, "h")
 	
   def pixelSelectPhot(self, event):
 	if self.ui.checkBox_4.checkState() != QtCore.Qt.Checked:
@@ -634,33 +622,22 @@ class MyForm(QtGui.QWidget):
 	gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
 	img = self.ui.listWidget_6.currentItem()
 	img = img.text()
-	if not function.fits2png(img, "./tmp/display.png"):
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>imagemagick</b> can not handle this job."))
-		gui.logging(self, "--- %s - imagemagick failed." %(datetime.datetime.utcnow()))
+	plotF = FitsPlot(str(img), self.ui.dispManual.canvas, self.ui)
+	if plotF.drawFits(plotF.dataFits(), dvmin = 0, dvmax = 65535):
+		self.ui.dispManual.canvas.ax.draw()
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
+		gui.logging(self, "--- %s - matplotlib failed." %(datetime.datetime.utcnow()))
 	else:
-		gui.logging(self, "--- %s - imagemagick succeed." %(datetime.datetime.utcnow()))
+		gui.logging(self, "--- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
 		coors = function.headerRead(img, "MYRafCor")
 		print("coors are:" + coors)
 		self.ui.label_11.setText(QtGui.QApplication.translate("Form", "%s" %(coors), None, QtGui.QApplication.UnicodeUTF8))
-		self.display("./tmp/display.png", self.ui.graphicsView_2)
 	
   def zoomManAlign(self, ev):
 	if ev.delta() < 0:
 		gui.zoom(self, self.ui.graphicsView_2, 0.9)
 	else:
 		 gui.zoom(self, self.ui.graphicsView_2, 1.1)
-
-  def rlManAlign(self):
-	gui.rot(self, self.ui.graphicsView_2, -90)
-	
-  def rrManAlign(self):
-	gui.rot(self, self.ui.graphicsView_2, 90)
-	
-  def fvManAlign(self):
-	gui.flip(self, self.ui.graphicsView_2, "v")
-
-  def fhManAlign(self):
-	gui.flip(self, self.ui.graphicsView_2, "h")
 	
   def pixelManAlign(self, event):
 	rows = self.ui.listWidget_6.count()
@@ -727,13 +704,27 @@ class MyForm(QtGui.QWidget):
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please add some <b>Image</b> files."))
 	
 ########################################################
+  def mouseplace(self,event):
+	'''
+	Handels the mouse motion over the imshow mpl canvas object. To Do, updated color map correctly. This function now  also
+	updates the x and y views if they are visible need better handeling of sizes and edge handeling for x and y views
+	'''
+	#makes sure the mouse is on the data canvas
+	if event.ydata != None and event.xdata != None:
+		#This next bit is to handle the preview problem at the boundary. it will create the preview based
+		#on mouse position, and boundary value if you get close to boundary.
+		self.ui.label_78.setText(str(event.xdata))
+		self.ui.label_80.setText(str(event.ydata))	
+		self.ui.label_61.setText(str(event.xdata))
+		self.ui.label_63.setText(str(event.ydata))
+		self.ui.label_74.setText(str(event.xdata))
+		self.ui.label_76.setText(str(event.ydata))		
 #Auto Align#############################################
 
-  def reDraw(self):
-	img = self.ui.listWidget_5.currentItem()
-	img = img.text()
-	plotF = FitsPlot(str(img), self.ui.dispAuto.canvas, self.ui)
-	plotF.drawim()  	
+  def reDraw(self, listObject, dispObject, horizontalSlider):
+  	img = listObject.text()
+	plotF = FitsPlot(str(img), dispObject, self.ui)
+	plotF.drawim(horizontalSlider)
 
   def displayAutAlign(self):
 	gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
@@ -751,18 +742,6 @@ class MyForm(QtGui.QWidget):
 		gui.zoom(self, self.ui.graphicsView, 0.9)
 	else:
 		 gui.zoom(self, self.ui.graphicsView, 1.1)
-		 
-  def rlAutAlign(self):
-	gui.rot(self, self.ui.graphicsView, -90)
-	
-  def rrAutAlign(self):
-	gui.rot(self, self.ui.graphicsView, 90)
-	
-  def fvAutAlign(self):
-	gui.flip(self, self.ui.graphicsView, "v")
-
-  def fhAutAlign(self):
-	gui.flip(self, self.ui.graphicsView, "h")
 
   def goAutAlign(self):
 	if self.ui.listWidget_5.count() != 0:

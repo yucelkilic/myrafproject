@@ -7,8 +7,9 @@ class MplCanvas(FigureCanvas):
 
     def __init__(self):
 
-        self.fig = Figure()
+        self.fig = Figure(facecolor = '#FFFFFF')
         self.ax = self.fig.add_subplot(111)
+        self.fig.subplots_adjust(left=0.1, bottom=0.1, right=0.9, top=0.9)
         FigureCanvas.__init__(self, self.fig)
         FigureCanvas.setSizePolicy(self, QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)

@@ -21,6 +21,7 @@ Importing things:---------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
 """
 import sys , os, time, string, math, signal, datetime, ntpath
+from matplotlib.patches import Circle
 
 os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - MYRaf started.\" >>log.my")
 
@@ -173,6 +174,7 @@ class MyForm(QtGui.QWidget):
     self.ui.horizontalSlider_2.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_6.currentItem(), self.ui.dispManual.canvas, "horizontalSlider_2"))
     self.ui.horizontalSlider_3.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_7.currentItem(), self.ui.dispPhoto.canvas, "horizontalSlider_3"))
     self.ui.dispAuto.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
+    self.ui.dispAuto.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
     self.ui.dispManual.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
     self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
 #Choose Point Color of Chart###################################
@@ -667,6 +669,13 @@ class MyForm(QtGui.QWidget):
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please add some <b>Image</b> files."))
 	
 ########################################################
+  def mouseClick(self, event):
+	if event.ydata != None and event.xdata != None:
+		circ = Circle((10, 10), 10)
+		self.ui.dispAuto.canvas.ax.add_artist(circ)
+		circ.center = event.xdata, event.ydata
+		self.ui.dispAuto.canvas.draw()
+  	
   def mouseplace(self,event):
 	'''
 	Handels the mouse motion over the imshow mpl canvas object. To Do, updated color map correctly. This function now  also

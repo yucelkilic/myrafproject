@@ -43,15 +43,3 @@ class FitsPlot:
         #updated the canvas and draw
         self.imdata = self.chartDev.ax.imshow(self.imageedit,vmax=float(self.mx),vmin=self.imageedit.min(),cmap="Greys_r", interpolation=None,alpha=1)
         self.chartDev.draw()
-           
-    def axisLabel(self):
-        
-        font = {'family' : 'serif',
-                'color'  : 'darkred',
-                'weight' : 'normal',
-                'size'   : 12,
-                }
-        self.chartDev.set_title('Phase - Diff. Mag.', fontdict=font)
-        self.chartDev.set_xlabel("Phase", fontdict=font)
-        self.chartDev.set_ylabel("Diff. Mag.", fontdict=font)
-        self.chartDev.grid()

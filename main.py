@@ -6,7 +6,7 @@ Created:------------------------------------------------------------------------
 			Yücel KILIÇ				Developer
 		at:
 			Begin					04.12.2013
-			Last update				26.02.2013
+			Last update				04.03.2013
 Importing things:-----------------------------------------------------------------------------------
 		Must have as installed:
 			python-2.7
@@ -139,11 +139,9 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_14.clicked.connect(self.goAutAlign)
     
     self.ui.listWidget_6.clicked.connect(self.displayManAlign)
-    #self.ui.graphicsView_2.wheelEvent = self.zoomManAlign
     self.ui.pushButton_27.clicked.connect(self.goManAlign)
     
     self.ui.listWidget_7.clicked.connect(self.displayPhot)
-    #self.ui.graphicsView_3.wheelEvent = self.zoomPhot
     self.ui.checkBox_4.clicked.connect(self.photChange)
     self.ui.pushButton_45.clicked.connect(self.photCooRm)
     self.ui.pushButton_35.clicked.connect(self.goPhot)
@@ -504,35 +502,6 @@ class MyForm(QtGui.QWidget):
 			gui.logging(self, "--- %s - imagemagick failed." %(datetime.datetime.utcnow()))
 
 			
-  def zoomPhot(self, ev):
-	if ev.delta() < 0:
-		gui.zoom(self, self.ui.graphicsView_3, 0.9)
-	else:
-		 gui.zoom(self, self.ui.graphicsView_3, 1.1)
-	
-  def pixelSelectPhot(self, event):
-	if self.ui.checkBox_4.checkState() != QtCore.Qt.Checked:
-		img = self.ui.listWidget_7.currentItem()
-		img = img.text()
-		height = function.headerRead(img, "i_naxis2")
-		x = event.pos().x()
-		y = float(height) - event.pos().y()
-		it = self.ui.listWidget_8.count()
-		item = QtGui.QListWidgetItem()
-		self.ui.listWidget_8.addItem(item)
-		item = self.ui.listWidget_8.item(it)
-		item.setText(QtGui.QApplication.translate("Form", "%s-%s" %(x, y), None, QtGui.QApplication.UnicodeUTF8))
-		
-		if not os.path.exists("./tmp/photCoo"):
-			os.popen("rm -rf ./tmp/photCoo")
-			
-		f = open("./tmp/photCoo", "w")
-		for x in xrange(self.ui.listWidget_8.count()):
-			coo = self.ui.listWidget_8.item(x)
-			coo = coo.text()
-			f.write("%s\n" %coo.replace("-"," "))
-		f.close()
-			
   def photChange(self):
 	if self.ui.listWidget_7.currentItem() != None:
 		if self.ui.checkBox_4.checkState() != QtCore.Qt.Checked:
@@ -632,12 +601,6 @@ class MyForm(QtGui.QWidget):
 		coors = function.headerRead(img, "MYRafCor")
 		print("coors are:" + coors)
 		self.ui.label_11.setText(QtGui.QApplication.translate("Form", "%s" %(coors), None, QtGui.QApplication.UnicodeUTF8))
-	
-  def zoomManAlign(self, ev):
-	if ev.delta() < 0:
-		gui.zoom(self, self.ui.graphicsView_2, 0.9)
-	else:
-		 gui.zoom(self, self.ui.graphicsView_2, 1.1)
 	
   def pixelManAlign(self, event):
 	rows = self.ui.listWidget_6.count()
@@ -1100,17 +1063,6 @@ class MyForm(QtGui.QWidget):
 	gui.add(self, self.ui.listWidget_9)
   def heditRm(self):
 	gui.rm(self, self.ui.listWidget_9)
-########################################################
-########################################################
-  def display(self, FilePath, displayDevice):
-	self.ui.local_image = QImage(FilePath)
-	self.ui.local_scenePhot = QGraphicsScene()
-	self.ui.pixMapItemPhot = QGraphicsPixmapItem(QPixmap(self.ui.local_image), None, self.ui.local_scenePhot)
-	displayDevice.setScene( self.ui.local_scenePhot)
-	if displayDevice == self.ui.graphicsView_2:
-		self.ui.pixMapItemPhot.mousePressEvent = self.pixelManAlign
-	elif displayDevice == self.ui.graphicsView_3:
-		self.ui.pixMapItemPhot.mousePressEvent = self.pixelSelectPhot
 		
 ########################################################
 #Close##################################################

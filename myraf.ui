@@ -686,6 +686,12 @@
                       <property name="invertedControls">
                        <bool>false</bool>
                       </property>
+                      <property name="tickPosition">
+                       <enum>QSlider::TicksBothSides</enum>
+                      </property>
+                      <property name="tickInterval">
+                       <number>1</number>
+                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -1064,6 +1070,12 @@
                       <property name="orientation">
                        <enum>Qt::Horizontal</enum>
                       </property>
+                      <property name="tickPosition">
+                       <enum>QSlider::TicksBothSides</enum>
+                      </property>
+                      <property name="tickInterval">
+                       <number>1</number>
+                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -1083,14 +1095,14 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="1">
+                    <item row="0" column="2">
                      <widget class="QLabel" name="label_60">
                       <property name="text">
                        <string>X:</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="4">
+                    <item row="0" column="5">
                      <widget class="QLabel" name="label_63">
                       <property name="minimumSize">
                        <size>
@@ -1103,7 +1115,7 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="2">
+                    <item row="0" column="3">
                      <widget class="QLabel" name="label_61">
                       <property name="minimumSize">
                        <size>
@@ -1116,10 +1128,17 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="3">
+                    <item row="0" column="4">
                      <widget class="QLabel" name="label_62">
                       <property name="text">
                        <string>Y:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QCheckBox" name="checkBox_6">
+                      <property name="text">
+                       <string>Pick Star</string>
                       </property>
                      </widget>
                     </item>
@@ -1380,11 +1399,17 @@
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
+                <property name="tickPosition">
+                 <enum>QSlider::TicksBothSides</enum>
+                </property>
+                <property name="tickInterval">
+                 <number>1</number>
+                </property>
                </widget>
               </item>
               <item row="1" column="0" colspan="2">
                <layout class="QGridLayout" name="gridLayout_20">
-                <item row="0" column="2">
+                <item row="0" column="3">
                  <widget class="QLabel" name="label_74">
                   <property name="minimumSize">
                    <size>
@@ -1397,14 +1422,14 @@
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="3">
+                <item row="0" column="4">
                  <widget class="QLabel" name="label_75">
                   <property name="text">
                    <string>Y:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="4">
+                <item row="0" column="5">
                  <widget class="QLabel" name="label_76">
                   <property name="minimumSize">
                    <size>
@@ -1417,7 +1442,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="1">
+                <item row="0" column="2">
                  <widget class="QLabel" name="label_73">
                   <property name="text">
                    <string>X:</string>
@@ -1446,6 +1471,13 @@
                   </property>
                   <property name="text">
                    <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QCheckBox" name="checkBox_7">
+                  <property name="text">
+                   <string>Pick Star</string>
                   </property>
                  </widget>
                 </item>
@@ -2220,7 +2252,7 @@
        <item row="0" column="0" colspan="2">
         <widget class="QTabWidget" name="tabWidget_6">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab_21">
           <attribute name="title">
@@ -2230,15 +2262,15 @@
            <item row="0" column="0">
             <widget class="QToolBox" name="toolBox_2">
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="page_6">
               <property name="geometry">
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
-                <height>95</height>
+                <width>706</width>
+                <height>418</height>
                </rect>
               </property>
               <attribute name="label">
@@ -2255,8 +2287,8 @@
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>176</width>
-                    <height>99</height>
+                    <width>690</width>
+                    <height>402</height>
                    </rect>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_55">
@@ -2378,8 +2410,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
-                <height>95</height>
+                <width>706</width>
+                <height>418</height>
                </rect>
               </property>
               <attribute name="label">
@@ -2396,8 +2428,8 @@
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>181</width>
-                    <height>128</height>
+                    <width>690</width>
+                    <height>402</height>
                    </rect>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_61">
@@ -3184,7 +3216,7 @@
        <item row="0" column="1">
         <widget class="QTabWidget" name="tabWidget_5">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="tab_15">
           <attribute name="title">
@@ -3221,15 +3253,15 @@ p, li { white-space: pre-wrap; }
            <item row="0" column="0">
             <widget class="QToolBox" name="toolBox">
              <property name="currentIndex">
-              <number>0</number>
+              <number>2</number>
              </property>
              <widget class="QWidget" name="page">
               <property name="geometry">
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>73</width>
-                <height>16</height>
+                <width>706</width>
+                <height>420</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3242,8 +3274,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>706</width>
+                <height>420</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3256,8 +3288,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
-                <height>95</height>
+                <width>706</width>
+                <height>420</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3274,8 +3306,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>79</width>
-                    <height>79</height>
+                    <width>690</width>
+                    <height>404</height>
                    </rect>
                   </property>
                  </widget>

@@ -174,9 +174,11 @@ class MyForm(QtGui.QWidget):
     self.ui.horizontalSlider_2.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_6.currentItem(), self.ui.dispManual.canvas, "horizontalSlider_2"))
     self.ui.horizontalSlider_3.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_7.currentItem(), self.ui.dispPhoto.canvas, "horizontalSlider_3"))
     self.ui.dispAuto.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
-    self.ui.dispAuto.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
+    self.ui.dispManual.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
+    self.ui.dispManual.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
     self.ui.dispManual.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
     self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
+    self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)   
 #Choose Point Color of Chart###################################
   def choosePointCol(self):
       col = QtGui.QColorDialog.getColor()
@@ -670,12 +672,41 @@ class MyForm(QtGui.QWidget):
 	
 ########################################################
   def mouseClick(self, event):
-	if event.ydata != None and event.xdata != None:
-		circ = Circle((10, 10), 10)
-		self.ui.dispAuto.canvas.ax.add_artist(circ)
-		circ.center = event.xdata, event.ydata
-		self.ui.dispAuto.canvas.draw()
-  	
+  	if self.ui.checkBox_6.isChecked():
+   		if event.ydata != None and event.xdata != None:
+   			mean = 0
+  			ap = str(self.ui.lineEdit_15.text())
+  			for ape in ap.split(","):
+  				mean = mean + int(ape)
+  			Aperture = mean/len(ap.split(","))
+  			circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
+  			circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
+  			circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
+  			self.ui.dispManual.canvas.ax.add_artist(circAnnulus)
+  			self.ui.dispManual.canvas.ax.add_artist(circDannulus)
+  			self.ui.dispManual.canvas.ax.add_artist(circAperture)
+  			circAperture.center = event.xdata, event.ydata
+  			circAnnulus.center = event.xdata, event.ydata
+  			circDannulus.center = event.xdata, event.ydata
+  			self.ui.dispManual.canvas.draw()
+  	elif self.ui.checkBox_7.isChecked():
+   		if event.ydata != None and event.xdata != None:
+   			mean = 0
+  			ap = str(self.ui.lineEdit_15.text())
+  			for ape in ap.split(","):
+  				mean = mean + int(ape)
+  			Aperture = mean/len(ap.split(","))
+  			circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
+  			circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
+  			circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
+  			self.ui.dispPhoto.canvas.ax.add_artist(circAnnulus)
+  			self.ui.dispPhoto.canvas.ax.add_artist(circDannulus)
+  			self.ui.dispPhoto.canvas.ax.add_artist(circAperture)
+  			circAperture.center = event.xdata, event.ydata
+  			circAnnulus.center = event.xdata, event.ydata
+  			circDannulus.center = event.xdata, event.ydata
+  			self.ui.dispPhoto.canvas.draw()
+  			
   def mouseplace(self,event):
 	'''
 	Handels the mouse motion over the imshow mpl canvas object. To Do, updated color map correctly. This function now  also

@@ -175,7 +175,6 @@ class MyForm(QtGui.QWidget):
     self.ui.horizontalSlider_3.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_7.currentItem(), self.ui.dispPhoto.canvas, "horizontalSlider_3"))
     self.ui.dispAuto.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
     self.ui.dispManual.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
-    self.ui.dispManual.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
     self.ui.dispManual.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
     self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
     self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)   
@@ -672,40 +671,46 @@ class MyForm(QtGui.QWidget):
 	
 ########################################################
   def mouseClick(self, event):
-  	if self.ui.checkBox_6.isChecked():
-   		if event.ydata != None and event.xdata != None:
-   			mean = 0
-  			ap = str(self.ui.lineEdit_15.text())
-  			for ape in ap.split(","):
-  				mean = mean + int(ape)
-  			Aperture = mean/len(ap.split(","))
-  			circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
-  			circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
-  			circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
-  			self.ui.dispManual.canvas.ax.add_artist(circAnnulus)
-  			self.ui.dispManual.canvas.ax.add_artist(circDannulus)
-  			self.ui.dispManual.canvas.ax.add_artist(circAperture)
-  			circAperture.center = event.xdata, event.ydata
-  			circAnnulus.center = event.xdata, event.ydata
-  			circDannulus.center = event.xdata, event.ydata
-  			self.ui.dispManual.canvas.draw()
-  	elif self.ui.checkBox_7.isChecked():
-   		if event.ydata != None and event.xdata != None:
-   			mean = 0
-  			ap = str(self.ui.lineEdit_15.text())
-  			for ape in ap.split(","):
-  				mean = mean + int(ape)
-  			Aperture = mean/len(ap.split(","))
-  			circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
-  			circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
-  			circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
-  			self.ui.dispPhoto.canvas.ax.add_artist(circAnnulus)
-  			self.ui.dispPhoto.canvas.ax.add_artist(circDannulus)
-  			self.ui.dispPhoto.canvas.ax.add_artist(circAperture)
-  			circAperture.center = event.xdata, event.ydata
-  			circAnnulus.center = event.xdata, event.ydata
-  			circDannulus.center = event.xdata, event.ydata
-  			self.ui.dispPhoto.canvas.draw()
+  	if self.ui.tabWidget.currentIndex() == 1:
+	  	if self.ui.tabWidget_3.currentIndex() == 1:
+		  	if self.ui.checkBox_6.isChecked():
+		   		if event.ydata != None and event.xdata != None:
+		   			mean = 0
+		  			ap = str(self.ui.lineEdit_15.text())
+		  			for ape in ap.split(","):
+		  				mean = mean + int(ape)
+		  			Aperture = mean/len(ap.split(","))
+		  			circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
+		  			circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
+		  			circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
+		  			self.ui.dispManual.canvas.ax.add_artist(circAnnulus)
+		  			self.ui.dispManual.canvas.ax.add_artist(circDannulus)
+		  			self.ui.dispManual.canvas.ax.add_artist(circAperture)
+		  			circAperture.center = event.xdata, event.ydata
+		  			circAnnulus.center = event.xdata, event.ydata
+		  			circDannulus.center = event.xdata, event.ydata
+		  			self.ui.label_11.setText(str(format(event.xdata, '.2f')) + " - " + str(format(event.ydata, '.2f')))
+		  			self.ui.dispManual.canvas.draw()
+  	elif self.ui.tabWidget.currentIndex() == 2:
+  		if self.ui.checkBox_7.isChecked():		
+	   		if event.ydata != None and event.xdata != None:
+	   			mean = 0
+	  			ap = str(self.ui.lineEdit_15.text())
+	  			for ape in ap.split(","):
+	  				mean = mean + int(ape)
+	  			Aperture = mean/len(ap.split(","))
+	  			circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
+	  			circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
+	  			circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
+	  			self.ui.dispPhoto.canvas.ax.add_artist(circAnnulus)
+	  			self.ui.dispPhoto.canvas.ax.add_artist(circDannulus)
+	  			self.ui.dispPhoto.canvas.ax.add_artist(circAperture)
+	  			circAperture.center = event.xdata, event.ydata
+	  			circAnnulus.center = event.xdata, event.ydata
+	  			circDannulus.center = event.xdata, event.ydata
+	  			if not self.ui.checkBox_4.isChecked():
+	  				self.ui.listWidget_8.addItem(str(format(event.xdata, '.2f')) + " - " + str(format(event.ydata, '.2f')))
+	  			self.ui.dispPhoto.canvas.draw()
   			
   def mouseplace(self,event):
 	'''
@@ -745,9 +750,10 @@ class MyForm(QtGui.QWidget):
 #Auto Align#############################################
 
   def reDraw(self, listObject, dispObject, horizontalSlider):
-  	img = listObject.text()
-	plotF = FitsPlot(str(img), dispObject, self.ui)
-	plotF.drawim(horizontalSlider)
+  	if listObject:
+		img = listObject.text()
+		plotF = FitsPlot(str(img), dispObject, self.ui)
+		plotF.drawim(horizontalSlider)
 
   def displayAutAlign(self):
 	gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))

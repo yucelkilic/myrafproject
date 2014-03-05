@@ -39,7 +39,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -698,7 +698,20 @@
                   </item>
                   <item row="1" column="0">
                    <layout class="QGridLayout" name="gridLayout_14">
-                    <item row="0" column="1">
+                    <item row="0" column="2">
+                     <widget class="QLabel" name="label_82">
+                      <property name="minimumSize">
+                       <size>
+                        <width>59</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="3">
                      <widget class="QLabel" name="label_77">
                       <property name="minimumSize">
                        <size>
@@ -717,7 +730,7 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="4">
+                    <item row="0" column="6">
                      <widget class="QLabel" name="label_80">
                       <property name="minimumSize">
                        <size>
@@ -732,7 +745,52 @@
                        </size>
                       </property>
                       <property name="text">
-                       <string>TextLabel</string>
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="5">
+                     <widget class="QLabel" name="label_79">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>Y:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QLabel" name="label_81">
+                      <property name="text">
+                       <string>Pixel Value:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="4">
+                     <widget class="QLabel" name="label_78">
+                      <property name="minimumSize">
+                       <size>
+                        <width>59</width>
+                        <height>29</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>59</width>
+                        <height>29</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string/>
                       </property>
                      </widget>
                     </item>
@@ -752,44 +810,6 @@
                       </property>
                       <property name="text">
                        <string/>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="3">
-                     <widget class="QLabel" name="label_79">
-                      <property name="minimumSize">
-                       <size>
-                        <width>0</width>
-                        <height>25</height>
-                       </size>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>25</height>
-                       </size>
-                      </property>
-                      <property name="text">
-                       <string>Y:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="2">
-                     <widget class="QLabel" name="label_78">
-                      <property name="minimumSize">
-                       <size>
-                        <width>59</width>
-                        <height>29</height>
-                       </size>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>59</width>
-                        <height>29</height>
-                       </size>
-                      </property>
-                      <property name="text">
-                       <string>TextLabel</string>
                       </property>
                      </widget>
                     </item>
@@ -1082,27 +1102,21 @@
                   </item>
                   <item row="1" column="0">
                    <layout class="QGridLayout" name="gridLayout_17">
-                    <item row="0" column="0">
-                     <widget class="QLabel" name="label_9">
-                      <property name="minimumSize">
-                       <size>
-                        <width>331</width>
-                        <height>16</height>
-                       </size>
-                      </property>
+                    <item row="0" column="2">
+                     <widget class="QCheckBox" name="checkBox_6">
                       <property name="text">
-                       <string/>
+                       <string>Pick Star</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="2">
+                    <item row="0" column="5">
                      <widget class="QLabel" name="label_60">
                       <property name="text">
                        <string>X:</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="5">
+                    <item row="0" column="8">
                      <widget class="QLabel" name="label_63">
                       <property name="minimumSize">
                        <size>
@@ -1111,11 +1125,11 @@
                        </size>
                       </property>
                       <property name="text">
-                       <string>TextLabel</string>
+                       <string/>
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="3">
+                    <item row="0" column="6">
                      <widget class="QLabel" name="label_61">
                       <property name="minimumSize">
                        <size>
@@ -1124,21 +1138,34 @@
                        </size>
                       </property>
                       <property name="text">
-                       <string>TextLabel</string>
+                       <string/>
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="4">
+                    <item row="0" column="7">
                      <widget class="QLabel" name="label_62">
                       <property name="text">
                        <string>Y:</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="1">
-                     <widget class="QCheckBox" name="checkBox_6">
+                    <item row="0" column="4">
+                     <widget class="QLabel" name="label_84">
+                      <property name="minimumSize">
+                       <size>
+                        <width>59</width>
+                        <height>0</height>
+                       </size>
+                      </property>
                       <property name="text">
-                       <string>Pick Star</string>
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="3">
+                     <widget class="QLabel" name="label_83">
+                      <property name="text">
+                       <string>Pixel Value:</string>
                       </property>
                      </widget>
                     </item>
@@ -1409,7 +1436,7 @@
               </item>
               <item row="1" column="0" colspan="2">
                <layout class="QGridLayout" name="gridLayout_20">
-                <item row="0" column="3">
+                <item row="0" column="7">
                  <widget class="QLabel" name="label_74">
                   <property name="minimumSize">
                    <size>
@@ -1418,18 +1445,18 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>TextLabel</string>
+                   <string/>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="4">
+                <item row="0" column="8">
                  <widget class="QLabel" name="label_75">
                   <property name="text">
                    <string>Y:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="5">
+                <item row="0" column="9">
                  <widget class="QLabel" name="label_76">
                   <property name="minimumSize">
                    <size>
@@ -1438,11 +1465,11 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>TextLabel</string>
+                   <string/>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="2">
+                <item row="0" column="6">
                  <widget class="QLabel" name="label_73">
                   <property name="text">
                    <string>X:</string>
@@ -1474,10 +1501,30 @@
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="1">
+                <item row="0" column="3">
                  <widget class="QCheckBox" name="checkBox_7">
                   <property name="text">
                    <string>Pick Star</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="5">
+                 <widget class="QLabel" name="label_85">
+                  <property name="minimumSize">
+                   <size>
+                    <width>59</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="4">
+                 <widget class="QLabel" name="label_86">
+                  <property name="text">
+                   <string>Pixel Value:</string>
                   </property>
                  </widget>
                 </item>

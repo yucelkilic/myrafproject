@@ -721,7 +721,27 @@ class MyForm(QtGui.QWidget):
 		self.ui.label_61.setText(str(event.xdata))
 		self.ui.label_63.setText(str(event.ydata))
 		self.ui.label_74.setText(str(event.xdata))
-		self.ui.label_76.setText(str(event.ydata))		
+		self.ui.label_76.setText(str(event.ydata))
+		
+		if self.ui.tabWidget.currentIndex() == 2:
+			if self.ui.listWidget_7.currentItem():
+				img = self.ui.listWidget_7.currentItem()
+				img = img.text()
+				plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
+				self.ui.label_85.setText(str(plotF.dataFits()[event.ydata,event.xdata]))
+		elif self.ui.tabWidget.currentIndex() == 1:
+			if self.ui.tabWidget_3.currentIndex() == 0:
+				if self.ui.listWidget_5.currentItem():
+					img = self.ui.listWidget_5.currentItem()
+					img = img.text()
+					plotF = FitsPlot(str(img), self.ui.dispAuto.canvas, self.ui)
+					self.ui.label_82.setText(str(plotF.dataFits()[event.ydata,event.xdata]))
+			elif self.ui.tabWidget_3.currentIndex() == 1:
+				if self.ui.listWidget_6.currentItem():
+					img = self.ui.listWidget_6.currentItem()
+					img = img.text()
+					plotF = FitsPlot(str(img), self.ui.dispManual.canvas, self.ui)
+					self.ui.label_84.setText(str(plotF.dataFits()[event.ydata,event.xdata]))
 #Auto Align#############################################
 
   def reDraw(self, listObject, dispObject, horizontalSlider):

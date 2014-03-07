@@ -89,7 +89,14 @@ def flatCombine(fileList, out, com="median", rej="none", cty="", sub="yes"):
 		print("flatcombine failed.")
 		return False
 
-def calibration(image, bias, dark, flat, odir):
+def calibration(image, bias, dark, flat, odir, cty="", sub="yes"):
+
+	if sub =="no":
+		headerWrite(image, "tmp", headerRead(image, "SUBSET"))
+		headerWrite(image, "SUBSET", "MYRAF")
+		headerWrite(flat, "tmp", headerRead(flat, "SUBSET"))		
+		headerWrite(flat, "SUBSET", "MYRAF")
+
 	bia, dar, fla = "yes", "yes", "yes"
 	if bias == "": bia = "no"
 	if dark == "": dar = "no"
@@ -101,7 +108,7 @@ def calibration(image, bias, dark, flat, odir):
 	cp = iraf.noao.imred.ccdred.ccdproc
 	cp.images = str(image)
 	cp.output = "%s/%s" %(str(odir), ntpath.basename(str(image)))
-	cp.ccdtype = ""
+	cp.ccdtype = cty
 	cp.fixpix = "no"
 	cp.overscan = "no"
 	cp.trim = "no"
@@ -115,14 +122,34 @@ def calibration(image, bias, dark, flat, odir):
 		cp(images = str(image))
 		headerWrite("%s/%s" %(str(odir), ntpath.basename(str(image))), "MYRafCAL", "Calibrated Via MYRaf V2.0 Beta @ %s" %(datetime.datetime.utcnow()))
 		print("Calibration succeed.")
+		
+		if sub =="no":
+			print "Geri gel" 
+			headerWrite(image, "SUBSET", headerRead(image, "tmp"))
+			headerDel(image, "tmp")
+			headerWrite("%s/%s" %(odir, ntpath.basename(str(image))), "SUBSET", headerRead("%s/%s" %(odir, ntpath.basename(str(image))), "tmp"))
+			headerDel("%s/%s" %(odir, ntpath.basename(str(image))), "tmp")
+			headerWrite(flat, "SUBSET", headerRead(flat, "tmp"))
+			headerDel(flat, "tmp")
+			
 		return True
 	except:
 		print("Calibration failed.")
+		
+		if sub =="no":
+			print "Geri gel" 
+			headerWrite(image, "SUBSET", headerRead(image, "tmp"))
+			headerDel(image, "tmp")
+			headerWrite("%s/%s" %(odir, ntpath.basename(str(image))), "SUBSET", headerRead("%s/%s" %(odir, ntpath.basename(str(image))), "tmp"))
+			headerDel("%s/%s" %(odir, ntpath.basename(str(image))), "tmp")
+			headerWrite(flat, "SUBSET", headerRead(flat, "tmp"))
+			headerDel(flat, "tmp")
+			
 		return False
 		
 def fits2png(inFile, outFile):
 	try:
-		os.popen("convert -normalize %s %s" %(inFile, outFile))
+		os.popen("convert -normalize %s %s" %(inFile, outFile))			
 		print("Conversion succeed.")
 		return True
 	except:

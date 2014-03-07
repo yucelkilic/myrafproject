@@ -118,23 +118,22 @@ class MyForm(QtGui.QWidget):
     
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     
-    self.ui.pushButton_3.clicked.connect(self.imgAdd)
-    self.ui.pushButton_4.clicked.connect(self.imgRm)
-    self.ui.pushButton_5.clicked.connect(self.biasAdd)
-    self.ui.pushButton_6.clicked.connect(self.biasRm)
-    self.ui.pushButton_10.clicked.connect(self.darkAdd)
-    self.ui.pushButton_8.clicked.connect(self.darkRm)
-    self.ui.pushButton_13.clicked.connect(self.flatAdd)
-    self.ui.pushButton_11.clicked.connect(self.flatRm)
-    self.ui.pushButton_15.clicked.connect(self.autAlignAdd)
-    self.ui.pushButton_16.clicked.connect(self.autAlignRm)
-    self.ui.pushButton_22.clicked.connect(self.manAlignAdd)
-    self.ui.pushButton_21.clicked.connect(self.manAlignRm)
-    self.ui.pushButton_33.clicked.connect(self.photAdd)
-    self.ui.pushButton_32.clicked.connect(self.photRm)
-    
-    self.ui.pushButton_36.clicked.connect(self.heditAdd)
-    self.ui.pushButton_37.clicked.connect(self.heditRm)
+    self.ui.pushButton_3.clicked.connect(lambda: gui.add(self, self.ui.listWidget))
+    self.ui.pushButton_4.clicked.connect(lambda: gui.rm(self, self.ui.listWidget))
+    self.ui.pushButton_5.clicked.connect(lambda: gui.add(self, self.ui.listWidget_2))
+    self.ui.pushButton_6.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_2))
+    self.ui.pushButton_10.clicked.connect(lambda: gui.add(self, self.ui.listWidget_3))
+    self.ui.pushButton_8.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_3))
+    self.ui.pushButton_13.clicked.connect(lambda: gui.add(self, self.ui.listWidget_4))
+    self.ui.pushButton_11.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_4))
+    self.ui.pushButton_15.clicked.connect(lambda: gui.add(self, self.ui.listWidget_5))
+    self.ui.pushButton_16.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_5))
+    self.ui.pushButton_22.clicked.connect(lambda: gui.add(self, self.ui.listWidget_6))
+    self.ui.pushButton_21.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_6))
+    self.ui.pushButton_33.clicked.connect(lambda: gui.add(self, self.ui.listWidget_7))
+    self.ui.pushButton_32.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_7))
+    self.ui.pushButton_36.clicked.connect(lambda: gui.add(self, self.ui.listWidget_9))
+    self.ui.pushButton_37.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_9))
     
     self.ui.listWidget_5.clicked.connect(self.displayAutAlign)
     self.ui.pushButton_14.clicked.connect(self.goAutAlign)
@@ -144,7 +143,7 @@ class MyForm(QtGui.QWidget):
     
     self.ui.listWidget_7.clicked.connect(self.displayPhot)
     self.ui.checkBox_4.clicked.connect(self.photChange)
-    self.ui.pushButton_45.clicked.connect(self.photCooRm)
+    self.ui.pushButton_45.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_8))
     self.ui.pushButton_35.clicked.connect(self.goPhot)
     
     self.ui.listWidget_9.clicked.connect(self.getHeader)
@@ -169,6 +168,9 @@ class MyForm(QtGui.QWidget):
   
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     self.applySettings()
+    
+    
+    #function.flatCombine("/home/msh/Desktop/flatLST", "/home/msh/Desktop", com="median", rej="none", cty="", sub="yes")
     
     self.ui.horizontalSlider.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_5.currentItem(), self.ui.dispAuto.canvas, "horizontalSlider"))
     self.ui.horizontalSlider_2.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_6.currentItem(), self.ui.dispManual.canvas, "horizontalSlider_2"))
@@ -591,47 +593,43 @@ class MyForm(QtGui.QWidget):
 ########################################################
 #Manual Align############################################
   def displayManAlign(self):
-	gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
+	
 	img = self.ui.listWidget_6.currentItem()
 	img = img.text()
 	plotF = FitsPlot(str(img), self.ui.dispManual.canvas, self.ui)
+	c = function.headerRead(img, "MYRAFCOR")
+	print c
 	if plotF.drawFits(plotF.dataFits(), dvmin = 0, dvmax = 65535):
 		self.ui.dispManual.canvas.ax.draw()
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
-		gui.logging(self, "--- %s - matplotlib failed." %(datetime.datetime.utcnow()))
+		gui.logging(self, "-- %s - matplotlib failed." %(datetime.datetime.utcnow()))
+		
 	else:
-		gui.logging(self, "--- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
+		gui.logging(self, "-- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
 		coors = function.headerRead(img, "MYRafCor")
-		print("coors are:" + coors)
 		self.ui.label_11.setText(QtGui.QApplication.translate("Form", "%s" %(coors), None, QtGui.QApplication.UnicodeUTF8))
-	
-  def pixelManAlign(self, event):
-	rows = self.ui.listWidget_6.count()
-	row = self.ui.listWidget_6.currentRow()
-	if row < rows-1:
-		img = self.ui.listWidget_6.currentItem()
-		img = img.text()
-		height = function.headerRead(img, "i_naxis2")
-		print(height)
-		x = event.pos().x()
-		y = float(height) - event.pos().y()
-		function.headerWrite(img, "MYRafCor", "%s-%s" %(str(x), str(y)))
-		self.ui.listWidget_6.setCurrentRow(row+1)
-		img = self.ui.listWidget_6.currentItem()
-		img = img.text()
-		self.displayManAlign()
-	elif row == rows-1:
-		img = self.ui.listWidget_6.currentItem()
-		img = img.text()
-		height = function.headerRead(img, "i_naxis2")
-		print(height)
-		x = event.pos().x()
-		y = float(height) - event.pos().y()
-		function.headerWrite(img, "MYRafCor", "%s-%s" %(str(x), str(y)))
-		self.ui.listWidget_6.setCurrentRow(0)
-		img = self.ui.listWidget_6.currentItem()
-		img = img.text()
-		self.displayManAlign()
+		self.reDraw(self.ui.listWidget_6.currentItem(), self.ui.dispManual.canvas, "horizontalSlider_2")
+		if c!="":
+			print "Coor is there"
+			x, y = c.split("-")
+			print x
+			print y
+			mean = 0
+			ap = str(self.ui.lineEdit_15.text())
+			for ape in ap.split(","):
+				mean = mean + int(ape)
+			Aperture = mean/len(ap.split(","))
+			circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none")
+			circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
+			circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
+			self.ui.dispManual.canvas.ax.add_artist(circAnnulus)
+			self.ui.dispManual.canvas.ax.add_artist(circDannulus)
+			self.ui.dispManual.canvas.ax.add_artist(circAperture)
+			circAperture.center = x, y
+			circAnnulus.center = x, y
+			circDannulus.center = x, y
+			self.ui.label_11.setText(str(format(float(x), '.2f')) + " - " + str(format(float(y), '.2f')))
+			self.ui.dispManual.canvas.draw()
 		
   def goManAlign(self):
 	if self.ui.listWidget_6.count() != 0:
@@ -639,12 +637,12 @@ class MyForm(QtGui.QWidget):
 			img = self.ui.listWidget_6.currentItem()
 			img = img.text()
 			coorRef = function.headerRead(img, "MYRafCor").split("-")
-			print("evet:" + str(coorRef))
 			if str(coorRef) != "['']":
 				xref = coorRef[0]
 				yref = coorRef[1]
 				odir = QtGui.QFileDialog.getExistingDirectory( self, 'Select Directory to Save Aligned File(s)')
 				it = 0
+				err = ""
 				for x in xrange(self.ui.listWidget_6.count()):
 					it = it + 1
 					img = self.ui.listWidget_6.item(x)
@@ -657,11 +655,16 @@ class MyForm(QtGui.QWidget):
 						yimg = coorImg[1]
 						x = float(xref) - float(ximg)
 						y = float(yref) - float(yimg)
+						print x, y
 						if not function.manAlign(img, x, y, ofile):
-							QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>imshift</b> can not handle this job."))
-							gui.logging(self, "--- %s - imshift failed." %(datetime.datetime.utcnow()))
+							err = "%s,%s" %(err, ntpath.basename(str(img)))
+							gui.logging(self, "--- %s - imshift failed." %(datetime.datetime.utcnow()))							
 				
 					self.ui.progressBar_3.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_6.count())))))
+			
+				if err!="":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>imshift</b> can not align images below\n%s." %(err)))
+			
 			else:
 				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select coordinates for reference image."))
 		else:
@@ -675,22 +678,22 @@ class MyForm(QtGui.QWidget):
 	  	if self.ui.tabWidget_3.currentIndex() == 1:
 		  	if self.ui.checkBox_6.isChecked():
 		   		if event.ydata != None and event.xdata != None:
-		   			mean = 0
-		  			ap = str(self.ui.lineEdit_15.text())
-		  			for ape in ap.split(","):
-		  				mean = mean + int(ape)
-		  			Aperture = mean/len(ap.split(","))
-		  			circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
-		  			circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
-		  			circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
-		  			self.ui.dispManual.canvas.ax.add_artist(circAnnulus)
-		  			self.ui.dispManual.canvas.ax.add_artist(circDannulus)
-		  			self.ui.dispManual.canvas.ax.add_artist(circAperture)
-		  			circAperture.center = event.xdata, event.ydata
-		  			circAnnulus.center = event.xdata, event.ydata
-		  			circDannulus.center = event.xdata, event.ydata
-		  			self.ui.label_11.setText(str(format(event.xdata, '.2f')) + " - " + str(format(event.ydata, '.2f')))
-		  			self.ui.dispManual.canvas.draw()
+		  			rows = self.ui.listWidget_6.count()
+		  			row = self.ui.listWidget_6.currentRow()
+					img = self.ui.listWidget_6.currentItem()
+					img = img.text()
+					height = function.headerRead(img, "i_naxis2")
+					x = event.xdata
+					y = event.ydata
+					function.headerWrite(img, "MYRafCor", "%s-%s" %(str(x), str(y)))
+		  			if row < rows-1:
+						self.ui.listWidget_6.setCurrentRow(row+1)
+					else:
+						self.ui.listWidget_6.setCurrentRow(0)
+					self.displayManAlign()
+		  			
+		  			
+		  			
   	elif self.ui.tabWidget.currentIndex() == 2:
   		if self.ui.checkBox_7.isChecked():		
 	   		if event.ydata != None and event.xdata != None:
@@ -766,11 +769,8 @@ class MyForm(QtGui.QWidget):
 		gui.logging(self, "--- %s - matplotlib failed." %(datetime.datetime.utcnow()))
 	else:
 		gui.logging(self, "--- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
-  def zoomAutAlign(self, ev):
-	if ev.delta() < 0:
-		gui.zoom(self, self.ui.graphicsView, 0.9)
-	else:
-		 gui.zoom(self, self.ui.graphicsView, 1.1)
+		#self.reDraw(self.ui.listWidget_6.currentItem(), self.ui.dispManual.canvas, "horizontalSlider")
+		self.reDraw(self.ui.listWidget_5.currentItem(), self.ui.dispAuto.canvas, "horizontalSlider")
 
   def goAutAlign(self):
 	if self.ui.listWidget_5.count() != 0:
@@ -787,12 +787,13 @@ class MyForm(QtGui.QWidget):
 				img = str(img.text())
 				self.ui.label_7.setText(QtGui.QApplication.translate("Form", "Aligning: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
 				if not function.autoAlign(img, ref, odir):
-					aliErr = "%s\%s" %(aliErr, ntpath.basename(str(img)))
+					aliErr = "%s,%s" %(aliErr, ntpath.basename(str(img)))
 					gui.logging(self, "--- %s - alipy failed." %(datetime.datetime.utcnow()))					
 				self.ui.progressBar_2.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_5.count())))))
 				os.popen("rm -rf ./alipy_cats/ ./alipy_out/")
 			gui.logging(self, "-- %s - AutoAlign finished aligning." %(datetime.datetime.utcnow()))
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>alipy</b> can not align images below\n%s") %aliErr)
+			if aliErr != "":
+				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>alipy</b> can not align images below\n%s") %(aliErr))
 
 		else:
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select a reference image first."))
@@ -803,81 +804,112 @@ class MyForm(QtGui.QWidget):
   def calib(self):
 	if self.ui.listWidget.count() != 0:
 		gui.logging(self, "-- %s - Calibration started." %(datetime.datetime.utcnow()))
+		go = False
+		
 		b, d, f="","",""
-		if self.ui.checkBox.checkState() == QtCore.Qt.Checked and self.ui.listWidget_2.count() == 0: b = "Bias"
-		if self.ui.checkBox_2.checkState() == QtCore.Qt.Checked and self.ui.listWidget_3.count() == 0: d = "Dark"
-		if self.ui.checkBox_3.checkState() == QtCore.Qt.Checked and self.ui.listWidget_4.count() == 0: f = "Flat"
+		if self.ui.checkBox.checkState() == QtCore.Qt.Checked and self.ui.listWidget_2.count() == 0: b = "Bias\n"
+		if self.ui.checkBox_2.checkState() == QtCore.Qt.Checked and self.ui.listWidget_3.count() == 0: d = "Dark\n"
+		if self.ui.checkBox_3.checkState() == QtCore.Qt.Checked and self.ui.listWidget_4.count() == 0: f = "Flat\n"
 		
 		if b != "" or d != "" or f != "":
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("You left \n%s\n%s\n%s\nblank." %(b,d,f)))
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Add file(s) to\n%s%s%s" %(b,d,f)))
 		else:
+			print "basla"
 			zeroFilePath, darkFilePath, flatFilePath = "", "", ""
+			
 			if self.ui.checkBox.checkState() == QtCore.Qt.Checked:
 				self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Bias.", None, QtGui.QApplication.UnicodeUTF8))
 				gui.logging(self, "--- %s - zerocombine started for calibration." %(datetime.datetime.utcnow()))
 				lst = gui.lisFromLW(self, self.ui.listWidget_2)
 				gui.list2file(lst, "./tmp/zeroLST")
-				com = self.ui.comboBox_4.currentText()
-				rej = self.ui.comboBox_5.currentText()
-				scl = self.ui.comboBox_8.currentText()
-				cty = self.ui.lineEdit_10.text()
-				if not function.zeroCombine("./tmp/zeroLST", "./tmp/zero.fits", com=com, rej=rej, cty=cty):
+				comb = self.ui.comboBox_4.currentText()
+				rejb = self.ui.comboBox_5.currentText()
+				ctyb = self.ui.lineEdit_10.text()
+				if not function.zeroCombine("./tmp/zeroLST", "./tmp/zero.fits", com=comb, rej=rejb, cty=ctyb):
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>zerocombine</b> can not handle this job."))
 					gui.logging(self, "--- %s - zerocombine failed." %(datetime.datetime.utcnow()))
 				else:
 					gui.logging(self, "--- %s - zerocombine succeed." %(datetime.datetime.utcnow()))
 					zeroFilePath = "./tmp/zero.fits"
-					
+				os.popen("rm -rf ./tmp/zeroLST")
+			
 			if self.ui.checkBox_2.checkState() == QtCore.Qt.Checked:
 				self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Dark.", None, QtGui.QApplication.UnicodeUTF8))
 				gui.logging(self, "--- %s - darkcombine started for calibration." %(datetime.datetime.utcnow()))
 				lst = gui.lisFromLW(self, self.ui.listWidget_3)
 				gui.list2file(lst, "./tmp/darkLST")
-				com = self.ui.comboBox_4.currentText()
-				rej = self.ui.comboBox_5.currentText()
-				scl = self.ui.comboBox_8.currentText()
-				cty = self.ui.lineEdit_10.text()
-				if not function.darkCombine("./tmp/darkLST", "./tmp/dark.fits", com=com, rej=rej, cty=cty, scl=scl):
+				comd = self.ui.comboBox_4.currentText()
+				rejd = self.ui.comboBox_5.currentText()
+				scld = self.ui.comboBox_8.currentText()
+				ctyd = self.ui.lineEdit_10.text()
+				if not function.darkCombine("./tmp/darkLST", "./tmp/dark.fits", com=comd, rej=rejd, cty=ctyd, scl=scld):
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>darkcombine</b> can not handle this job."))
 					gui.logging(self, "--- %s - darkcombine failed." %(datetime.datetime.utcnow()))
 				else:
 					gui.logging(self, "--- %s - darkcombine succeed." %(datetime.datetime.utcnow()))
 					darkFilePath = "./tmp/dark.fits"
-				
+				os.popen("rm -rf ./tmp/darkLST")
+		
 			if self.ui.checkBox_3.checkState() == QtCore.Qt.Checked:
 				self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Flat.", None, QtGui.QApplication.UnicodeUTF8))
 				gui.logging(self, "--- %s - flatcombine started for calibration." %(datetime.datetime.utcnow()))
 				lst = gui.lisFromLW(self, self.ui.listWidget_4)
 				gui.list2file(lst, "./tmp/flatLST")
-				com = self.ui.comboBox_6.currentText()
-				rej = self.ui.comboBox_7.currentText()
-				sub = self.ui.comboBox_9.currentText()
-				cty = self.ui.lineEdit_11.text()
-				if not function.flatCombine("./tmp/flatLST", "./tmp", com=com, rej=rej, cty=cty, sub=sub):
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error") ("Due to an error <b>flatcombine</b> can not handle this job."))
-					gui.logging(self, "--- %s - flatcombine failed." %(datetime.datetime.utcnow()))
+				comf = self.ui.comboBox_6.currentText()
+				rejf = self.ui.comboBox_7.currentText()
+				subf = self.ui.comboBox_10.currentText()
+				ctyf = self.ui.lineEdit_11.text()
+				
+				f = open("./tmp/flatLST", "r")
+				it = 0
+				
+				for i in f:
+					fn = i.replace("\n","")
+					if function.headerRead(fn,"subset") == "":
+						it = it + 1
+				f.close()
+				
+				if subf == "yes" and it != 0:
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no subset field in header.\nAdd subset field to headers."))
+					go = True
 				else:
-					gui.logging(self, "--- %s - flatcombine succeed." %(datetime.datetime.utcnow()))
-					flatFilePath = "./tmp/flat_*.fits"
+					if not function.flatCombine("./tmp/flatLST", "./tmp", com=comf, rej=rejf, cty=ctyf, sub=subf):
+						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>flatcombine</b> can not handle this job."))
+						gui.logging(self, "--- %s - flatcombine failed." %(datetime.datetime.utcnow()))
+					else:
+						gui.logging(self, "--- %s - flatcombine succeed." %(datetime.datetime.utcnow()))
+						flatFilePath = "./tmp/flat_*.fits"
 			
-			odir = QtGui.QFileDialog.getExistingDirectory(self, 'Select Directory to Save calibrated files')
-			err=""
-			it=0
-			gui.logging(self, "--- %s - ccdproc started for calibration." %(datetime.datetime.utcnow()))
-			for x in xrange(self.ui.listWidget.count()):
-				it = it + 1
-				ln = self.ui.listWidget.item(x)
-				img = ln.text()
-				self.ui.label.setText(QtGui.QApplication.translate("Form", "Calibration: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-				function.calibration(img, zeroFilePath, darkFilePath, flatFilePath, odir)
+			if not go:	
+				odir = QtGui.QFileDialog.getExistingDirectory(self, 'Select Directory to Save calibrated files')
+				err = ""
+				errs = ""
+				subc = self.ui.comboBox_10.currentText()
+				ctyc = self.ui.lineEdit_12.text()
+				if os.path.isdir(odir):
+					pit = 0
+					gui.logging(self, "--- %s - ccdproc started for calibration." %(datetime.datetime.utcnow()))
+					for x in xrange(self.ui.listWidget.count()):
+						pit = pit + 1
+						ln = self.ui.listWidget.item(x)
+						img = ln.text()
+						self.ui.label.setText(QtGui.QApplication.translate("Form", "Calibration: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
+						if function.headerRead(img,"subset") == "" and subc == "yes":
+							errs = "%s, %s" %(errs, ntpath.basename(str(img)))
+						else:
+							if not function.calibration(img, zeroFilePath, darkFilePath, flatFilePath, odir, sub=subc, cty=ctyc):
+								err = "%s, %s" %(err, ntpath.basename(str(img)))
+						self.ui.progressBar.setProperty("value", math.ceil(100*(float(float(pit)/float(self.ui.listWidget.count())))))
 					
-				self.ui.progressBar.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget.count())))))
-			if err != "":
-				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("ccdproc failed with:\n%s." %(err)))
-		gui.logging(self, "--- %s - ccdproc finished calibration." %(datetime.datetime.utcnow()))
-		os.popen("rm -rf ./tmp/flatLS ./tmp/zeroLST ./tmp/darkLST %s %s %s" %(zeroFilePath, darkFilePath, flatFilePath))
+					if err != "":
+						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("ccdproc failed on:\n%s" %(err)))
+					if errs:
+						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Images below have no SUBSET field in header:\n%s\nSkipped!" %(errs)))
+					
+					gui.logging(self, "--- %s - ccdproc finished calibration." %(datetime.datetime.utcnow()))
+					os.popen("rm -rf ./tmp/flatLS ./tmp/zeroLST ./tmp/darkLST %s %s %s" %(zeroFilePath, darkFilePath, flatFilePath))
 	else:
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please add some <b>Image</b> files."))
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No image to calibrate."))
 ########################################################
 #Create master files####################################
   def masterZero(self):
@@ -885,48 +917,64 @@ class MyForm(QtGui.QWidget):
 	lst = gui.lisFromLW(self, self.ui.listWidget_2)
 	gui.list2file(lst, "./tmp/zeroLST")
 	ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save Master Bias file', 'zero.fits', 'Fit or Fits (*.fits *.fit)')
-	com = self.ui.comboBox_2.currentText()
-	rej = self.ui.comboBox_3.currentText()
-	cty = self.ui.lineEdit_9.text()
-	if not function.zeroCombine("./tmp/zeroLST", ofile, com=com, rej=rej, cty=cty):
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>zerocombine</b> can not handle this job."))
-		gui.logging(self, "-- %s - zerocombine failed." %(datetime.datetime.utcnow()))
-	else:
-		gui.logging(self, "-- %s - zerocombine succeed." %(datetime.datetime.utcnow()))
-		os.popen("rm -rf ./tmp/zeroLST")
+	if ofile != "":
+		com = self.ui.comboBox_2.currentText()
+		rej = self.ui.comboBox_3.currentText()
+		cty = self.ui.lineEdit_9.text()
+		if not function.zeroCombine("./tmp/zeroLST", ofile, com=com, rej=rej, cty=cty):
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>zerocombine</b> can not handle this job."))
+			gui.logging(self, "-- %s - zerocombine failed." %(datetime.datetime.utcnow()))
+		else:
+			gui.logging(self, "-- %s - zerocombine succeed." %(datetime.datetime.utcnow()))
+	os.popen("rm -rf ./tmp/zeroLST")
 
   def masterDark(self):
 	gui.logging(self, "-- %s - darkcombine started." %(datetime.datetime.utcnow()))
 	lst = gui.lisFromLW(self, self.ui.listWidget_3)
 	gui.list2file(lst, "./tmp/darkLST")
 	ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save Master Dark file', 'dark.fits', 'Fit or Fits (*.fits *.fit)')
-	com = self.ui.comboBox_4.currentText()
-	rej = self.ui.comboBox_5.currentText()
-	scl = self.ui.comboBox_8.currentText()
-	cty = self.ui.lineEdit_10.text()
-	if not function.darkCombine("./tmp/darkLST", foile, com=com, rej=rej, cty=cty, scl=scl):
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>darkcombine</b> can not handle this job."))
-		gui.logging(self, "-- %s - darkcombine failed." %(datetime.datetime.utcnow()))
-	else:
-		gui.logging(self, "-- %s - darkcombine succeed." %(datetime.datetime.utcnow()))
-		os.popen("rm -rf ./tmp/darkLST")
+	if ofile != "":
+		com = self.ui.comboBox_4.currentText()
+		rej = self.ui.comboBox_5.currentText()
+		scl = self.ui.comboBox_8.currentText()
+		cty = self.ui.lineEdit_10.text()
+		if not function.darkCombine("./tmp/darkLST", ofile, com=com, rej=rej, cty=cty, scl=scl):
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>darkcombine</b> can not handle this job."))
+			gui.logging(self, "-- %s - darkcombine failed." %(datetime.datetime.utcnow()))
+		else:
+			gui.logging(self, "-- %s - darkcombine succeed." %(datetime.datetime.utcnow()))
+	os.popen("rm -rf ./tmp/darkLST")
 		
   def masterFlat(self):
 	gui.logging(self, "-- %s - flatcombine started." %(datetime.datetime.utcnow()))
 	lst = gui.lisFromLW(self, self.ui.listWidget_4)
 	gui.list2file(lst, "./tmp/flatLST")
 	odir = QtGui.QFileDialog.getExistingDirectory( self, 'Select Directory to Save Flat(s)')
+	f = open("./tmp/flatLST", "r")
+	it = 0
+	for i in f:
+		fn = i.replace("\n","")
+		if function.headerRead(fn,"subset") == "":
+			it = it + 1
+	f.close()
+	
 	com = self.ui.comboBox_6.currentText()
 	rej = self.ui.comboBox_7.currentText()
 	sub = self.ui.comboBox_9.currentText()
 	cty = self.ui.lineEdit_11.text()
-	if not function.flatCombine("./tmp/flatLST", odir, com=com, rej=rej, cty=cty, sub=sub):
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error") ("Due to an error <b>flatcombine</b> can not handle this job."))
-		gui.logging(self, "-- %s - flatcombine failed." %(datetime.datetime.utcnow()))
-	else:
-		gui.logging(self, "-- %s - flatcombine succeed." %(datetime.datetime.utcnow()))
-		os.popen("rm -rf ./tmp/flatLST")
 		
+	if os.path.isdir(odir):
+		if sub == "yes" and it != 0:
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no subset field in header.\nAdd subset field to headers."))
+		else:
+		
+			if not function.flatCombine("./tmp/flatLST", odir, com=com, rej=rej, cty=cty, sub=sub):
+				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>flatcombine</b> can not handle this job."))
+				gui.logging(self, "-- %s - flatcombine failed." %(datetime.datetime.utcnow()))
+			else:
+				gui.logging(self, "-- %s - flatcombine succeed." %(datetime.datetime.utcnow()))
+	os.popen("rm -rf ./tmp/flatLST")
+	
 ########################################################
 #Load and set set########################################
   def applySettings(self):
@@ -1090,50 +1138,9 @@ class MyForm(QtGui.QWidget):
   def unlockFlat(self):
 	gui.unlocCali(self, self.ui.checkBox_3, 3)
 ########################################################
-#Add/Remove Files From Listes###########################
-  def imgAdd(self):
-	gui.add(self, self.ui.listWidget)
-  def imgRm(self):
-	gui.rm(self, self.ui.listWidget)
-  def biasAdd(self):
-	gui.add(self, self.ui.listWidget_2)
-  def biasRm(self):
-	gui.rm(self, self.ui.listWidget_2)
-  def biasAdd(self):
-	gui.add(self, self.ui.listWidget_2)
-  def biasRm(self):
-	gui.rm(self, self.ui.listWidget_2)
-  def flatAdd(self):
-	gui.add(self, self.ui.listWidget_4)
-  def flatRm(self):
-	gui.rm(self, self.ui.listWidget_4)
-  def darkAdd(self):
-	gui.add(self, self.ui.listWidget_3)
-  def darkRm(self):
-	gui.rm(self, self.ui.listWidget_3)
-  def autAlignAdd(self):
-	gui.add(self, self.ui.listWidget_5)
-  def autAlignRm(self):
-	gui.rm(self, self.ui.listWidget_5)
-  def manAlignAdd(self):
-	gui.add(self, self.ui.listWidget_6)
-  def manAlignRm(self):
-	gui.rm(self, self.ui.listWidget_6)
-  def photAdd(self):
-	gui.add(self, self.ui.listWidget_7)
-  def photRm(self):
-	gui.rm(self, self.ui.listWidget_7)
-  def photCooRm(self):
-	gui.rm(self, self.ui.listWidget_8)
-  def heditAdd(self):
-	gui.add(self, self.ui.listWidget_9)
-  def heditRm(self):
-	gui.rm(self, self.ui.listWidget_9)
-		
-########################################################
-#Close##################################################
   def closeEvent(self, event):
 	gui.logging(self, "- %s - MYRaf closed." %(datetime.datetime.utcnow()))
+	exit(0)
 ########################################################
 app = QtGui.QApplication(sys.argv)
 f = MyForm()

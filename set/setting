@@ -7,7 +7,7 @@ dScale:3
 dccdtype:
 fCombine:0
 fReject:0
-fSubset:0
+fSubset:1
 fccdtype:
 cSubset:0
 ccdtype:

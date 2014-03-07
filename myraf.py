@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created: Wed Mar  5 14:29:28 2014
-#      by: PyQt4 UI code generator 4.10.1
+# Created: Thu Mar  6 12:20:20 2014
+#      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -996,7 +996,7 @@ class Ui_Form(object):
         self.gridLayout_38.addWidget(self.scrollArea_6, 0, 0, 1, 1)
         self.toolBox_2.addItem(self.page_6, _fromUtf8(""))
         self.page_7 = QtGui.QWidget()
-        self.page_7.setGeometry(QtCore.QRect(0, 0, 706, 418))
+        self.page_7.setGeometry(QtCore.QRect(0, 0, 96, 95))
         self.page_7.setObjectName(_fromUtf8("page_7"))
         self.gridLayout_50 = QtGui.QGridLayout(self.page_7)
         self.gridLayout_50.setObjectName(_fromUtf8("gridLayout_50"))
@@ -1004,7 +1004,7 @@ class Ui_Form(object):
         self.scrollArea_7.setWidgetResizable(True)
         self.scrollArea_7.setObjectName(_fromUtf8("scrollArea_7"))
         self.scrollAreaWidgetContents_7 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_7.setGeometry(QtCore.QRect(0, 0, 690, 402))
+        self.scrollAreaWidgetContents_7.setGeometry(QtCore.QRect(0, 0, 181, 128))
         self.scrollAreaWidgetContents_7.setObjectName(_fromUtf8("scrollAreaWidgetContents_7"))
         self.gridLayout_61 = QtGui.QGridLayout(self.scrollAreaWidgetContents_7)
         self.gridLayout_61.setObjectName(_fromUtf8("gridLayout_61"))
@@ -1057,7 +1057,7 @@ class Ui_Form(object):
         self.gridLayout_50.addWidget(self.scrollArea_7, 0, 0, 1, 1)
         self.toolBox_2.addItem(self.page_7, _fromUtf8(""))
         self.page_8 = QtGui.QWidget()
-        self.page_8.setGeometry(QtCore.QRect(0, 0, 95, 95))
+        self.page_8.setGeometry(QtCore.QRect(0, 0, 96, 95))
         self.page_8.setObjectName(_fromUtf8("page_8"))
         self.gridLayout_51 = QtGui.QGridLayout(self.page_8)
         self.gridLayout_51.setObjectName(_fromUtf8("gridLayout_51"))
@@ -1116,7 +1116,7 @@ class Ui_Form(object):
         self.gridLayout_51.addWidget(self.scrollArea_8, 0, 0, 1, 1)
         self.toolBox_2.addItem(self.page_8, _fromUtf8(""))
         self.page_9 = QtGui.QWidget()
-        self.page_9.setGeometry(QtCore.QRect(0, 0, 95, 95))
+        self.page_9.setGeometry(QtCore.QRect(0, 0, 96, 95))
         self.page_9.setObjectName(_fromUtf8("page_9"))
         self.gridLayout_52 = QtGui.QGridLayout(self.page_9)
         self.gridLayout_52.setObjectName(_fromUtf8("gridLayout_52"))
@@ -1124,7 +1124,7 @@ class Ui_Form(object):
         self.scrollArea_9.setWidgetResizable(True)
         self.scrollArea_9.setObjectName(_fromUtf8("scrollArea_9"))
         self.scrollAreaWidgetContents_9 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_9.setGeometry(QtCore.QRect(0, 0, 79, 79))
+        self.scrollAreaWidgetContents_9.setGeometry(QtCore.QRect(0, 0, 96, 26))
         self.scrollAreaWidgetContents_9.setObjectName(_fromUtf8("scrollAreaWidgetContents_9"))
         self.label_34 = QtGui.QLabel(self.scrollAreaWidgetContents_9)
         self.label_34.setGeometry(QtCore.QRect(20, 50, 61, 23))
@@ -1154,7 +1154,7 @@ class Ui_Form(object):
         self.scrollArea_10.setWidgetResizable(True)
         self.scrollArea_10.setObjectName(_fromUtf8("scrollArea_10"))
         self.scrollAreaWidgetContents_10 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_10.setGeometry(QtCore.QRect(0, 0, 702, 530))
+        self.scrollAreaWidgetContents_10.setGeometry(QtCore.QRect(0, 0, 313, 122))
         self.scrollAreaWidgetContents_10.setObjectName(_fromUtf8("scrollAreaWidgetContents_10"))
         self.gridLayout_60 = QtGui.QGridLayout(self.scrollAreaWidgetContents_10)
         self.gridLayout_60.setObjectName(_fromUtf8("gridLayout_60"))
@@ -1168,7 +1168,7 @@ class Ui_Form(object):
         self.scrollArea_11.setWidgetResizable(True)
         self.scrollArea_11.setObjectName(_fromUtf8("scrollArea_11"))
         self.scrollAreaWidgetContents_11 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_11.setGeometry(QtCore.QRect(0, 0, 346, 487))
+        self.scrollAreaWidgetContents_11.setGeometry(QtCore.QRect(0, 0, 209, 371))
         self.scrollAreaWidgetContents_11.setObjectName(_fromUtf8("scrollAreaWidgetContents_11"))
         self.gridLayout_71 = QtGui.QGridLayout(self.scrollAreaWidgetContents_11)
         self.gridLayout_71.setObjectName(_fromUtf8("gridLayout_71"))
@@ -1289,7 +1289,7 @@ class Ui_Form(object):
         self.scrollArea_12.setWidgetResizable(True)
         self.scrollArea_12.setObjectName(_fromUtf8("scrollArea_12"))
         self.scrollAreaWidgetContents_12 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_12.setGeometry(QtCore.QRect(0, 0, 326, 487))
+        self.scrollAreaWidgetContents_12.setGeometry(QtCore.QRect(0, 0, 96, 26))
         self.scrollAreaWidgetContents_12.setObjectName(_fromUtf8("scrollAreaWidgetContents_12"))
         self.pushButton_43 = QtGui.QPushButton(self.scrollAreaWidgetContents_12)
         self.pushButton_43.setGeometry(QtCore.QRect(100, 150, 99, 25))
@@ -1333,13 +1333,13 @@ class Ui_Form(object):
         self.toolBox = QtGui.QToolBox(self.tab_17)
         self.toolBox.setObjectName(_fromUtf8("toolBox"))
         self.page = QtGui.QWidget()
-        self.page.setGeometry(QtCore.QRect(0, 0, 706, 420))
+        self.page.setGeometry(QtCore.QRect(0, 0, 96, 26))
         self.page.setObjectName(_fromUtf8("page"))
         self.gridLayout_49 = QtGui.QGridLayout(self.page)
         self.gridLayout_49.setObjectName(_fromUtf8("gridLayout_49"))
         self.toolBox.addItem(self.page, _fromUtf8(""))
         self.page_2 = QtGui.QWidget()
-        self.page_2.setGeometry(QtCore.QRect(0, 0, 706, 420))
+        self.page_2.setGeometry(QtCore.QRect(0, 0, 96, 26))
         self.page_2.setObjectName(_fromUtf8("page_2"))
         self.gridLayout_48 = QtGui.QGridLayout(self.page_2)
         self.gridLayout_48.setObjectName(_fromUtf8("gridLayout_48"))
@@ -1359,13 +1359,13 @@ class Ui_Form(object):
         self.gridLayout_47.addWidget(self.scrollArea_3, 0, 0, 1, 1)
         self.toolBox.addItem(self.page_3, _fromUtf8(""))
         self.page_4 = QtGui.QWidget()
-        self.page_4.setGeometry(QtCore.QRect(0, 0, 100, 30))
+        self.page_4.setGeometry(QtCore.QRect(0, 0, 706, 420))
         self.page_4.setObjectName(_fromUtf8("page_4"))
         self.gridLayout_46 = QtGui.QGridLayout(self.page_4)
         self.gridLayout_46.setObjectName(_fromUtf8("gridLayout_46"))
         self.toolBox.addItem(self.page_4, _fromUtf8(""))
         self.page_5 = QtGui.QWidget()
-        self.page_5.setGeometry(QtCore.QRect(0, 0, 100, 30))
+        self.page_5.setGeometry(QtCore.QRect(0, 0, 96, 26))
         self.page_5.setObjectName(_fromUtf8("page_5"))
         self.gridLayout_45 = QtGui.QGridLayout(self.page_5)
         self.gridLayout_45.setObjectName(_fromUtf8("gridLayout_45"))
@@ -1401,14 +1401,14 @@ class Ui_Form(object):
         self.gridLayout_79.addWidget(self.tabWidget, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(0)
         self.tabWidget_3.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(0)
         self.tabWidget_6.setCurrentIndex(0)
         self.toolBox_2.setCurrentIndex(0)
-        self.tabWidget_5.setCurrentIndex(1)
-        self.toolBox.setCurrentIndex(2)
+        self.tabWidget_5.setCurrentIndex(0)
+        self.toolBox.setCurrentIndex(3)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -2304,3 +2304,13 @@ class Ui_Form(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("Form", "Help", None))
 
 from matplotlibwidgetFile import matplotlibWidget
+
+if __name__ == "__main__":
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    Form = QtGui.QWidget()
+    ui = Ui_Form()
+    ui.setupUi(Form)
+    Form.show()
+    sys.exit(app.exec_())
+

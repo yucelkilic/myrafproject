@@ -500,7 +500,8 @@ class MyForm(QtGui.QWidget):
 		plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
 		if plotF.drawim("horizontalSlider_3"):
 			self.ui.dispPhoto.canvas.draw()
-			gui.logging(self, "-- %s - matplotlib failed." %(datetime.datetime.utcnow()))
+			self.displayCoords()
+			gui.logging(self, "-- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
 		else:
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
 			gui.logging(self, "--- %s - imagemagick failed." %(datetime.datetime.utcnow()))

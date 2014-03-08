@@ -475,19 +475,35 @@ class MyForm(QtGui.QWidget):
 #Pohtometry#############################################
   def displayPhot(self):
 	if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
-		print("All Frame")
+		img = self.ui.listWidget_7.currentItem()
+		img = img.text()
+		if not function.autoAlign(str(img), str(img), "./tmp", False, True):
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>alipy</b> can not handle this job."))
+		else:
+			os.popen("rm -rf tmp/%s" %(ntpath.basename(str(img))))
+			
+		coorFile = "alipy_cats/%s.pysexcat" %(ntpath.basename(str(img)).split(".")[0])
+		dotPic = "alipy_visu/%s_stars.png" %(ntpath.basename(str(img)).split(".")[0])
+		print(dotPic)
+		os.popen("cp " + dotPic + " ./tmp/display.png")
+		#gui.display(self, "./tmp/display.png", self.ui.graphicsView_3)
+		plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
+		if plotF.drawim("horizontalSlider_3"):
+			self.ui.dispPhoto.canvas.ax.draw()
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
+			gui.logging(self, "--- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
+		os.popen("cat %s | grep -v '#' | awk '{print $1,$2}' > tmp/photCoo" %(coorFile))
+		os.popen("rm -rf ./alipy_cats/ ./alipy_out/ ./alipy_visu/")
 	else:
 		img = self.ui.listWidget_7.currentItem()
 		img = img.text()
 		plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
-		if plotF.drawFits(plotF.dataFits(), dvmin = 0, dvmax = 65535):
-			self.ui.dispPhoto.canvas.ax.draw()
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
+		if plotF.drawim("horizontalSlider_3"):
+			self.ui.dispPhoto.canvas.draw()
 			gui.logging(self, "-- %s - matplotlib failed." %(datetime.datetime.utcnow()))
 		else:
-			gui.logging(self, "-- %s - imagemagick succeed." %(datetime.datetime.utcnow()))
-			self.reDraw(self.ui.listWidget_7.currentItem(), self.ui.dispPhoto.canvas, "horizontalSlider_3")
-			self.displayCoords()
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
+			gui.logging(self, "--- %s - imagemagick failed." %(datetime.datetime.utcnow()))
 
 
 
@@ -590,16 +606,10 @@ class MyForm(QtGui.QWidget):
 	plotF = FitsPlot(str(img), self.ui.dispManual.canvas, self.ui)
 	c = function.headerRead(img, "MYRAFCOR")
 	print c
-	if plotF.drawFits(plotF.dataFits(), dvmin = 0, dvmax = 65535):
-		self.ui.dispManual.canvas.ax.draw()
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
-		gui.logging(self, "-- %s - matplotlib failed." %(datetime.datetime.utcnow()))
-		
-	else:
+	if plotF.drawim("horizontalSlider_2"):
 		gui.logging(self, "-- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
 		coors = function.headerRead(img, "MYRafCor")
 		self.ui.label_11.setText(QtGui.QApplication.translate("Form", "%s" %(coors), None, QtGui.QApplication.UnicodeUTF8))
-		self.reDraw(self.ui.listWidget_6.currentItem(), self.ui.dispManual.canvas, "horizontalSlider_2")
 		if c!="":
 			print "Coor is there"
 			x, y = c.split("-")
@@ -681,7 +691,6 @@ class MyForm(QtGui.QWidget):
 					else:
 						self.ui.listWidget_6.setCurrentRow(0)
 					self.displayManAlign()
-		  			
   	elif self.ui.tabWidget.currentIndex() == 2:
   		if self.ui.checkBox_7.isChecked():		
 	   		print event.ydata
@@ -738,14 +747,12 @@ class MyForm(QtGui.QWidget):
 	img = self.ui.listWidget_5.currentItem()
 	img = img.text()
 	plotF = FitsPlot(str(img), self.ui.dispAuto.canvas, self.ui)
-	if plotF.drawFits(plotF.dataFits(), dvmin = 0, dvmax = 65535):
-		self.ui.dispAuto.canvas.ax.draw()
+	if plotF.drawim("horizontalSlider"):
+		self.ui.dispAuto.canvas.draw()
+		gui.logging(self, "--- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
+	else:
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
 		gui.logging(self, "--- %s - matplotlib failed." %(datetime.datetime.utcnow()))
-	else:
-		gui.logging(self, "--- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
-		#self.reDraw(self.ui.listWidget_6.currentItem(), self.ui.dispManual.canvas, "horizontalSlider")
-		self.reDraw(self.ui.listWidget_5.currentItem(), self.ui.dispAuto.canvas, "horizontalSlider")
 
   def goAutAlign(self):
 	if self.ui.listWidget_5.count() != 0:

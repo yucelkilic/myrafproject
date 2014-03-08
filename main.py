@@ -111,7 +111,7 @@ class MyForm(QtGui.QWidget):
     self.ui.checkBox_2.clicked.connect(self.unlockDark)
     self.ui.checkBox_3.clicked.connect(self.unlockFlat)
     
-
+    QtCore.QObject.connect(self.ui.listWidget_8, QtCore.SIGNAL("currentTextChanged(QString)"), self.displayCoords)
 
     self.ui.radioButton.clicked.connect(self.unlockIrafPhot)
     self.ui.radioButton_2.clicked.connect(self.unlockEnsfPhot)
@@ -143,7 +143,7 @@ class MyForm(QtGui.QWidget):
     
     self.ui.listWidget_7.clicked.connect(self.displayPhot)
     self.ui.checkBox_4.clicked.connect(self.photChange)
-    self.ui.pushButton_45.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_8))
+    self.ui.pushButton_45.clicked.connect(self.coorDel)
     self.ui.pushButton_35.clicked.connect(self.goPhot)
     
     self.ui.listWidget_9.clicked.connect(self.getHeader)
@@ -475,38 +475,51 @@ class MyForm(QtGui.QWidget):
 #Pohtometry#############################################
   def displayPhot(self):
 	if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
-		img = self.ui.listWidget_7.currentItem()
-		img = img.text()
-		if not function.autoAlign(str(img), str(img), "./tmp", False, True):
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>alipy</b> can not handle this job."))
-		else:
-			os.popen("rm -rf tmp/%s" %(ntpath.basename(str(img))))
-			
-		coorFile = "alipy_cats/%s.pysexcat" %(ntpath.basename(str(img)).split(".")[0])
-		dotPic = "alipy_visu/%s_stars.png" %(ntpath.basename(str(img)).split(".")[0])
-		print(dotPic)
-		os.popen("cp " + dotPic + " ./tmp/display.png")
-		#gui.display(self, "./tmp/display.png", self.ui.graphicsView_3)
-		plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
-		if plotF.drawFits(plotF.dataFits(), dvmin = 0, dvmax = 65535):
-			self.ui.dispPhoto.canvas.ax.draw()
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
-			gui.logging(self, "--- %s - matplotlib failed." %(datetime.datetime.utcnow()))
-		os.popen("cat %s | grep -v '#' | awk '{print $1,$2}' > tmp/photCoo" %(coorFile))
-		os.popen("rm -rf ./alipy_cats/ ./alipy_out/ ./alipy_visu/")
+		print("All Frame")
 	else:
-		gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
 		img = self.ui.listWidget_7.currentItem()
 		img = img.text()
 		plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
 		if plotF.drawFits(plotF.dataFits(), dvmin = 0, dvmax = 65535):
 			self.ui.dispPhoto.canvas.ax.draw()
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
-			gui.logging(self, "--- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
+			gui.logging(self, "-- %s - matplotlib failed." %(datetime.datetime.utcnow()))
 		else:
-			gui.logging(self, "--- %s - imagemagick failed." %(datetime.datetime.utcnow()))
+			gui.logging(self, "-- %s - imagemagick succeed." %(datetime.datetime.utcnow()))
+			self.reDraw(self.ui.listWidget_7.currentItem(), self.ui.dispPhoto.canvas, "horizontalSlider_3")
+			self.displayCoords()
+
+
+
+  def coorDel(self):
+	gui.rm(self, self.ui.listWidget_8)
+	self.displayPhot()
 
 			
+  def displayCoords(self):
+	print "degisti"
+	if self.ui.listWidget_8.count() != 0:				
+		for x in xrange(self.ui.listWidget_8.count()):
+			coo = self.ui.listWidget_8.item(x)
+			coo = str(coo.text())
+			x, y = coo.split("-")
+			mean = 0
+			ap = str(self.ui.lineEdit_15.text())
+			for ape in ap.split(","):
+				mean = mean + int(ape)
+			Aperture = mean/len(ap.split(","))
+			Aperture = mean/len(ap.split(","))
+			circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
+			circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
+			circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
+			self.ui.dispPhoto.canvas.ax.add_artist(circAnnulus)
+			self.ui.dispPhoto.canvas.ax.add_artist(circDannulus)
+			self.ui.dispPhoto.canvas.ax.add_artist(circAperture)
+			circAperture.center = x, y
+			circAnnulus.center = x, y
+			circDannulus.center = x, y
+			self.ui.dispPhoto.canvas.draw()
+
   def photChange(self):
 	if self.ui.listWidget_7.currentItem() != None:
 		if self.ui.checkBox_4.checkState() != QtCore.Qt.Checked:
@@ -521,74 +534,52 @@ class MyForm(QtGui.QWidget):
 			self.ui.listWidget_8.setEnabled(False)
 			
   def goPhot(self):
-	if self.ui.radioButton.isChecked():		
-		if os.path.exists("./tmp/photCoo"):
+	if self.ui.listWidget_7.count() != 0:
+		if self.ui.listWidget_8.count() != 0:
 			gui.logging(self, "-- %s - phot started." %(datetime.datetime.utcnow()))
-			if self.ui.listWidget_7.count() != 0:
-				it = 0
-				for x in xrange(self.ui.listWidget_7.count()):
-					it = it + 1
-					img = self.ui.listWidget_7.item(x)
-					img = str(img.text())
-					OBS = function.headerRead(img, "observat").split("-")[0]
-					jdErr=""
-					srErr=""
-					amErr=""
-					phErr=""
-					exp = str(self.ui.lineEdit_13.text())
-					fil = str(self.ui.lineEdit_14.text())
-					ann = str(self.ui.dial.value())
-					dan = str(self.ui.dial_2.value())
-					cbo = str(self.ui.dial_3.value())
-					ape = str(self.ui.lineEdit_15.text())
-					zma = str(self.ui.lineEdit_16.text())
-					observatory = str(self.ui.lineEdit_18.text())
-					oti = str(self.ui.lineEdit_17.text())
-					print(zma)
-					if function.JD(img, OBS, time=oti):
-						if function.sideReal(img, OBS):
-							if function.airmass(img, OBS, time=oti):
-								if function.phot(img, "./tmp/analyzed/", "./tmp/photCoo", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
-									if function.txDump("./tmp/analyzed/%s.mag.1" %(ntpath.basename(str(img))), "./tmp/out%s" %str(it)):
-										os.popen("cat ./tmp/out%s >> tmp/res.my" %str(it))
-										os.popen("rm -rf ./tmp/out%s" %str(it))
-								else:
-									phErr = "%s\n%s" %(phErr, ntpath.basename(str(img)))
-									gui.logging(self, "--- %s - phot failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
-							else:
-								amErr = "%s\%s" %(amErr, ntpath.basename(str(img)))
-								gui.logging(self, "--- %s - airmass failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
-						else:
-							srErr = "%s\%s" %(srErr, ntpath.basename(str(img)))
-							gui.logging(self, "--- %s - sidereal time calculator failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
-					else:
-						jdErr = "%s\%s" %(ahErr, ntpath.basename(str(img)))
-						gui.logging(self, "--- %s - JD failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
-					
-					self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
-					self.ui.label_14.setText(QtGui.QApplication.translate("Form", "Phpotometry: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-					
-				if phErr != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>phot</b> can not handle this job for images below\n%s" %(phErr)))
-
-				if amErr != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>airmass</b> can not handle this job for images below\n%s" %(amErr)))
-
-				if srErr != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>AstHedit</b> can not handle this job for images below\n%s" %(srErr)))
-
-				if jdErr != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>JD</b> can not handle this job for images below\n%s" %(jdErr)))
+			f = open("./tmp/photCoor", "w")
+			for x in xrange(self.ui.listWidget_8.count()):
+				coo = self.ui.listWidget_8.item(x)
+				coo = str(coo.text())
+				coo = coo.replace("-", " ")
+				f.write("%s\n" %(coo))
+			f.close()
 			
-				ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save resoult file', 'res.my', 'Text (*.my)')
-				os.popen("mv ./tmp/res.my %s" %ofile)
+			exp = self.ui.lineEdit_13.text()
+			fil = self.ui.lineEdit_14.text()
+			ann = self.ui.dial.value()
+			dan = self.ui.dial_2.value()
+			cbo = self.ui.dial_3.value()
+			ape = self.ui.lineEdit_15.text()
+			zma = self.ui.lineEdit_16.text()
+			obs = self.ui.lineEdit_18.text()
+			obt = self.ui.lineEdit_17.text()
+			it = 0
+			errJD = ""
 			
-			else:
-				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some images."))
+			for x in xrange(self.ui.listWidget_7.count()):
+				img = self.ui.listWidget_7.item(x)
+				img = str(img.text())
+				print img
+				function.JD(img, obs, time=obt)
+				#if function.JD(img, obs, time=obt):
+				#	print "oldu"
+				#else:
+				#	errJD = "%s\%s" %(errJD, ntpath.basename(str(img)))
+				#	gui.logging(self, "--- %s - JD failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
+				
+				
+				
+				#if function.phot(img, "tmp/analyzed/", "tmp/photCoor", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma, airmass = "airmass", otime = "hjd")
+				#deneme
+				
 		else:
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select coordinates for photometry."))
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please check All Frame photonetry or select some sources."))
 	else:
-		print("ens phot")
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No image for Photometry."))
+		
+		
+		
 		
 ########################################################
 #Manual Align############################################
@@ -629,7 +620,6 @@ class MyForm(QtGui.QWidget):
 			circAnnulus.center = x, y
 			circDannulus.center = x, y
 			self.ui.label_11.setText(str(format(float(x), '.2f')) + " - " + str(format(float(y), '.2f')))
-			self.ui.dispManual.canvas.draw()
 		
   def goManAlign(self):
 	if self.ui.listWidget_6.count() != 0:
@@ -692,28 +682,13 @@ class MyForm(QtGui.QWidget):
 						self.ui.listWidget_6.setCurrentRow(0)
 					self.displayManAlign()
 		  			
-		  			
-		  			
   	elif self.ui.tabWidget.currentIndex() == 2:
   		if self.ui.checkBox_7.isChecked():		
+	   		print event.ydata
 	   		if event.ydata != None and event.xdata != None:
-	   			mean = 0
-	  			ap = str(self.ui.lineEdit_15.text())
-	  			for ape in ap.split(","):
-	  				mean = mean + int(ape)
-	  			Aperture = mean/len(ap.split(","))
-	  			circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
-	  			circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
-	  			circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
-	  			self.ui.dispPhoto.canvas.ax.add_artist(circAnnulus)
-	  			self.ui.dispPhoto.canvas.ax.add_artist(circDannulus)
-	  			self.ui.dispPhoto.canvas.ax.add_artist(circAperture)
-	  			circAperture.center = event.xdata, event.ydata
-	  			circAnnulus.center = event.xdata, event.ydata
-	  			circDannulus.center = event.xdata, event.ydata
 	  			if not self.ui.checkBox_4.isChecked():
-	  				self.ui.listWidget_8.addItem(str(format(event.xdata, '.2f')) + " - " + str(format(event.ydata, '.2f')))
-	  			self.ui.dispPhoto.canvas.draw()
+	  				self.ui.listWidget_8.addItem(str(format(event.xdata, '.4f')) + " - " + str(format(event.ydata, '.4f')))
+	  				self.displayCoords()
   			
   def mouseplace(self,event):
 	'''
@@ -879,6 +854,7 @@ class MyForm(QtGui.QWidget):
 					else:
 						gui.logging(self, "--- %s - flatcombine succeed." %(datetime.datetime.utcnow()))
 						flatFilePath = "./tmp/flat_*.fits"
+					os.popen("rm -rf ./tmp/flatLST")
 			
 			if not go:	
 				odir = QtGui.QFileDialog.getExistingDirectory(self, 'Select Directory to Save calibrated files')

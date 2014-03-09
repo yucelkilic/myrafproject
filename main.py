@@ -185,112 +185,127 @@ class MyForm(QtGui.QWidget):
 #Choose Point Color of Chart###################################
   def choosePointCol(self):
       col = QtGui.QColorDialog.getColor()
-      if col.isValid():
-          pcol = self.ui.label_55.setText(QtGui.QApplication.translate("Form", "%s" %(str(col.name())), None, QtGui.QApplication.UnicodeUTF8))
-          return pcol
+      if col:
+	      if col.isValid():
+	          pcol = self.ui.label_55.setText(QtGui.QApplication.translate("Form", "%s" %(str(col.name())), None, QtGui.QApplication.UnicodeUTF8))
+	          return pcol
       
 #Read Stars ID to Graph Tab###################################
   def readStars(self):
-      filename = QtGui.QFileDialog.getOpenFileName(self ,"MYRaf Result File...","",("My Files (*.my *.myf)"))
-      self.ui.label_43.setText(QtGui.QApplication.translate("Form", "File location: %s" %(filename), None, QtGui.QApplication.UnicodeUTF8))
-      # counting stars in result file
-      dataCount = os.popen("cat %s |awk '{if ($1 == 1) print $1}'|wc -l" %(filename))
-      dataCount=dataCount.readline().replace("\n","")
-      lineCount = os.popen("cat %s| wc -l" %(filename))
-      lineCount = lineCount.readline().replace("\n","")
-      starCount = int(lineCount)/int(dataCount)
-      #clearing comboxBoxs
-      self.ui.comboBox_11.clear()
-      self.ui.comboBox_12.clear()
-      self.ui.comboBox_13.clear()
-      for i in range(1, starCount+1):
-          self.ui.comboBox_11.addItem(str(i))
-          self.ui.comboBox_12.addItem(str(i))
-          self.ui.comboBox_13.addItem(str(i))
-      self.ui.comboBox_14.clear()
-      #getting apertures
-      for aperture in self.ui.lineEdit_15.text().split(","):
-          self.ui.comboBox_14.addItem(aperture.replace("\n", ""))
+  	filename = QtGui.QFileDialog.getOpenFileName(self ,"MYRaf Result File...","",("My Files (*.my *.myf)"))
+  	if filename:
+  		try:   	
+			self.ui.label_43.setText(QtGui.QApplication.translate("Form", "File location: %s" %(filename), None, QtGui.QApplication.UnicodeUTF8))
+			# counting stars in result file
+			dataCount = os.popen("cat %s |awk '{if ($1 == 1) print $1}'|wc -l" %(filename))
+			dataCount=dataCount.readline().replace("\n","")
+			lineCount = os.popen("cat %s| wc -l" %(filename))
+			lineCount = lineCount.readline().replace("\n","")
+			starCount = int(lineCount)/int(dataCount)
+			#clearing comboxBoxs
+			self.ui.comboBox_11.clear()
+			self.ui.comboBox_12.clear()
+			self.ui.comboBox_13.clear()
+			for i in range(1, starCount+1):
+			    self.ui.comboBox_11.addItem(str(i))
+			    self.ui.comboBox_12.addItem(str(i))
+			    self.ui.comboBox_13.addItem(str(i))
+			self.ui.comboBox_14.clear()
+			#getting apertures
+			for aperture in self.ui.lineEdit_15.text().split(","):
+			    self.ui.comboBox_14.addItem(aperture.replace("\n", ""))
+		except:
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Error reading MYRaf result file!"))
+			gui.logging(self, "--- %s - Error reading MYRaf result file!" %(datetime.datetime.utcnow()))
+			
 
 #Plot Chart#############################################
   def plotChart(self):
-      # reading form
-      varStarID = self.ui.comboBox_11.currentText()
-      checkStarID = self.ui.comboBox_12.currentText()
-      refStarID = self.ui.comboBox_13.currentText()
-      apertureIndex = self.ui.comboBox_14.currentIndex() + 3
-      legendName = self.ui.lineEdit_21.text().replace(" ",  "")
-
-      # reading result file
-      neednt,  filename = self.ui.label_43.text().split(":")
-      filename = filename.replace("\n", "")
-      function.readResultFile(filename, varStarID, apertureIndex)
-      function.readResultFile(filename, checkStarID, apertureIndex)
-      function.readResultFile(filename, refStarID, apertureIndex)
-      
-      # varStar
-      filep = open("tmp/idjdmag_%s.my" %(varStarID), "r")
-      varDatas = filep.readlines()
-      filep.close()
-      # checkStar
-      filep = open("tmp/idjdmag_%s.my" %(checkStarID), "r")
-      checkDatas = filep.readlines()
-      filep.close()
-      # refStar
-      filep = open("tmp/idjdmag_%s.my" %(refStarID), "r")
-      refDatas = filep.readlines()
-      filep.close()  
-      # numpy operations
-      varPhase1 = []
-      varMag1 = []
-      checkMag1 = []
-      refMag1 = []
-      diffMag = []
-      residuMag = []
-      # Variable
-      for varData in varDatas:
-          vData = varData.split()
-          try:
-              varPhase1.append(((float(vData[1]) - float(self.ui.lineEdit_19.text()))/(float(self.ui.lineEdit_20.text()))) - int(((float(vData[1]) - float(self.ui.lineEdit_19.text()))/(float(self.ui.lineEdit_20.text())))))
-              varMag1.append(float(vData[2]))
-          except:
-              varMag1.append(np.nan)
-      # Check
-      for checkData in checkDatas:
-          cData = checkData.split()
-          try:
-              checkMag1.append(float(cData[2]))
-          except:
-              checkMag1.append(np.nan)
-      # Ref
-      for refData in refDatas:
-          rData = refData.split()
-          try:
-              refMag1.append(float(rData[2]))
-          except:
-              refMag1.append(np.nan)
-       
-    # Masking INDEF content
-      varPhase = np.array(varPhase1)
-      varMag2 = np.array(varMag1)
-      varMag = np.ma.masked_array(varMag2, np.isnan(varMag2))
-      
-      checkMag2 = np.array(checkMag1)
-      checkMag = np.ma.masked_array(checkMag2, np.isnan(checkMag2))
-      
-      refMag2 = np.array(refMag1)
-      refMag = np.ma.masked_array(refMag2, np.isnan(refMag2))
-      # Rejecting scattered points from array
-      diffMag1 = varMag - checkMag
-      diffMag = sigma_clip(diffMag1, 3, None, mean, copy=False)
-      
-      residuMag1 = checkMag - refMag
-      residuMag = sigma_clip(residuMag1, 3, None, mean, copy=False)
-      
-      #Plot
-      pointColor = self.ui.label_55.text()
-      gui.PlotFunc(self,  self.ui.disp_chart.canvas, varPhase, (diffMag*(-1)),  residuMag, pointColor,  legendName)
-  
+  	# reading form
+  	if self.ui.label_43.text():
+  		#Checking result file
+  		if self.ui.lineEdit_19.text() and self.ui.lineEdit_20.text() and self.ui.label_55.text() and self.ui.comboBox_11.currentText() and self.ui.comboBox_12.currentText() and self.ui.comboBox_13.currentText() and self.ui.comboBox_14.currentText():
+			varStarID = self.ui.comboBox_11.currentText()
+			checkStarID = self.ui.comboBox_12.currentText()
+			refStarID = self.ui.comboBox_13.currentText()
+			apertureIndex = self.ui.comboBox_14.currentIndex() + 3
+			legendName = self.ui.lineEdit_21.text().replace(" ",  "")
+			
+			# reading result file
+			neednt,  filename = self.ui.label_43.text().split(":")
+			filename = filename.replace("\n", "")
+			function.readResultFile(filename, varStarID, apertureIndex)
+			function.readResultFile(filename, checkStarID, apertureIndex)
+			function.readResultFile(filename, refStarID, apertureIndex)
+			
+			# varStar
+			filep = open("tmp/idjdmag_%s.my" %(varStarID), "r")
+			varDatas = filep.readlines()
+			filep.close()
+			# checkStar
+			filep = open("tmp/idjdmag_%s.my" %(checkStarID), "r")
+			checkDatas = filep.readlines()
+			filep.close()
+			# refStar
+			filep = open("tmp/idjdmag_%s.my" %(refStarID), "r")
+			refDatas = filep.readlines()
+			filep.close()  
+			# numpy operations
+			varPhase1 = []
+			varMag1 = []
+			checkMag1 = []
+			refMag1 = []
+			diffMag = []
+			residuMag = []
+			# Variable
+			for varData in varDatas:
+			    vData = varData.split()
+			    try:
+			        varPhase1.append(((float(vData[1]) - float(self.ui.lineEdit_19.text()))/(float(self.ui.lineEdit_20.text()))) - int(((float(vData[1]) - float(self.ui.lineEdit_19.text()))/(float(self.ui.lineEdit_20.text())))))
+			        varMag1.append(float(vData[2]))
+			    except:
+			        varMag1.append(np.nan)
+			# Check
+			for checkData in checkDatas:
+			    cData = checkData.split()
+			    try:
+			        checkMag1.append(float(cData[2]))
+			    except:
+			        checkMag1.append(np.nan)
+			# Ref
+			for refData in refDatas:
+			    rData = refData.split()
+			    try:
+			        refMag1.append(float(rData[2]))
+			    except:
+			        refMag1.append(np.nan)
+			 
+			# Masking INDEF content
+			varPhase = np.array(varPhase1)
+			varMag2 = np.array(varMag1)
+			varMag = np.ma.masked_array(varMag2, np.isnan(varMag2))
+			
+			checkMag2 = np.array(checkMag1)
+			checkMag = np.ma.masked_array(checkMag2, np.isnan(checkMag2))
+			
+			refMag2 = np.array(refMag1)
+			refMag = np.ma.masked_array(refMag2, np.isnan(refMag2))
+			# Rejecting scattered points from array
+			diffMag1 = varMag - checkMag
+			diffMag = sigma_clip(diffMag1, 3, None, mean, copy=False)
+			
+			residuMag1 = checkMag - refMag
+			residuMag = sigma_clip(residuMag1, 3, None, mean, copy=False)
+			
+			#Plot
+			pointColor = self.ui.label_55.text()
+			gui.PlotFunc(self,  self.ui.disp_chart.canvas, varPhase, (diffMag*(-1)),  residuMag, pointColor,  legendName)
+		else:
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please fill/select the required informations!"))
+			gui.logging(self, "--- %s - Please fill/select the required informations!" %(datetime.datetime.utcnow()))
+	else:
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select MYRaf result file!"))
+		gui.logging(self, "--- %s - Please select MYRaf result file!" %(datetime.datetime.utcnow()))
 ########################################################
 
 #Pohtometry#############################################
@@ -717,6 +732,7 @@ class MyForm(QtGui.QWidget):
 			Aperture = mean/len(ap.split(","))
 			flname = "%s.pysexcat" %(ntpath.basename(str(img)).split(".")[0])
   			alipy.pysex.run(image=str(img), imageref='', params=['X_IMAGE', 'Y_IMAGE', 'MAG_BEST'], conf_file=None, conf_args={'PHOT_APERTURES': Aperture}, keepcat=True, rerun=False, catdir="./tmp/")
+  			#alipy.ident.run(str(img), str(img), hdu=0, visu=False, skipsaturated=False, r=5.0, n=500, sexkeepcat=True, sexrerun=True, verbose=True)  			
   			os.popen("mv ./tmp/%s ./tmp/coor" %(flname))
   			os.popen("cat ./tmp/coor | grep -v '#' | sort -n -k3 | head -n%s | awk '{print $1,$2}' > tmp/photCoo" %self.ui.dial_4.value())
   			os.popen("rm ./tmp/coor")

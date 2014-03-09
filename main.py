@@ -113,8 +113,8 @@ class MyForm(QtGui.QWidget):
     
     self.ui.pushButton_18.clicked.connect(self.displayCoords)
 
-    self.ui.radioButton.clicked.connect(self.unlockIrafPhot)
-    self.ui.radioButton_2.clicked.connect(self.unlockEnsfPhot)
+    #self.ui.radioButton.clicked.connect(self.unlockIrafPhot)
+    #self.ui.radioButton_2.clicked.connect(self.unlockEnsfPhot)
     
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     
@@ -716,10 +716,14 @@ class MyForm(QtGui.QWidget):
 				mean = mean + int(ape)
 			Aperture = mean/len(ap.split(","))
 			flname = "%s.pysexcat" %(ntpath.basename(str(img)).split(".")[0])
-  			alipy.pysex.run(image=str(img), imageref='', params=['X_IMAGE', 'Y_IMAGE', 'FLUX_APER'], conf_file=None, conf_args={'PHOT_APERTURES': Aperture}, keepcat=True, rerun=False, catdir="./tmp/")
+  			alipy.pysex.run(image=str(img), imageref='', params=['X_IMAGE', 'Y_IMAGE', 'MAG_BEST'], conf_file=None, conf_args={'PHOT_APERTURES': Aperture}, keepcat=True, rerun=False, catdir="./tmp/")
   			os.popen("mv ./tmp/%s ./tmp/coor" %(flname))
-  			os.popen("cat ./tmp/coor | grep -v '#' | awk '{print $1,$2}' > tmp/photCoo")
+  			os.popen("cat ./tmp/coor | grep -v '#' | sort -n -k3 | head -n%s | awk '{print $1,$2}' > tmp/photCoo" %self.ui.dial_4.value())
   			os.popen("rm ./tmp/coor")
+  			
+  			c=self.ui.listWidget_8.count()
+  			for i in xrange(c):
+				self.ui.listWidget_8.takeItem(0)
   			
   			f = open("tmp/photCoo", "r")
   			for ln in f:
@@ -1041,18 +1045,11 @@ class MyForm(QtGui.QWidget):
 		  if l.startswith("ppZMag"):
 			  ppZMag = l.split(":")[1].replace("\n","")
 			  self.ui.lineEdit_16.setText(QtGui.QApplication.translate("Form", str(ppZMag), None, QtGui.QApplication.UnicodeUTF8))
-	
+			
+ 		  if l.startswith("sfMaxStar"):
+			  sfMaxStar = int(l.split(":")[1].replace("\n",""))
+			  self.ui.dial_4.setValue(sfMaxStar)
 			  
-		  if l.startswith("photType"):
-			  photType = l.split(":")[1].replace("\n","")
-			  if photType == "iraf":
-				  self.ui.radioButton.setChecked(True)
-				  self.ui.scrollArea_11.setEnabled(True)
-				  self.ui.scrollArea_12.setEnabled(False)
-			  elif photType == "ense":
-				  self.ui.radioButton_2.setChecked(True)
-				  self.ui.scrollArea_11.setEnabled(False)
-				  self.ui.scrollArea_12.setEnabled(True)
 
   def saveSettings(self):
 	
@@ -1074,11 +1071,6 @@ class MyForm(QtGui.QWidget):
 	
 	f.write("cSubset:%s\n" %self.ui.comboBox_10.currentIndex())
 	f.write("ccdtype:%s\n" %self.ui.lineEdit_12.text())
-	
-	if self.ui.radioButton.isChecked():
-		f.write("photType:iraf\n" )
-	else:
-		f.write("photType:ense\n")
 
 	f.write("dpExpTime:%s\n" %self.ui.lineEdit_13.text())
 	f.write("dpFilter:%s\n" %self.ui.lineEdit_14.text())
@@ -1090,24 +1082,9 @@ class MyForm(QtGui.QWidget):
 	f.write("ppApertur:%s\n" %self.ui.lineEdit_15.text())
 	f.write("ppZMag:%s\n" %self.ui.lineEdit_16.text())
 	
+	f.write("sfMaxStar:%s\n" %self.ui.dial_4.value())
+	
 	f.close()
-#########################################################
-#Photometry Settings Unlock##############################
-  def unlockIrafPhot(self):
-	if self.ui.radioButton.isChecked():
-		self.ui.scrollArea_11.setEnabled(True)
-		self.ui.scrollArea_12.setEnabled(False)
-	else:
-		self.ui.scrollArea_11.setEnabled(False)
-		self.ui.scrollArea_12.setEnabled(True)
-		
-  def unlockEnsfPhot(self):
-	if self.ui.radioButton_2.isChecked():
-		self.ui.scrollArea_11.setEnabled(False)
-		self.ui.scrollArea_12.setEnabled(True)
-	else:
-		self.ui.scrollArea_11.setEnabled(True)
-		self.ui.scrollArea_12.setEnabled(False)
 #########################################################
 #Unlock calibration tabs.################################
   def unlockBias(self):

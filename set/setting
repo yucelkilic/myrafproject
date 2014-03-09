@@ -11,7 +11,6 @@ fSubset:1
 fccdtype:
 cSubset:0
 ccdtype:
-photType:iraf
 dpExpTime:exptime
 dpFilter:subset
 fspAnnulus:25
@@ -19,3 +18,4 @@ fspDannulus:5
 fspCBox:10
 ppApertur:10,15,20,25,30
 ppZMag:25
+sfMaxStar:5

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created: Sun Mar  9 02:36:10 2014
-#      by: PyQt4 UI code generator 4.10.1
+# Created: Sun Mar  9 15:54:42 2014
+#      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -548,6 +548,9 @@ class Ui_Form(object):
         self.pushButton_17 = QtGui.QPushButton(self.groupBox_7)
         self.pushButton_17.setObjectName(_fromUtf8("pushButton_17"))
         self.gridLayout_23.addWidget(self.pushButton_17, 0, 0, 1, 2)
+        self.pushButton_18 = QtGui.QPushButton(self.groupBox_7)
+        self.pushButton_18.setObjectName(_fromUtf8("pushButton_18"))
+        self.gridLayout_23.addWidget(self.pushButton_18, 2, 0, 1, 1)
         self.gridLayout_22.addWidget(self.groupBox_7, 1, 0, 1, 1)
         self.gridLayout_25.addLayout(self.gridLayout_22, 0, 1, 1, 1)
         self.groupBox_5 = QtGui.QGroupBox(self.tab_3)
@@ -945,7 +948,7 @@ class Ui_Form(object):
         self.toolBox_2 = QtGui.QToolBox(self.tab_21)
         self.toolBox_2.setObjectName(_fromUtf8("toolBox_2"))
         self.page_6 = QtGui.QWidget()
-        self.page_6.setGeometry(QtCore.QRect(0, 0, 706, 418))
+        self.page_6.setGeometry(QtCore.QRect(0, 0, 96, 95))
         self.page_6.setObjectName(_fromUtf8("page_6"))
         self.gridLayout_38 = QtGui.QGridLayout(self.page_6)
         self.gridLayout_38.setObjectName(_fromUtf8("gridLayout_38"))
@@ -953,7 +956,7 @@ class Ui_Form(object):
         self.scrollArea_6.setWidgetResizable(True)
         self.scrollArea_6.setObjectName(_fromUtf8("scrollArea_6"))
         self.scrollAreaWidgetContents_6 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_6.setGeometry(QtCore.QRect(0, 0, 690, 402))
+        self.scrollAreaWidgetContents_6.setGeometry(QtCore.QRect(0, 0, 176, 99))
         self.scrollAreaWidgetContents_6.setObjectName(_fromUtf8("scrollAreaWidgetContents_6"))
         self.gridLayout_55 = QtGui.QGridLayout(self.scrollAreaWidgetContents_6)
         self.gridLayout_55.setObjectName(_fromUtf8("gridLayout_55"))
@@ -1463,6 +1466,7 @@ class Ui_Form(object):
         self.groupBox_7.setTitle(_translate("Form", "Photometry Method:", None))
         self.pushButton_45.setText(_translate("Form", "Remove", None))
         self.pushButton_17.setText(_translate("Form", "Run Sex!", None))
+        self.pushButton_18.setText(_translate("Form", "Display", None))
         self.groupBox_5.setTitle(_translate("Form", "Display:", None))
         self.label_75.setText(_translate("Form", "Y:", None))
         self.label_73.setText(_translate("Form", "X:", None))
@@ -2303,3 +2307,13 @@ class Ui_Form(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("Form", "Help", None))
 
 from matplotlibwidgetFile import matplotlibWidget
+
+if __name__ == "__main__":
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    Form = QtGui.QWidget()
+    ui = Ui_Form()
+    ui.setupUi(Form)
+    Form.show()
+    sys.exit(app.exec_())
+

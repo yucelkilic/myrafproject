@@ -1388,6 +1388,13 @@
               </property>
              </widget>
             </item>
+            <item row="2" column="0">
+             <widget class="QPushButton" name="pushButton_18">
+              <property name="text">
+               <string>Display</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </item>
@@ -2313,8 +2320,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>706</width>
-                <height>418</height>
+                <width>96</width>
+                <height>95</height>
                </rect>
               </property>
               <attribute name="label">
@@ -2331,8 +2338,8 @@
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>690</width>
-                    <height>402</height>
+                    <width>176</width>
+                    <height>99</height>
                    </rect>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_55">

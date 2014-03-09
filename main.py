@@ -111,7 +111,7 @@ class MyForm(QtGui.QWidget):
     self.ui.checkBox_2.clicked.connect(self.unlockDark)
     self.ui.checkBox_3.clicked.connect(self.unlockFlat)
     
-    QtCore.QObject.connect(self.ui.listWidget_8, QtCore.SIGNAL("currentTextChanged(QString)"), self.displayCoords)
+    self.ui.pushButton_18.clicked.connect(self.displayCoords)
 
     self.ui.radioButton.clicked.connect(self.unlockIrafPhot)
     self.ui.radioButton_2.clicked.connect(self.unlockEnsfPhot)
@@ -482,7 +482,7 @@ class MyForm(QtGui.QWidget):
 	plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
 	if plotF.drawim("horizontalSlider_3"):
 		self.ui.dispPhoto.canvas.draw()
-		self.displayCoords()
+		#self.displayCoords()
 		gui.logging(self, "-- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
 	else:
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
@@ -497,10 +497,10 @@ class MyForm(QtGui.QWidget):
 			
   def displayCoords(self):
 	print "degisti"
-	if self.ui.listWidget_8.count() != 0:				
-		for x in xrange(self.ui.listWidget_8.count()):
-			coo = self.ui.listWidget_8.item(x)
-			coo = str(coo.text())
+	if self.ui.listWidget_8.count() != 0:
+		self.displayPhot()				
+		for x in self.ui.listWidget_8.selectedItems():
+			coo = str(x.text())
 			x, y = coo.split("-")
 			mean = 0
 			ap = str(self.ui.lineEdit_15.text())
@@ -600,6 +600,7 @@ class MyForm(QtGui.QWidget):
 			circAnnulus.center = x, y
 			circDannulus.center = x, y
 			self.ui.label_11.setText(str(format(float(x), '.2f')) + " - " + str(format(float(y), '.2f')))
+			self.ui.dispManual.canvas.draw()
 		
   def goManAlign(self):
 	if self.ui.listWidget_6.count() != 0:
@@ -725,7 +726,8 @@ class MyForm(QtGui.QWidget):
   				line = ln.replace("\n","")
   				line = line.replace(" ","-")
   				self.ui.listWidget_8.addItem(line)
-  			self.displayCoords()
+  			#self.displayCoords()
+  			self.ui.listWidget_8.sortItems()
 
 
   def reDraw(self, listObject, dispObject, horizontalSlider):
@@ -733,6 +735,8 @@ class MyForm(QtGui.QWidget):
 		img = listObject.text()
 		plotF = FitsPlot(str(img), dispObject, self.ui)
 		plotF.drawim(horizontalSlider)
+		#tab denetle....
+		#self.displayCoords()
 
   def displayAutAlign(self):
 	gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))

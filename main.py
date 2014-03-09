@@ -142,7 +142,7 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_27.clicked.connect(self.goManAlign)
     
     self.ui.listWidget_7.clicked.connect(self.displayPhot)
-    self.ui.checkBox_4.clicked.connect(self.photChange)
+    #self.ui.listWidget_7.clicked.connect(self.findStars)
     self.ui.pushButton_45.clicked.connect(self.coorDel)
     self.ui.pushButton_35.clicked.connect(self.goPhot)
     
@@ -165,6 +165,8 @@ class MyForm(QtGui.QWidget):
     
     self.ui.pushButton_44.clicked.connect(self.readStars)
     self.ui.pushButton_46.clicked.connect(self.plotChart)
+    
+    self.ui.pushButton_17.clicked.connect(self.findStars)
   
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     self.applySettings()
@@ -474,37 +476,17 @@ class MyForm(QtGui.QWidget):
 ########################################################
 #Pohtometry#############################################
   def displayPhot(self):
-	if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
-		img = self.ui.listWidget_7.currentItem()
-		img = img.text()
-		if not function.autoAlign(str(img), str(img), "./tmp", False, True):
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>alipy</b> can not handle this job."))
-		else:
-			os.popen("rm -rf tmp/%s" %(ntpath.basename(str(img))))
-			
-		coorFile = "alipy_cats/%s.pysexcat" %(ntpath.basename(str(img)).split(".")[0])
-		dotPic = "alipy_visu/%s_stars.png" %(ntpath.basename(str(img)).split(".")[0])
-		print(dotPic)
-		os.popen("cp " + dotPic + " ./tmp/display.png")
-		#gui.display(self, "./tmp/display.png", self.ui.graphicsView_3)
-		plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
-		if plotF.drawim("horizontalSlider_3"):
-			self.ui.dispPhoto.canvas.ax.draw()
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
-			gui.logging(self, "--- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
-		os.popen("cat %s | grep -v '#' | awk '{print $1,$2}' > tmp/photCoo" %(coorFile))
-		os.popen("rm -rf ./alipy_cats/ ./alipy_out/ ./alipy_visu/")
+
+	img = self.ui.listWidget_7.currentItem()
+	img = img.text()
+	plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
+	if plotF.drawim("horizontalSlider_3"):
+		self.ui.dispPhoto.canvas.draw()
+		self.displayCoords()
+		gui.logging(self, "-- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
 	else:
-		img = self.ui.listWidget_7.currentItem()
-		img = img.text()
-		plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
-		if plotF.drawim("horizontalSlider_3"):
-			self.ui.dispPhoto.canvas.draw()
-			self.displayCoords()
-			gui.logging(self, "-- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
-		else:
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
-			gui.logging(self, "--- %s - imagemagick failed." %(datetime.datetime.utcnow()))
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
+		gui.logging(self, "--- %s - imagemagick failed." %(datetime.datetime.utcnow()))
 
 
 
@@ -536,19 +518,6 @@ class MyForm(QtGui.QWidget):
 			circAnnulus.center = x, y
 			circDannulus.center = x, y
 			self.ui.dispPhoto.canvas.draw()
-
-  def photChange(self):
-	if self.ui.listWidget_7.currentItem() != None:
-		if self.ui.checkBox_4.checkState() != QtCore.Qt.Checked:
-			self.ui.listWidget_8.setEnabled(True)
-		else:
-			self.ui.listWidget_8.setEnabled(False)
-		self.displayPhot()	
-	else:
-		if self.ui.checkBox_4.checkState() != QtCore.Qt.Checked:
-			self.ui.listWidget_8.setEnabled(True)
-		else:
-			self.ui.listWidget_8.setEnabled(False)
 			
   def goPhot(self):
 	if self.ui.listWidget_7.count() != 0:
@@ -696,9 +665,8 @@ class MyForm(QtGui.QWidget):
   		if self.ui.checkBox_7.isChecked():		
 	   		print event.ydata
 	   		if event.ydata != None and event.xdata != None:
-	  			if not self.ui.checkBox_4.isChecked():
-	  				self.ui.listWidget_8.addItem(str(format(event.xdata, '.4f')) + " - " + str(format(event.ydata, '.4f')))
-	  				self.displayCoords()
+  				self.ui.listWidget_8.addItem(str(format(event.xdata, '.4f')) + " - " + str(format(event.ydata, '.4f')))
+  				self.displayCoords()
   			
   def mouseplace(self,event):
 	'''
@@ -736,6 +704,29 @@ class MyForm(QtGui.QWidget):
 					plotF = FitsPlot(str(img), self.ui.dispManual.canvas, self.ui)
 					self.ui.label_84.setText(str(plotF.dataFits()[event.ydata,event.xdata]))
 #Auto Align#############################################
+  def findStars(self):
+  	if self.ui.tabWidget.currentIndex() == 2:
+  		if self.ui.listWidget_7.currentItem():			
+  			img = self.ui.listWidget_7.currentItem()
+  			img = img.text()
+			mean = 0
+			ap = str(self.ui.lineEdit_15.text())
+			for ape in ap.split(","):
+				mean = mean + int(ape)
+			Aperture = mean/len(ap.split(","))
+			flname = "%s.pysexcat" %(ntpath.basename(str(img)).split(".")[0])
+  			alipy.pysex.run(image=str(img), imageref='', params=['X_IMAGE', 'Y_IMAGE', 'FLUX_APER'], conf_file=None, conf_args={'PHOT_APERTURES': Aperture}, keepcat=True, rerun=False, catdir="./tmp/")
+  			os.popen("mv ./tmp/%s ./tmp/coor" %(flname))
+  			os.popen("cat ./tmp/coor | grep -v '#' | awk '{print $1,$2}' > tmp/photCoo")
+  			os.popen("rm ./tmp/coor")
+  			
+  			f = open("tmp/photCoo", "r")
+  			for ln in f:
+  				line = ln.replace("\n","")
+  				line = line.replace(" ","-")
+  				self.ui.listWidget_8.addItem(line)
+  			self.displayCoords()
+
 
   def reDraw(self, listObject, dispObject, horizontalSlider):
   	if listObject:

@@ -45,9 +45,10 @@ def lisFromLW(self, listWidget):
 	return map(str, items)
 	
 def list2file(lst, fl):
-	f = open(fl, "w")
-	f.write("\n".join(map(lambda x: str(x), lst)))
-	f.close()
+    f = open(fl, "wb")
+    for i in lst:
+        f.write("%s\n" %(i))
+    f.close()
 
 def logging(self, txt):
 	f = open("log.my", "a")

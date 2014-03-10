@@ -121,34 +121,22 @@ def calibration(image, bias, dark, flat, odir, cty="", sub="yes"):
 	cp.zero = bias
 	cp.dark = dark
 	cp.flat = flat
-	try:
-		cp(images = str(image))
-		headerWrite("%s/%s" %(str(odir), ntpath.basename(str(image))), "MYRafCAL", "Calibrated Via MYRaf V2.0 Beta @ %s" %(datetime.datetime.utcnow()))
-		print("Calibration succeed.")
+
+	cp(images = str(image))
+	headerWrite("%s/%s" %(str(odir), ntpath.basename(str(image))), "MYRafCAL", "Calibrated Via MYRaf V2.0 Beta @ %s" %(datetime.datetime.utcnow()))
+	print("Calibration succeed.")
+	
+	if sub =="no":
+		print "Geri gel" 
+		headerWrite(image, "SUBSET", headerRead(image, "tmp"))
+		headerDel(image, "tmp")
+		headerWrite("%s/%s" %(odir, ntpath.basename(str(image))), "SUBSET", headerRead("%s/%s" %(odir, ntpath.basename(str(image))), "tmp"))
+		headerDel("%s/%s" %(odir, ntpath.basename(str(image))), "tmp")
+		headerWrite(flat, "SUBSET", headerRead(flat, "tmp"))
+		headerDel(flat, "tmp")
 		
-		if sub =="no":
-			print "Geri gel" 
-			headerWrite(image, "SUBSET", headerRead(image, "tmp"))
-			headerDel(image, "tmp")
-			headerWrite("%s/%s" %(odir, ntpath.basename(str(image))), "SUBSET", headerRead("%s/%s" %(odir, ntpath.basename(str(image))), "tmp"))
-			headerDel("%s/%s" %(odir, ntpath.basename(str(image))), "tmp")
-			headerWrite(flat, "SUBSET", headerRead(flat, "tmp"))
-			headerDel(flat, "tmp")
-			
-		return True
-	except:
-		print("Calibration failed.")
-		
-		if sub =="no":
-			print "Geri gel" 
-			headerWrite(image, "SUBSET", headerRead(image, "tmp"))
-			headerDel(image, "tmp")
-			headerWrite("%s/%s" %(odir, ntpath.basename(str(image))), "SUBSET", headerRead("%s/%s" %(odir, ntpath.basename(str(image))), "tmp"))
-			headerDel("%s/%s" %(odir, ntpath.basename(str(image))), "tmp")
-			headerWrite(flat, "SUBSET", headerRead(flat, "tmp"))
-			headerDel(flat, "tmp")
-			
-		return False
+	return True
+
 		
 def fits2png(inFile, outFile):
 	try:

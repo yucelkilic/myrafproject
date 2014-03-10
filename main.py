@@ -816,8 +816,18 @@ class MyForm(QtGui.QWidget):
   			alipy.pysex.run(image=str(img), imageref='', params=['X_IMAGE', 'Y_IMAGE', 'MAG_BEST'], conf_file=None, conf_args={'PHOT_APERTURES': Aperture}, keepcat=True, rerun=False, catdir="./tmp/")
   			#alipy.ident.run(str(img), str(img), hdu=0, visu=False, skipsaturated=False, r=5.0, n=500, sexkeepcat=True, sexrerun=True, verbose=True)  			
   			os.popen("mv ./tmp/%s ./tmp/coor" %(flname))
-  			os.popen("cat ./tmp/coor | grep -v '#' | sort -n -k3 | head -n%s | awk '{print $1,$2}' > tmp/photCoo" %self.ui.dial_4.value())
-  			os.popen("rm ./tmp/coor")
+  			f = open("tmp/coor", "rb")
+  			colst = []
+  			for i in f:
+  				ln = i.replace("\n","")
+  				if not ln.startswith("#"):
+  					colst.append(ln.split())
+			a = (-np.array(colst))
+  			sirali = a[a[:,2].argsort()]
+  			
+  			print sirali[:5]
+  			
+  			
   			
   			c=self.ui.listWidget_8.count()
   			for i in xrange(c):

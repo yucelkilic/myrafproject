@@ -12,14 +12,14 @@ fccdtype:
 cSubset:0
 ccdtype:
 dpExpTime:exptime
-dpFilter:abow
+dpFilter:FILTER
 fspAnnulus:25
 fspDannulus:5
 fspCBox:10
 ppApertur:10,15,20,25,30
 ppZMag:25
-oRa:ra
-oDec:dec
+oRa:OBJCTRA
+oDec:OBJCTDEC
 obser:observat
 obsti:date
 obsda:date

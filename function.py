@@ -220,11 +220,11 @@ def sideReal(inFile, OBS, date, time):
 		print("Sidereal calculator failed.")
 		
 
-def airmass(inFile, OBS, time="time-obs"):
+def airmass(inFile, OBS, time="time-obs", date="date-obs", expTime="exptime"):
 	print("Setairmass for %s image" %(ntpath.basename(str(inFile))))
 	try:
 		sam = iraf.setairmass
-		sam(inFile, observatory = str(OBS), intype = "middle", ut = time)
+		sam(inFile, observatory = str(OBS), intype = "middle", ut = time, date = date, exposur=expTime)
 		return True
 		print("Setairmass succeed.")
 	except:

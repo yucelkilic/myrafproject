@@ -588,7 +588,7 @@ class MyForm(QtGui.QWidget):
 								if odec != "":
 									if function.JD(img, obs, time=obt):
 										if function.sideReal(img, ob, obt, obd):
-											if function.airmass(img, obervatory, time=obt):
+											if function.airmass(img, obervatory, time=obt, date=obd, expTime=exp):
 												if function.phot(img, "./tmp/analyzed/", "./tmp/photCoo", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
 													if function.txDump("./tmp/analyzed/%s.mag.1"  %(ntpath.basename(img)), "./tmp/analyzed/%s"  %(ntpath.basename(img))):
 														os.popen("rm ./tmp/analyzed/%s.mag.1" %(ntpath.basename(img)))

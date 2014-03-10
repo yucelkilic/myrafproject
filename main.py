@@ -538,7 +538,7 @@ class MyForm(QtGui.QWidget):
 	if self.ui.listWidget_7.count() != 0:
 		if self.ui.listWidget_8.count() != 0:
 			gui.logging(self, "-- %s - phot started." %(datetime.datetime.utcnow()))
-			f = open("./tmp/photCoor", "w")
+			f = open("./tmp/pc", "w")
 			for x in xrange(self.ui.listWidget_8.count()):
 				coo = self.ui.listWidget_8.item(x)
 				coo = str(coo.text())
@@ -555,27 +555,84 @@ class MyForm(QtGui.QWidget):
 			zma = self.ui.lineEdit_16.text()
 			obs = self.ui.lineEdit_18.text()
 			obt = self.ui.lineEdit_17.text()
-			it = 0
-			errJD = ""
-			
-			for x in xrange(self.ui.listWidget_7.count()):
-				img = self.ui.listWidget_7.item(x)
-				img = str(img.text())
-				print img
-				function.JD(img, obs, time=obt)
-				#if function.JD(img, obs, time=obt):
-				#	print "oldu"
-				#else:
-				#	errJD = "%s\%s" %(errJD, ntpath.basename(str(img)))
-				#	gui.logging(self, "--- %s - JD failed with %s." %(datetime.datetime.utcnow(), ntpath.basename(str(img))))
+			obd = self.ui.lineEdit_24.text()
+			ra = self.ui.lineEdit_22.text()
+			dec = self.ui.lineEdit_23.text()
+			epo = self.ui.spinBox.value()
+			ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save MYRaf file', 'res.my', 'my (*.my)')
+			if ofile != "":
+				it = 0
+				err = ""
+				errJD = ""
+				errSid = ""
+				errAir = ""
+				errTM = ""
+				errOB = ""
+				errORA = ""
+				errODEC = ""
 				
-				
-				
-				#if function.phot(img, "tmp/analyzed/", "tmp/photCoor", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma, airmass = "airmass", otime = "hjd")
-				#deneme
+				for x in xrange(self.ui.listWidget_7.count()):
+					it = it + 1
+					img = self.ui.listWidget_7.item(x)
+					img = str(img.text())
+					tm = function.headerRead(img, obt)
+					ob = function.headerRead(img, obs)
+					ora = function.headerRead(img, ra)
+					odec = function.headerRead(img, dec)
+					obervatory = function.headerRead(img, obs)
+					function.headerWrite(img, "epoch", epo)
+					
+					if ob !="":
+						if tm != "":
+							if ora != "":
+								if odec != "":
+									if function.JD(img, obs, time=obt):
+										if function.sideReal(img, ob, obt, obd):
+											if function.airmass(img, obervatory, time=obt):
+												if function.phot(img, "./tmp/analyzed/", "./tmp/photCoo", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
+													if function.txDump("./tmp/analyzed/%s.mag.1"  %(ntpath.basename(img)), "./tmp/analyzed/%s"  %(ntpath.basename(img))):
+														os.popen("rm ./tmp/analyzed/%s.mag.1" %(ntpath.basename(img)))
+														os.popen("cat ./tmp/analyzed/%s >> %s"  %(ntpath.basename(img), ofile))
+														os.popen("rm ./tmp/analyzed/%s" %(ntpath.basename(img)))
+												else:
+													err = "%s, %s" %(err, ntpath.basename(img))
+											else:
+												errAir = "%s, %s" %(errAir, ntpath.basename(img))
+										else:
+											errSid = "%s, %s" %(errSid, ntpath.basename(img))
+									else:
+										errJD = "%s, %s" %(errJD, ntpath.basename(img))
+								else:
+									errODEC = "%s, %s" %(errODEC, ntpath.basename(img))
+							else:
+								errORA = "%s, %s" %(errORA, ntpath.basename(img))
+						else:
+							errTM = "%s, %s" %(errTM, ntpath.basename(img))
+					else:
+						errOB = "%s, %s" %(errOB, ntpath.basename(img))
+					self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
+					
+				if errTM != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(obt, errTM)))
+				if errOB != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(obs, errOB)))
+				if errORA != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(ora, errORA)))
+				if errODEC != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(odec, errODEC)))
+				if errJD != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>setjd</b> can not handle images below\n%s." %(errJD)))
+				if errSid != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error can not calculate sidereal time for images below\n%s." %(errSid)))
+				if errAir != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>setairmass</b> can not handle images below\n%s." %(errAir)))
+				if err != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>phot</b> can not handle images below\n%s." %(err)))
+
+
 				
 		else:
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please check All Frame photonetry or select some sources."))
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some sources."))
 	else:
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No image for Photometry."))
 		
@@ -643,7 +700,7 @@ class MyForm(QtGui.QWidget):
 						y = float(yref) - float(yimg)
 						print x, y
 						if not function.manAlign(img, x, y, ofile):
-							err = "%s,%s" %(err, ntpath.basename(str(img)))
+							err = "%s, %s" %(err, ntpath.basename(str(img)))
 							gui.logging(self, "--- %s - imshift failed." %(datetime.datetime.utcnow()))							
 				
 					self.ui.progressBar_3.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_6.count())))))
@@ -785,7 +842,7 @@ class MyForm(QtGui.QWidget):
 				img = str(img.text())
 				self.ui.label_7.setText(QtGui.QApplication.translate("Form", "Aligning: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
 				if not function.autoAlign(img, ref, odir):
-					aliErr = "%s,%s" %(aliErr, ntpath.basename(str(img)))
+					aliErr = "%s, %s" %(aliErr, ntpath.basename(str(img)))
 					gui.logging(self, "--- %s - alipy failed." %(datetime.datetime.utcnow()))					
 				self.ui.progressBar_2.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_5.count())))))
 				os.popen("rm -rf ./alipy_cats/ ./alipy_out/")
@@ -1066,6 +1123,30 @@ class MyForm(QtGui.QWidget):
 			  sfMaxStar = int(l.split(":")[1].replace("\n",""))
 			  self.ui.dial_4.setValue(sfMaxStar)
 			  
+			  
+		  if l.startswith("oRa"):
+			  oRa = l.split(":")[1].replace("\n","")
+			  self.ui.lineEdit_22.setText(QtGui.QApplication.translate("Form", str(oRa), None, QtGui.QApplication.UnicodeUTF8))
+		
+		  if l.startswith("oDec"):
+			  oDec = l.split(":")[1].replace("\n","")
+			  self.ui.lineEdit_23.setText(QtGui.QApplication.translate("Form", str(oDec), None, QtGui.QApplication.UnicodeUTF8))
+
+		  if l.startswith("obser"):
+			  obser = l.split(":")[1].replace("\n","")
+			  self.ui.lineEdit_18.setText(QtGui.QApplication.translate("Form", str(obser), None, QtGui.QApplication.UnicodeUTF8))
+		
+		  if l.startswith("obsti"):
+			  obsti = l.split(":")[1].replace("\n","")
+			  self.ui.lineEdit_17.setText(QtGui.QApplication.translate("Form", str(obsti), None, QtGui.QApplication.UnicodeUTF8))
+
+		  if l.startswith("spinBox"):
+			  spinBox = int(l.split(":")[1].replace("\n",""))
+			  self.ui.spinBox.setValue(spinBox)
+
+		  if l.startswith("obsda"):
+			  obsda = l.split(":")[1].replace("\n","")
+			  self.ui.lineEdit_24.setText(QtGui.QApplication.translate("Form", str(obsda), None, QtGui.QApplication.UnicodeUTF8))
 
   def saveSettings(self):
 	
@@ -1097,6 +1178,15 @@ class MyForm(QtGui.QWidget):
 	
 	f.write("ppApertur:%s\n" %self.ui.lineEdit_15.text())
 	f.write("ppZMag:%s\n" %self.ui.lineEdit_16.text())
+	
+	f.write("oRa:%s\n" %self.ui.lineEdit_22.text())
+	f.write("oDec:%s\n" %self.ui.lineEdit_23.text())
+	
+	f.write("obser:%s\n" %self.ui.lineEdit_18.text())
+	f.write("obsti:%s\n" %self.ui.lineEdit_17.text())
+	f.write("obsda:%s\n" %self.ui.lineEdit_24.text())
+	
+	f.write("spinBox:%s\n" %self.ui.spinBox.value())
 	
 	f.write("sfMaxStar:%s\n" %self.ui.dial_4.value())
 	

@@ -203,12 +203,12 @@ def JD(inFile, OBS, time = "time-obs"):
 		print("JD failed.")
 		
 	
-def sideReal(inFile, OBS):
+def sideReal(inFile, OBS, date, time):
 	print("sidereal time calculation for %s image" %(ntpath.basename(str(inFile))))
 	try:
 		os.system('echo astcalc > ./tmp/st.cl')
-		os.system("echo \"	observatory=\\\"%s\\\"\" >> ./tmp/st.cl" %OBS)
-		os.system("echo \"	st=mst(@'DATE-OBS',@'TIME-OBS',obsdb(observatory,\\\"longitude\\\"))\" >> ./tmp/st.cl")
+		os.system("echo \"	observatory=\\\"%s\\\"\" >> ./tmp/st.cl" %(OBS))
+		os.system("echo \"	st=mst(@'%s',@'%s',obsdb(observatory,\\\"longitude\\\"))\" >> ./tmp/st.cl" %(date, time))
 		os.system("echo quit >> ./tmp/st.cl")
 		at = iraf.noao.astutil.asthedit
 		at(inFile, commands = "./tmp/st.cl", update = "yes", verbose = "yes")
@@ -262,6 +262,7 @@ def phot(inFile, outPath, cooFile, expTime = "exptime", Filter = "subset", cente
 
 def txDump(inFile, outFile, fields="id, otime, mag , merr, xairmass"):
 	print("txDump started.")
+	print inFile
 	try:
 		tx=iraf.txdump
 		tx (inFile, fields, "yes", Stdout= outFile)

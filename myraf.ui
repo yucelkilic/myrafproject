@@ -2484,7 +2484,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -2661,7 +2661,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -2827,7 +2827,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -2845,8 +2845,8 @@
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>96</width>
-                    <height>26</height>
+                    <width>79</width>
+                    <height>79</height>
                    </rect>
                   </property>
                   <widget class="QLabel" name="label_34">
@@ -2930,13 +2930,6 @@
                 <string>DataPars</string>
                </property>
                <layout class="QGridLayout" name="gridLayout_53">
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_38">
-                  <property name="text">
-                   <string>Exposur</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="1">
                  <widget class="QLineEdit" name="lineEdit_13">
                   <property name="text">
@@ -2951,6 +2944,13 @@
                   </property>
                  </widget>
                 </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_38">
+                  <property name="text">
+                   <string>Exposur</string>
+                  </property>
+                 </widget>
+                </item>
                 <item row="1" column="1">
                  <widget class="QLineEdit" name="lineEdit_14">
                   <property name="text">
@@ -2961,7 +2961,7 @@
                </layout>
               </widget>
              </item>
-             <item row="0" column="1">
+             <item row="0" column="1" colspan="2">
               <widget class="QGroupBox" name="groupBox_15">
                <property name="title">
                 <string>PhotPars</string>
@@ -3044,7 +3044,7 @@ To find</string>
                </layout>
               </widget>
              </item>
-             <item row="1" column="1">
+             <item row="1" column="1" colspan="2">
               <widget class="QGroupBox" name="groupBox_14">
                <property name="title">
                 <string>FitSkyPars</string>
@@ -3167,6 +3167,13 @@ To find</string>
                 <string>Location and Time</string>
                </property>
                <layout class="QGridLayout" name="gridLayout_69">
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_68">
+                  <property name="text">
+                   <string>Epoch</string>
+                  </property>
+                 </widget>
+                </item>
                 <item row="0" column="0">
                  <widget class="QLabel" name="label_47">
                   <property name="text">
@@ -3174,7 +3181,7 @@ To find</string>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="1">
+                <item row="0" column="2">
                  <widget class="QLineEdit" name="lineEdit_18">
                   <property name="text">
                    <string>observat</string>
@@ -3188,10 +3195,71 @@ To find</string>
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="1">
+                <item row="1" column="2">
                  <widget class="QLineEdit" name="lineEdit_17">
                   <property name="text">
                    <string>time-obs</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_67">
+                  <property name="text">
+                   <string>ObsDate</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="2">
+                 <widget class="QSpinBox" name="spinBox">
+                  <property name="maximum">
+                   <number>2500</number>
+                  </property>
+                  <property name="value">
+                   <number>2000</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="2">
+                 <widget class="QLineEdit" name="lineEdit_24">
+                  <property name="text">
+                   <string>date-obs</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QGroupBox" name="groupBox_20">
+               <property name="title">
+                <string>WCS</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_71">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_65">
+                  <property name="text">
+                   <string>Right ascension</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLineEdit" name="lineEdit_22">
+                  <property name="text">
+                   <string>ra</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_66">
+                  <property name="text">
+                   <string>Declination</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="lineEdit_23">
+                  <property name="text">
+                   <string>dec</string>
                   </property>
                  </widget>
                 </item>
@@ -3258,8 +3326,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
-                <height>26</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3272,8 +3340,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
-                <height>26</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3286,7 +3354,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -3304,8 +3372,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>96</width>
-                    <height>26</height>
+                    <width>79</width>
+                    <height>79</height>
                    </rect>
                   </property>
                  </widget>
@@ -3318,8 +3386,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
-                <height>26</height>
+                <width>73</width>
+                <height>16</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3332,8 +3400,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
-                <height>26</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <attribute name="label">

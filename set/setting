@@ -7,12 +7,12 @@ dScale:3
 dccdtype:
 fCombine:0
 fReject:0
-fSubset:1
+fSubset:0
 fccdtype:
 cSubset:0
 ccdtype:
 dpExpTime:exptime
-dpFilter:subset
+dpFilter:abow
 fspAnnulus:25
 fspDannulus:5
 fspCBox:10

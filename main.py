@@ -942,10 +942,11 @@ class MyForm(QtGui.QWidget):
 				
 				f = open("./tmp/flatLST", "r")
 				it = 0
-				
+				sname = self.ui.lineEdit_14.text()
+					
 				for i in f:
 					fn = i.replace("\n","")
-					if function.headerRead(fn,"subset") == "":
+					if function.headerRead(fn,sname) == "":
 						it = it + 1
 				f.close()
 				
@@ -953,6 +954,7 @@ class MyForm(QtGui.QWidget):
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no subset field in header.\nAdd subset field to headers."))
 					go = True
 				else:
+					function.headerWrite("@./tmp/flatLST", "subset", str("'(@\"%s\")'" %sname))
 					if not function.flatCombine("./tmp/flatLST", "./tmp", com=comf, rej=rejf, cty=ctyf, sub=subf):
 						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>flatcombine</b> can not handle this job."))
 						gui.logging(self, "--- %s - flatcombine failed." %(datetime.datetime.utcnow()))
@@ -1033,9 +1035,11 @@ class MyForm(QtGui.QWidget):
 	odir = QtGui.QFileDialog.getExistingDirectory( self, 'Select Directory to Save Flat(s)')
 	f = open("./tmp/flatLST", "r")
 	it = 0
+	sname = self.ui.lineEdit_14.text()
+	
 	for i in f:
 		fn = i.replace("\n","")
-		if function.headerRead(fn,"subset") == "":
+		if function.headerRead(fn,sname) == "":
 			it = it + 1
 	f.close()
 	
@@ -1043,12 +1047,15 @@ class MyForm(QtGui.QWidget):
 	rej = self.ui.comboBox_7.currentText()
 	sub = self.ui.comboBox_9.currentText()
 	cty = self.ui.lineEdit_11.text()
+	
+	
 		
 	if os.path.isdir(odir):
 		if sub == "yes" and it != 0:
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no subset field in header.\nAdd subset field to headers."))
 		else:
-		
+			
+			function.headerWrite("@./tmp/flatLST", "subset", str("'(@\"%s\")'" %sname))
 			if not function.flatCombine("./tmp/flatLST", odir, com=com, rej=rej, cty=cty, sub=sub):
 				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>flatcombine</b> can not handle this job."))
 				gui.logging(self, "-- %s - flatcombine failed." %(datetime.datetime.utcnow()))

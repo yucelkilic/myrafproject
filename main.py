@@ -806,41 +806,24 @@ class MyForm(QtGui.QWidget):
   	if self.ui.tabWidget.currentIndex() == 2:
   		if self.ui.listWidget_7.currentItem():			
   			img = self.ui.listWidget_7.currentItem()
-  			img = img.text()
-			mean = 0
-			ap = str(self.ui.lineEdit_15.text())
-			for ape in ap.split(","):
-				mean = mean + int(ape)
-			Aperture = mean/len(ap.split(","))
-			flname = "%s.pysexcat" %(ntpath.basename(str(img)).split(".")[0])
-  			alipy.pysex.run(image=str(img), imageref='', params=['X_IMAGE', 'Y_IMAGE', 'MAG_BEST'], conf_file=None, conf_args={'PHOT_APERTURES': Aperture}, keepcat=True, rerun=False, catdir="./tmp/")
-  			#alipy.ident.run(str(img), str(img), hdu=0, visu=False, skipsaturated=False, r=5.0, n=500, sexkeepcat=True, sexrerun=True, verbose=True)  			
-  			os.popen("mv ./tmp/%s ./tmp/coor" %(flname))
-  			f = open("tmp/coor", "rb")
-  			colst = []
-  			for i in f:
-  				ln = i.replace("\n","")
-  				if not ln.startswith("#"):
-  					colst.append(ln.split())
-			a = (-np.array(colst))
-  			sirali = a[a[:,2].argsort()]
-  			
-  			print sirali[:5]
-  			
-  			
+  			img = str(img.text())
+			
+			images_to_align = sorted(glob.glob(img))
+			ref_image = img
+			identifications = alipy.ident.run(ref_image, images_to_align, visu=False, sexkeepcat=True, skipsaturated=True)
+
+			os.popen("cat alipy_cats/%s.pysexcat| grep -v '#'| awk '{print $1, $2, $3, $4, $5,$6,$7,$8}'| sort -r -n -k3,4| head -n%s > tmp/coo " %(ntpath.basename(img).split(".")[0], self.ui.dial_4.value()))
+			os.popen("rm -rf alipy_cats")
   			
   			c=self.ui.listWidget_8.count()
   			for i in xrange(c):
 				self.ui.listWidget_8.takeItem(0)
-  			
-  			f = open("tmp/photCoo", "r")
-  			for ln in f:
-  				line = ln.replace("\n","")
-  				line = line.replace(" ","-")
-  				self.ui.listWidget_8.addItem(line)
-  			#self.displayCoords()
-  			self.ui.listWidget_8.sortItems()
-
+				
+			f = open("tmp/coo","rb")
+			for i in f:
+				ln = i.replace("\n","")
+				line = "%s-%s" %(str(ln.split(" ")[0]), str(ln.split(" ")[1]))
+				self.ui.listWidget_8.addItem(line)
 
   def reDraw(self, listObject, dispObject, horizontalSlider):
   	if listObject:

@@ -1,6 +1,9 @@
 import os, datetime, ntpath, alipy, glob
 from pyraf import iraf
 from pyraf.iraf import noao, imred, ccdred, darkcombine, flatcombine, ccdproc ,astutil, setjd, setairmass, asthedit, digiphot, apphot, phot, ptools, txdump, artdata, imgeom
+from astropy.time import Time
+from time import gmtime, strftime
+
 
 def readResultFile(filename,  starID, apIndex):
     try:
@@ -191,17 +194,20 @@ def manAlign(inFile, x, y, outFile):
 	except:
 		return False
 
-def JD(inFile, OBS, time = "time-obs"):
+def JD(inFile, OBS, date="date-obs", time = "time-obs", r="ra", d = "dec", epo="epoch", expTime="exptime"):
 	print("JD calculation for %s image" %(ntpath.basename(str(inFile))))
 	try:
 		sd = iraf.noao.astutil.setjd
-		sd (inFile, observatory = str(OBS), time = time)
+		sd (inFile, observatory = str(OBS), date=date, time = time, ra=r, dec=d, epoch=epo, exposur=expTime, jd="jd", hjd="hjd", ljd="ljd")
 		return True
 		print("JD succeed.")
 	except:
 		return False
 		print("JD failed.")
 		
+def epoch(inFile, date, time):
+	t = Time(strftime('%s %s'  %(headerRead(inFile, date), headerRead(inFile, time))), format='iso', scale='utc')
+	return t.byear
 	
 def sideReal(inFile, OBS, date, time):
 	print("sidereal time calculation for %s image" %(ntpath.basename(str(inFile))))

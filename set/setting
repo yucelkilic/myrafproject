@@ -18,10 +18,11 @@ fspDannulus:5
 fspCBox:10
 ppApertur:10,15,20,25,30
 ppZMag:25
-oRa:OBJCTRA
-oDec:OBJCTDEC
+oRa:ra
+oDec:dec
 obser:observat
-obsti:ut_time
-obsda:ut_date
-spinBox:2000
+obsti:date
+obsda:date
+epoc:2014
+chepoc:f
 sfMaxStar:20

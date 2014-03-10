@@ -167,6 +167,9 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_46.clicked.connect(self.plotChart)
     
     self.ui.pushButton_17.clicked.connect(self.findStars)
+    
+    self.ui.checkBox_4.clicked.connect(self.epochUnlock)
+    
   
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     self.applySettings()
@@ -373,17 +376,18 @@ class MyForm(QtGui.QWidget):
 	latitude = self.ui.lineEdit_6.text()
 	altitude = self.ui.lineEdit_7.text()
 	timeZone = self.ui.lineEdit_8.text()
-	other = self.ui.plainTextEdit.toPlainText
+	other = str(self.ui.plainTextEdit.toPlainText())
 	
-	f = open("./obsdat/%s" %observatory, "w")
-	f.write("#%s\n" %other.replace("\n"," "))
-	f.write("observatory=\"%s\"\n" %observatory)
-	f.write("\tname=\"%s\"\n" %name)
-	f.write("\tlongitude=%s\n" %longitude)
-	f.write("\tlatitude=%s\n" %latitude)
-	f.write("\taltitude=%s\n" %altitude)
-	f.write("\ttimezone=%s\n" %timeZone)
+	f = open("./obsdat/%s" %(observatory), "w")
+	f.write("#%s\n" %(other.replace("\n"," ")))
+	f.write("observatory=\"%s\"\n" %(observatory))
+	f.write("\tname=%s\n" %(name))
+	f.write("\tlongitude=%s\n" %(longitude))
+	f.write("\tlatitude=%s\n" %(latitude))
+	f.write("\taltitude=%s\n" %(altitude))
+	f.write("\ttimezone=%s\n" %(timeZone))
 	f.close()
+	
 	
 	c=self.ui.listWidget_12.count()
 	for i in xrange(c):
@@ -434,6 +438,13 @@ class MyForm(QtGui.QWidget):
 	else:
 		self.ui.lineEdit_2.setEnabled(True)
 		self.ui.comboBox.setEnabled(False)
+		
+  def epochUnlock(self):
+	if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
+		self.ui.lineEdit_25.setEnabled(False)
+	else:
+		self.ui.lineEdit_25.setEnabled(True)
+
 		
   def goHeaderAdd(self):
 	if self.ui.listWidget_9.count() != 0:
@@ -558,9 +569,21 @@ class MyForm(QtGui.QWidget):
 			obd = self.ui.lineEdit_24.text()
 			ra = self.ui.lineEdit_22.text()
 			dec = self.ui.lineEdit_23.text()
-			epo = self.ui.spinBox.value()
+			epo = self.ui.lineEdit_25.text()
+			
+			apeCount = self.ui.lineEdit_15.text().count(",")+1
+			staCount = self.ui.listWidget_8.count()
+			
+			
 			ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save MYRaf file', 'res.my', 'my (*.my)')
 			if ofile != "":
+				if os.path.exists(ofile):
+					os.popen("rm %s" %(ofile))
+				f = open(ofile, "w")
+				f.write("# STAR = %s\n" %(str(staCount)))
+				f.write("# APERTURE = %s\n" %(str(apeCount)))
+				f.write("# id\tTIME\tMAG%s\tMERR%s\tAIRMASS\n"%(self.ui.lineEdit_15.text().replace(",","\tMAG"), self.ui.lineEdit_15.text().replace(",","\tMERR")))
+				f.close()
 				it = 0
 				err = ""
 				errJD = ""
@@ -576,19 +599,23 @@ class MyForm(QtGui.QWidget):
 					img = str(img.text())
 					tm = function.headerRead(img, obt)
 					ob = function.headerRead(img, obs)
+					dt = function.headerRead(img, obd)
 					ora = function.headerRead(img, ra)
 					odec = function.headerRead(img, dec)
 					obervatory = function.headerRead(img, obs)
+					if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
+						epo = function.epoch(img, obd, obt)
 					function.headerWrite(img, "epoch", epo)
 					if ob !="":
 						if tm != "":
 							if ora != "":
 								if odec != "":
-									if function.JD(img, obs, time=obt):
+									if function.JD(img, obs, date=obd, time = obt, r=ra, d = dec, epo=epo, expTime=exp):
 										if function.sideReal(img, ob, obd, obt):
 											if function.airmass(img, obervatory, time=obt, date=obd, expTime=exp):
 												if function.phot(img, "./tmp/analyzed/", "./tmp/photCoo", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
 													if function.txDump("./tmp/analyzed/%s.mag.1"  %(ntpath.basename(img)), "./tmp/analyzed/%s"  %(ntpath.basename(img))):
+														#os.popen("echo '#ap=%s'"%(str()))
 														os.popen("rm ./tmp/analyzed/%s.mag.1" %(ntpath.basename(img)))
 														os.popen("cat ./tmp/analyzed/%s >> %s"  %(ntpath.basename(img), ofile))
 														os.popen("rm ./tmp/analyzed/%s" %(ntpath.basename(img)))
@@ -615,9 +642,9 @@ class MyForm(QtGui.QWidget):
 				if errOB != "":
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(obs, errOB)))
 				if errORA != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(ora, errORA)))
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(ra, errORA)))
 				if errODEC != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(odec, errODEC)))
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(dec, errODEC)))
 				if errJD != "":
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>setjd</b> can not handle images below\n%s." %(errJD)))
 				if errSid != "":
@@ -1032,6 +1059,8 @@ class MyForm(QtGui.QWidget):
 ########################################################
 #Load and set set########################################
   def applySettings(self):
+	  
+	  
 	  f = open("set/setting", "r")
 	  for l in f:
 		  #print(l.replace("\n",""))
@@ -1138,14 +1167,25 @@ class MyForm(QtGui.QWidget):
 			  obsti = l.split(":")[1].replace("\n","")
 			  self.ui.lineEdit_17.setText(QtGui.QApplication.translate("Form", str(obsti), None, QtGui.QApplication.UnicodeUTF8))
 
-		  if l.startswith("spinBox"):
-			  spinBox = int(l.split(":")[1].replace("\n",""))
-			  self.ui.spinBox.setValue(spinBox)
-
 		  if l.startswith("obsda"):
 			  obsda = l.split(":")[1].replace("\n","")
 			  self.ui.lineEdit_24.setText(QtGui.QApplication.translate("Form", str(obsda), None, QtGui.QApplication.UnicodeUTF8))
+			  
+		  if l.startswith("epoc"):
+			  epoc = l.split(":")[1].replace("\n","")
+			  self.ui.lineEdit_25.setText(QtGui.QApplication.translate("Form", str(epoc), None, QtGui.QApplication.UnicodeUTF8))
 
+		  if l.startswith("chepoc"):
+			  chepoc = l.split(":")[1].replace("\n","")
+			  if chepoc == "t":
+				  self.ui.checkBox_4.setChecked(True)
+				  self.ui.lineEdit_25.setEnabled(False)
+			  else:
+				  self.ui.checkBox_4.setChecked(False)
+				  self.ui.lineEdit_25.setEnabled(True)
+				  
+				  
+				  
   def saveSettings(self):
 	
 	f = open("set/setting", "w")
@@ -1184,9 +1224,15 @@ class MyForm(QtGui.QWidget):
 	f.write("obsti:%s\n" %self.ui.lineEdit_17.text())
 	f.write("obsda:%s\n" %self.ui.lineEdit_24.text())
 	
-	f.write("spinBox:%s\n" %self.ui.spinBox.value())
+	f.write("epoc:%s\n" %self.ui.lineEdit_25.text())
+	if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
+		f.write("chepoc:t\n")
+	else:
+		f.write("chepoc:f\n")
 	
 	f.write("sfMaxStar:%s\n" %self.ui.dial_4.value())
+	
+		
 	
 	f.close()
 #########################################################

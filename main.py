@@ -570,7 +570,6 @@ class MyForm(QtGui.QWidget):
 				errOB = ""
 				errORA = ""
 				errODEC = ""
-				
 				for x in xrange(self.ui.listWidget_7.count()):
 					it = it + 1
 					img = self.ui.listWidget_7.item(x)
@@ -581,13 +580,12 @@ class MyForm(QtGui.QWidget):
 					odec = function.headerRead(img, dec)
 					obervatory = function.headerRead(img, obs)
 					function.headerWrite(img, "epoch", epo)
-					
 					if ob !="":
 						if tm != "":
 							if ora != "":
 								if odec != "":
 									if function.JD(img, obs, time=obt):
-										if function.sideReal(img, ob, obt, obd):
+										if function.sideReal(img, ob, obd, obt):
 											if function.airmass(img, obervatory, time=obt, date=obd, expTime=exp):
 												if function.phot(img, "./tmp/analyzed/", "./tmp/photCoo", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
 													if function.txDump("./tmp/analyzed/%s.mag.1"  %(ntpath.basename(img)), "./tmp/analyzed/%s"  %(ntpath.basename(img))):

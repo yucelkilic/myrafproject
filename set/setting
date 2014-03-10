@@ -21,7 +21,7 @@ ppZMag:25
 oRa:OBJCTRA
 oDec:OBJCTDEC
 obser:observat
-obsti:DATE
-obsda:DATE
+obsti:ut_time
+obsda:ut_date
 spinBox:2000
 sfMaxStar:20

@@ -20,7 +20,7 @@ Importing things:---------------------------------------------------------------
 			f2n						http://obswww.unige.ch/~tewes/f2n_dot_py/
 ----------------------------------------------------------------------------------------------------
 """
-import sys , os, time, string, math, signal, datetime, ntpath
+import sys , os, time, string, math, signal, datetime, ntpath, numpy
 from matplotlib.patches import Circle
 
 os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - MYRaf started.\" >>log.my")
@@ -327,22 +327,22 @@ class MyForm(QtGui.QWidget):
 	for i in f:
 		ln = i.replace("\n","")
 		if ln.replace("	","").startswith("observatory"):
-			self.ui.lineEdit_3.setText(QtGui.QApplication.translate("Form", str(ln).split("=")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
+			self.ui.lineEdit_3.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
 
 		if ln.replace("	","").startswith("name"):
-			self.ui.lineEdit_4.setText(QtGui.QApplication.translate("Form", str(ln).split("=")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
+			self.ui.lineEdit_4.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
 
 		if ln.replace("	","").startswith("longitude"):
-			self.ui.lineEdit_5.setText(QtGui.QApplication.translate("Form", str(ln).split("=")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
+			self.ui.lineEdit_5.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
 
 		if ln.replace("	","").startswith("latitude"):
-			self.ui.lineEdit_6.setText(QtGui.QApplication.translate("Form", str(ln).split("=")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
+			self.ui.lineEdit_6.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
 
 		if ln.replace("	","").startswith("altitude"):
-			self.ui.lineEdit_7.setText(QtGui.QApplication.translate("Form", str(ln).split("=")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
+			self.ui.lineEdit_7.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
 
 		if ln.replace("	","").startswith("timezone"):
-			self.ui.lineEdit_8.setText(QtGui.QApplication.translate("Form", str(ln).split("=")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
+			self.ui.lineEdit_8.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
 			
 		if ln.replace("	","").startswith("#"):
 			self.ui.plainTextEdit.setPlainText(QtGui.QApplication.translate("Form", "%s" %(ln.replace("#","")), None, QtGui.QApplication.UnicodeUTF8))
@@ -365,6 +365,7 @@ class MyForm(QtGui.QWidget):
 		item = self.ui.listWidget_12.item(it)
 		item.setText(QtGui.QApplication.translate("Form", str(fn), None, QtGui.QApplication.UnicodeUTF8))
 	self.ui.listWidget_12.sortItems()
+	os.popen("cat obsdat/* > /iraf/iraf/noao/lib/obsdb.dat")
 
   def addObservatory(self):
 	fl = self.ui.listWidget_12.currentItem()
@@ -379,12 +380,12 @@ class MyForm(QtGui.QWidget):
 	
 	f = open("./obsdat/%s" %(observatory), "w")
 	f.write("#%s\n" %(other.replace("\n"," ")))
-	f.write("observatory=\"%s\"\n" %(observatory))
+	f.write("observatory = \"%s\"\n" %(observatory))
 	f.write("\tname=%s\n" %(name))
-	f.write("\tlongitude=%s\n" %(longitude))
-	f.write("\tlatitude=%s\n" %(latitude))
-	f.write("\taltitude=%s\n" %(altitude))
-	f.write("\ttimezone=%s\n" %(timeZone))
+	f.write("\tlongitude = %s\n" %(longitude))
+	f.write("\tlatitude = %s\n" %(latitude))
+	f.write("\taltitude = %s\n" %(altitude))
+	f.write("\ttimezone = %s\n" %(timeZone))
 	f.close()
 	
 	
@@ -401,6 +402,8 @@ class MyForm(QtGui.QWidget):
 		item = self.ui.listWidget_12.item(it)
 		item.setText(QtGui.QApplication.translate("Form", str(fn), None, QtGui.QApplication.UnicodeUTF8))
 	self.ui.listWidget_12.sortItems()
+	
+	os.popen("cat obsdat/* > /iraf/iraf/noao/lib/obsdb.dat")
 		
 ########################################################
 #Header Editor##########################################
@@ -564,13 +567,14 @@ class MyForm(QtGui.QWidget):
 			ape = self.ui.lineEdit_15.text()
 			zma = self.ui.lineEdit_16.text()
 			obs = self.ui.lineEdit_18.text()
+			print(obs)
 			obt = self.ui.lineEdit_17.text()
 			obd = self.ui.lineEdit_24.text()
 			ra = self.ui.lineEdit_22.text()
 			dec = self.ui.lineEdit_23.text()
 			epo = self.ui.lineEdit_25.text()
 			
-			apeCount = self.ui.lineEdit_15.text().count(",")+1
+			apert = self.ui.lineEdit_15.text()
 			staCount = self.ui.listWidget_8.count()
 			
 			
@@ -580,7 +584,7 @@ class MyForm(QtGui.QWidget):
 					os.popen("rm %s" %(ofile))
 				f = open(ofile, "w")
 				f.write("# STAR = %s\n" %(str(staCount)))
-				f.write("# APERTURE = %s\n" %(str(apeCount)))
+				f.write("# APERTURE = %s\n" %(str(apert)))
 				f.write("# id\tTIME\tMAG%s\tMERR%s\tAIRMASS\n"%(self.ui.lineEdit_15.text().replace(",","\tMAG"), self.ui.lineEdit_15.text().replace(",","\tMERR")))
 				f.close()
 				it = 0
@@ -601,18 +605,19 @@ class MyForm(QtGui.QWidget):
 					dt = function.headerRead(img, obd)
 					ora = function.headerRead(img, ra)
 					odec = function.headerRead(img, dec)
-					obervatory = function.headerRead(img, obs)
+					observatory = function.headerRead(img, obs)
 					if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
 						epo = function.epoch(img, obd, obt)
 					function.headerWrite(img, "epoch", epo)
+					
 					if ob !="":
 						if tm != "":
 							if ora != "":
 								if odec != "":
-									if function.JD(img, obs, date=obd, time = obt, r=ra, d = dec, epo=epo, expTime=exp):
+									if function.JD(img, str(obs), str(obd), str(obt), str(ra), str(dec), str("epoch"), str(exp)):
 										if function.sideReal(img, ob, obd, obt):
-											if function.airmass(img, obervatory, time=obt, date=obd, expTime=exp):
-												if function.phot(img, "./tmp/analyzed/", "./tmp/photCoo", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
+											if function.airmass(img, observatory, ra, dec, "epoch", "st", obt, obd, exp):
+												if function.phot(img, "./tmp/analyzed/", "./tmp/pc", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
 													if function.txDump("./tmp/analyzed/%s.mag.1"  %(ntpath.basename(img)), "./tmp/analyzed/%s"  %(ntpath.basename(img))):
 														#os.popen("echo '#ap=%s'"%(str()))
 														os.popen("rm ./tmp/analyzed/%s.mag.1" %(ntpath.basename(img)))
@@ -811,18 +816,31 @@ class MyForm(QtGui.QWidget):
 			ref_image = img
 			identifications = alipy.ident.run(ref_image, images_to_align, visu=False, sexkeepcat=True, skipsaturated=True)
 
-			os.popen("cat alipy_cats/%s.pysexcat| grep -v '#'| awk '{print $1, $2, $3, $4, $5,$6,$7,$8}'| sort -r -n -k3,4| head -n%s > tmp/coo " %(ntpath.basename(img).split(".")[0], self.ui.dial_4.value()))
+			os.popen("cat alipy_cats/%s.pysexcat| grep -v '#'| awk '{print $1, $2, $3, $4}' > tmp/coo" %(ntpath.basename(img).split(".")[0]))
 			os.popen("rm -rf alipy_cats")
+  			
+  			coor = []
+  			
+  			f = open("tmp/coo", "r")
+  			for i in f:
+				coor.append(map(float, i.split()))
+			f.close()
   			
   			c=self.ui.listWidget_8.count()
   			for i in xrange(c):
 				self.ui.listWidget_8.takeItem(0)
 				
-			f = open("tmp/coo","rb")
-			for i in f:
-				ln = i.replace("\n","")
-				line = "%s-%s" %(str(ln.split(" ")[0]), str(ln.split(" ")[1]))
-				self.ui.listWidget_8.addItem(line)
+			fl = []
+			for u in coor:
+				fl.append(u[2])
+			ma = numpy.max(fl)
+			mi = numpy.min(fl)
+			av = (ma - mi)/100
+			print av
+			for i in coor:
+				if i[2] > av:
+					line = "%s-%s" %(str(i[0]), str(i[1]))
+					self.ui.listWidget_8.addItem(line)
 
   def reDraw(self, listObject, dispObject, horizontalSlider):
   	if listObject:

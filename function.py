@@ -184,6 +184,7 @@ def manAlign(inFile, x, y, outFile):
 
 def JD(inFile, OBS, date="date-obs", time = "time-obs", r="ra", d = "dec", epo="epoch", expTime="exptime"):
 	print("JD calculation for %s image" %(ntpath.basename(str(inFile))))
+	print("JD F(%s) OBSERVAT(%s) DATE(%s) TIME(%s) Ra(%s) Dec(%s) Epo(%s) Exp(%s)" %(inFile, OBS, date, time, r, d, epo, expTime))
 	try:
 		sd = iraf.noao.astutil.setjd
 		sd (inFile, observatory = str(OBS), date=date, time = time, ra=r, dec=d, epoch=epo, exposur=expTime, jd="jd", hjd="hjd", ljd="ljd")
@@ -214,11 +215,11 @@ def sideReal(inFile, OBS, date, time):
 		print("Sidereal calculator failed.")
 		
 
-def airmass(inFile, OBS, time="time-obs", date="date-obs", expTime="exptime"):
+def airmass(inFile, OBS="observat", r="ra", d="dec", equ="epoch", s="st", u="ut", dat="date", exp="exptime"):
 	print("Setairmass for %s image" %(ntpath.basename(str(inFile))))
 	try:
 		sam = iraf.setairmass
-		sam(inFile, observatory = str(OBS), intype = "middle", ut = time, date = date, exposur=expTime)
+		sam(inFile, observatory=OBS ,intype ="middle" ,outtype="effective", ra=r, dec=d, equinox=equ, st= s, ut=u, date=dat, exposur=exp)
 		return True
 		print("Setairmass succeed.")
 	except:

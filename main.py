@@ -200,34 +200,33 @@ class MyForm(QtGui.QWidget):
   		try:   	
 			self.ui.label_43.setText(QtGui.QApplication.translate("Form", "File location: %s" %(filename), None, QtGui.QApplication.UnicodeUTF8))
 			# counting stars in result file
-			dataCount = os.popen("cat %s |awk '{if ($1 == 1) print $1}'|wc -l" %(filename))
-			dataCount=dataCount.readline().replace("\n","")
-			lineCount = os.popen("cat %s| wc -l" %(filename))
-			lineCount = lineCount.readline().replace("\n","")
-			starCount = int(lineCount)/int(dataCount)
+			with open(filename) as resultFile:
+			    head=[resultFile.next() for x in xrange(3)]
+			capStar, starCount = head[0].split(" = ")
+			capStar, apertures = head[1].split(" = ")
 			#clearing comboxBoxs
 			self.ui.comboBox_11.clear()
 			self.ui.comboBox_12.clear()
 			self.ui.comboBox_13.clear()
-			for i in range(1, starCount+1):
+			for i in range(1, int(starCount.replace("\n",""))+1):
 			    self.ui.comboBox_11.addItem(str(i))
 			    self.ui.comboBox_12.addItem(str(i))
 			    self.ui.comboBox_13.addItem(str(i))
 			self.ui.comboBox_14.clear()
 			#getting apertures
-			for aperture in self.ui.lineEdit_15.text().split(","):
+			apertures = apertures.replace("\n","")
+			for aperture in apertures.split(","):
 			    self.ui.comboBox_14.addItem(aperture.replace("\n", ""))
 		except:
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Error reading MYRaf result file!"))
-			gui.logging(self, "--- %s - Error reading MYRaf result file!" %(datetime.datetime.utcnow()))
-			
+			gui.logging(self, "--- %s - Error reading MYRaf result file!" %(datetime.datetime.utcnow()))			
 
 #Plot Chart#############################################
   def plotChart(self):
   	# reading form
   	if self.ui.label_43.text():
   		#Checking result file
-  		if self.ui.lineEdit_19.text() and self.ui.lineEdit_20.text() and self.ui.label_55.text() and self.ui.comboBox_11.currentText() and self.ui.comboBox_12.currentText() and self.ui.comboBox_13.currentText() and self.ui.comboBox_14.currentText():
+  		if self.ui.lineEdit_19.text() and self.ui.lineEdit_20.text() and self.ui.lineEdit_21.text() and self.ui.label_55.text() and self.ui.comboBox_11.currentText() and self.ui.comboBox_12.currentText() and self.ui.comboBox_13.currentText() and self.ui.comboBox_14.currentText():
 			varStarID = self.ui.comboBox_11.currentText()
 			checkStarID = self.ui.comboBox_12.currentText()
 			refStarID = self.ui.comboBox_13.currentText()

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created: Mon Mar 10 14:39:02 2014
-#      by: PyQt4 UI code generator 4.10.2
+# Created: Tue Mar 11 10:52:26 2014
+#      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -686,16 +686,13 @@ class Ui_Form(object):
         self.label_43.setMinimumSize(QtCore.QSize(361, 16))
         self.label_43.setText(_fromUtf8(""))
         self.label_43.setObjectName(_fromUtf8("label_43"))
-        self.gridLayout_74.addWidget(self.label_43, 0, 1, 1, 1)
-        self.label_56 = QtGui.QLabel(self.groupBox_18)
-        self.label_56.setObjectName(_fromUtf8("label_56"))
-        self.gridLayout_74.addWidget(self.label_56, 0, 2, 1, 1)
+        self.gridLayout_74.addWidget(self.label_43, 0, 0, 1, 1)
         self.lineEdit_21 = QtGui.QLineEdit(self.groupBox_18)
         self.lineEdit_21.setObjectName(_fromUtf8("lineEdit_21"))
-        self.gridLayout_74.addWidget(self.lineEdit_21, 0, 3, 1, 1)
-        self.label_9 = QtGui.QLabel(self.groupBox_18)
-        self.label_9.setObjectName(_fromUtf8("label_9"))
-        self.gridLayout_74.addWidget(self.label_9, 0, 0, 1, 1)
+        self.gridLayout_74.addWidget(self.lineEdit_21, 0, 2, 1, 1)
+        self.label_56 = QtGui.QLabel(self.groupBox_18)
+        self.label_56.setObjectName(_fromUtf8("label_56"))
+        self.gridLayout_74.addWidget(self.label_56, 0, 1, 1, 1)
         self.gridLayout_75.addLayout(self.gridLayout_74, 2, 0, 1, 1)
         self.gridLayout_70 = QtGui.QGridLayout()
         self.gridLayout_70.setObjectName(_fromUtf8("gridLayout_70"))
@@ -1137,6 +1134,7 @@ class Ui_Form(object):
         self.label_38.setObjectName(_fromUtf8("label_38"))
         self.gridLayout_53.addWidget(self.label_38, 0, 0, 1, 1)
         self.lineEdit_14 = QtGui.QLineEdit(self.groupBox_13)
+        self.lineEdit_14.setMaxLength(8)
         self.lineEdit_14.setObjectName(_fromUtf8("lineEdit_14"))
         self.gridLayout_53.addWidget(self.lineEdit_14, 1, 1, 1, 1)
         self.gridLayout_63.addWidget(self.groupBox_13, 0, 0, 1, 1)
@@ -1328,7 +1326,7 @@ class Ui_Form(object):
         self.gridLayout_47.addWidget(self.scrollArea_3, 0, 0, 1, 1)
         self.toolBox.addItem(self.page_3, _fromUtf8(""))
         self.page_4 = QtGui.QWidget()
-        self.page_4.setGeometry(QtCore.QRect(0, 0, 73, 16))
+        self.page_4.setGeometry(QtCore.QRect(0, 0, 88, 16))
         self.page_4.setObjectName(_fromUtf8("page_4"))
         self.gridLayout_46 = QtGui.QGridLayout(self.page_4)
         self.gridLayout_46.setObjectName(_fromUtf8("gridLayout_46"))
@@ -1370,11 +1368,11 @@ class Ui_Form(object):
         self.gridLayout_79.addWidget(self.tabWidget, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(3)
         self.tabWidget_2.setCurrentIndex(0)
         self.tabWidget_3.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(0)
-        self.tabWidget_6.setCurrentIndex(0)
+        self.tabWidget_6.setCurrentIndex(1)
         self.tabWidget_5.setCurrentIndex(0)
         self.toolBox.setCurrentIndex(3)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -1446,7 +1444,6 @@ class Ui_Form(object):
         self.pushButton_2.setText(_translate("Form", "Point Color:", None))
         self.label_52.setText(_translate("Form", "Epoch: ", None))
         self.label_56.setText(_translate("Form", "Legend Name", None))
-        self.label_9.setText(_translate("Form", "Path:", None))
         self.label_49.setText(_translate("Form", "Variable:", None))
         self.label_50.setText(_translate("Form", "Check:", None))
         self.label_51.setText(_translate("Form", "Reference:", None))
@@ -2277,13 +2274,3 @@ class Ui_Form(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("Form", "Help", None))
 
 from matplotlibwidgetFile import matplotlibWidget
-
-if __name__ == "__main__":
-    import sys
-    app = QtGui.QApplication(sys.argv)
-    Form = QtGui.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
-

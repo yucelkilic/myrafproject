@@ -39,7 +39,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -2319,7 +2319,7 @@
        <item row="0" column="0" colspan="2">
         <widget class="QTabWidget" name="tabWidget_6">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab_21">
           <attribute name="title">
@@ -3168,8 +3168,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>96</width>
+                <height>26</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3182,8 +3182,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>96</width>
+                <height>26</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3196,7 +3196,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
+                <width>96</width>
                 <height>95</height>
                </rect>
               </property>
@@ -3214,8 +3214,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>79</width>
-                    <height>79</height>
+                    <width>96</width>
+                    <height>26</height>
                    </rect>
                   </property>
                  </widget>
@@ -3228,8 +3228,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>88</width>
-                <height>16</height>
+                <width>96</width>
+                <height>26</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3242,8 +3242,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>96</width>
+                <height>26</height>
                </rect>
               </property>
               <attribute name="label">

@@ -381,7 +381,7 @@ class MyForm(QtGui.QWidget):
 	f = open("./obsdat/%s" %(observatory), "w")
 	f.write("#%s\n" %(other.replace("\n"," ")))
 	f.write("observatory = \"%s\"\n" %(observatory))
-	f.write("\tname=%s\n" %(name))
+	f.write("\tname = \"%s\"\n" %(name))
 	f.write("\tlongitude = %s\n" %(longitude))
 	f.write("\tlatitude = %s\n" %(latitude))
 	f.write("\taltitude = %s\n" %(altitude))

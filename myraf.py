@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created: Tue Mar 11 22:14:53 2014
+# Created: Wed Mar 12 09:40:42 2014
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,7 +29,7 @@ class Ui_Form(object):
         Form.resize(750, 653)
         Form.setMinimumSize(QtCore.QSize(750, 650))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("../.designer/backup/img/MYRaf.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("img/MYRaf.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
         self.gridLayout_79 = QtGui.QGridLayout(Form)
         self.gridLayout_79.setObjectName(_fromUtf8("gridLayout_79"))

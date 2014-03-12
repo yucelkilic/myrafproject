@@ -599,6 +599,7 @@ class MyForm(QtGui.QWidget):
 				errORA = ""
 				errODEC = ""
 				errdt = ""
+				errOBSERVAT = ""
 				for x in xrange(self.ui.listWidget_7.count()):
 					it = it + 1
 					img = self.ui.listWidget_7.item(x)
@@ -612,41 +613,46 @@ class MyForm(QtGui.QWidget):
 					if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
 						epo = function.epoch(img, obd, obt)
 					function.headerWrite(img, "epoch", epo)
-					
-					if dt !="":
-						if ob !="":
-							if tm != "":
-								if ora != "":
-									if odec != "":
-										if function.JD(img, str(obs), str(obd), str(obt), str(ra), str(dec), str("epoch"), str(exp)):
-											if function.sideReal(img, ob, obd, obt):
-												if function.airmass(img, observatory, ra, dec, "epoch", "st", obt, obd, exp):
-													if function.phot(img, "./tmp/analyzed/", "./tmp/pc", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
-														if function.txDump("./tmp/analyzed/%s.mag.1"  %(ntpath.basename(img)), "./tmp/analyzed/%s"  %(ntpath.basename(img))):
-															#os.popen("echo '#ap=%s'"%(str()))
-															os.popen("rm ./tmp/analyzed/%s.mag.1" %(ntpath.basename(img)))
-															os.popen("cat ./tmp/analyzed/%s >> %s"  %(ntpath.basename(img), ofile))
-															os.popen("rm ./tmp/analyzed/%s" %(ntpath.basename(img)))
+					if os.path.isfile("obsdat/%s" %(ob)):
+						if dt !="":
+							if ob !="":
+								if tm != "":
+									if ora != "":
+										if odec != "":
+											if function.JD(img, str(obs), str(obd), str(obt), str(ra), str(dec), str("epoch"), str(exp)):
+												if function.sideReal(img, ob, obd, obt):
+													if function.airmass(img, observatory, ra, dec, "epoch", "st", obt, obd, exp):
+														if function.phot(img, "./tmp/analyzed/", "./tmp/pc", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
+															if function.txDump("./tmp/analyzed/%s.mag.1"  %(ntpath.basename(img)), "./tmp/analyzed/%s"  %(ntpath.basename(img))):
+																#os.popen("echo '#ap=%s'"%(str()))
+																os.popen("rm ./tmp/analyzed/%s.mag.1" %(ntpath.basename(img)))
+																os.popen("cat ./tmp/analyzed/%s >> %s"  %(ntpath.basename(img), ofile))
+																os.popen("rm ./tmp/analyzed/%s" %(ntpath.basename(img)))
+														else:
+															err = "%s, %s" %(err, ntpath.basename(img))
 													else:
-														err = "%s, %s" %(err, ntpath.basename(img))
+														errAir = "%s, %s" %(errAir, ntpath.basename(img))
 												else:
-													errAir = "%s, %s" %(errAir, ntpath.basename(img))
+													errSid = "%s, %s" %(errSid, ntpath.basename(img))
 											else:
-												errSid = "%s, %s" %(errSid, ntpath.basename(img))
+												errJD = "%s, %s" %(errJD, ntpath.basename(img))
 										else:
-											errJD = "%s, %s" %(errJD, ntpath.basename(img))
+											errODEC = "%s, %s" %(errODEC, ntpath.basename(img))
 									else:
-										errODEC = "%s, %s" %(errODEC, ntpath.basename(img))
+										errORA = "%s, %s" %(errORA, ntpath.basename(img))
 								else:
-									errORA = "%s, %s" %(errORA, ntpath.basename(img))
+									errTM = "%s, %s" %(errTM, ntpath.basename(img))
 							else:
-								errTM = "%s, %s" %(errTM, ntpath.basename(img))
+								errOB = "%s, %s" %(errOB, ntpath.basename(img))
+							self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
 						else:
-							errOB = "%s, %s" %(errOB, ntpath.basename(img))
-						self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
+							errdt = "%s, %s" %(errdt, ntpath.basename(img))
 					else:
-						errdt = "%s, %s" %(errdt, ntpath.basename(img))
+						errOBSERVAT = "%s, %s" %(errOBSERVAT, ntpath.basename(img))
 						
+				if errOBSERVAT != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Can't find Observatory in obsdb for images below:\n%s\nYou can add your observatory using editor." %(errOBSERVAT)))
+					
 				if errTM != "":
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(obt, errTM)))
 				if errOB != "":
@@ -665,16 +671,11 @@ class MyForm(QtGui.QWidget):
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>setairmass</b> can not handle images below\n%s." %(errAir)))
 				if err != "":
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>phot</b> can not handle images below\n%s." %(err)))
-
-
 				
 		else:
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some sources."))
 	else:
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No image for Photometry."))
-		
-		
-		
 		
 ########################################################
 #Manual Align############################################

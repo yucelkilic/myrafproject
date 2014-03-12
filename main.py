@@ -335,7 +335,8 @@ class MyForm(QtGui.QWidget):
 			
 			#Plot
 			pointColor = self.ui.label_55.text()
-			gui.PlotFunc(self,  self.ui.disp_chart.canvas, varPhase, (diffMag*(-1)),  residuMag, pointColor,  legendName)
+			sp = str(self.ui.comboBox_15.currentText()).split(" ")[0]
+			gui.PlotFunc(self,  self.ui.disp_chart.canvas, varPhase, (diffMag*(-1)),  residuMag, pointColor,  legendName, sp)
 		else:
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please fill/select the required informations!"))
 			gui.logging(self, "--- %s - Please fill/select the required informations!" %(datetime.datetime.utcnow()))
@@ -484,30 +485,36 @@ class MyForm(QtGui.QWidget):
 		
   def goHeaderAdd(self):
 	if self.ui.listWidget_9.count() != 0:
-		headErr = ""
-		it = 0
-		for x in xrange(self.ui.listWidget_9.count()):
-			it = it + 1
-			img = self.ui.listWidget_9.item(x)
-			img = str(img.text())
-			field = self.ui.lineEdit.text()
-			if self.ui.checkBox_5.checkState() != QtCore.Qt.Checked:
-				val = self.ui.lineEdit_2.text()
-			else:
-				h = self.ui.comboBox.currentText()
-				selectedField = h.split(" = ")[0]
-				val = str("'(@\"%s\")'" %selectedField)
-			
-			self.ui.progressBar_4.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_9.count())))))
-			self.ui.label_41.setText(QtGui.QApplication.translate("Form", "Header: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-				
-			if function.headerWrite(img, field, val):
-				self.getHeader()
-			else:
-				headErr = "%s\n%s" %(headErr, ntpath.basename(str(img)))
+		f = self.ui.lineEdit.text()
+		if str(f).strip():
+			headErr = ""
+			it = 0
+			for x in xrange(self.ui.listWidget_9.count()):
+				it = it + 1
+				img = self.ui.listWidget_9.item(x)
+				img = str(img.text())
+				field = self.ui.lineEdit.text()
+				field = str(field).strip()
 					
-		if headErr != "" :
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>hedit</b> can not handle this job for images below\n%s" %(headErr)))
+				if self.ui.checkBox_5.checkState() != QtCore.Qt.Checked:
+					val = self.ui.lineEdit_2.text()
+				else:
+					h = self.ui.comboBox.currentText()
+					selectedField = h.split(" = ")[0]
+					val = str("'(@\"%s\")'" %selectedField)
+				
+				self.ui.progressBar_4.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_9.count())))))
+				self.ui.label_41.setText(QtGui.QApplication.translate("Form", "Header: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
+					
+				if not function.headerWrite(img, field, val):
+					headErr = "%s\n%s" %(headErr, ntpath.basename(str(img)))
+						
+			if self.ui.listWidget_9.currentIndex():
+				self.getHeader()
+			if headErr != "" :
+				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>hedit</b> can not handle this job for images below\n%s" %(headErr)))
+		else:
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please fill the \"Field\" section!"))			
 	else:
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some images."))
 	
@@ -558,8 +565,10 @@ class MyForm(QtGui.QWidget):
   def displayCoords(self):
 	print "degisti"
 	if self.ui.listWidget_8.count() != 0:
-		self.displayPhot()				
+		self.displayPhot()
+		lNumber = 0	
 		for x in self.ui.listWidget_8.selectedItems():
+			lNumber = lNumber +1
 			coo = str(x.text())
 			x, y = coo.split("-")
 			mean = 0
@@ -577,6 +586,7 @@ class MyForm(QtGui.QWidget):
 			circAperture.center = x, y
 			circAnnulus.center = x, y
 			circDannulus.center = x, y
+			self.ui.dispPhoto.canvas.ax.annotate(lNumber, xy = (x, y), xytext=(int(Aperture/3),int(Aperture/3)), textcoords='offset points', color = "blue", fontsize = 10)
 			self.ui.dispPhoto.canvas.draw()
 			
   def goPhot(self):
@@ -872,11 +882,10 @@ class MyForm(QtGui.QWidget):
 				it = it + 1
 				img = self.ui.listWidget_5.item(x)
 				img = str(img.text())
-				self.ui.label_7.setText(QtGui.QApplication.translate("Form", "Aligning: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
+				self.ui.label_7.setText(QtGui.QApplication.translate("Form", "Aligning: %s" %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
 				if not function.autoAlign(img, ref, odir):
 					aliErr = "%s, %s" %(aliErr, ntpath.basename(str(img)))
 					gui.logging(self, "--- %s - alipy failed." %(datetime.datetime.utcnow()))
-					self.ui.label_7.setText(QtGui.QApplication.translate("Form", "Aligning:%s" %(ntpath.basename(img)), None, QtGui.QApplication.UnicodeUTF8))
 				self.ui.progressBar_2.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_5.count())))))
 				os.popen("rm -rf ./alipy_cats/ ./alipy_out/")
 			gui.logging(self, "-- %s - AutoAlign finished aligning." %(datetime.datetime.utcnow()))

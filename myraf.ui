@@ -1314,7 +1314,7 @@
       <attribute name="title">
        <string>Graph</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_94">
+      <layout class="QGridLayout" name="gridLayout_95">
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox_16">
          <property name="minimumSize">
@@ -1366,7 +1366,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <layout class="QGridLayout" name="gridLayout_78">
+        <layout class="QGridLayout" name="gridLayout_94">
          <item row="0" column="0">
           <widget class="QGroupBox" name="groupBox_18">
            <property name="maximumSize">
@@ -1403,29 +1403,6 @@
              </layout>
             </item>
             <item row="1" column="0">
-             <layout class="QGridLayout" name="gridLayout_70">
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_51">
-                <property name="font">
-                 <font>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Reference</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QComboBox" name="comboBox_13"/>
-              </item>
-             </layout>
-            </item>
-            <item row="2" column="0">
              <layout class="QGridLayout" name="gridLayout_14">
               <item row="0" column="0">
                <widget class="QLabel" name="label_50">
@@ -1445,6 +1422,29 @@
               </item>
               <item row="1" column="0">
                <widget class="QComboBox" name="comboBox_12"/>
+              </item>
+             </layout>
+            </item>
+            <item row="2" column="0">
+             <layout class="QGridLayout" name="gridLayout_70">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_51">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Reference</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QComboBox" name="comboBox_13"/>
               </item>
              </layout>
             </item>
@@ -1472,6 +1472,110 @@
              </layout>
             </item>
             <item row="4" column="0">
+             <layout class="QGridLayout" name="gridLayout_78">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_60">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Point Shape</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QComboBox" name="comboBox_15">
+                <item>
+                 <property name="text">
+                  <string>+ Plus</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>x Cross</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>o Circle</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>* Star</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>. Dot</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>v Triangle1</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>^ Triangle2</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>&lt; Triangle3</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>&gt; Triangle4</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>8 Octagon</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>s Square</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>p Pentagon</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>H Hexagon</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>D Diamond</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>| VLine</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>_ HLine</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="5" column="0">
              <layout class="QGridLayout" name="gridLayout_74">
               <item row="1" column="0">
                <widget class="QLineEdit" name="lineEdit_19">
@@ -1510,7 +1614,7 @@
               </item>
              </layout>
             </item>
-            <item row="5" column="0">
+            <item row="6" column="0">
              <layout class="QGridLayout" name="gridLayout_75">
               <item row="1" column="0">
                <widget class="QLineEdit" name="lineEdit_20">
@@ -1546,7 +1650,7 @@
               </item>
              </layout>
             </item>
-            <item row="6" column="0">
+            <item row="7" column="0">
              <layout class="QGridLayout" name="gridLayout_90">
               <item row="0" column="0">
                <widget class="QLabel" name="label_56">
@@ -1569,7 +1673,7 @@
               </item>
              </layout>
             </item>
-            <item row="7" column="0">
+            <item row="8" column="0">
              <layout class="QGridLayout" name="gridLayout_92">
               <item row="0" column="0">
                <widget class="QPushButton" name="pushButton_2">
@@ -2840,7 +2944,7 @@
                      <number>0</number>
                     </property>
                     <property name="maximum">
-                     <number>10</number>
+                     <number>6</number>
                     </property>
                     <property name="pageStep">
                      <number>1</number>
@@ -2873,7 +2977,7 @@
                   <item row="1" column="0">
                    <widget class="QDial" name="dial_6">
                     <property name="minimum">
-                     <number>2</number>
+                     <number>7</number>
                     </property>
                     <property name="maximum">
                      <number>25</number>
@@ -3129,8 +3233,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
-                <height>26</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3143,8 +3247,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
-                <height>26</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3157,7 +3261,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -3175,8 +3279,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>96</width>
-                    <height>26</height>
+                    <width>79</width>
+                    <height>79</height>
                    </rect>
                   </property>
                  </widget>
@@ -3189,8 +3293,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
-                <height>26</height>
+                <width>73</width>
+                <height>16</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3203,8 +3307,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
-                <height>26</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <attribute name="label">

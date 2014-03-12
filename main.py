@@ -179,6 +179,7 @@ class MyForm(QtGui.QWidget):
     
     self.ui.checkBox_4.clicked.connect(self.epochUnlock)
     
+    self.ui.pushButton_19.clicked.connect(self.chartClear)
   
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     self.applySettings()
@@ -187,11 +188,17 @@ class MyForm(QtGui.QWidget):
     self.ui.horizontalSlider.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_5.currentItem(), self.ui.dispAuto.canvas, "horizontalSlider"))
     self.ui.horizontalSlider_2.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_6.currentItem(), self.ui.dispManual.canvas, "horizontalSlider_2"))
     self.ui.horizontalSlider_3.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_7.currentItem(), self.ui.dispPhoto.canvas, "horizontalSlider_3"))
-    self.ui.dispAuto.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
     self.ui.dispManual.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
-    self.ui.dispManual.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
-    self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
     self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
+    self.ui.disp_chart.canvas.fig.canvas.mpl_connect('pick_event', self.onpick)
+
+# Chart point picker
+  def onpick(self, event):
+  	thisline = event.artist
+	xdata = thisline.get_xdata()
+	ydata = thisline.get_ydata()
+	ind = event.ind
+	self.ui.label_9.setText("x=" + str(format(xdata[ind][0], '.3f')) + " y=" + str(format(ydata[ind][0], '.3f')))
 
   #Chart area clear
   def chartClear(self):
@@ -804,42 +811,7 @@ class MyForm(QtGui.QWidget):
 	   		if event.ydata != None and event.xdata != None:
   				self.ui.listWidget_8.addItem(str(format(event.xdata, '.4f')) + " - " + str(format(event.ydata, '.4f')))
   				self.displayCoords()
-  			
-  def mouseplace(self,event):
-	'''
-	Handels the mouse motion over the imshow mpl canvas object. To Do, updated color map correctly. This function now  also
-	updates the x and y views if they are visible need better handeling of sizes and edge handeling for x and y views
-	'''
-	#makes sure the mouse is on the data canvas
-	if event.ydata != None and event.xdata != None:
-		#This next bit is to handle the preview problem at the boundary. it will create the preview based
-		#on mouse position, and boundary value if you get close to boundary.
-		self.ui.label_78.setText(str(event.xdata))
-		self.ui.label_80.setText(str(event.ydata))	
-		self.ui.label_61.setText(str(event.xdata))
-		self.ui.label_63.setText(str(event.ydata))
-		self.ui.label_74.setText(str(event.xdata))
-		self.ui.label_76.setText(str(event.ydata))
-		
-		if self.ui.tabWidget.currentIndex() == 2:
-			if self.ui.listWidget_7.currentItem():
-				img = self.ui.listWidget_7.currentItem()
-				img = img.text()
-				plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
-				self.ui.label_85.setText(str(plotF.dataFits()[event.ydata,event.xdata]))
-		elif self.ui.tabWidget.currentIndex() == 1:
-			if self.ui.tabWidget_3.currentIndex() == 0:
-				if self.ui.listWidget_5.currentItem():
-					img = self.ui.listWidget_5.currentItem()
-					img = img.text()
-					plotF = FitsPlot(str(img), self.ui.dispAuto.canvas, self.ui)
-					self.ui.label_82.setText(str(plotF.dataFits()[event.ydata,event.xdata]))
-			elif self.ui.tabWidget_3.currentIndex() == 1:
-				if self.ui.listWidget_6.currentItem():
-					img = self.ui.listWidget_6.currentItem()
-					img = img.text()
-					plotF = FitsPlot(str(img), self.ui.dispManual.canvas, self.ui)
-					self.ui.label_84.setText(str(plotF.dataFits()[event.ydata,event.xdata]))
+
 #Auto Align#############################################
   def findStars(self):
   	if self.ui.tabWidget.currentIndex() == 2:

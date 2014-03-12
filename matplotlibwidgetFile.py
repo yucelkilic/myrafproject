@@ -43,8 +43,9 @@ class matplotlibWidget(QtGui.QWidget):
     def __init__(self, parent = None):
         QtGui.QWidget.__init__(self, parent)
         self.canvas = MplCanvas()
+        self.toolbar = NavigationToolbar(self.canvas, self)
         self.vbl = QtGui.QVBoxLayout()
         self.vbl.addWidget(self.canvas)
+        self.vbl.addWidget(self.toolbar)
         self.setLayout(self.vbl)
-        self.toolbar = NavigationToolbar(self.canvas, self)
-        self.toolbar.show()
+        self.parent = parent

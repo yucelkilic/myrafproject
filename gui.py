@@ -8,7 +8,7 @@ import matplotlib.dates as md
 
 def PlotFunc(self,  chartDevice,  Phase,  diffMag,  residual,  pColor, legend):
     chartDevice.ax.hold(True)
-    chartDevice.ax.plot(Phase, diffMag, "o",  color = "%s" %(pColor),  label = "%s" %(legend) )
+    chartDevice.ax.plot(Phase, diffMag, "o",  color = "%s" %(pColor),  label = "%s" %(legend), picker=5)
     chartDevice.ax.legend(shadow = True, loc = (1, 0.5), numpoints = 1,  prop={'size':10})
     chartDevice.draw()
 

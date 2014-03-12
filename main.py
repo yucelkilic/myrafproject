@@ -113,9 +113,6 @@ class MyForm(QtGui.QWidget):
     self.ui.checkBox_3.clicked.connect(self.unlockFlat)
     
     self.ui.pushButton_18.clicked.connect(self.displayCoords)
-
-    #self.ui.radioButton.clicked.connect(self.unlockIrafPhot)
-    #self.ui.radioButton_2.clicked.connect(self.unlockEnsfPhot)
     
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     
@@ -135,7 +132,18 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_32.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_7))
     self.ui.pushButton_36.clicked.connect(lambda: gui.add(self, self.ui.listWidget_9))
     self.ui.pushButton_37.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_9))
-    
+
+
+    self.ui.pushButton_3.clicked.connect(self.displayCalibLabel)
+    self.ui.pushButton_4.clicked.connect(self.displayCalibLabel)
+    self.ui.pushButton_5.clicked.connect(self.displayCalibLabel)
+    self.ui.pushButton_6.clicked.connect(self.displayCalibLabel)
+    self.ui.pushButton_10.clicked.connect(self.displayCalibLabel)
+    self.ui.pushButton_8.clicked.connect(self.displayCalibLabel)
+    self.ui.pushButton_13.clicked.connect(self.displayCalibLabel)
+    self.ui.pushButton_11.clicked.connect(self.displayCalibLabel)
+
+
     self.ui.listWidget_5.clicked.connect(self.displayAutAlign)
     self.ui.pushButton_14.clicked.connect(self.goAutAlign)
     
@@ -176,8 +184,6 @@ class MyForm(QtGui.QWidget):
     self.applySettings()
     
     
-    #function.flatCombine("/home/msh/Desktop/flatLST", "/home/msh/Desktop", com="median", rej="none", cty="", sub="yes")
-    
     self.ui.horizontalSlider.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_5.currentItem(), self.ui.dispAuto.canvas, "horizontalSlider"))
     self.ui.horizontalSlider_2.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_6.currentItem(), self.ui.dispManual.canvas, "horizontalSlider_2"))
     self.ui.horizontalSlider_3.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_7.currentItem(), self.ui.dispPhoto.canvas, "horizontalSlider_3"))
@@ -193,7 +199,19 @@ class MyForm(QtGui.QWidget):
 	      if col.isValid():
 	          pcol = self.ui.label_55.setText(QtGui.QApplication.translate("Form", "%s" %(str(col.name())), None, QtGui.QApplication.UnicodeUTF8))
 	          return pcol
-      
+
+#other###################################
+  def displayCalibLabel(self):
+  	imC = self.ui.listWidget.count()
+  	biC = self.ui.listWidget_2.count()
+  	daC = self.ui.listWidget_3.count()
+  	flC = self.ui.listWidget_4.count()
+  	self.ui.label_3.setText(QtGui.QApplication.translate("Form", "%s image(s) will calibrate using %s Bias(es), %s Dark(s) and %s Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
+  	self.ui.label_4.setText(QtGui.QApplication.translate("Form", "%s image(s) will calibrate using %s Bias(es), %s Dark(s) and %s Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
+  	self.ui.label_5.setText(QtGui.QApplication.translate("Form", "%s image(s) will calibrate using %s Bias(es), %s Dark(s) and %s Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
+  	self.ui.label_6.setText(QtGui.QApplication.translate("Form", "%s image(s) will calibrate using %s Bias(es), %s Dark(s) and %s Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
+  	
+
 #Read Stars ID to Graph Tab###################################
   def readStars(self):
   	filename = QtGui.QFileDialog.getOpenFileName(self ,"MYRaf Result File...","",("My Files (*.my *.myf)"))
@@ -466,7 +484,7 @@ class MyForm(QtGui.QWidget):
 				val = str("'(@\"%s\")'" %selectedField)
 			
 			self.ui.progressBar_4.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_9.count())))))
-			self.ui.label_41.setText(QtGui.QApplication.translate("Form", "Header delete: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
+			self.ui.label_41.setText(QtGui.QApplication.translate("Form", "Header: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
 				
 			if function.headerWrite(img, field, val):
 				self.getHeader()
@@ -495,7 +513,7 @@ class MyForm(QtGui.QWidget):
 				heErr = "%s\n%s" %(headErr, ntpath.basename(str(img)))					
 				
 			self.ui.progressBar_4.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_9.count())))))
-			self.ui.label_41.setText(QtGui.QApplication.translate("Form", "Header delete: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
+			self.ui.label_41.setText(QtGui.QApplication.translate("Form", "Header: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
 
 		if heErr != "":
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>hedit</b> can not handle this job for images below\n%s" %(heErr)))
@@ -644,12 +662,12 @@ class MyForm(QtGui.QWidget):
 									errTM = "%s, %s" %(errTM, ntpath.basename(img))
 							else:
 								errOB = "%s, %s" %(errOB, ntpath.basename(img))
-							self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
 						else:
 							errdt = "%s, %s" %(errdt, ntpath.basename(img))
 					else:
 						errOBSERVAT = "%s, %s" %(errOBSERVAT, ntpath.basename(img))
-						
+					self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
+					self.ui.label_14.setText(QtGui.QApplication.translate("Form", "Photometry: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
 				if errOBSERVAT != "":
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Can't find Observatory in obsdb for images below:\n%s\nYou can add your observatory using editor." %(errOBSERVAT)))
 					
@@ -739,8 +757,8 @@ class MyForm(QtGui.QWidget):
 						print x, y
 						if not function.manAlign(img, x, y, ofile):
 							err = "%s, %s" %(err, ntpath.basename(str(img)))
-							gui.logging(self, "--- %s - imshift failed." %(datetime.datetime.utcnow()))							
-				
+							gui.logging(self, "--- %s - imshift failed." %(datetime.datetime.utcnow()))
+					self.ui.label_10.setText(QtGui.QApplication.translate("Form", "Aligning:%s" %(ntpath.basename(img)), None, QtGui.QApplication.UnicodeUTF8))
 					self.ui.progressBar_3.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_6.count())))))
 			
 				if err!="":
@@ -879,7 +897,8 @@ class MyForm(QtGui.QWidget):
 				self.ui.label_7.setText(QtGui.QApplication.translate("Form", "Aligning: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
 				if not function.autoAlign(img, ref, odir):
 					aliErr = "%s, %s" %(aliErr, ntpath.basename(str(img)))
-					gui.logging(self, "--- %s - alipy failed." %(datetime.datetime.utcnow()))					
+					gui.logging(self, "--- %s - alipy failed." %(datetime.datetime.utcnow()))
+					self.ui.label_7.setText(QtGui.QApplication.translate("Form", "Aligning:%s" %(ntpath.basename(img)), None, QtGui.QApplication.UnicodeUTF8))
 				self.ui.progressBar_2.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_5.count())))))
 				os.popen("rm -rf ./alipy_cats/ ./alipy_out/")
 			gui.logging(self, "-- %s - AutoAlign finished aligning." %(datetime.datetime.utcnow()))

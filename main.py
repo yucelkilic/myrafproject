@@ -6,7 +6,7 @@ Created:------------------------------------------------------------------------
 			Yücel KILIÇ				Developer
 		at:
 			Begin					04.12.2013
-			Last update				09.03.2013
+			Last update				12.03.2013
 Importing things:-----------------------------------------------------------------------------------
 		Must have as installed:
 			python-2.7
@@ -44,6 +44,7 @@ except:
 
 try:
     from fPlot import *
+    from sexCat import *
 except:
 	print("Where is fPlot?")
 	raise SystemExit
@@ -578,6 +579,7 @@ class MyForm(QtGui.QWidget):
 			staCount = self.ui.listWidget_8.count()
 			
 			
+			
 			ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save MYRaf file', 'res.my', 'my (*.my)')
 			if ofile != "":
 				if os.path.exists(ofile):
@@ -596,6 +598,7 @@ class MyForm(QtGui.QWidget):
 				errOB = ""
 				errORA = ""
 				errODEC = ""
+				errdt = ""
 				for x in xrange(self.ui.listWidget_7.count()):
 					it = it + 1
 					img = self.ui.listWidget_7.item(x)
@@ -610,37 +613,40 @@ class MyForm(QtGui.QWidget):
 						epo = function.epoch(img, obd, obt)
 					function.headerWrite(img, "epoch", epo)
 					
-					if ob !="":
-						if tm != "":
-							if ora != "":
-								if odec != "":
-									if function.JD(img, str(obs), str(obd), str(obt), str(ra), str(dec), str("epoch"), str(exp)):
-										if function.sideReal(img, ob, obd, obt):
-											if function.airmass(img, observatory, ra, dec, "epoch", "st", obt, obd, exp):
-												if function.phot(img, "./tmp/analyzed/", "./tmp/pc", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
-													if function.txDump("./tmp/analyzed/%s.mag.1"  %(ntpath.basename(img)), "./tmp/analyzed/%s"  %(ntpath.basename(img))):
-														#os.popen("echo '#ap=%s'"%(str()))
-														os.popen("rm ./tmp/analyzed/%s.mag.1" %(ntpath.basename(img)))
-														os.popen("cat ./tmp/analyzed/%s >> %s"  %(ntpath.basename(img), ofile))
-														os.popen("rm ./tmp/analyzed/%s" %(ntpath.basename(img)))
+					if dt !="":
+						if ob !="":
+							if tm != "":
+								if ora != "":
+									if odec != "":
+										if function.JD(img, str(obs), str(obd), str(obt), str(ra), str(dec), str("epoch"), str(exp)):
+											if function.sideReal(img, ob, obd, obt):
+												if function.airmass(img, observatory, ra, dec, "epoch", "st", obt, obd, exp):
+													if function.phot(img, "./tmp/analyzed/", "./tmp/pc", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
+														if function.txDump("./tmp/analyzed/%s.mag.1"  %(ntpath.basename(img)), "./tmp/analyzed/%s"  %(ntpath.basename(img))):
+															#os.popen("echo '#ap=%s'"%(str()))
+															os.popen("rm ./tmp/analyzed/%s.mag.1" %(ntpath.basename(img)))
+															os.popen("cat ./tmp/analyzed/%s >> %s"  %(ntpath.basename(img), ofile))
+															os.popen("rm ./tmp/analyzed/%s" %(ntpath.basename(img)))
+													else:
+														err = "%s, %s" %(err, ntpath.basename(img))
 												else:
-													err = "%s, %s" %(err, ntpath.basename(img))
+													errAir = "%s, %s" %(errAir, ntpath.basename(img))
 											else:
-												errAir = "%s, %s" %(errAir, ntpath.basename(img))
+												errSid = "%s, %s" %(errSid, ntpath.basename(img))
 										else:
-											errSid = "%s, %s" %(errSid, ntpath.basename(img))
+											errJD = "%s, %s" %(errJD, ntpath.basename(img))
 									else:
-										errJD = "%s, %s" %(errJD, ntpath.basename(img))
+										errODEC = "%s, %s" %(errODEC, ntpath.basename(img))
 								else:
-									errODEC = "%s, %s" %(errODEC, ntpath.basename(img))
+									errORA = "%s, %s" %(errORA, ntpath.basename(img))
 							else:
-								errORA = "%s, %s" %(errORA, ntpath.basename(img))
+								errTM = "%s, %s" %(errTM, ntpath.basename(img))
 						else:
-							errTM = "%s, %s" %(errTM, ntpath.basename(img))
+							errOB = "%s, %s" %(errOB, ntpath.basename(img))
+						self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
 					else:
-						errOB = "%s, %s" %(errOB, ntpath.basename(img))
-					self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
-					
+						errdt = "%s, %s" %(errdt, ntpath.basename(img))
+						
 				if errTM != "":
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(obt, errTM)))
 				if errOB != "":
@@ -649,6 +655,8 @@ class MyForm(QtGui.QWidget):
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(ra, errORA)))
 				if errODEC != "":
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(dec, errODEC)))
+				if errdt != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(obd, errdt)))
 				if errJD != "":
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>setjd</b> can not handle images below\n%s." %(errJD)))
 				if errSid != "":
@@ -812,35 +820,27 @@ class MyForm(QtGui.QWidget):
   			img = self.ui.listWidget_7.currentItem()
   			img = str(img.text())
 			
-			images_to_align = sorted(glob.glob(img))
-			ref_image = img
-			identifications = alipy.ident.run(ref_image, images_to_align, visu=False, sexkeepcat=True, skipsaturated=True)
-
-			os.popen("cat alipy_cats/%s.pysexcat| grep -v '#'| awk '{print $1, $2, $3, $4}' > tmp/coo" %(ntpath.basename(img).split(".")[0]))
-			os.popen("rm -rf alipy_cats")
-  			
-  			coor = []
-  			
-  			f = open("tmp/coo", "r")
-  			for i in f:
-				coor.append(map(float, i.split()))
-			f.close()
+			minFWHM = self.ui.dial_5.value()
+			maxFWHM = self.ui.dial_6.value()
+			FluxRadi = self.ui.dial_4.value()
+			maxStar = self.ui.dial_7.value()
+			
+			
+			sex = runSex(img)
+			stars = sex.run(FluxRadi, minFWHM, maxFWHM, maxStar)
   			
   			c=self.ui.listWidget_8.count()
   			for i in xrange(c):
 				self.ui.listWidget_8.takeItem(0)
-				
-			fl = []
-			for u in coor:
-				fl.append(u[2])
-			ma = numpy.max(fl)
-			mi = numpy.min(fl)
-			av = (ma - mi)/100
-			print av
-			for i in coor:
-				if i[2] > av:
-					line = "%s-%s" %(str(i[0]), str(i[1]))
-					self.ui.listWidget_8.addItem(line)
+			
+			it = -1
+			for x in stars:
+				it = it+1
+				coo = "%s-%s" %(x[0],x[1])
+				item = QtGui.QListWidgetItem()
+				self.ui.listWidget_8.addItem(item)
+				item = self.ui.listWidget_8.item(it)
+				item.setText(QtGui.QApplication.translate("Form", coo, None, QtGui.QApplication.UnicodeUTF8))
 
   def reDraw(self, listObject, dispObject, horizontalSlider):
   	if listObject:
@@ -1162,11 +1162,7 @@ class MyForm(QtGui.QWidget):
 		  if l.startswith("ppZMag"):
 			  ppZMag = l.split(":")[1].replace("\n","")
 			  self.ui.lineEdit_16.setText(QtGui.QApplication.translate("Form", str(ppZMag), None, QtGui.QApplication.UnicodeUTF8))
-			
- 		  if l.startswith("sfMaxStar"):
-			  sfMaxStar = int(l.split(":")[1].replace("\n",""))
-			  self.ui.dial_4.setValue(sfMaxStar)
-			  
+						  
 			  
 		  if l.startswith("oRa"):
 			  oRa = l.split(":")[1].replace("\n","")
@@ -1200,8 +1196,26 @@ class MyForm(QtGui.QWidget):
 			  else:
 				  self.ui.checkBox_4.setChecked(False)
 				  self.ui.lineEdit_25.setEnabled(True)
-				  
-				  
+
+
+ 		  if l.startswith("sfMaxStar"):
+			  sfMaxStar = int(l.split(":")[1].replace("\n",""))
+			  self.ui.dial_7.setValue(sfMaxStar)
+
+ 		  if l.startswith("sMaxFWHM"):
+			  sMaxFWHM = int(l.split(":")[1].replace("\n",""))
+			  self.ui.dial_6.setValue(sMaxFWHM)
+
+ 		  if l.startswith("sMinFWHM"):
+			  sMinFWHM = int(l.split(":")[1].replace("\n",""))
+			  self.ui.dial_5.setValue(sMinFWHM)
+
+ 		  if l.startswith("sFluxradi"):
+			  sFluxradi = int(l.split(":")[1].replace("\n",""))
+			  self.ui.dial_4.setValue(sFluxradi)
+
+
+
 				  
   def saveSettings(self):
 	
@@ -1247,8 +1261,10 @@ class MyForm(QtGui.QWidget):
 	else:
 		f.write("chepoc:f\n")
 	
-	f.write("sfMaxStar:%s\n" %self.ui.dial_4.value())
-	
+	f.write("sfMaxStar:%s\n" %self.ui.dial_7.value())
+	f.write("sMaxFWHM:%s\n" %self.ui.dial_6.value())
+	f.write("sMinFWHM:%s\n" %self.ui.dial_5.value())
+	f.write("sFluxradi:%s\n" %self.ui.dial_4.value())
 		
 	
 	f.close()

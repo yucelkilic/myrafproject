@@ -26,3 +26,6 @@ obsda:ut_date
 epoc:2000
 chepoc:f
 sfMaxStar:25
+sMaxFWHM:7
+sMinFWHM:0
+sFluxradi:2

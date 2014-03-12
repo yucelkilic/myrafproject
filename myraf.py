@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created: Wed Mar 12 16:28:49 2014
-#      by: PyQt4 UI code generator 4.10.1
+# Created: Wed Mar 12 17:02:51 2014
+#      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -1192,7 +1192,7 @@ class Ui_Form(object):
         self.gridLayout_60.addWidget(self.label_68, 0, 0, 1, 1)
         self.dial_5 = QtGui.QDial(self.groupBox_19)
         self.dial_5.setMinimum(0)
-        self.dial_5.setMaximum(6)
+        self.dial_5.setMaximum(10)
         self.dial_5.setPageStep(1)
         self.dial_5.setProperty("value", 0)
         self.dial_5.setWrapping(False)
@@ -1207,7 +1207,7 @@ class Ui_Form(object):
         self.label_69.setObjectName(_fromUtf8("label_69"))
         self.gridLayout_61.addWidget(self.label_69, 0, 0, 1, 1)
         self.dial_6 = QtGui.QDial(self.groupBox_19)
-        self.dial_6.setMinimum(7)
+        self.dial_6.setMinimum(2)
         self.dial_6.setMaximum(25)
         self.dial_6.setPageStep(1)
         self.dial_6.setProperty("value", 7)
@@ -1321,19 +1321,19 @@ class Ui_Form(object):
         self.toolBox = QtGui.QToolBox(self.tab_17)
         self.toolBox.setObjectName(_fromUtf8("toolBox"))
         self.page = QtGui.QWidget()
-        self.page.setGeometry(QtCore.QRect(0, 0, 100, 30))
+        self.page.setGeometry(QtCore.QRect(0, 0, 96, 26))
         self.page.setObjectName(_fromUtf8("page"))
         self.gridLayout_49 = QtGui.QGridLayout(self.page)
         self.gridLayout_49.setObjectName(_fromUtf8("gridLayout_49"))
         self.toolBox.addItem(self.page, _fromUtf8(""))
         self.page_2 = QtGui.QWidget()
-        self.page_2.setGeometry(QtCore.QRect(0, 0, 100, 30))
+        self.page_2.setGeometry(QtCore.QRect(0, 0, 96, 26))
         self.page_2.setObjectName(_fromUtf8("page_2"))
         self.gridLayout_48 = QtGui.QGridLayout(self.page_2)
         self.gridLayout_48.setObjectName(_fromUtf8("gridLayout_48"))
         self.toolBox.addItem(self.page_2, _fromUtf8(""))
         self.page_3 = QtGui.QWidget()
-        self.page_3.setGeometry(QtCore.QRect(0, 0, 95, 95))
+        self.page_3.setGeometry(QtCore.QRect(0, 0, 96, 95))
         self.page_3.setObjectName(_fromUtf8("page_3"))
         self.gridLayout_47 = QtGui.QGridLayout(self.page_3)
         self.gridLayout_47.setObjectName(_fromUtf8("gridLayout_47"))
@@ -1341,19 +1341,19 @@ class Ui_Form(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollArea_3.setObjectName(_fromUtf8("scrollArea_3"))
         self.scrollAreaWidgetContents_3 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 79, 79))
+        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 96, 26))
         self.scrollAreaWidgetContents_3.setObjectName(_fromUtf8("scrollAreaWidgetContents_3"))
         self.scrollArea_3.setWidget(self.scrollAreaWidgetContents_3)
         self.gridLayout_47.addWidget(self.scrollArea_3, 0, 0, 1, 1)
         self.toolBox.addItem(self.page_3, _fromUtf8(""))
         self.page_4 = QtGui.QWidget()
-        self.page_4.setGeometry(QtCore.QRect(0, 0, 73, 16))
+        self.page_4.setGeometry(QtCore.QRect(0, 0, 96, 26))
         self.page_4.setObjectName(_fromUtf8("page_4"))
         self.gridLayout_46 = QtGui.QGridLayout(self.page_4)
         self.gridLayout_46.setObjectName(_fromUtf8("gridLayout_46"))
         self.toolBox.addItem(self.page_4, _fromUtf8(""))
         self.page_5 = QtGui.QWidget()
-        self.page_5.setGeometry(QtCore.QRect(0, 0, 100, 30))
+        self.page_5.setGeometry(QtCore.QRect(0, 0, 96, 26))
         self.page_5.setObjectName(_fromUtf8("page_5"))
         self.gridLayout_45 = QtGui.QGridLayout(self.page_5)
         self.gridLayout_45.setObjectName(_fromUtf8("gridLayout_45"))
@@ -2290,3 +2290,13 @@ class Ui_Form(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("Form", "Help", None))
 
 from matplotlibwidgetFile import matplotlibWidget
+
+if __name__ == "__main__":
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    Form = QtGui.QWidget()
+    ui = Ui_Form()
+    ui.setupUi(Form)
+    Form.show()
+    sys.exit(app.exec_())
+

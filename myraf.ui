@@ -2840,7 +2840,7 @@
                      <number>0</number>
                     </property>
                     <property name="maximum">
-                     <number>6</number>
+                     <number>10</number>
                     </property>
                     <property name="pageStep">
                      <number>1</number>
@@ -2873,7 +2873,7 @@
                   <item row="1" column="0">
                    <widget class="QDial" name="dial_6">
                     <property name="minimum">
-                     <number>7</number>
+                     <number>2</number>
                     </property>
                     <property name="maximum">
                      <number>25</number>
@@ -3129,8 +3129,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>96</width>
+                <height>26</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3143,8 +3143,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>96</width>
+                <height>26</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3157,7 +3157,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
+                <width>96</width>
                 <height>95</height>
                </rect>
               </property>
@@ -3175,8 +3175,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>79</width>
-                    <height>79</height>
+                    <width>96</width>
+                    <height>26</height>
                    </rect>
                   </property>
                  </widget>
@@ -3189,8 +3189,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>73</width>
-                <height>16</height>
+                <width>96</width>
+                <height>26</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3203,8 +3203,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>96</width>
+                <height>26</height>
                </rect>
               </property>
               <attribute name="label">

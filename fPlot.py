@@ -39,7 +39,7 @@ class FitsPlot:
             #updated the canvas and draw
         self.imdata = self.chartDev.ax.imshow(self.imageedit,vmax=float(self.mx),vmin=self.imageedit.min(),cmap="Greys_r", interpolation=None,alpha=1)
         if cur_xlim[1] != 1 and cur_ylim[1] != 1:
-            self.chartDev.ax.set_xlim([int(cur_xlim[0]), int(cur_xlim[1]) ])
+            self.chartDev.ax.set_xlim([int(cur_xlim[0]), int(cur_xlim[1])])
             self.chartDev.ax.set_ylim([int(cur_ylim[0]), int(cur_ylim[1])])
         self.chartDev.draw()
         return True

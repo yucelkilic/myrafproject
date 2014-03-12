@@ -733,7 +733,10 @@ class Ui_Form(object):
         icon6.addPixmap(QtGui.QPixmap(_fromUtf8("../.designer/backup/img/plot.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_46.setIcon(icon6)
         self.pushButton_46.setObjectName(_fromUtf8("pushButton_46"))
-        self.gridLayout_77.addWidget(self.pushButton_46, 0, 1, 1, 1)
+        self.gridLayout_77.addWidget(self.pushButton_46, 0, 2, 1, 1)
+        self.pushButton_19 = QtGui.QPushButton(self.groupBox_18)
+        self.pushButton_19.setObjectName(_fromUtf8("pushButton_19"))
+        self.gridLayout_77.addWidget(self.pushButton_19, 0, 1, 1, 1)
         self.gridLayout_78.addLayout(self.gridLayout_77, 0, 0, 1, 1)
         self.gridLayout_76.addWidget(self.groupBox_18, 1, 0, 1, 1)
         self.groupBox_16 = QtGui.QGroupBox(self.tab_24)
@@ -1416,7 +1419,7 @@ class Ui_Form(object):
         self.gridLayout_79.addWidget(self.tabWidget, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(3)
         self.tabWidget_2.setCurrentIndex(0)
         self.tabWidget_3.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(0)
@@ -1497,6 +1500,7 @@ class Ui_Form(object):
         self.label_51.setText(_translate("Form", "Reference:", None))
         self.label_54.setText(_translate("Form", "Aperture:", None))
         self.pushButton_46.setText(_translate("Form", "Plot", None))
+        self.pushButton_19.setText(_translate("Form", "PushButton", None))
         self.groupBox_16.setTitle(_translate("Form", "Graph", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_24), _translate("Form", "Graph", None))
         self.groupBox_8.setTitle(_translate("Form", "Header:", None))
@@ -2325,13 +2329,3 @@ class Ui_Form(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("Form", "Help", None))
 
 from matplotlibwidgetFile import matplotlibWidget
-
-if __name__ == "__main__":
-    import sys
-    app = QtGui.QApplication(sys.argv)
-    Form = QtGui.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
-

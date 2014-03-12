@@ -191,7 +191,15 @@ class MyForm(QtGui.QWidget):
     self.ui.dispManual.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
     self.ui.dispManual.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
     self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('motion_notify_event',self.mouseplace)
-    self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)   
+    self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
+
+  #Chart area clear
+  def chartClear(self):
+  	data = []
+  	self.ui.disp_chart.canvas.ax.hold(False)
+	self.ui.disp_chart.canvas.ax.plot(data) 
+  	self.ui.disp_chart.canvas.draw()
+  	 
 #Choose Point Color of Chart###################################
   def choosePointCol(self):
       col = QtGui.QColorDialog.getColor()

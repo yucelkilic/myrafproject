@@ -183,7 +183,6 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     self.applySettings()
     
-    
     self.ui.horizontalSlider.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_5.currentItem(), self.ui.dispAuto.canvas, "horizontalSlider"))
     self.ui.horizontalSlider_2.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_6.currentItem(), self.ui.dispManual.canvas, "horizontalSlider_2"))
     self.ui.horizontalSlider_3.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_7.currentItem(), self.ui.dispPhoto.canvas, "horizontalSlider_3"))
@@ -381,7 +380,6 @@ class MyForm(QtGui.QWidget):
 		if ln.replace("	","").startswith("#"):
 			self.ui.plainTextEdit.setPlainText(QtGui.QApplication.translate("Form", "%s" %(ln.replace("#","")), None, QtGui.QApplication.UnicodeUTF8))
 			
-	
   def rmObservatory(self):
 	fl = self.ui.listWidget_12.currentItem()
 	fl = fl.text()
@@ -421,7 +419,6 @@ class MyForm(QtGui.QWidget):
 	f.write("\taltitude = %s\n" %(altitude))
 	f.write("\ttimezone = %s\n" %(timeZone))
 	f.close()
-	
 	
 	c=self.ui.listWidget_12.count()
 	for i in xrange(c):
@@ -481,7 +478,6 @@ class MyForm(QtGui.QWidget):
 	else:
 		self.ui.lineEdit_25.setEnabled(True)
 
-		
   def goHeaderAdd(self):
 	if self.ui.listWidget_9.count() != 0:
 		f = self.ui.lineEdit.text()
@@ -559,8 +555,7 @@ class MyForm(QtGui.QWidget):
   def coorDel(self):
 	gui.rm(self, self.ui.listWidget_8)
 	self.displayPhot()
-
-			
+		
   def displayCoords(self):
 	print "degisti"
 	if self.ui.listWidget_8.count() != 0:
@@ -1068,8 +1063,6 @@ class MyForm(QtGui.QWidget):
 	sub = self.ui.comboBox_9.currentText()
 	cty = self.ui.lineEdit_11.text()
 	
-	
-		
 	if os.path.isdir(odir):
 		if sub == "yes" and it != 0:
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no subset field in header.\nAdd subset field to headers."))
@@ -1152,7 +1145,6 @@ class MyForm(QtGui.QWidget):
 			  dpFilter = l.split(":")[1].replace("\n","")
 			  self.ui.lineEdit_14.setText(QtGui.QApplication.translate("Form", str(dpFilter), None, QtGui.QApplication.UnicodeUTF8))
 		  
-		  
 		  if l.startswith("fspAnnulus"):
 			  fspAnnulus = int(l.split(":")[1].replace("\n",""))
 			  self.ui.dial.setValue(fspAnnulus)
@@ -1171,8 +1163,7 @@ class MyForm(QtGui.QWidget):
 			  
 		  if l.startswith("ppZMag"):
 			  ppZMag = l.split(":")[1].replace("\n","")
-			  self.ui.lineEdit_16.setText(QtGui.QApplication.translate("Form", str(ppZMag), None, QtGui.QApplication.UnicodeUTF8))
-						  
+			  self.ui.lineEdit_16.setText(QtGui.QApplication.translate("Form", str(ppZMag), None, QtGui.QApplication.UnicodeUTF8))		  
 			  
 		  if l.startswith("oRa"):
 			  oRa = l.split(":")[1].replace("\n","")

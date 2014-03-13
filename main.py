@@ -151,7 +151,6 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_27.clicked.connect(self.goManAlign)
     
     self.ui.listWidget_7.clicked.connect(self.displayPhot)
-    #self.ui.listWidget_7.clicked.connect(self.findStars)
     self.ui.pushButton_45.clicked.connect(self.coorDel)
     self.ui.pushButton_35.clicked.connect(self.goPhot)
     
@@ -823,31 +822,34 @@ class MyForm(QtGui.QWidget):
 #Auto Align#############################################
   def findStars(self):
   	if self.ui.tabWidget.currentIndex() == 2:
-  		if self.ui.listWidget_7.currentItem():			
-  			img = self.ui.listWidget_7.currentItem()
-  			img = str(img.text())
-			
-			minFWHM = self.ui.dial_5.value()
-			maxFWHM = self.ui.dial_6.value()
-			FluxRadi = self.ui.dial_4.value()
-			maxStar = self.ui.dial_7.value()
-			
-			
-			sex = runSex(img)
-			stars = sex.run(FluxRadi, minFWHM, maxFWHM, maxStar)
-  			
-  			c=self.ui.listWidget_8.count()
-  			for i in xrange(c):
-				self.ui.listWidget_8.takeItem(0)
-			
-			it = -1
-			for x in stars:
-				it = it+1
-				coo = "%s-%s" %(x[0],x[1])
-				item = QtGui.QListWidgetItem()
-				self.ui.listWidget_8.addItem(item)
-				item = self.ui.listWidget_8.item(it)
-				item.setText(QtGui.QApplication.translate("Form", coo, None, QtGui.QApplication.UnicodeUTF8))
+  		if self.ui.listWidget_7.currentItem():
+			if self.ui.dial_5.value() > self.ui.dial_6.value():
+				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Min FWHM can not be bigger than Max FWHM "))
+			else:
+				img = self.ui.listWidget_7.currentItem()
+				img = str(img.text())
+				
+				minFWHM = self.ui.dial_5.value()
+				maxFWHM = self.ui.dial_6.value()
+				FluxRadi = self.ui.dial_4.value()
+				maxStar = self.ui.dial_7.value()
+				
+				
+				sex = runSex(img)
+				stars = sex.run(FluxRadi, minFWHM, maxFWHM, maxStar)
+				
+				c=self.ui.listWidget_8.count()
+				for i in xrange(c):
+					self.ui.listWidget_8.takeItem(0)
+				
+				it = -1
+				for x in stars:
+					it = it+1
+					coo = "%s-%s" %(x[0],x[1])
+					item = QtGui.QListWidgetItem()
+					self.ui.listWidget_8.addItem(item)
+					item = self.ui.listWidget_8.item(it)
+					item.setText(QtGui.QApplication.translate("Form", coo, None, QtGui.QApplication.UnicodeUTF8))
 
   def reDraw(self, listObject, dispObject, horizontalSlider):
   	if listObject:

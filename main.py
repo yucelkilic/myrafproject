@@ -900,6 +900,8 @@ class MyForm(QtGui.QWidget):
 		gui.logging(self, "-- %s - Calibration started." %(datetime.datetime.utcnow()))
 		go = True
 		
+		os.popen("rm -rf ./tmp/dark.fits ./tmp/dark.fits ./tmp/flat_*.fits")
+			
 		b, d, f="","",""
 		if self.ui.checkBox.checkState() == QtCore.Qt.Checked and self.ui.listWidget_2.count() == 0: b = "Bias\n"
 		if self.ui.checkBox_2.checkState() == QtCore.Qt.Checked and self.ui.listWidget_3.count() == 0: d = "Dark\n"

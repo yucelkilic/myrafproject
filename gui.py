@@ -45,6 +45,8 @@ def lisFromLW(self, listWidget):
 	return map(str, items)
 	
 def list2file(lst, fl):
+	if os.path.isfile(fl):
+		os.popen("rm %s" %fl)
     f = open(fl, "wb")
     for i in lst:
         f.write("%s\n" %(i))

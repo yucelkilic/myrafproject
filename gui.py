@@ -47,10 +47,11 @@ def lisFromLW(self, listWidget):
 def list2file(lst, fl):
 	if os.path.isfile(fl):
 		os.popen("rm %s" %fl)
-    f = open(fl, "wb")
-    for i in lst:
-        f.write("%s\n" %(i))
-    f.close()
+	
+	f = open(fl, "wb")
+	for i in lst:
+		f.write("%s\n" %(i))
+	f.close()
 
 def logging(self, txt):
 	f = open("log.my", "a")

@@ -219,10 +219,10 @@ class MyForm(QtGui.QWidget):
   	biC = self.ui.listWidget_2.count()
   	daC = self.ui.listWidget_3.count()
   	flC = self.ui.listWidget_4.count()
-  	self.ui.label_3.setText(QtGui.QApplication.translate("Form", "%s image(s) will calibrate using %s Bias(es), %s Dark(s) and %s Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
-  	self.ui.label_4.setText(QtGui.QApplication.translate("Form", "%s image(s) will calibrate using %s Bias(es), %s Dark(s) and %s Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
-  	self.ui.label_5.setText(QtGui.QApplication.translate("Form", "%s image(s) will calibrate using %s Bias(es), %s Dark(s) and %s Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
-  	self.ui.label_6.setText(QtGui.QApplication.translate("Form", "%s image(s) will calibrate using %s Bias(es), %s Dark(s) and %s Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
+  	self.ui.label_3.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will calibrate using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
+  	self.ui.label_4.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will calibrate using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
+  	self.ui.label_5.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will calibrate using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
+  	self.ui.label_6.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will calibrate using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
   	
 
 #Read Stars ID to Graph Tab###################################
@@ -250,7 +250,7 @@ class MyForm(QtGui.QWidget):
 			for aperture in apertures.split(","):
 			    self.ui.comboBox_14.addItem(aperture.replace("\n", ""))
 		except:
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Error reading MYRaf result file!"))
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Error reading MYRaf <b>result file</b>!"))
 			gui.logging(self, "--- %s - Error reading MYRaf result file!" %(datetime.datetime.utcnow()))			
 
 #Plot Chart#############################################
@@ -336,10 +336,10 @@ class MyForm(QtGui.QWidget):
 			sp = str(self.ui.comboBox_15.currentText()).split(" ")[0]
 			gui.PlotFunc(self,  self.ui.disp_chart.canvas, varPhase, (diffMag*(-1)),  residuMag, pointColor,  legendName, sp)
 		else:
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please fill/select the required informations!"))
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please <b>fill/select</b> the required informations!"))
 			gui.logging(self, "--- %s - Please fill/select the required informations!" %(datetime.datetime.utcnow()))
 	else:
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select MYRaf result file!"))
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select MYRaf <b>result file</b>!"))
 		gui.logging(self, "--- %s - Please select MYRaf result file!" %(datetime.datetime.utcnow()))
 ########################################################
 
@@ -511,7 +511,7 @@ class MyForm(QtGui.QWidget):
 		else:
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please fill the \"Field\" section!"))			
 	else:
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some images."))
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some <b>images</b>."))
 	
   def goHeaderDel(self):
 	if self.ui.listWidget_9.count() != 0:
@@ -536,7 +536,7 @@ class MyForm(QtGui.QWidget):
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>hedit</b> can not handle this job for images below\n%s" %(heErr)))
 			
 	else:
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some images."))
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some <b>images</b>."))
 ########################################################
 #Pohtometry#############################################
   def displayPhot(self):
@@ -686,31 +686,31 @@ class MyForm(QtGui.QWidget):
 					self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
 					self.ui.label_14.setText(QtGui.QApplication.translate("Form", "Photometry: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
 				if errOBSERVAT != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Can't find Observatory in obsdb for images below:\n%s\nYou can add your observatory using editor." %(errOBSERVAT)))
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Can't find Observatory in <b>obsdb</b> for images below:\n%s\nYou can add your observatory using editor." %(errOBSERVAT)))
 					
 				if errTM != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(obt, errTM)))
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>%s</b> header on images below:\n%s" %(obt, errTM)))
 				if errOB != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(obs, errOB)))
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>%s</b> header on images below:\n%s" %(obs, errOB)))
 				if errORA != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(ra, errORA)))
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>%s</b> header on images below:\n%s" %(ra, errORA)))
 				if errODEC != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(dec, errODEC)))
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>%s</b> header on images below:\n%s" %(dec, errODEC)))
 				if errdt != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No %s header on images below:\n%s" %(obd, errdt)))
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>%s</b> header on images below:\n%s" %(obd, errdt)))
 				if errJD != "":
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>setjd</b> can not handle images below\n%s." %(errJD)))
 				if errSid != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error can not calculate sidereal time for images below\n%s." %(errSid)))
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error can not calculate <b>sidereal</b> time for images below\n%s." %(errSid)))
 				if errAir != "":
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>setairmass</b> can not handle images below\n%s." %(errAir)))
 				if err != "":
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>phot</b> can not handle images below\n%s." %(err)))
 				
 		else:
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some sources."))
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some <b>sources</b>."))
 	else:
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No image for Photometry."))
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>image</b> for Photometry."))
 		
 ########################################################
 #Manual Align############################################
@@ -819,7 +819,7 @@ class MyForm(QtGui.QWidget):
   	if self.ui.tabWidget.currentIndex() == 2:
   		if self.ui.listWidget_7.currentItem():
 			if self.ui.dial_5.value() > self.ui.dial_6.value():
-				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Min FWHM can not be bigger than Max FWHM "))
+				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("<b>Min FWHM</b> can not be bigger than <b>Max FWHM</b>"))
 			else:
 				img = self.ui.listWidget_7.currentItem()
 				img = str(img.text())
@@ -890,7 +890,7 @@ class MyForm(QtGui.QWidget):
 				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>alipy</b> can not align images below\n%s") %(aliErr))
 
 		else:
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select a reference image first."))
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select a <b>reference image</b> first."))
 	else:
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please add some <b>Image</b> files."))
 ########################################################
@@ -906,7 +906,7 @@ class MyForm(QtGui.QWidget):
 		if self.ui.checkBox_3.checkState() == QtCore.Qt.Checked and self.ui.listWidget_4.count() == 0: f = "Flat\n"
 		
 		if b != "" or d != "" or f != "":
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Add file(s) to\n%s%s%s" %(b,d,f)))
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Add file(s) to\n<b>%s%s%s</b>" %(b,d,f)))
 		else:
 			print "basla"
 			zeroFilePath, darkFilePath, flatFilePath = "", "", ""
@@ -965,7 +965,7 @@ class MyForm(QtGui.QWidget):
 				f.close()
 				
 				if subf == "yes" and it != 0:
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no subset field in header.\nAdd %s field to headers." %(sname)))
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no <b>%s</b> field in header.\nAdd <b>%s</b> field to headers." %(sname, sname)))
 					go = False
 				else:
 					function.headerWrite("@./tmp/flatLST", "subset", str("'(@\"%s\")'" %sname))
@@ -1000,14 +1000,14 @@ class MyForm(QtGui.QWidget):
 						self.ui.progressBar.setProperty("value", math.ceil(100*(float(float(pit)/float(self.ui.listWidget.count())))))
 					
 					if err != "":
-						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("ccdproc failed on:\n%s" %(err)))
+						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("<b>ccdproc</b> failed on:\n%s" %(err)))
 					if errs:
-						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Images below have no SUBSET field in header:\n%s\nSkipped!" %(errs)))
+						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Images below have no <b>%s</b> field in header:\n%s\nSkipped!" %(sname, errs)))
 					
 					gui.logging(self, "--- %s - ccdproc finished calibration." %(datetime.datetime.utcnow()))
 					os.popen("rm -rf ./tmp/flatLS ./tmp/zeroLST ./tmp/darkLST %s %s %s" %(zeroFilePath, darkFilePath, flatFilePath))
 	else:
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No image to calibrate."))
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>image</b> to calibrate."))
 ########################################################
 #Create master files####################################
   def masterZero(self):
@@ -1065,7 +1065,7 @@ class MyForm(QtGui.QWidget):
 	
 	if os.path.isdir(odir):
 		if sub == "yes" and it != 0:
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no subset field in header.\nAdd subset field to headers."))
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no <b>%s</b> field in header.\nAdd <b>%s</b> field to headers." %(sname, sname)))
 		else:
 			
 			function.headerWrite("@./tmp/flatLST", "subset", str("'(@\"%s\")'" %sname))

@@ -7,9 +7,9 @@ dScale:0
 dccdtype:
 fCombine:0
 fReject:4
-fSubset:1
+fSubset:0
 fccdtype:
-cSubset:1
+cSubset:0
 ccdtype:
 dpExpTime:exptime
 dpFilter:FILTER
@@ -24,7 +24,7 @@ obser:OBSERVAT
 obsti:UT_TIME
 obsda:UT_DATE
 epoc:2014
-chepoc:f
+chepoc:t
 sfMaxStar:53
 sMaxFWHM:9
 sMinFWHM:3

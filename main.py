@@ -757,29 +757,30 @@ class MyForm(QtGui.QWidget):
 				xref = coorRef[0]
 				yref = coorRef[1]
 				odir = QtGui.QFileDialog.getExistingDirectory( self, 'Select Directory to Save Aligned File(s)')
-				it = 0
-				err = ""
-				for x in xrange(self.ui.listWidget_6.count()):
-					it = it + 1
-					img = self.ui.listWidget_6.item(x)
-					img = str(img.text())
-					self.ui.label_10.setText(QtGui.QApplication.translate("Form", "Aligning: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-					ofile = "%s/%s" %(odir, ntpath.basename(str(img)))
-					coorImg = function.headerRead(img, "MYRafCor").split("-")
-					if str(coorImg) != "['']":
-						ximg = coorImg[0]
-						yimg = coorImg[1]
-						x = float(xref) - float(ximg)
-						y = float(yref) - float(yimg)
-						print x, y
-						if not function.manAlign(img, x, y, ofile):
-							err = "%s, %s" %(err, ntpath.basename(str(img)))
-							gui.logging(self, "--- %s - imshift failed." %(datetime.datetime.utcnow()))
-					self.ui.label_10.setText(QtGui.QApplication.translate("Form", "Aligning:%s" %(ntpath.basename(img)), None, QtGui.QApplication.UnicodeUTF8))
-					self.ui.progressBar_3.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_6.count())))))
-			
-				if err!="":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>imshift</b> can not align images below\n%s." %(err)))
+				if os.path.exists(odir):
+					it = 0
+					err = ""
+					for x in xrange(self.ui.listWidget_6.count()):
+						it = it + 1
+						img = self.ui.listWidget_6.item(x)
+						img = str(img.text())
+						self.ui.label_10.setText(QtGui.QApplication.translate("Form", "Aligning: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
+						ofile = "%s/%s" %(odir, ntpath.basename(str(img)))
+						coorImg = function.headerRead(img, "MYRafCor").split("-")
+						if str(coorImg) != "['']":
+							ximg = coorImg[0]
+							yimg = coorImg[1]
+							x = float(xref) - float(ximg)
+							y = float(yref) - float(yimg)
+							print x, y
+							if not function.manAlign(img, x, y, ofile):
+								err = "%s, %s" %(err, ntpath.basename(str(img)))
+								gui.logging(self, "--- %s - imshift failed." %(datetime.datetime.utcnow()))
+						self.ui.label_10.setText(QtGui.QApplication.translate("Form", "Aligning:%s" %(ntpath.basename(img)), None, QtGui.QApplication.UnicodeUTF8))
+						self.ui.progressBar_3.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_6.count())))))
+				
+					if err!="":
+						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>imshift</b> can not align images below\n%s." %(err)))
 			
 			else:
 				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select coordinates for reference image."))
@@ -874,20 +875,21 @@ class MyForm(QtGui.QWidget):
 			ref = str(ref.text())
 			it = 0
 			odir = QtGui.QFileDialog.getExistingDirectory( self, 'Select Directory to Save Aligned File(s)')
-			aliErr = ""
-			for x in xrange(self.ui.listWidget_5.count()):
-				it = it + 1
-				img = self.ui.listWidget_5.item(x)
-				img = str(img.text())
-				self.ui.label_7.setText(QtGui.QApplication.translate("Form", "Aligning: %s" %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-				if not function.autoAlign(img, ref, odir):
-					aliErr = "%s, %s" %(aliErr, ntpath.basename(str(img)))
-					gui.logging(self, "--- %s - alipy failed." %(datetime.datetime.utcnow()))
-				self.ui.progressBar_2.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_5.count())))))
-				os.popen("rm -rf ./alipy_cats/ ./alipy_out/")
-			gui.logging(self, "-- %s - AutoAlign finished aligning." %(datetime.datetime.utcnow()))
-			if aliErr != "":
-				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>alipy</b> can not align images below\n%s") %(aliErr))
+			if os.path.exists(odir):
+				aliErr = ""
+				for x in xrange(self.ui.listWidget_5.count()):
+					it = it + 1
+					img = self.ui.listWidget_5.item(x)
+					img = str(img.text())
+					self.ui.label_7.setText(QtGui.QApplication.translate("Form", "Aligning: %s" %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
+					if not function.autoAlign(img, ref, odir):
+						aliErr = "%s, %s" %(aliErr, ntpath.basename(str(img)))
+						gui.logging(self, "--- %s - alipy failed." %(datetime.datetime.utcnow()))
+					self.ui.progressBar_2.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_5.count())))))
+					os.popen("rm -rf ./alipy_cats/ ./alipy_out/")
+				gui.logging(self, "-- %s - AutoAlign finished aligning." %(datetime.datetime.utcnow()))
+				if aliErr != "":
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>alipy</b> can not align images below\n%s") %(aliErr))
 
 		else:
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select a <b>reference image</b> first."))

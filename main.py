@@ -557,7 +557,6 @@ class MyForm(QtGui.QWidget):
 	self.displayPhot()
 		
   def displayCoords(self):
-	print "degisti"
 	if self.ui.listWidget_8.count() != 0:
 		self.displayPhot()
 		lNumber = 0	
@@ -899,117 +898,120 @@ class MyForm(QtGui.QWidget):
 #Calibration############################################
   def calib(self):
 	if self.ui.listWidget.count() != 0:
-		gui.logging(self, "-- %s - Calibration started." %(datetime.datetime.utcnow()))
-		go = True
-		
-		os.popen("rm -rf ./tmp/dark.fits ./tmp/dark.fits ./tmp/flat_*.fits")
-			
-		b, d, f="","",""
-		if self.ui.checkBox.checkState() == QtCore.Qt.Checked and self.ui.listWidget_2.count() == 0: b = "Bias\n"
-		if self.ui.checkBox_2.checkState() == QtCore.Qt.Checked and self.ui.listWidget_3.count() == 0: d = "Dark\n"
-		if self.ui.checkBox_3.checkState() == QtCore.Qt.Checked and self.ui.listWidget_4.count() == 0: f = "Flat\n"
-		
-		if b != "" or d != "" or f != "":
-			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Add file(s) to\n<b>%s%s%s</b>" %(b,d,f)))
+		if self.ui.checkBox.checkState() != QtCore.Qt.Checked and self.ui.checkBox_2.checkState() != QtCore.Qt.Checked and self.ui.checkBox_3.checkState() != QtCore.Qt.Checked:
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Nothing to do!"))
 		else:
-			print "basla"
-			zeroFilePath, darkFilePath, flatFilePath = "", "", ""
+			gui.logging(self, "-- %s - Calibration started." %(datetime.datetime.utcnow()))
+			go = True
 			
-			if self.ui.checkBox.checkState() == QtCore.Qt.Checked:
-				self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Bias.", None, QtGui.QApplication.UnicodeUTF8))
-				gui.logging(self, "--- %s - zerocombine started for calibration." %(datetime.datetime.utcnow()))
-				lst = gui.lisFromLW(self, self.ui.listWidget_2)
-				gui.list2file(lst, "./tmp/zeroLST")
-				comb = self.ui.comboBox_4.currentText()
-				rejb = self.ui.comboBox_5.currentText()
-				ctyb = self.ui.lineEdit_10.text()
-				if not function.zeroCombine("./tmp/zeroLST", "./tmp/zero.fits", com=comb, rej=rejb, cty=ctyb):
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>zerocombine</b> can not handle this job."))
-					gui.logging(self, "--- %s - zerocombine failed." %(datetime.datetime.utcnow()))
-				else:
-					gui.logging(self, "--- %s - zerocombine succeed." %(datetime.datetime.utcnow()))
-					zeroFilePath = "./tmp/zero.fits"
-				os.popen("rm -rf ./tmp/zeroLST")
+			os.popen("rm -rf ./tmp/dark.fits ./tmp/dark.fits ./tmp/flat_*.fits")
+				
+			b, d, f="","",""
+			if self.ui.checkBox.checkState() == QtCore.Qt.Checked and self.ui.listWidget_2.count() == 0: b = "Bias\n"
+			if self.ui.checkBox_2.checkState() == QtCore.Qt.Checked and self.ui.listWidget_3.count() == 0: d = "Dark\n"
+			if self.ui.checkBox_3.checkState() == QtCore.Qt.Checked and self.ui.listWidget_4.count() == 0: f = "Flat\n"
 			
-			if self.ui.checkBox_2.checkState() == QtCore.Qt.Checked:
-				self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Dark.", None, QtGui.QApplication.UnicodeUTF8))
-				gui.logging(self, "--- %s - darkcombine started for calibration." %(datetime.datetime.utcnow()))
-				lst = gui.lisFromLW(self, self.ui.listWidget_3)
-				gui.list2file(lst, "./tmp/darkLST")
-				comd = self.ui.comboBox_4.currentText()
-				rejd = self.ui.comboBox_5.currentText()
-				scld = self.ui.comboBox_8.currentText()
-				ctyd = self.ui.lineEdit_10.text()
-				if not function.darkCombine("./tmp/darkLST", "./tmp/dark.fits", com=comd, rej=rejd, cty=ctyd, scl=scld):
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>darkcombine</b> can not handle this job."))
-					gui.logging(self, "--- %s - darkcombine failed." %(datetime.datetime.utcnow()))
-				else:
-					gui.logging(self, "--- %s - darkcombine succeed." %(datetime.datetime.utcnow()))
-					darkFilePath = "./tmp/dark.fits"
-				os.popen("rm -rf ./tmp/darkLST")
-		
-			if self.ui.checkBox_3.checkState() == QtCore.Qt.Checked:
-				self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Flat.", None, QtGui.QApplication.UnicodeUTF8))
-				gui.logging(self, "--- %s - flatcombine started for calibration." %(datetime.datetime.utcnow()))
-				lst = gui.lisFromLW(self, self.ui.listWidget_4)
-				gui.list2file(lst, "./tmp/flatLST")
-				comf = self.ui.comboBox_6.currentText()
-				rejf = self.ui.comboBox_7.currentText()
-				subf = self.ui.comboBox_10.currentText()
-				ctyf = self.ui.lineEdit_11.text()
+			if b != "" or d != "" or f != "":
+				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Add file(s) to\n%s%s%s" %(b,d,f)))
+			else:
+				print "basla"
+				zeroFilePath, darkFilePath, flatFilePath = "", "", ""
 				
-				f = open("./tmp/flatLST", "r")
-				it = 0
-				sname = self.ui.lineEdit_14.text()
-					
-				for i in f:
-					fn = i.replace("\n","")
-					if function.headerRead(fn,sname) == "":
-						it = it + 1
-				f.close()
-				
-				if subf == "yes" and it != 0:
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no <b>%s</b> field in header.\nAdd <b>%s</b> field to headers." %(sname, sname)))
-					go = False
-				else:
-					function.headerWrite("@./tmp/flatLST", "subset", str("'(@\"%s\")'" %sname))
-					if not function.flatCombine("./tmp/flatLST", "./tmp", com=comf, rej=rejf, cty=ctyf, sub=subf):
-						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>flatcombine</b> can not handle this job."))
-						gui.logging(self, "--- %s - flatcombine failed." %(datetime.datetime.utcnow()))
+				if self.ui.checkBox.checkState() == QtCore.Qt.Checked:
+					self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Bias.", None, QtGui.QApplication.UnicodeUTF8))
+					gui.logging(self, "--- %s - zerocombine started for calibration." %(datetime.datetime.utcnow()))
+					lst = gui.lisFromLW(self, self.ui.listWidget_2)
+					gui.list2file(lst, "./tmp/zeroLST")
+					comb = self.ui.comboBox_4.currentText()
+					rejb = self.ui.comboBox_5.currentText()
+					ctyb = self.ui.lineEdit_10.text()
+					if not function.zeroCombine("./tmp/zeroLST", "./tmp/zero.fits", com=comb, rej=rejb, cty=ctyb):
+						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>zerocombine</b> can not handle this job."))
+						gui.logging(self, "--- %s - zerocombine failed." %(datetime.datetime.utcnow()))
 					else:
-						gui.logging(self, "--- %s - flatcombine succeed." %(datetime.datetime.utcnow()))
-						flatFilePath = "./tmp/flat_*.fits"
-					os.popen("rm -rf ./tmp/flatLST")
+						gui.logging(self, "--- %s - zerocombine succeed." %(datetime.datetime.utcnow()))
+						zeroFilePath = "./tmp/zero.fits"
+					os.popen("rm -rf ./tmp/zeroLST")
+				
+				if self.ui.checkBox_2.checkState() == QtCore.Qt.Checked:
+					self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Dark.", None, QtGui.QApplication.UnicodeUTF8))
+					gui.logging(self, "--- %s - darkcombine started for calibration." %(datetime.datetime.utcnow()))
+					lst = gui.lisFromLW(self, self.ui.listWidget_3)
+					gui.list2file(lst, "./tmp/darkLST")
+					comd = self.ui.comboBox_4.currentText()
+					rejd = self.ui.comboBox_5.currentText()
+					scld = self.ui.comboBox_8.currentText()
+					ctyd = self.ui.lineEdit_10.text()
+					if not function.darkCombine("./tmp/darkLST", "./tmp/dark.fits", com=comd, rej=rejd, cty=ctyd, scl=scld):
+						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>darkcombine</b> can not handle this job."))
+						gui.logging(self, "--- %s - darkcombine failed." %(datetime.datetime.utcnow()))
+					else:
+						gui.logging(self, "--- %s - darkcombine succeed." %(datetime.datetime.utcnow()))
+						darkFilePath = "./tmp/dark.fits"
+					os.popen("rm -rf ./tmp/darkLST")
 			
-			if go:	
-				odir = QtGui.QFileDialog.getExistingDirectory(self, 'Select Directory to Save calibrated files')
-				err = ""
-				errs = ""
-				subc = self.ui.comboBox_10.currentText()
-				ctyc = self.ui.lineEdit_12.text()
-				if os.path.isdir(odir):
-					pit = 0
-					gui.logging(self, "--- %s - ccdproc started for calibration." %(datetime.datetime.utcnow()))
-					for x in xrange(self.ui.listWidget.count()):
-						pit = pit + 1
-						ln = self.ui.listWidget.item(x)
-						img = ln.text()
-						if function.headerRead(img, sname) == "" and subc == "yes":
-							errs = "%s, %s" %(errs, ntpath.basename(str(img)))
+				if self.ui.checkBox_3.checkState() == QtCore.Qt.Checked:
+					self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Flat.", None, QtGui.QApplication.UnicodeUTF8))
+					gui.logging(self, "--- %s - flatcombine started for calibration." %(datetime.datetime.utcnow()))
+					lst = gui.lisFromLW(self, self.ui.listWidget_4)
+					gui.list2file(lst, "./tmp/flatLST")
+					comf = self.ui.comboBox_6.currentText()
+					rejf = self.ui.comboBox_7.currentText()
+					subf = self.ui.comboBox_10.currentText()
+					ctyf = self.ui.lineEdit_11.text()
+					
+					f = open("./tmp/flatLST", "r")
+					it = 0
+					sname = self.ui.lineEdit_14.text()
+						
+					for i in f:
+						fn = i.replace("\n","")
+						if function.headerRead(fn,sname) == "":
+							it = it + 1
+					f.close()
+					
+					if subf == "yes" and it != 0:
+						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no <b>%s</b> field in header.\nAdd <b>%s</b> field to headers." %(sname, sname)))
+						go = False
+					else:
+						function.headerWrite("@./tmp/flatLST", "subset", str("'(@\"%s\")'" %sname))
+						if not function.flatCombine("./tmp/flatLST", "./tmp", com=comf, rej=rejf, cty=ctyf, sub=subf):
+							QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>flatcombine</b> can not handle this job."))
+							gui.logging(self, "--- %s - flatcombine failed." %(datetime.datetime.utcnow()))
 						else:
-							function.headerWrite(img, "subset", str("'(@\"%s\")'" %sname))
-							if not function.calibration(img, zeroFilePath, darkFilePath, flatFilePath, odir, sub=subc, cty=ctyc):
-								err = "%s, %s" %(err, ntpath.basename(str(img)))
-						self.ui.label.setText(QtGui.QApplication.translate("Form", "Calibration: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-						self.ui.progressBar.setProperty("value", math.ceil(100*(float(float(pit)/float(self.ui.listWidget.count())))))
-					
-					if err != "":
-						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("<b>ccdproc</b> failed on:\n%s" %(err)))
-					if errs:
-						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Images below have no <b>%s</b> field in header:\n%s\nSkipped!" %(sname, errs)))
-					
-					gui.logging(self, "--- %s - ccdproc finished calibration." %(datetime.datetime.utcnow()))
-					os.popen("rm -rf ./tmp/flatLS ./tmp/zeroLST ./tmp/darkLST %s %s %s" %(zeroFilePath, darkFilePath, flatFilePath))
+							gui.logging(self, "--- %s - flatcombine succeed." %(datetime.datetime.utcnow()))
+							flatFilePath = "./tmp/flat_*.fits"
+						os.popen("rm -rf ./tmp/flatLST")
+				
+				if go:	
+					odir = QtGui.QFileDialog.getExistingDirectory(self, 'Select Directory to Save calibrated files')
+					err = ""
+					errs = ""
+					subc = self.ui.comboBox_10.currentText()
+					ctyc = self.ui.lineEdit_12.text()
+					if os.path.isdir(odir):
+						pit = 0
+						gui.logging(self, "--- %s - ccdproc started for calibration." %(datetime.datetime.utcnow()))
+						for x in xrange(self.ui.listWidget.count()):
+							pit = pit + 1
+							ln = self.ui.listWidget.item(x)
+							img = ln.text()
+							if function.headerRead(img, sname) == "" and subc == "yes":
+								errs = "%s, %s" %(errs, ntpath.basename(str(img)))
+							else:
+								function.headerWrite(img, "subset", str("'(@\"%s\")'" %sname))
+								if not function.calibration(img, zeroFilePath, darkFilePath, flatFilePath, odir, sub=subc, cty=ctyc):
+									err = "%s, %s" %(err, ntpath.basename(str(img)))
+							self.ui.label.setText(QtGui.QApplication.translate("Form", "Calibration: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
+							self.ui.progressBar.setProperty("value", math.ceil(100*(float(float(pit)/float(self.ui.listWidget.count())))))
+						
+						if err != "":
+							QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("<b>ccdproc</b> failed on:\n%s" %(err)))
+						if errs:
+							QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Images below have no <b>%s</b> field in header:\n%s\nSkipped!" %(sname, errs)))
+						
+						gui.logging(self, "--- %s - ccdproc finished calibration." %(datetime.datetime.utcnow()))
+						os.popen("rm -rf ./tmp/flatLS ./tmp/zeroLST ./tmp/darkLST %s %s %s" %(zeroFilePath, darkFilePath, flatFilePath))
 	else:
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>image</b> to calibrate."))
 ########################################################

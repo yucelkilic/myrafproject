@@ -4,10 +4,9 @@ from pyraf.iraf import noao, imred, ccdred, darkcombine, flatcombine, ccdproc ,a
 from astropy.time import Time
 from time import gmtime, strftime
 
-
-def readResultFile(filename,  starID, apIndex):
+def readResultFile(self, filename,  starID, apIndex):
     try:
-        os.popen("cat %s |awk '{if ($1 == %s) print $1, $2, $%s}' > tmp/idjdmag_%s.my" %(filename, starID, apIndex, starID))
+        os.popen("cat %s |awk '{if ($1 == %s) print $1, $2, $%s}' > %s/tmp/idjdmag_%s.my" %(filename, starID, apIndex, self.HOME, starID))
         print "Result file is succesfuly read."
         return True
     except:
@@ -121,38 +120,41 @@ def calibration(image, bias, dark, flat, odir, cty="", sub="yes"):
     cp.zero = bias
     cp.dark = dark
     cp.flat = flat
-
-    cp(images = str(image))
-    headerWrite("%s/%s" %(str(odir), ntpath.basename(str(image))), "MYRafCAL", "Calibrated Via MYRaf V2.0 Beta @ %s" %(datetime.datetime.utcnow()))
-    print("Calibration succeed.")
     
-    if sub =="no":
-        print "Geri gel" 
-        headerWrite(image, "SUBSET", headerRead(image, "tmp"))
-        headerDel(image, "tmp")
-        headerWrite("%s/%s" %(odir, ntpath.basename(str(image))), "SUBSET", headerRead("%s/%s" %(odir, ntpath.basename(str(image))), "tmp"))
-        headerDel("%s/%s" %(odir, ntpath.basename(str(image))), "tmp")
-        headerWrite(flat, "SUBSET", headerRead(flat, "tmp"))
-        headerDel(flat, "tmp")
-        
-    return True
-
-        
-def fits2png(inFile, outFile):
     try:
-        os.popen("convert -normalize %s %s" %(inFile, outFile))            
-        print("Conversion succeed.")
-        return True
+		cp(images = str(image))
+		headerWrite("%s/%s" %(str(odir), ntpath.basename(str(image))), "MYRafCAL", "Calibrated Via MYRaf V2.0 Beta @ %s" %(datetime.datetime.utcnow()))
+		print("Calibration succeed.")
+		
+		if sub =="no":
+			print "Geri gel" 
+			headerWrite(image, "SUBSET", headerRead(image, "tmp"))
+			headerDel(image, "tmp")
+			headerWrite("%s/%s" %(odir, ntpath.basename(str(image))), "SUBSET", headerRead("%s/%s" %(odir, ntpath.basename(str(image))), "tmp"))
+			headerDel("%s/%s" %(odir, ntpath.basename(str(image))), "tmp")
+			headerWrite(flat, "SUBSET", headerRead(flat, "tmp"))
+			headerDel(flat, "tmp")
+			
+		return True
     except:
-        print("Conversion failed.")
-        return False
+		if sub =="no":
+			print "Geri gel" 
+			headerWrite(image, "SUBSET", headerRead(image, "tmp"))
+			headerDel(image, "tmp")
+			headerWrite("%s/%s" %(odir, ntpath.basename(str(image))), "SUBSET", headerRead("%s/%s" %(odir, ntpath.basename(str(image))), "tmp"))
+			headerDel("%s/%s" %(odir, ntpath.basename(str(image))), "tmp")
+			headerWrite(flat, "SUBSET", headerRead(flat, "tmp"))
+			headerDel(flat, "tmp")
+		print("Calibration failed.")
+		return False
 
-def autoAlign(inFile, refImage, outFile, mkPNG=False, visu=False):
+
+def autoAlign(self, inFile, refImage, outFile, mkPNG=False, visu=False):
     print("image = %s, ref = %s " %(inFile, refImage))
     mkh=iraf.artdata.mkheader
-    directory = os.path.dirname("./alipy_out/")
+    directory = os.path.dirname("%s/alipy_out/" %(self.HOME))
     if not os.path.exists(directory):
-        os.popen("rm -rf ./alipy_out/")
+        os.popen("rm -rf %s/alipy_out/" %(self.HOME))
     try:
         images_to_align = sorted(glob.glob(inFile))
         ref_image = refImage
@@ -163,7 +165,7 @@ def autoAlign(inFile, refImage, outFile, mkPNG=False, visu=False):
                 print "%20s : %20s, flux ratio %.2f" % (id.ukn.name, id.trans, id.medfluxratio)
                 alipy.align.affineremap(id.ukn.filepath, id.trans, shape=outputshape, makepng=mkPNG)
                 
-        alipy_out = "./alipy_out/%s_affineremap.fits" %(ntpath.basename(str(inFile)).split(".")[0])
+        alipy_out = "%s/alipy_out/%s_affineremap.fits" %(self.Home, ntpath.basename(str(inFile)).split(".")[0])
         mkh(alipy_out, inFile)
         headerWrite(alipy_out, "MYRafALI", "Aligned Via MYRaf V2.0 Beta using Alipy @ %s" %(datetime.datetime.utcnow()))
         os.popen("mv %s %s/%s" %(alipy_out, outFile, ntpath.basename(str(inFile))))
@@ -198,16 +200,16 @@ def epoch(inFile, date, time):
     t = Time(strftime('%s %s'  %(headerRead(inFile, date), headerRead(inFile, time))), format='iso', scale='utc')
     return t.byear
     
-def sideReal(inFile, OBS, date, time):
+def sideReal(self, inFile, OBS, date, time):
     print("sidereal time calculation for %s image" %(ntpath.basename(str(inFile))))
     try:
         os.system('echo astcalc > ./tmp/st.cl')
-        os.system("echo \"    observatory=\\\"%s\\\"\" >> ./tmp/st.cl" %(OBS))
-        os.system("echo \"    st=mst(@'%s',@'%s',obsdb(observatory,\\\"longitude\\\"))\" >> ./tmp/st.cl" %(date, time))
-        os.system("echo quit >> ./tmp/st.cl")
+        os.system("echo \"    observatory=\\\"%s\\\"\" >> %s/tmp/st.cl" %(OBS, self.HOME))
+        os.system("echo \"    st=mst(@'%s',@'%s',obsdb(observatory,\\\"longitude\\\"))\" >> %s/tmp/st.cl" %(date, time, self.HOME))
+        os.system("echo quit >> %s/tmp/st.cl" %(self.HOME))
         at = iraf.noao.astutil.asthedit
-        at(inFile, commands = "./tmp/st.cl", update = "yes", verbose = "yes")
-        os.popen("rm -rf ./tmp/st.cl")
+        at(inFile, commands = "%s/tmp/st.cl" %(self.HOME), update = "yes", verbose = "yes")
+        os.popen("rm -rf %s/tmp/st.cl" %(self.HOME))
         return True
         print("Sidereal calculator succeed.")
     except:
@@ -226,25 +228,25 @@ def airmass(inFile, OBS="observat", r="ra", d="dec", equ="epoch", s="st", u="ut"
         return False
         print("Setairmass failed.")
 
-def phot(inFile, outPath, cooFile, expTime = "exptime", Filter = "subset", centerBOX = "10.0", annulus = "25.0", dannulus = "5.0", apertur = "10,15,20,25,30", zmag = "25", airmass = "airmass", otime = "hjd"):
+def phot(self, inFile, outPath, cooFile, expTime = "exptime", Filter = "subset", centerBOX = "10.0", annulus = "25.0", dannulus = "5.0", apertur = "10,15,20,25,30", zmag = "25", airmass = "airmass", otime = "hjd"):
     print("setParam started via: \n\timg=%s \n\tOutfile=%s \n\tcooFile=%s \n\texpTime=%s \n\tFilter=%s \n\tcenterBOX=%s \n\tannulus=%s \n\tdannulus=%s \n\tapertur=%s \n\tzmag=%s \n\tairmass=%s \n\tobstime=%s" %(inFile, outPath, cooFile, expTime, Filter, centerBOX, annulus, dannulus, apertur, zmag, airmass, otime))
     try:
         iraf.datapars.setParam("exposur", expTime)
         iraf.datapars.setParam("filter", Filter)
         iraf.datapars.setParam("airmass", airmass)
         iraf.datapars.setParam("obstime", otime)
-        iraf.datapars.saveParList(filename="./uparm/aptdataps.par")
+        iraf.datapars.saveParList(filename="%s/uparm/aptdataps.par" %(self.HOME))
         
         iraf.centerpars.setParam("cbox", centerBOX)
-        iraf.centerpars.saveParList(filename="./uparm/aptcentes.par")
+        iraf.centerpars.saveParList(filename="%s/uparm/aptcentes.par" %(self.HOME))
         
         iraf.fitskypars.setParam("annulus", annulus)
         iraf.fitskypars.setParam("dannulus", dannulus)
-        iraf.fitskypars.saveParList(filename="./uparm/aptfitsks.par")
+        iraf.fitskypars.saveParList(filename="%s/uparm/aptfitsks.par" %(self.HOME))
         
         iraf.photpars.setParam("apertur", apertur)
         iraf.photpars.setParam("zmag", zmag)
-        iraf.photpars.saveParList(filename="./uparm/aptphot.par")
+        iraf.photpars.saveParList(filename="%s/uparm/aptphot.par" %(self.HOME))
         
         pt = iraf.phot
         pt(inFile, coords =  cooFile, output = outPath , interac = "no", verify = "no", Stdout=1)

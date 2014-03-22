@@ -54,7 +54,7 @@ def list2file(lst, fl):
 	f.close()
 
 def logging(self, txt):
-	f = open("log.my", "a")
+	f = open("%s/log.my" %(self.HOME), "a")
 	f.write("%s\n" %(str(txt)))
 	f.close()
 

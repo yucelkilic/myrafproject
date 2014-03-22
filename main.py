@@ -22,8 +22,8 @@ Importing things:---------------------------------------------------------------
 """
 import sys , os, time, string, math, signal, datetime, ntpath, numpy
 from matplotlib.patches import Circle
-
-os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - MYRaf started.\" >>log.my")
+os.system("mkdir -p $HOME/.MYRaf2")
+os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - MYRaf started.\" >>$HOME/.MYRaf2/log.my")
 
 try:
 	from PyQt4 import QtGui, QtCore
@@ -39,7 +39,7 @@ try:
 	import function, gui
 except:
 	print("Can not load MYRaf.")
-	os.system("echo \"-- " + str(datetime.datetime.utcnow()) + " - MYRaf is not installed properly.\">>log.my")
+	os.system("echo \"-- " + str(datetime.datetime.utcnow()) + " - MYRaf is not installed properly.\">>$HOME/.MYRaf2/log.my")
 	raise SystemExit
 
 try:
@@ -57,7 +57,7 @@ try:
     import numpy as np
 except:
 	print("Can not load PyRAF, iraf")
-	gui.logging(self, "-- %s - Did you install PyRAF, iraf?" %(datetime.datetime.utcnow()))
+	os.system("echo \"-- " + str(datetime.datetime.utcnow()) + " - Did you install PyRAF, iraf?\">>$HOME/.MYRaf2/log.my")
 	raise SystemExit
 
 try:
@@ -65,7 +65,7 @@ try:
 	import glob
 except:
 	print("Did you install 'alipy'? To furter information:\nhttp://obswww.unige.ch/~tewes/alipy/")
-	gui.logging(self, "-- %s - Where is alipy & glob?" %(datetime.datetime.utcnow()))
+	os.system("echo \"-- " + str(datetime.datetime.utcnow()) + " - Where is alipy & glob?\">>$HOME/.MYRaf2/log.my")
 	raise SystemExit
 		
 class MyForm(QtGui.QWidget):
@@ -73,16 +73,26 @@ class MyForm(QtGui.QWidget):
     super(MyForm, self).__init__()
     self.ui = Ui_Form()
     self.ui.setupUi(self)
-    
-    me = self.ui
 	
-    os.system("rm -rf ./tmp/*")
-    os.system("rm -rf ./alipy_visu")
-    os.system("rm -rf ./alipy_out")
-    os.system("mkdir -p ./tmp/alipy/")
-    os.system("mkdir -p ./tmp/analyzed/")
-      
-    f = open('./log.my', 'r')
+    ud = os.popen("echo $HOME")
+    self.HOME = "%s/.MYRaf2" %(ud.read().replace("\n",""))
+    if not os.path.isdir("%s/obsdat" %(self.HOME)):
+		os.popen("mkdir -p %s/obsdat/" %(self.HOME))
+		os.popen("cp -rf /usr/share/MYRaf2/obsdat/* %s/obsdat/" %(self.HOME))
+		
+    if not os.path.isdir("%s/set" %(self.HOME)):
+		os.popen("mkdir -p %s/set/" %(self.HOME))
+		os.popen("cp -rf /usr/share/MYRaf2/set/* %s/set/" %(self.HOME))
+	
+    os.system("rm -rf $HOME/.MYRaf2/tmp/*")
+    os.system("rm -rf $HOME/.MYRaf2/alipy_visu")
+    os.system("rm -rf $HOME/.MYRaf2/alipy_out")
+    os.system("mkdir -p $HOME/.MYRaf2/tmp/alipy/")
+    os.system("mkdir -p $HOME/.MYRaf2/tmp/analyzed/")
+    
+    
+    
+    f = open('%s/log.my' %(self.HOME), 'r')
     it = self.ui.listWidget_10.count()-1
     for line in f:
 		li=line.strip()
@@ -94,7 +104,7 @@ class MyForm(QtGui.QWidget):
 		item.setText(QtGui.QApplication.translate("Form", str(li), None, QtGui.QApplication.UnicodeUTF8))
 
     it = self.ui.listWidget_12.count()-1
-    for files in glob.glob("./obsdat/*"):
+    for files in glob.glob("%s/obsdat/*" %(self.HOME)):
 		fn = ntpath.basename(str(files))
 		it = it+1
 		item = QtGui.QListWidgetItem()
@@ -268,20 +278,20 @@ class MyForm(QtGui.QWidget):
 			# reading result file
 			neednt,  filename = self.ui.label_43.text().split(":")
 			filename = filename.replace("\n", "")
-			function.readResultFile(filename, varStarID, apertureIndex)
-			function.readResultFile(filename, checkStarID, apertureIndex)
-			function.readResultFile(filename, refStarID, apertureIndex)
+			function.readResultFile(self, filename, varStarID, apertureIndex)
+			function.readResultFile(self, filename, checkStarID, apertureIndex)
+			function.readResultFile(self, filename, refStarID, apertureIndex)
 			
 			# varStar
-			filep = open("tmp/idjdmag_%s.my" %(varStarID), "r")
+			filep = open("%s/tmp/idjdmag_%s.my" %(self.HOME, varStarID), "r")
 			varDatas = filep.readlines()
 			filep.close()
 			# checkStar
-			filep = open("tmp/idjdmag_%s.my" %(checkStarID), "r")
+			filep = open("%s/tmp/idjdmag_%s.my" %(self.HOME, checkStarID), "r")
 			checkDatas = filep.readlines()
 			filep.close()
 			# refStar
-			filep = open("tmp/idjdmag_%s.my" %(refStarID), "r")
+			filep = open("%s/tmp/idjdmag_%s.my" %(self.HOME, refStarID), "r")
 			refDatas = filep.readlines()
 			filep.close()  
 			# numpy operations
@@ -356,7 +366,7 @@ class MyForm(QtGui.QWidget):
 	self.ui.lineEdit_8.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
 	self.ui.plainTextEdit.setPlainText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
 	
-	f = open("obsdat/%s" %str(fl), "r")
+	f = open("%s/obsdat/%s" %(self.HOME, str(fl)), "r")
 	for i in f:
 		ln = i.replace("\n","")
 		if ln.replace("	","").startswith("observatory"):
@@ -383,13 +393,13 @@ class MyForm(QtGui.QWidget):
   def rmObservatory(self):
 	fl = self.ui.listWidget_12.currentItem()
 	fl = fl.text()
-	os.popen("rm -rf ./obsdat/%s" %(str(fl)))
+	os.popen("rm -rf %s/obsdat/%s" %(self.HOME, str(fl)))
 	c=self.ui.listWidget_12.count()
 	for i in xrange(c):
 		self.ui.listWidget_12.takeItem(0)
 	
 	it = self.ui.listWidget_12.count()-1
-	for files in glob.glob("./obsdat/*"):
+	for files in glob.glob("%s/obsdat/*" %(self.HOME)):
 		fn = ntpath.basename(str(files))
 		it = it+1
 		item = QtGui.QListWidgetItem()
@@ -397,7 +407,7 @@ class MyForm(QtGui.QWidget):
 		item = self.ui.listWidget_12.item(it)
 		item.setText(QtGui.QApplication.translate("Form", str(fn), None, QtGui.QApplication.UnicodeUTF8))
 	self.ui.listWidget_12.sortItems()
-	os.popen("cat obsdat/* > /iraf/iraf/noao/lib/obsdb.dat")
+	os.popen("cat %s/obsdat/* > /iraf/iraf/noao/lib/obsdb.dat" %(self.HOME))
 
   def addObservatory(self):
 	fl = self.ui.listWidget_12.currentItem()
@@ -410,7 +420,7 @@ class MyForm(QtGui.QWidget):
 	timeZone = self.ui.lineEdit_8.text()
 	other = str(self.ui.plainTextEdit.toPlainText())
 	
-	f = open("./obsdat/%s" %(observatory), "w")
+	f = open("%s/obsdat/%s" %(self.HOME, observatory), "w")
 	f.write("#%s\n" %(other.replace("\n"," ")))
 	f.write("observatory = \"%s\"\n" %(observatory))
 	f.write("\tname = \"%s\"\n" %(name))
@@ -425,7 +435,7 @@ class MyForm(QtGui.QWidget):
 		self.ui.listWidget_12.takeItem(0)
 	
 	it = self.ui.listWidget_12.count()-1
-	for files in glob.glob("./obsdat/*"):
+	for files in glob.glob("%s/obsdat/*" %(self.HOME)):
 		fn = ntpath.basename(str(files))
 		it = it+1
 		item = QtGui.QListWidgetItem()
@@ -434,7 +444,7 @@ class MyForm(QtGui.QWidget):
 		item.setText(QtGui.QApplication.translate("Form", str(fn), None, QtGui.QApplication.UnicodeUTF8))
 	self.ui.listWidget_12.sortItems()
 	
-	os.popen("cat obsdat/* > /iraf/iraf/noao/lib/obsdb.dat")
+	os.popen("cat %s/obsdat/* > /iraf/iraf/noao/lib/obsdb.dat" %(self.HOME))
 		
 ########################################################
 #Header Editor##########################################
@@ -527,7 +537,7 @@ class MyForm(QtGui.QWidget):
 			if function.headerDel(img, field):
 				self.getHeader()
 			else:
-				heErr = "%s\n%s" %(headErr, ntpath.basename(str(img)))					
+				heErr = "%s\n%s" %(heErr, ntpath.basename(str(img)))					
 				
 			self.ui.progressBar_4.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_9.count())))))
 			self.ui.label_41.setText(QtGui.QApplication.translate("Form", "Header: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
@@ -586,7 +596,7 @@ class MyForm(QtGui.QWidget):
 	if self.ui.listWidget_7.count() != 0:
 		if self.ui.listWidget_8.count() != 0:
 			gui.logging(self, "-- %s - phot started." %(datetime.datetime.utcnow()))
-			f = open("./tmp/pc", "w")
+			f = open("%s/tmp/pc" %(self.HOME), "w")
 			for x in xrange(self.ui.listWidget_8.count()):
 				coo = self.ui.listWidget_8.item(x)
 				coo = str(coo.text())
@@ -647,21 +657,21 @@ class MyForm(QtGui.QWidget):
 					if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
 						epo = function.epoch(img, obd, obt)
 					function.headerWrite(img, "epoch", epo)
-					if os.path.isfile("obsdat/%s" %(ob)):
+					if os.path.isfile("%s/obsdat/%s" %(self.HOME, ob)):
 						if dt !="":
 							if ob !="":
 								if tm != "":
 									if ora != "":
 										if odec != "":
 											if function.JD(img, str(obs), str(obd), str(obt), str(ra), str(dec), str("epoch"), str(exp)):
-												if function.sideReal(img, ob, obd, obt):
+												if function.sideReal(self, img, ob, obd, obt):
 													if function.airmass(img, observatory, ra, dec, "epoch", "st", obt, obd, exp):
-														if function.phot(img, "./tmp/analyzed/", "./tmp/pc", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
-															if function.txDump("./tmp/analyzed/%s.mag.1"  %(ntpath.basename(img)), "./tmp/analyzed/%s"  %(ntpath.basename(img))):
+														if function.phot(self, img, "%s/tmp/analyzed/" %(self.HOME), "%s/tmp/pc" %(self.HOME), expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
+															if function.txDump("%s/tmp/analyzed/%s.mag.1"  %(self.HOME, ntpath.basename(img)), "%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(img))):
 																#os.popen("echo '#ap=%s'"%(str()))
-																os.popen("rm ./tmp/analyzed/%s.mag.1" %(ntpath.basename(img)))
-																os.popen("cat ./tmp/analyzed/%s >> %s"  %(ntpath.basename(img), ofile))
-																os.popen("rm ./tmp/analyzed/%s" %(ntpath.basename(img)))
+																os.popen("rm %s/tmp/analyzed/%s.mag.1" %(self.HOME, ntpath.basename(img)))
+																os.popen("cat %s/tmp/analyzed/%s >> %s"  %(self.HOME, ntpath.basename(img), ofile))
+																os.popen("rm %s/tmp/analyzed/%s" %(self.HOME, ntpath.basename(img)))
 														else:
 															err = "%s, %s" %(err, ntpath.basename(img))
 													else:
@@ -714,7 +724,6 @@ class MyForm(QtGui.QWidget):
 ########################################################
 #Manual Align############################################
   def displayManAlign(self):
-	
 	img = self.ui.listWidget_6.currentItem()
 	img = img.text()
 	plotF = FitsPlot(str(img), self.ui.dispManual.canvas, self.ui)
@@ -881,11 +890,11 @@ class MyForm(QtGui.QWidget):
 					img = self.ui.listWidget_5.item(x)
 					img = str(img.text())
 					self.ui.label_7.setText(QtGui.QApplication.translate("Form", "Aligning: %s" %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-					if not function.autoAlign(img, ref, odir):
+					if not function.autoAlign(self, img, ref, odir):
 						aliErr = "%s, %s" %(aliErr, ntpath.basename(str(img)))
 						gui.logging(self, "--- %s - alipy failed." %(datetime.datetime.utcnow()))
 					self.ui.progressBar_2.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_5.count())))))
-					os.popen("rm -rf ./alipy_cats/ ./alipy_out/")
+					os.popen("rm -rf %s/alipy_cats/ %s/alipy_out/" %(self.HOME))
 				gui.logging(self, "-- %s - AutoAlign finished aligning." %(datetime.datetime.utcnow()))
 				if aliErr != "":
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>alipy</b> can not align images below\n%s") %(aliErr))
@@ -904,7 +913,7 @@ class MyForm(QtGui.QWidget):
 			gui.logging(self, "-- %s - Calibration started." %(datetime.datetime.utcnow()))
 			go = True
 			
-			os.popen("rm -rf ./tmp/dark.fits ./tmp/dark.fits ./tmp/flat_*.fits")
+			os.popen("rm -rf %s/tmp/dark.fits %s/tmp/dark.fits %s/tmp/flat_*.fits" %(self.HOME, self.HOME, self.HOME))
 				
 			b, d, f="","",""
 			if self.ui.checkBox.checkState() == QtCore.Qt.Checked and self.ui.listWidget_2.count() == 0: b = "Bias\n"
@@ -921,46 +930,46 @@ class MyForm(QtGui.QWidget):
 					self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Bias.", None, QtGui.QApplication.UnicodeUTF8))
 					gui.logging(self, "--- %s - zerocombine started for calibration." %(datetime.datetime.utcnow()))
 					lst = gui.lisFromLW(self, self.ui.listWidget_2)
-					gui.list2file(lst, "./tmp/zeroLST")
+					gui.list2file(lst, "%s/tmp/zeroLST" %(self.HOME))
 					comb = self.ui.comboBox_4.currentText()
 					rejb = self.ui.comboBox_5.currentText()
 					ctyb = self.ui.lineEdit_10.text()
-					if not function.zeroCombine("./tmp/zeroLST", "./tmp/zero.fits", com=comb, rej=rejb, cty=ctyb):
+					if not function.zeroCombine("%s/tmp/zeroLST" %(self.HOME), "%s/tmp/zero.fits" %(self.HOME), com=comb, rej=rejb, cty=ctyb):
 						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>zerocombine</b> can not handle this job."))
 						gui.logging(self, "--- %s - zerocombine failed." %(datetime.datetime.utcnow()))
 					else:
 						gui.logging(self, "--- %s - zerocombine succeed." %(datetime.datetime.utcnow()))
-						zeroFilePath = "./tmp/zero.fits"
-					os.popen("rm -rf ./tmp/zeroLST")
+						zeroFilePath = "%s/tmp/zero.fits"  %(self.HOME)
+					os.popen("rm -rf %s/tmp/zeroLST"  %(self.HOME))
 				
 				if self.ui.checkBox_2.checkState() == QtCore.Qt.Checked:
 					self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Dark.", None, QtGui.QApplication.UnicodeUTF8))
 					gui.logging(self, "--- %s - darkcombine started for calibration." %(datetime.datetime.utcnow()))
 					lst = gui.lisFromLW(self, self.ui.listWidget_3)
-					gui.list2file(lst, "./tmp/darkLST")
+					gui.list2file(lst, "%s/tmp/darkLST" %(self.HOME))
 					comd = self.ui.comboBox_4.currentText()
 					rejd = self.ui.comboBox_5.currentText()
 					scld = self.ui.comboBox_8.currentText()
 					ctyd = self.ui.lineEdit_10.text()
-					if not function.darkCombine("./tmp/darkLST", "./tmp/dark.fits", com=comd, rej=rejd, cty=ctyd, scl=scld):
+					if not function.darkCombine("%s/tmp/darkLST" %(self.HOME), "%s/tmp/dark.fits" %(self.HOME), com=comd, rej=rejd, cty=ctyd, scl=scld):
 						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>darkcombine</b> can not handle this job."))
 						gui.logging(self, "--- %s - darkcombine failed." %(datetime.datetime.utcnow()))
 					else:
 						gui.logging(self, "--- %s - darkcombine succeed." %(datetime.datetime.utcnow()))
-						darkFilePath = "./tmp/dark.fits"
-					os.popen("rm -rf ./tmp/darkLST")
+						darkFilePath = "%s/tmp/dark.fits" %(self.HOME)
+					os.popen("rm -rf %s/tmp/darkLST" %(self.HOME))
 			
 				if self.ui.checkBox_3.checkState() == QtCore.Qt.Checked:
 					self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Flat.", None, QtGui.QApplication.UnicodeUTF8))
 					gui.logging(self, "--- %s - flatcombine started for calibration." %(datetime.datetime.utcnow()))
 					lst = gui.lisFromLW(self, self.ui.listWidget_4)
-					gui.list2file(lst, "./tmp/flatLST")
+					gui.list2file(lst, "%s/tmp/flatLST" %(self.HOME))
 					comf = self.ui.comboBox_6.currentText()
 					rejf = self.ui.comboBox_7.currentText()
 					subf = self.ui.comboBox_10.currentText()
 					ctyf = self.ui.lineEdit_11.text()
 					
-					f = open("./tmp/flatLST", "r")
+					f = open("%s/tmp/flatLST" %(self.HOME), "r")
 					it = 0
 					sname = self.ui.lineEdit_14.text()
 						
@@ -974,14 +983,14 @@ class MyForm(QtGui.QWidget):
 						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no <b>%s</b> field in header.\nAdd <b>%s</b> field to headers." %(sname, sname)))
 						go = False
 					else:
-						function.headerWrite("@./tmp/flatLST", "subset", str("'(@\"%s\")'" %sname))
-						if not function.flatCombine("./tmp/flatLST", "./tmp", com=comf, rej=rejf, cty=ctyf, sub=subf):
+						function.headerWrite("@%s/tmp/flatLST" %(self.HOME), "subset", str("'(@\"%s\")'" %sname))
+						if not function.flatCombine("%s/tmp/flatLST" %(self.HOME), "%s/tmp" %(self.HOME), com=comf, rej=rejf, cty=ctyf, sub=subf):
 							QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>flatcombine</b> can not handle this job."))
 							gui.logging(self, "--- %s - flatcombine failed." %(datetime.datetime.utcnow()))
 						else:
 							gui.logging(self, "--- %s - flatcombine succeed." %(datetime.datetime.utcnow()))
-							flatFilePath = "./tmp/flat_*.fits"
-						os.popen("rm -rf ./tmp/flatLST")
+							flatFilePath = "%s/tmp/flat_*.fits" %(self.HOME)
+						os.popen("rm -rf %s/tmp/flatLST" %(self.HOME))
 				
 				if go:	
 					odir = QtGui.QFileDialog.getExistingDirectory(self, 'Select Directory to Save calibrated files')
@@ -1011,7 +1020,7 @@ class MyForm(QtGui.QWidget):
 							QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Images below have no <b>%s</b> field in header:\n%s\nSkipped!" %(sname, errs)))
 						
 						gui.logging(self, "--- %s - ccdproc finished calibration." %(datetime.datetime.utcnow()))
-						os.popen("rm -rf ./tmp/flatLS ./tmp/zeroLST ./tmp/darkLST %s %s %s" %(zeroFilePath, darkFilePath, flatFilePath))
+						os.popen("rm -rf %s/tmp/flatLS %s/tmp/zeroLST %s/tmp/darkLST %s %s %s" %(self.HOME, self.HOME, self.HOME, zeroFilePath, darkFilePath, flatFilePath))
 	else:
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>image</b> to calibrate."))
 ########################################################
@@ -1019,42 +1028,42 @@ class MyForm(QtGui.QWidget):
   def masterZero(self):
 	gui.logging(self, "-- %s - zerocombine started." %(datetime.datetime.utcnow()))
 	lst = gui.lisFromLW(self, self.ui.listWidget_2)
-	gui.list2file(lst, "./tmp/zeroLST")
+	gui.list2file(lst, "%s/tmp/zeroLST" %(self.HOME))
 	ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save Master Bias file', 'zero.fits', 'Fit or Fits (*.fits *.fit)')
 	if ofile != "":
 		com = self.ui.comboBox_2.currentText()
 		rej = self.ui.comboBox_3.currentText()
 		cty = self.ui.lineEdit_9.text()
-		if not function.zeroCombine("./tmp/zeroLST", ofile, com=com, rej=rej, cty=cty):
+		if not function.zeroCombine("%s/tmp/zeroLST" %(self.HOME), ofile, com=com, rej=rej, cty=cty):
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>zerocombine</b> can not handle this job."))
 			gui.logging(self, "-- %s - zerocombine failed." %(datetime.datetime.utcnow()))
 		else:
 			gui.logging(self, "-- %s - zerocombine succeed." %(datetime.datetime.utcnow()))
-	os.popen("rm -rf ./tmp/zeroLST")
+	os.popen("rm -rf %s/tmp/zeroLST" %(self.HOME))
 
   def masterDark(self):
 	gui.logging(self, "-- %s - darkcombine started." %(datetime.datetime.utcnow()))
 	lst = gui.lisFromLW(self, self.ui.listWidget_3)
-	gui.list2file(lst, "./tmp/darkLST")
+	gui.list2file(lst, "%s/tmp/darkLST" %(self.HOME))
 	ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save Master Dark file', 'dark.fits', 'Fit or Fits (*.fits *.fit)')
 	if ofile != "":
 		com = self.ui.comboBox_4.currentText()
 		rej = self.ui.comboBox_5.currentText()
 		scl = self.ui.comboBox_8.currentText()
 		cty = self.ui.lineEdit_10.text()
-		if not function.darkCombine("./tmp/darkLST", ofile, com=com, rej=rej, cty=cty, scl=scl):
+		if not function.darkCombine("%s/tmp/darkLST" %(self.HOME), ofile, com=com, rej=rej, cty=cty, scl=scl):
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>darkcombine</b> can not handle this job."))
 			gui.logging(self, "-- %s - darkcombine failed." %(datetime.datetime.utcnow()))
 		else:
 			gui.logging(self, "-- %s - darkcombine succeed." %(datetime.datetime.utcnow()))
-	os.popen("rm -rf ./tmp/darkLST")
+	os.popen("rm -rf %s/tmp/darkLST" %(self.HOME))
 		
   def masterFlat(self):
 	gui.logging(self, "-- %s - flatcombine started." %(datetime.datetime.utcnow()))
 	lst = gui.lisFromLW(self, self.ui.listWidget_4)
-	gui.list2file(lst, "./tmp/flatLST")
+	gui.list2file(lst, "%s/tmp/flatLST" %(self.HOME))
 	odir = QtGui.QFileDialog.getExistingDirectory( self, 'Select Directory to Save Flat(s)')
-	f = open("./tmp/flatLST", "r")
+	f = open("%s/tmp/flatLST" %(self.HOME), "r")
 	it = 0
 	sname = self.ui.lineEdit_14.text()
 	
@@ -1074,20 +1083,20 @@ class MyForm(QtGui.QWidget):
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no <b>%s</b> field in header.\nAdd <b>%s</b> field to headers." %(sname, sname)))
 		else:
 			
-			function.headerWrite("@./tmp/flatLST", "subset", str("'(@\"%s\")'" %sname))
-			if not function.flatCombine("./tmp/flatLST", odir, com=com, rej=rej, cty=cty, sub=sub):
+			function.headerWrite("@%s/tmp/flatLST" %(self.HOME), "subset", str("'(@\"%s\")'" %sname))
+			if not function.flatCombine("%s/tmp/flatLST" %(self.HOME), odir, com=com, rej=rej, cty=cty, sub=sub):
 				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>flatcombine</b> can not handle this job."))
 				gui.logging(self, "-- %s - flatcombine failed." %(datetime.datetime.utcnow()))
 			else:
 				gui.logging(self, "-- %s - flatcombine succeed." %(datetime.datetime.utcnow()))
-	os.popen("rm -rf ./tmp/flatLST")
+	os.popen("rm -rf %s/tmp/flatLST" %(self.HOME))
 	
 ########################################################
 #Load and set set########################################
   def applySettings(self):
 	  
 	  
-	  f = open("set/setting", "r")
+	  f = open("%s/set/setting" %(self.HOME), "r")
 	  for l in f:
 		  #print(l.replace("\n",""))
 		  
@@ -1226,7 +1235,7 @@ class MyForm(QtGui.QWidget):
 				  
   def saveSettings(self):
 	
-	f = open("set/setting", "w")
+	f = open("%s/set/setting" %(self.HOME), "w")
 	
 	f.write("zCombine:%s\n" %self.ui.comboBox_2.currentIndex())
 	f.write("zReject:%s\n" %self.ui.comboBox_3.currentIndex())

@@ -78,11 +78,11 @@ class MyForm(QtGui.QWidget):
     self.HOME = "%s/.MYRaf2" %(ud.read().replace("\n",""))
     if not os.path.isdir("%s/obsdat" %(self.HOME)):
 		os.popen("mkdir -p %s/obsdat/" %(self.HOME))
-		os.popen("cp -rf /usr/share/MYRaf2/obsdat/* %s/obsdat/" %(self.HOME))
+		os.popen("cp -rf /usr/share/myraf/obsdat/* %s/obsdat/" %(self.HOME))
 		
     if not os.path.isdir("%s/set" %(self.HOME)):
 		os.popen("mkdir -p %s/set/" %(self.HOME))
-		os.popen("cp -rf /usr/share/MYRaf2/set/* %s/set/" %(self.HOME))
+		os.popen("cp -rf /usr/share/myraf/set/* %s/set/" %(self.HOME))
 	
     os.system("rm -rf $HOME/.MYRaf2/tmp/*")
     os.system("rm -rf $HOME/.MYRaf2/alipy_visu")

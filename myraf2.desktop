@@ -7,4 +7,4 @@ Categories=Astronomy;Education;Science;MYRaf
 Exec=myraf2
 Name=MYRaf v2 Beta
 Comment=An Easy GUI for IRAF Photometry
-Icon=/usr/share/MYRaf2/img/MYRaf.png
+Icon=/usr/share/myraf/img/MYRaf.png

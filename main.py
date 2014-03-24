@@ -894,7 +894,7 @@ class MyForm(QtGui.QWidget):
 						aliErr = "%s, %s" %(aliErr, ntpath.basename(str(img)))
 						gui.logging(self, "--- %s - alipy failed." %(datetime.datetime.utcnow()))
 					self.ui.progressBar_2.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_5.count())))))
-					os.popen("rm -rf %s/alipy_cats/ %s/alipy_out/" %(self.HOME))
+					os.popen("rm -rf %s/alipy_cats/ %s/alipy_out/" %(self.HOME, self.HOME))
 				gui.logging(self, "-- %s - AutoAlign finished aligning." %(datetime.datetime.utcnow()))
 				if aliErr != "":
 					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>alipy</b> can not align images below\n%s") %(aliErr))

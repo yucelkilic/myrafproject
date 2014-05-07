@@ -6,7 +6,7 @@ Created:------------------------------------------------------------------------
 			Yücel KILIÇ				Developer
 		at:
 			Begin					04.12.2013
-			Last update				12.03.2013
+			Last update				07.05.2014
 Importing things:-----------------------------------------------------------------------------------
 		Must have as installed:
 			python-2.7
@@ -31,7 +31,7 @@ try:
 	from PyQt4.QtCore import *
 except:
 	print("Can not load PyQT4")
-	os.system("echo \"-- " + str(datetime.datetime.utcnow()) + " - Did you install PyQT4?\" >>log.my")
+	os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - Did you install PyQT4?\" >>$HOME/.MYRaf2/log.my")
 	raise SystemExit
 
 try:
@@ -646,26 +646,23 @@ class MyForm(QtGui.QWidget):
 					observatory = function.headerRead(img, obs)
 					if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
 						epo = function.epoch(img, obd, obt)
-						if epo == False:
-							errEpoch = "%s, %s" %(errEpoch, ntpath.basename(img))
-						else:						
-							function.headerWrite(img, "epoch", epo)
+					function.headerWrite(img, "epoch", epo)
 					if errEpoch != "":
-						if os.path.isfile("obsdat/%s" %(ob)):
+						if os.path.isfile("%s/obsdat/%s" %(self.HOME, ob)):
 							if dt !="":
 								if ob !="":
 									if tm != "":
 										if ora != "":
 											if odec != "":
 												if function.JD(img, str(obs), str(obd), str(obt), str(ra), str(dec), str("epoch"), str(exp)):
-													if function.sideReal(img, ob, obd, obt):
+													if function.sideReal(self, img, ob, obd, obt):
 														if function.airmass(img, observatory, ra, dec, "epoch", "st", obt, obd, exp):
-															if function.phot(img, "./tmp/analyzed/", "./tmp/pc", expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
-																if function.txDump("./tmp/analyzed/%s.mag.1"  %(ntpath.basename(img)), "./tmp/analyzed/%s"  %(ntpath.basename(img))):
+															if function.phot(self, img, "%s/tmp/analyzed/" %(self.HOME), "%s/tmp/pc" %(self.HOME), expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
+																if function.txDump("%s/tmp/analyzed/%s.mag.1"  %(self.HOME, ntpath.basename(img)), "%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(img))):
 																	#os.popen("echo '#ap=%s'"%(str()))
-																	os.popen("rm ./tmp/analyzed/%s.mag.1" %(ntpath.basename(img)))
-																	os.popen("cat ./tmp/analyzed/%s >> %s"  %(ntpath.basename(img), ofile))
-																	os.popen("rm ./tmp/analyzed/%s" %(ntpath.basename(img)))
+																	os.popen("rm %s/tmp/analyzed/%s.mag.1" %(self.HOME, ntpath.basename(img)))
+																	os.popen("cat %s/tmp/analyzed/%s >> %s"  %(self.HOME, ntpath.basename(img), ofile))
+																	os.popen("rm %s/tmp/analyzed/%s" %(self.HOME, ntpath.basename(img)))
 															else:
 																err = "%s, %s" %(err, ntpath.basename(img))
 														else:
@@ -686,7 +683,7 @@ class MyForm(QtGui.QWidget):
 								errdt = "%s, %s" %(errdt, ntpath.basename(img))
 						else:
 							errOBSERVAT = "%s, %s" %(errOBSERVAT, ntpath.basename(img))
-						
+					
 					self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
 					self.ui.label_14.setText(QtGui.QApplication.translate("Form", "Photometry: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
 				if errOBSERVAT != "":

@@ -31,7 +31,7 @@ try:
 	from PyQt4.QtCore import *
 except:
 	print("Can not load PyQT4")
-	os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - Did you install PyQT4?\" >>$HOME/.MYRaf2/log.my")
+	os.system("echo \"- " + str(datetime.datetime.utcnow()) + " -- Did you install PyQT4?\" >>$HOME/.MYRaf2/log.my")
 	raise SystemExit
 
 try:

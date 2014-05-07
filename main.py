@@ -32,7 +32,6 @@ try:
 except:
 	print("Can not load PyQT4")
 	os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - Did you install PyQT4?.\" >>$HOME/.MYRaf2/log.my")
-	gui.logging(self, "-- %s - Did you install PyQT4?" %(datetime.datetime.utcnow()))
 	raise SystemExit
 
 try:

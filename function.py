@@ -197,9 +197,11 @@ def JD(inFile, OBS, date="date-obs", time = "time-obs", r="ra", d = "dec", epo="
         print("JD failed.")
         
 def epoch(inFile, date, time):
-    t = Time(strftime('%s %s'  %(headerRead(inFile, date), headerRead(inFile, time))), format='iso', scale='utc')
-    return t.byear
-    
+	try:
+		t = Time(strftime('%s %s'  %(headerRead(inFile, date), headerRead(inFile, time))), format='iso', scale='utc')
+		return t.byear
+	except:
+		return False
 def sideReal(self, inFile, OBS, date, time):
     print("sidereal time calculation for %s image" %(ntpath.basename(str(inFile))))
     try:

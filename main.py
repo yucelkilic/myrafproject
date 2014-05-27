@@ -6,7 +6,7 @@ Created:------------------------------------------------------------------------
 			Yücel KILIÇ				Developer
 		at:
 			Begin					04.12.2013
-			Last update				12.03.2013
+			Last update				27.05.2014
 Importing things:-----------------------------------------------------------------------------------
 		Must have as installed:
 			python-2.7
@@ -644,6 +644,7 @@ class MyForm(QtGui.QWidget):
 				errODEC = ""
 				errdt = ""
 				errOBSERVAT = ""
+				errEpoch = ""
 				for x in xrange(self.ui.listWidget_7.count()):
 					it = it + 1
 					img = self.ui.listWidget_7.item(x)
@@ -656,6 +657,10 @@ class MyForm(QtGui.QWidget):
 					observatory = function.headerRead(img, obs)
 					if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
 						epo = function.epoch(img, obd, obt)
+						if epo == False:
+							errEpoch = "%s, %s" %(errEpoch, ntpath.basename(img))
+						else:
+							function.headerWrite(img, "epoch", epo)
 					function.headerWrite(img, "epoch", epo)
 					if errEpoch != "":
 						if os.path.isfile("%s/obsdat/%s" %(self.HOME, ob)):

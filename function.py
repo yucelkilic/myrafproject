@@ -165,7 +165,7 @@ def autoAlign(self, inFile, refImage, outFile, mkPNG=False, visu=False):
                 print "%20s : %20s, flux ratio %.2f" % (id.ukn.name, id.trans, id.medfluxratio)
                 alipy.align.affineremap(id.ukn.filepath, id.trans, shape=outputshape, makepng=mkPNG)
                 
-        alipy_out = "%s/alipy_out/%s_affineremap.fits" %(self.Home, ntpath.basename(str(inFile)).split(".")[0])
+        alipy_out = "%s/alipy_out/%s_affineremap.fits" %(self.HOME, ntpath.basename(str(inFile)).split(".")[0])
         mkh(alipy_out, inFile)
         headerWrite(alipy_out, "MYRafALI", "Aligned Via MYRaf V2.0 Beta using Alipy @ %s" %(datetime.datetime.utcnow()))
         os.popen("mv %s %s/%s" %(alipy_out, outFile, ntpath.basename(str(inFile))))

@@ -680,6 +680,7 @@ class MyForm(QtGui.QWidget):
 				errdt = ""
 				errOBSERVAT = ""
 				errEpoch = ""
+				obsOK = False
 				for x in xrange(self.ui.listWidget_7.count()):
 					it = it + 1
 					img = self.ui.listWidget_7.item(x)
@@ -699,7 +700,11 @@ class MyForm(QtGui.QWidget):
 						
 					function.headerWrite(img, "epoch", epo)
 					if errEpoch == "":
-						if os.path.isfile("%s/obsdat/%s" %(self.HOME, ob)):
+						obsFiles = glob.glob("%s/obsdat/*" %(self.HOME))
+						for i in obsFiles:
+							if i.replace("%s/obsdat/" %(self.HOME),"").lower() == ob.lower():
+								obsOK = True
+						if obsOK:
 							if dt !="":
 								if ob !="":
 									if tm != "":

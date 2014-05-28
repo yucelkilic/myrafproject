@@ -116,11 +116,19 @@ class MyForm(QtGui.QWidget):
     self.ui.tabWidget_2.setTabEnabled(1,False)
     self.ui.tabWidget_2.setTabEnabled(2,False)
     self.ui.tabWidget_2.setTabEnabled(3,False)
+    
+    self.ui.tabWidget_8.setTabEnabled(1,False)
+    self.ui.tabWidget_8.setTabEnabled(2,False)
+    self.ui.tabWidget_8.setTabEnabled(3,False)
 
 
     self.ui.checkBox.clicked.connect(self.unlockBias)
     self.ui.checkBox_2.clicked.connect(self.unlockDark)
     self.ui.checkBox_3.clicked.connect(self.unlockFlat)
+    
+    self.ui.checkBox_8.clicked.connect(self.unlockSBias)
+    self.ui.checkBox_9.clicked.connect(self.unlockSDark)
+    self.ui.checkBox_10.clicked.connect(self.unlockSFlat)
     
     self.ui.pushButton_18.clicked.connect(self.displayCoords)
     
@@ -142,8 +150,16 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_32.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_7))
     self.ui.pushButton_36.clicked.connect(lambda: gui.add(self, self.ui.listWidget_9))
     self.ui.pushButton_37.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_9))
-
-
+    
+    self.ui.pushButton_20.clicked.connect(lambda: gui.add(self, self.ui.listWidget_13))
+    self.ui.pushButton_23.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_13))
+    self.ui.pushButton_26.clicked.connect(lambda: gui.add(self, self.ui.listWidget_14))
+    self.ui.pushButton_25.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_14))
+    self.ui.pushButton_30.clicked.connect(lambda: gui.add(self, self.ui.listWidget_15))
+    self.ui.pushButton_29.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_15))
+    self.ui.pushButton_43.clicked.connect(lambda: gui.add(self, self.ui.listWidget_16))
+    self.ui.pushButton_42.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_16))
+    
     self.ui.pushButton_3.clicked.connect(self.displayCalibLabel)
     self.ui.pushButton_4.clicked.connect(self.displayCalibLabel)
     self.ui.pushButton_5.clicked.connect(self.displayCalibLabel)
@@ -152,8 +168,7 @@ class MyForm(QtGui.QWidget):
     self.ui.pushButton_8.clicked.connect(self.displayCalibLabel)
     self.ui.pushButton_13.clicked.connect(self.displayCalibLabel)
     self.ui.pushButton_11.clicked.connect(self.displayCalibLabel)
-
-
+    
     self.ui.listWidget_5.clicked.connect(self.displayAutAlign)
     self.ui.pushButton_14.clicked.connect(self.goAutAlign)
     
@@ -488,6 +503,26 @@ class MyForm(QtGui.QWidget):
 	else:
 		self.ui.lineEdit_25.setEnabled(True)
 
+#deneme
+  def unlockSBias(self):
+	if self.ui.checkBox_8.checkState() == QtCore.Qt.Checked:
+		self.ui.tabWidget_8.setTabEnabled(1,True)
+	else:
+		self.ui.tabWidget_8.setTabEnabled(1,False)
+
+  def unlockSDark(self):
+	if self.ui.checkBox_9.checkState() == QtCore.Qt.Checked:
+		self.ui.tabWidget_8.setTabEnabled(2,True)
+	else:
+		self.ui.tabWidget_8.setTabEnabled(2,False)
+
+  def unlockSFlat(self):
+	if self.ui.checkBox_10.checkState() == QtCore.Qt.Checked:
+		self.ui.tabWidget_8.setTabEnabled(3,True)
+	else:
+		self.ui.tabWidget_8.setTabEnabled(3,False)
+
+
   def goHeaderAdd(self):
 	if self.ui.listWidget_9.count() != 0:
 		f = self.ui.lineEdit.text()
@@ -661,6 +696,7 @@ class MyForm(QtGui.QWidget):
 							errEpoch = "%s, %s" %(errEpoch, ntpath.basename(img))
 						else:
 							function.headerWrite(img, "epoch", epo)
+						
 					function.headerWrite(img, "epoch", epo)
 					if errEpoch == "":
 						if os.path.isfile("%s/obsdat/%s" %(self.HOME, ob)):

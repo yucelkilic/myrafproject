@@ -662,7 +662,7 @@ class MyForm(QtGui.QWidget):
 						else:
 							function.headerWrite(img, "epoch", epo)
 					function.headerWrite(img, "epoch", epo)
-					if errEpoch != "":
+					if errEpoch == "":
 						if os.path.isfile("%s/obsdat/%s" %(self.HOME, ob)):
 							if dt !="":
 								if ob !="":

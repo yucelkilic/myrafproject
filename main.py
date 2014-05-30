@@ -244,10 +244,10 @@ class MyForm(QtGui.QWidget):
   	biC = self.ui.listWidget_2.count()
   	daC = self.ui.listWidget_3.count()
   	flC = self.ui.listWidget_4.count()
-  	self.ui.label_3.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will calibrate using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
-  	self.ui.label_4.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will calibrate using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
-  	self.ui.label_5.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will calibrate using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
-  	self.ui.label_6.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will calibrate using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
+  	self.ui.label_3.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will be calibrated by using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
+  	self.ui.label_4.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will be calibrated by using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
+  	self.ui.label_5.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will be calibrated by using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
+  	self.ui.label_6.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will be calibrated by using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
   	
 
 #Read Stars ID to Graph Tab###################################

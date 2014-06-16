@@ -382,10 +382,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
 			for y in xrange(self.ui.listWidget_13.count()):
 				
 				iIt = iIt + 1
-				print iIt
-				print iIt
-				print iIt
-				print iIt
 				iImg = self.ui.listWidget_13.item(y)
 				iImg = str(iImg.text())
 				if self.ui.groupBox_26.isChecked():
@@ -415,7 +411,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 					if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
 						epo = function.epoch(iImg, obd, obt)
 						if epo == False:
-							errEpoch = "%s, %s" %(errEpoch, ntpath.basename(img))
+							errEpoch = "%sBad time-date header:%s\n" %(errEpoch, iImg)
 						else:
 							function.headerWrite(iImg, "epoch", epo)
 							
@@ -466,9 +462,34 @@ class MyForm(QtGui.QWidget, Ui_Form):
 			row = self.ui.listWidget_18.currentRow()
 			if row < rows-1:
 				self.ui.listWidget_18.setCurrentRow(row+1)
+		if self.ui.groupBox_29.isChecked():
+			os.popen("cp %s %s" %(ofile, os.path.dirname(iImg)))
 	
-	if err != "" or errAir != "" or errSid != "" or errJD != "" or errODEC != "" or errORA != "" or errTM != "" or errOB != "" or errdt != "" or errOBSERVAT != "":
-		e = ("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" %(err, errAir, errSid, errJD, errODEC, errORA, errTM, errOB, errdt, errOBSERVAT))
+	e=""
+	if err != "":
+		e = ("%s%s" %(e, err))
+	if errAir != "":
+		e = ("%s%s" %(e, errAir))
+	if errSid != "":
+		e = ("%s%s" %(e, errSid))
+	if errJD != "":
+		e = ("%s%s" %(e, errJD))
+	if errODEC != "":
+		e = ("%s%s" %(e, errODEC))
+	if errORA != "":
+		e = ("%s%s" %(e, errORA))
+	if errTM != "":
+		e = ("%s%s" %(e, errTM))
+	if errOB != "":
+		e = ("%s%s" %(e, errOB))
+	if errdt != "":
+		e = ("%s%s" %(e, errdt))
+	if errOBSERVAT != "":
+		e = ("%s%s" %(e, errOBSERVAT))
+	if errEpoch != "":
+		e = ("%s%s" %(e, errEpoch))
+		
+	if err != "" or errAir != "" or errSid != "" or errJD != "" or errODEC != "" or errORA != "" or errTM != "" or errOB != "" or errdt != "" or errOBSERVAT != "" or errEpoch != "":
 		self.dispErr(e)
 		
 		
@@ -589,8 +610,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 					item = self.ui.listWidget_17.item(itPhot)
 					item.setText(QtGui.QApplication.translate("Form", "%s" %(m), None, QtGui.QApplication.UnicodeUTF8))
 
-  def rmSched(self):	
-	self.dispErr()
+  def rmSched(self):
 	for x in self.ui.listWidget_18.selectedItems():
 		self.ui.listWidget_18.takeItem(self.ui.listWidget_18.row(x))
 		os.popen("rm -rf %s/tmp/sf%s" %(self.HOME, x.text()))

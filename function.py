@@ -91,6 +91,9 @@ def flatCombine(fileList, out, com="median", rej="none", cty="", sub="yes"):
         print("flatcombine failed.")
         return False
 
+
+
+
 def calibration(image, bias, dark, flat, odir, cty="", sub="yes"):
 
     if sub =="no":
@@ -108,6 +111,7 @@ def calibration(image, bias, dark, flat, odir, cty="", sub="yes"):
     fla2="%s(%s)" %(fla, flat)
     print("Starting Calibration:Image=%s Bias=%s, Dark=%s, Flat=%s" %(ntpath.basename(str(image)), bia2, dar2, fla2))
     cp = iraf.noao.imred.ccdred.ccdproc
+    print str(odir)
     cp.images = str(image)
     cp.output = "%s/%s" %(str(odir), ntpath.basename(str(image)))
     cp.ccdtype = cty
@@ -138,7 +142,7 @@ def calibration(image, bias, dark, flat, odir, cty="", sub="yes"):
 		return True
     except:
 		if sub =="no":
-			print "Geri gel" 
+			print "Geri gel2" 
 			headerWrite(image, "SUBSET", headerRead(image, "tmp"))
 			headerDel(image, "tmp")
 			headerWrite("%s/%s" %(odir, ntpath.basename(str(image))), "SUBSET", headerRead("%s/%s" %(odir, ntpath.basename(str(image))), "tmp"))
@@ -168,7 +172,7 @@ def autoAlign(self, inFile, refImage, outFile, mkPNG=False, visu=False):
         alipy_out = "%s/alipy_out/%s_affineremap.fits" %(self.HOME, ntpath.basename(str(inFile)).split(".")[0])
         mkh(alipy_out, inFile)
         headerWrite(alipy_out, "MYRafALI", "Aligned Via MYRaf V2.0 Beta using Alipy @ %s" %(datetime.datetime.utcnow()))
-        os.popen("mv %s %s/%s" %(alipy_out, outFile, ntpath.basename(str(inFile))))
+        os.popen("mv -f %s %s/%s" %(alipy_out, outFile, ntpath.basename(str(inFile))))
         print("alipy succeed.")
         return True
     except:

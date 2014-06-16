@@ -36,6 +36,8 @@ class FitsPlot:
             self.mx = ((self.imageedit.max()-self.imageedit.min())*self.objDev.horizontalSlider_2.value()/100. + self.imageedit.min())*1
         elif slider == "horizontalSlider_3":
             self.mx = ((self.imageedit.max()-self.imageedit.min())*self.objDev.horizontalSlider_3.value()/100. + self.imageedit.min())*1
+        elif slider == "horizontalSlider_4":
+            self.mx = ((self.imageedit.max()-self.imageedit.min())*self.objDev.horizontalSlider_4.value()/100. + self.imageedit.min())*1
             #updated the canvas and draw
         self.imdata = self.chartDev.ax.imshow(self.imageedit,vmax=float(self.mx),vmin=self.imageedit.min(),cmap="Greys_r", interpolation=None,alpha=1)
         if cur_xlim[1] != 1 and cur_ylim[1] != 1:

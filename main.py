@@ -6,7 +6,7 @@ Created:------------------------------------------------------------------------
 			Yücel KILIÇ				Developer
 		at:
 			Begin					04.12.2013
-			Last update				27.05.2014
+			Last update				04.06.2014
 Importing things:-----------------------------------------------------------------------------------
 		Must have as installed:
 			python-2.7
@@ -36,6 +36,7 @@ except:
 
 try:
 	from myraf import Ui_Form
+	from mainErr import MyForm2
 	import function, gui
 except:
 	print("Can not load MYRaf.")
@@ -66,14 +67,17 @@ try:
 except:
 	print("Did you install 'alipy'? To furter information:\nhttp://obswww.unige.ch/~tewes/alipy/")
 	os.system("echo \"-- " + str(datetime.datetime.utcnow()) + " - Where is alipy & glob?\">>$HOME/.MYRaf2/log.my")
-	raise SystemExit
-		
-class MyForm(QtGui.QWidget):
+	raise SystemExit    
+
+
+class MyForm(QtGui.QWidget, Ui_Form):
   def __init__(self):
     super(MyForm, self).__init__()
     self.ui = Ui_Form()
     self.ui.setupUi(self)
-	
+    
+
+    
     ud = os.popen("echo $HOME")
     self.HOME = "%s/.MYRaf2" %(ud.read().replace("\n",""))
     if not os.path.isdir("%s/obsdat" %(self.HOME)):
@@ -131,6 +135,7 @@ class MyForm(QtGui.QWidget):
     self.ui.checkBox_10.clicked.connect(self.unlockSFlat)
     
     self.ui.pushButton_18.clicked.connect(self.displayCoords)
+    
     
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     
@@ -213,7 +218,548 @@ class MyForm(QtGui.QWidget):
     self.ui.horizontalSlider_3.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_7.currentItem(), self.ui.dispPhoto.canvas, "horizontalSlider_3"))
     self.ui.dispManual.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
     self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
+    
     self.ui.disp_chart.canvas.fig.canvas.mpl_connect('pick_event', self.onpick)
+
+    self.ui.listWidget_13.clicked.connect(self.displayScheduler)
+    self.ui.horizontalSlider_4.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_13.currentItem(), self.ui.dispSched.canvas, "horizontalSlider_4"))
+    self.ui.dispSched.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
+    self.ui.pushButton_47.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_17))
+    self.ui.pushButton_47.clicked.connect(self.displayCoords)
+    self.ui.pushButton_28.clicked.connect(lambda: self.uaSched("add"))
+    self.ui.pushButton_31.clicked.connect(self.rmSched)
+    self.ui.listWidget_18.clicked.connect(self.getSched)
+    self.ui.pushButton_48.clicked.connect(lambda: self.uaSched("upd"))
+    self.ui.pushButton_24.clicked.connect(self.goSched)
+
+
+
+  def dispErr(self, er):
+	if os.path.isfile("%s/tmp/error" %(self.HOME)):
+		os.popen("rm -rf %s/tmp/error" %(self.HOME))
+	fl = open("%s/tmp/error" %(self.HOME), "w")
+	fl.write(er)
+	fl.close()
+	f2 = MyForm2()
+	f2.setParent(f)
+	flags = QtCore.Qt.Tool
+	f2.setWindowFlags(flags)
+	f2.show()
+
+#Scheduler#########################
+  def goSched(self):	
+	if self.ui.listWidget_18.count() == 0:
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Nothing to do."))
+	else:
+		it = 0
+		rows = self.ui.listWidget_18.count()
+		img = self.ui.listWidget_18.setCurrentRow(0)
+		
+		for x in xrange(rows):
+			self.getSched()
+			it = it + 1
+			ofilename = self.ui.listWidget_18.currentItem()
+			ofilename = str(ofilename.text())
+			ofile = "%s/tmp/%s" %(self.HOME, ofilename)
+			
+			
+			zC = com = self.ui.comboBox_2.currentText()
+			zR = com = self.ui.comboBox_3.currentText()
+			zCT = self.ui.lineEdit_9.text()
+			
+			dC = com = self.ui.comboBox_4.currentText()
+			dR = com = self.ui.comboBox_5.currentText()
+			dS = com = self.ui.comboBox_8.currentText()
+			dCT = self.ui.lineEdit_10.text()
+			
+			fC = com = self.ui.comboBox_6.currentText()
+			fR = com = self.ui.comboBox_7.currentText()
+			fS = com = self.ui.comboBox_9.currentText()
+			fCT = self.ui.lineEdit_11.text()
+			
+			cS = com = self.ui.comboBox_10.currentText()
+			cCT = self.ui.lineEdit_12.text()
+			
+			sname = self.ui.lineEdit_14.text()
+			subf = self.ui.comboBox_9.currentText()
+			subc = self.ui.comboBox_10.currentText()
+			
+			biasFiles = ""
+			darkFiles = ""
+			flatFiles = ""
+			
+			fErr = ""
+			cErr = ""
+			
+			if self.ui.groupBox_26.isChecked():
+				if self.ui.checkBox_8.isChecked():
+					
+					gui.list2file(gui.lisFromLW(self, self.ui.listWidget_14), "%s/tmp/zeroList" %(self.HOME))
+					self.ui.label_71.setText("Zero Combine...")
+					if os.path.isfile("%s/tmp/zero.fit" %(self.HOME)):
+						os.popen("%s/tmp/zero.fit" %(self.HOME))
+					if function.zeroCombine("%s/tmp/zeroList" %(self.HOME), "%s/tmp/zero.fit" %(self.HOME), com=zC, rej=zR, cty=zCT):
+						biasFiles = "%s/tmp/zero.fit" %(self.HOME)
+						
+				if self.ui.checkBox_9.isChecked():
+					gui.list2file(gui.lisFromLW(self, self.ui.listWidget_15), "%s/tmp/darkList" %(self.HOME))
+					self.ui.label_71.setText("Dark Combine...")
+					if os.path.isfile("%s/tmp/dark.fit" %(self.HOME)):
+						os.popen("%s/tmp/dark.fit" %(self.HOME))
+					if function.darkCombine("%s/tmp/darkList" %(self.HOME), "%s/tmp/dark.fit" %(self.HOME), com=dC, rej=dR, cty=dCT, scl=dS):
+						darkFiles = "%s/tmp/dark.fit" %(self.HOME)
+
+				if self.ui.checkBox_10.isChecked():
+					gui.list2file(gui.lisFromLW(self, self.ui.listWidget_16), "%s/tmp/flatList" %(self.HOME))
+					self.ui.label_71.setText("Flat Combine...")
+					f = open("%s/tmp/flatList" %(self.HOME), "r")
+					itF = 0
+					for z in f:
+						fn = z.replace("\n","")
+						if function.headerRead(fn,sname) == "":
+							itF = itF + 1
+					f.close()
+					if subf == "yes" and itF != 0:
+						self.ui.label_71.setText("There is no %s header in some Flat files. Skipping" %(subf))
+					else:
+						if os.path.isfile("%s/tmp/flat_*.fit" %(self.HOME)):
+							os.popen("%s/tmp/flat_*.fit" %(self.HOME))
+						if function.flatCombine("%s/tmp/flatList" %(self.HOME), "%s/tmp/" %(self.HOME), com=fC, rej=fR, cty=fCT, sub=fS):
+							flatFiles = "%s/tmp/flat_*.fits" %(self.HOME)
+
+			if self.ui.groupBox_29.isChecked():
+				f = open("%s/tmp/pc" %(self.HOME), "w")
+				for x in xrange(self.ui.listWidget_17.count()):
+					coo = self.ui.listWidget_17.item(x)
+					coo = str(coo.text())
+					coo = coo.replace("-", " ")
+					f.write("%s\n" %(coo))
+				f.close()
+					
+				exp = self.ui.lineEdit_13.text()
+				fil = self.ui.lineEdit_14.text()
+				ann = self.ui.dial.value()
+				dan = self.ui.dial_2.value()
+				cbo = self.ui.dial_3.value()
+				ape = self.ui.lineEdit_15.text()
+				zma = self.ui.lineEdit_16.text()
+				obs = self.ui.lineEdit_18.text()
+				obt = self.ui.lineEdit_17.text()
+				obd = self.ui.lineEdit_24.text()
+				ra = self.ui.lineEdit_22.text()
+				dec = self.ui.lineEdit_23.text()
+				epo = self.ui.lineEdit_25.text()
+				
+				apert = self.ui.lineEdit_15.text()
+				staCount = self.ui.listWidget_8.count()
+				
+				if os.path.exists(ofile):
+					os.popen("rm %s" %(ofile))
+				
+				f = open(ofile, "w")
+				f.write("# STAR = %s\n" %(str(staCount)))
+				f.write("# APERTURE = %s\n" %(str(apert)))
+				f.write("# DO NOT EDIT PARAMETRES ABOVE. You can add comments starts with '#' below ths line.\n")
+				f.write("# If you don't have any experience before, DO NOT EDIT THIS FILE!\n")
+				f.write("# id\tTIME\tMAG%s\tMERR%s\tAIRMASS\n"%(self.ui.lineEdit_15.text().replace(",","\tMAG"), self.ui.lineEdit_15.text().replace(",","\tMERR")))
+				f.close()
+				
+				err = ""
+				errJD = ""
+				errSid = ""
+				errAir = ""
+				errTM = ""
+				errOB = ""
+				errORA = ""
+				errODEC = ""
+				errdt = ""
+				errOBSERVAT = ""
+				errEpoch = ""
+				obsOK = False
+
+			iIt = 0
+
+			for y in xrange(self.ui.listWidget_13.count()):
+				
+				iIt = iIt + 1
+				print iIt
+				print iIt
+				print iIt
+				print iIt
+				iImg = self.ui.listWidget_13.item(y)
+				iImg = str(iImg.text())
+				if self.ui.groupBox_26.isChecked():
+					if function.headerRead(iImg, sname) == "" and subc == "yes":
+						self.ui.label_71.setText("There is no %s header in %s file. Skipping" %(subf, ntpath.basename(str(iImg))))
+					else:
+						function.headerWrite(iImg, "subset", str("'(@\"%s\")'" %sname))
+						if not function.calibration(iImg, biasFiles, darkFiles, flatFiles, "%s/tmp" %(self.HOME), cCT, sub=cS):
+							cErr = "%s, %s" %(iImg, cErr)
+						else:
+							os.popen("mv -f %s/tmp/%s %s" %(self.HOME, ntpath.basename(str(iImg)), iImg))
+							
+				if self.ui.checkBox_11.isChecked():
+					refImage = self.ui.listWidget_13.currentItem()
+					refImage = str(refImage.text())
+					if not function.autoAlign(self, iImg, refImage, os.path.split(iImg)[0], mkPNG=False, visu=False):
+						self.ui.label_71.setText("Can not align %s" %(ntpath.basename(str(iImg))))
+				
+				if self.ui.groupBox_29.isChecked():
+					tm = function.headerRead(iImg, obt)
+					ob = function.headerRead(iImg, obs)
+					dt = function.headerRead(iImg, obd)
+					ora = function.headerRead(iImg, ra)
+					odec = function.headerRead(iImg, dec)
+					observatory = function.headerRead(img, obs)
+					
+					if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
+						epo = function.epoch(iImg, obd, obt)
+						if epo == False:
+							errEpoch = "%s, %s" %(errEpoch, ntpath.basename(img))
+						else:
+							function.headerWrite(iImg, "epoch", epo)
+							
+					function.headerWrite(iImg, "epoch", epo)
+					if errEpoch == "":
+						obsFiles = glob.glob("%s/obsdat/*" %(self.HOME))
+						for i in obsFiles:
+							if i.replace("%s/obsdat/" %(self.HOME),"").lower() == ob.lower():
+								obsOK = True
+						if obsOK:
+							if dt !="":
+								if ob !="":
+									if tm != "":
+										if ora != "":
+											if odec != "":
+												if function.JD(iImg, str(obs), str(obd), str(obt), str(ra), str(dec), str("epoch"), str(exp)):
+													if function.sideReal(self, iImg, ob, obd, obt):
+														if function.airmass(iImg, observatory, ra, dec, "epoch", "st", obt, obd, exp):
+															if function.phot(self, iImg, "%s/tmp/analyzed/" %(self.HOME), "%s/tmp/pc" %(self.HOME), expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
+																if function.txDump("%s/tmp/analyzed/%s.mag.1"  %(self.HOME, ntpath.basename(iImg)), "%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(iImg))):
+																	os.popen("rm %s/tmp/analyzed/%s.mag.1" %(self.HOME, ntpath.basename(iImg)))
+																	os.popen("cat %s/tmp/analyzed/%s >> %s"  %(self.HOME, ntpath.basename(iImg), ofile))
+																	os.popen("rm %s/tmp/analyzed/%s" %(self.HOME, ntpath.basename(iImg)))
+															else:
+																err = "PhotErr=%s, %s" %(err, ntpath.basename(iImg))
+														else:
+															errAir = "AiMaErr=%s, %s" %(errAir, ntpath.basename(iImg))
+													else:
+														errSid = "SiReErr%s, %s" %(errSid, ntpath.basename(iImg))
+												else:
+													errJD = "JDErr%s, %s" %(errJD, ntpath.basename(iImg))
+											else:
+												errODEC = "EpoErr%s, %s" %(errODEC, ntpath.basename(iImg))
+										else:
+											errORA = "RAErr%s, %s" %(errORA, ntpath.basename(iImg))
+									else:
+										errTM = "No %s header=%s, %s" %(obt, errTM, ntpath.basename(iImg))
+								else:
+									errOB = "No %s header=%s, %s" %(obs, errOB, ntpath.basename(iImg))
+							else:
+								errdt = "No %s header=%s, %s" %(obd, errdt, ntpath.basename(iImg))
+						else:
+							errOBSERVAT = "No obervat %s=%s, %s" %(ob, errOBSERVAT, ntpath.basename(iImg))
+						
+				self.ui.progressBar_7.setProperty("value", math.ceil(100*(float(float(iIt)/float(self.ui.listWidget_13.count())))))
+			
+			self.ui.progressBar_6.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_18.count())))))
+			row = self.ui.listWidget_18.currentRow()
+			if row < rows-1:
+				self.ui.listWidget_18.setCurrentRow(row+1)
+	
+	if err != "" or errAir != "" or errSid != "" or errJD != "" or errODEC != "" or errORA != "" or errTM != "" or errOB != "" or errdt != "" or errOBSERVAT != "":
+		e = ("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" %(err, errAir, errSid, errJD, errODEC, errORA, errTM, errOB, errdt, errOBSERVAT))
+		self.dispErr(e)
+		
+		
+  def getSched(self):
+	sFile = self.ui.listWidget_18.currentItem()
+	sFile = "%s/tmp/sf%s" %(self.HOME, sFile.text())
+	f = open(sFile, "r")
+	itImg = -1
+	itBia = -1
+	itDar = -1
+	itFla = -1
+	itPhot = -1
+	
+	for x in xrange(self.ui.listWidget_13.count()):
+		self.ui.listWidget_13.takeItem(0)
+		
+	for x in xrange(self.ui.listWidget_14.count()):
+		self.ui.listWidget_14.takeItem(0)
+		
+	for x in xrange(self.ui.listWidget_15.count()):
+		self.ui.listWidget_15.takeItem(0)
+		
+	for x in xrange(self.ui.listWidget_16.count()):
+		self.ui.listWidget_16.takeItem(0)
+		
+	for x in xrange(self.ui.listWidget_17.count()):
+		self.ui.listWidget_17.takeItem(0)
+		
+	self.ui.groupBox_26.setChecked(False)
+	self.ui.groupBox_29.setChecked(False)
+	self.ui.checkBox_8.setChecked(False)
+	self.ui.checkBox_9.setChecked(False)
+	self.ui.checkBox_10.setChecked(False)
+	self.ui.checkBox_11.setChecked(False)
+	
+	for i in f:
+		if i.startswith("isBia"):
+			if i.split(" = ")[1].replace("\n","") == "True":
+				self.ui.groupBox_26.setChecked(True)
+				self.ui.checkBox_8.setChecked(True)
+				self.unlockSBias()
+			else:
+				self.ui.groupBox_26.setChecked(False)
+				self.ui.checkBox_8.setChecked(False)
+				self.unlockSBias()
+
+		if i.startswith("isDar"):
+			if i.split(" = ")[1].replace("\n","") == "True":
+				self.ui.groupBox_26.setChecked(True)
+				self.ui.checkBox_9.setChecked(True)
+				self.unlockSDark()
+			else:
+				self.ui.groupBox_26.setChecked(False)
+				self.ui.checkBox_9.setChecked(False)
+				self.unlockSDark()
+
+		if i.startswith("isFla"):
+			if i.split(" = ")[1].replace("\n","") == "True":
+				self.ui.groupBox_26.setChecked(True)
+				self.ui.checkBox_10.setChecked(True)
+				self.unlockSFlat()
+			else:
+				self.ui.groupBox_26.setChecked(False)
+				self.ui.checkBox_10.setChecked(False)
+				self.unlockSFlat()
+				
+		if i.startswith("isAli"):
+			if i.split(" = ")[1].replace("\n","") == "True":
+				self.ui.checkBox_11.setChecked(True)
+			else:
+				self.ui.checkBox_11.setChecked(False)
+
+		if i.startswith("isPhot"):
+			if i.split(" = ")[1].replace("\n","") == "True":
+				self.ui.groupBox_29.setChecked(True)
+			else:
+				self.ui.groupBox_29.setChecked(False)
+				
+		if(i.startswith("img")):
+			itImg = itImg +1
+			item = QtGui.QListWidgetItem()
+			self.ui.listWidget_13.addItem(item)
+			item = self.ui.listWidget_13.item(itImg)
+			item.setText(QtGui.QApplication.translate("Form", "%s" %(i.split(" = ")[1].replace("\n","")), None, QtGui.QApplication.UnicodeUTF8))
+
+		if(i.startswith("bia")):
+			itBia = itBia +1
+			item = QtGui.QListWidgetItem()
+			self.ui.listWidget_14.addItem(item)
+			item = self.ui.listWidget_14.item(itBia)
+			item.setText(QtGui.QApplication.translate("Form", "%s" %(i.split(" = ")[1].replace("\n","")), None, QtGui.QApplication.UnicodeUTF8))
+
+		if(i.startswith("dar")):
+			itDar = itDar +1
+			item = QtGui.QListWidgetItem()
+			self.ui.listWidget_15.addItem(item)
+			item = self.ui.listWidget_15.item(itDar)
+			item.setText(QtGui.QApplication.translate("Form", "%s" %(i.split(" = ")[1].replace("\n","")), None, QtGui.QApplication.UnicodeUTF8))
+
+		if(i.startswith("fla")):
+			itFla = itFla +1
+			item = QtGui.QListWidgetItem()
+			self.ui.listWidget_16.addItem(item)
+			item = self.ui.listWidget_16.item(itFla)
+			item.setText(QtGui.QApplication.translate("Form", "%s" %(i.split(" = ")[1].replace("\n","")), None, QtGui.QApplication.UnicodeUTF8))
+
+		if(i.startswith("ref")):
+			ind = i.split(" = ")[1].replace("\n","")
+			print ind
+			self.ui.listWidget_13.setCurrentRow(int(ind))
+
+		if(i.startswith("coo")):
+			for m in i.split(" = ")[1].replace("\n","").split(","):
+				if m != "":
+					itPhot = itPhot +1
+					item = QtGui.QListWidgetItem()
+					self.ui.listWidget_17.addItem(item)
+					item = self.ui.listWidget_17.item(itPhot)
+					item.setText(QtGui.QApplication.translate("Form", "%s" %(m), None, QtGui.QApplication.UnicodeUTF8))
+
+  def rmSched(self):	
+	self.dispErr()
+	for x in self.ui.listWidget_18.selectedItems():
+		self.ui.listWidget_18.takeItem(self.ui.listWidget_18.row(x))
+		os.popen("rm -rf %s/tmp/sf%s" %(self.HOME, x.text()))
+		
+  def uaSched(self, st):	
+	if self.ui.listWidget_13.count() == 0:
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No Image to process."))
+	else:
+		if (self.ui.groupBox_26.isChecked() and self.ui.checkBox_8.checkState() == QtCore.Qt.Checked) or (self.ui.groupBox_26.isChecked() and self.ui.checkBox_9.checkState() == QtCore.Qt.Checked) or (self.ui.groupBox_26.isChecked() and self.ui.checkBox_10.checkState() == QtCore.Qt.Checked):
+			std = True
+		elif self.ui.checkBox_11.checkState() == QtCore.Qt.Checked:
+			std = True
+		elif self.ui.groupBox_29.isChecked():
+			std = True
+		else:
+			std = False
+	
+		if std:
+			isBia = False
+			isDar = False
+			isFla = False
+			isAli = False
+			isPho = False
+			
+			fImg = []
+			fBia = []
+			fDar = []
+			fFla = []
+			fCoo = ""
+			
+			err = True
+			
+			if st == "add":
+				ts = time.time()
+				sFl = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d_%H%M%S')
+			elif st == "upd":
+				sFl = self.ui.listWidget_18.currentItem()
+				sFl = sFl.text()
+			
+			
+			if self.ui.groupBox_26.isChecked():
+				if self.ui.checkBox_8.checkState() == QtCore.Qt.Checked:
+					if self.ui.listWidget_14.count() != 0:
+						isBia = True
+					else:
+						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Add some Bias images."))
+						err = False
+
+				if self.ui.checkBox_9.checkState() == QtCore.Qt.Checked:
+					if self.ui.listWidget_15.count() != 0:
+						isDar = True
+					else:
+						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Add some Dark images."))
+						err = False
+
+				if self.ui.checkBox_10.checkState() == QtCore.Qt.Checked:
+					if self.ui.listWidget_16.count() != 0:
+						isFla = True
+					else:
+						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Add some Flat images."))
+						err = False
+					
+			if self.ui.checkBox_11.checkState() == QtCore.Qt.Checked:
+				if self.ui.listWidget_13.currentItem() != None:
+					isAli = True
+				else:
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select a reference image."))
+					err = False
+
+			if self.ui.groupBox_29.isChecked():
+				if self.ui.listWidget_17.count() != 0:
+					isPho = True
+				else:
+					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Select coordinates for Photometry."))
+					err = False
+			
+			if err:
+				f = open("%s/tmp/sf%s" %(self.HOME, sFl), "w")
+				for i in xrange(self.ui.listWidget_13.count()):
+					img = self.ui.listWidget_13.item(i)
+					img = str(img.text())
+					fImg.append(img)
+				
+				if isBia:
+					f.write("isBia = True\n")
+					for i in xrange(self.ui.listWidget_14.count()):
+						img = self.ui.listWidget_14.item(i)
+						img = str(img.text())
+						fBia.append(img)
+				else:
+					f.write("isBia = False\n")
+
+				if isDar:
+					f.write("isDar = True\n")
+					for i in xrange(self.ui.listWidget_15.count()):
+						img = self.ui.listWidget_15.item(i)
+						img = str(img.text())
+						fDar.append(img)
+				else:
+					f.write("isDar = False\n")
+
+				if isFla:
+					f.write("isFla = True\n")
+					for i in xrange(self.ui.listWidget_16.count()):
+						img = self.ui.listWidget_16.item(i)
+						img = str(img.text())
+						fFla.append(img)
+				else:
+					f.write("isFla = False\n")
+
+				if isAli:
+					f.write("isAli = True\n")
+				else:
+					f.write("isAli = False\n")
+
+				if isPho:
+					f.write("isPhot = True\n")
+					for i in xrange(self.ui.listWidget_17.count()):
+						coo = self.ui.listWidget_17.item(i)
+						coo = str(coo.text())
+						fCoo = "%s,%s" %(fCoo, coo)
+				else:
+					f.write("isPhot = False\n")
+					
+				for i in fImg:
+					f.write("img = %s\n" %(i))
+					
+				for i in fBia:
+					f.write("bia = %s\n" %(i))
+				
+				for i in fDar:
+					f.write("dar = %s\n" %(i))
+					
+				for i in fFla:
+					f.write("fla = %s\n" %(i))
+					
+				if isAli:
+					reImg = self.ui.listWidget_13.currentRow()
+					f.write("ref = %s\n" %(reImg))
+					
+				if isPho:
+					f.write("coo = %s\n" %(fCoo))
+					
+					
+				if st == "add":
+					it = self.ui.listWidget_18.count()
+					item = QtGui.QListWidgetItem()
+					self.ui.listWidget_18.addItem(item)
+					item = self.ui.listWidget_18.item(it)
+					item.setText(QtGui.QApplication.translate("Form", "%s" %(sFl), None, QtGui.QApplication.UnicodeUTF8))
+				f.close()
+
+		else:
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Nothing to do."))
+			
+	
+  def displayScheduler(self):
+	img = self.ui.listWidget_13.currentItem()
+	img = img.text()
+	plotF = FitsPlot(str(img), self.ui.dispSched.canvas, self.ui)
+	if plotF.drawim("horizontalSlider_4"):
+		self.ui.dispSched.canvas.draw()
+		#self.displayCoords()
+		gui.logging(self, "-- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
+	else:
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
+		gui.logging(self, "--- %s - imagemagick failed." %(datetime.datetime.utcnow()))
+
+
 
 # Chart point picker
   def onpick(self, event):
@@ -502,8 +1048,7 @@ class MyForm(QtGui.QWidget):
 		self.ui.lineEdit_25.setEnabled(False)
 	else:
 		self.ui.lineEdit_25.setEnabled(True)
-
-#deneme
+		
   def unlockSBias(self):
 	if self.ui.checkBox_8.checkState() == QtCore.Qt.Checked:
 		self.ui.tabWidget_8.setTabEnabled(1,True)
@@ -602,30 +1147,60 @@ class MyForm(QtGui.QWidget):
 	self.displayPhot()
 		
   def displayCoords(self):
-	if self.ui.listWidget_8.count() != 0:
-		self.displayPhot()
-		lNumber = 0	
-		for x in self.ui.listWidget_8.selectedItems():
-			lNumber = lNumber +1
-			coo = str(x.text())
-			x, y = coo.split("-")
-			mean = 0
-			ap = str(self.ui.lineEdit_15.text())
-			for ape in ap.split(","):
-				mean = mean + int(ape)
-			Aperture = mean/len(ap.split(","))
-			Aperture = mean/len(ap.split(","))
-			circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
-			circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
-			circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
-			self.ui.dispPhoto.canvas.ax.add_artist(circAnnulus)
-			self.ui.dispPhoto.canvas.ax.add_artist(circDannulus)
-			self.ui.dispPhoto.canvas.ax.add_artist(circAperture)
-			circAperture.center = x, y
-			circAnnulus.center = x, y
-			circDannulus.center = x, y
-			self.ui.dispPhoto.canvas.ax.annotate(lNumber, xy = (x, y), xytext=(int(Aperture/3),int(Aperture/3)), textcoords='offset points', color = "blue", fontsize = 10)
-			self.ui.dispPhoto.canvas.draw()
+	if self.ui.tabWidget.currentIndex() == 2:
+		if self.ui.listWidget_8.count() != 0:
+			self.displayPhot()
+			lNumber = 0	
+			for x in self.ui.listWidget_8.selectedItems():
+				lNumber = lNumber +1
+				coo = str(x.text())
+				print coo
+				x, y = coo.split("-")
+				mean = 0
+				ap = str(self.ui.lineEdit_15.text())
+				for ape in ap.split(","):
+					mean = mean + int(ape)
+				Aperture = mean/len(ap.split(","))
+				Aperture = mean/len(ap.split(","))
+				circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
+				circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
+				circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
+				self.ui.dispPhoto.canvas.ax.add_artist(circAnnulus)
+				self.ui.dispPhoto.canvas.ax.add_artist(circDannulus)
+				self.ui.dispPhoto.canvas.ax.add_artist(circAperture)
+				circAperture.center = x, y
+				circAnnulus.center = x, y
+				circDannulus.center = x, y
+				self.ui.dispPhoto.canvas.ax.annotate(lNumber, xy = (x, y), xytext=(int(Aperture/3),int(Aperture/3)), textcoords='offset points', color = "blue", fontsize = 10)
+				self.ui.dispPhoto.canvas.draw()
+	#hela vela vel vela
+	elif self.ui.tabWidget.currentIndex() == 5:
+		if self.ui.listWidget_17.count() != 0:
+			self.displayScheduler()
+			lNumber = 0	
+			for x in xrange(self.ui.listWidget_17.count()):
+				lNumber = lNumber +1
+				coo = self.ui.listWidget_17.item(x)
+				coo = str(coo.text())
+				print coo
+				x, y = coo.split("-")
+				mean = 0
+				ap = str(self.ui.lineEdit_15.text())
+				for ape in ap.split(","):
+					mean = mean + int(ape)
+				Aperture = mean/len(ap.split(","))
+				Aperture = mean/len(ap.split(","))
+				circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
+				circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
+				circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
+				self.ui.dispSched.canvas.ax.add_artist(circAnnulus)
+				self.ui.dispSched.canvas.ax.add_artist(circDannulus)
+				self.ui.dispSched.canvas.ax.add_artist(circAperture)
+				circAperture.center = x, y
+				circAnnulus.center = x, y
+				circDannulus.center = x, y
+				self.ui.dispSched.canvas.ax.annotate(lNumber, xy = (x, y), xytext=(int(Aperture/3),int(Aperture/3)), textcoords='offset points', color = "blue", fontsize = 10)
+				self.ui.dispSched.canvas.draw()
 			
   def goPhot(self):
 	if self.ui.listWidget_7.count() != 0:
@@ -694,7 +1269,7 @@ class MyForm(QtGui.QWidget):
 					if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
 						epo = function.epoch(img, obd, obt)
 						if epo == False:
-							errEpoch = "%s, %s" %(errEpoch, ntpath.basename(img))
+							errEpoch = "%s\n%s" %(errEpoch, img)
 						else:
 							function.headerWrite(img, "epoch", epo)
 						
@@ -720,50 +1295,61 @@ class MyForm(QtGui.QWidget):
 																	os.popen("cat %s/tmp/analyzed/%s >> %s"  %(self.HOME, ntpath.basename(img), ofile))
 																	os.popen("rm %s/tmp/analyzed/%s" %(self.HOME, ntpath.basename(img)))
 															else:
-																err = "%s, %s" %(err, ntpath.basename(img))
+																err = "%s\n%s" %(err, ntpath.basename(img))
 														else:
-															errAir = "%s, %s" %(errAir, ntpath.basename(img))
+															errAir = "%s\n%s" %(errAir, ntpath.basename(img))
 													else:
-														errSid = "%s, %s" %(errSid, ntpath.basename(img))
+														errSid = "%s\n%s" %(errSid, ntpath.basename(img))
 												else:
-													errJD = "%s, %s" %(errJD, ntpath.basename(img))
+													errJD = "%s\n%s" %(errJD, ntpath.basename(img))
 											else:
-												errODEC = "%s, %s" %(errODEC, ntpath.basename(img))
+												errODEC = "%s\n%s" %(errODEC, ntpath.basename(img))
 										else:
-											errORA = "%s, %s" %(errORA, ntpath.basename(img))
+											errORA = "%s\n%s" %(errORA, ntpath.basename(img))
 									else:
-										errTM = "%s, %s" %(errTM, ntpath.basename(img))
+										errTM = "%s\n%s" %(errTM, ntpath.basename(img))
 								else:
-									errOB = "%s, %s" %(errOB, ntpath.basename(img))
+									errOB = "%s\n%s" %(errOB, ntpath.basename(img))
 							else:
-								errdt = "%s, %s" %(errdt, ntpath.basename(img))
+								errdt = "%s\n%s" %(errdt, ntpath.basename(img))
 						else:
-							errOBSERVAT = "%s, %s" %(errOBSERVAT, ntpath.basename(img))
+							errOBSERVAT = "%s\n%s" %(errOBSERVAT, ntpath.basename(img))
 					self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
 					self.ui.label_14.setText(QtGui.QApplication.translate("Form", "Photometry: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
 				if errOBSERVAT != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Can't find Observatory in <b>obsdb</b> for images below:\n%s\nYou can add your observatory using editor." %(errOBSERVAT)))
+					errOBSERVAT = "Can't find Observatory in obsdb for images below:\nYou can add your observatory using editor.\n%s" %(errOBSERVAT)
+					self.dispErr(errOBSERVAT)
 					
 				if errTM != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>%s</b> header on images below:\n%s" %(obt, errTM)))
+					errTM = "No %s header on images below:\n%s" %(obt, errTM)
+					self.dispErr(errTM)
 				if errEpoch != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Time format is not correct for images below:\n%s\nYou can change value from header or choose manual epoch from setting tab." %(errEpoch)))
+					errEpoch = "Time format is not correct for images below:\nYou can change value from header or choose manual epoch from setting tab.\n%s" %(errEpoch)
+					self.dispErr(errEpoch)
 				if errOB != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>%s</b> header on images below:\n%s" %(obs, errOB)))
+					errOB = "No %s header on images below:\n%s" %(obs, errOB)
+					self.dispErr(errOB)
 				if errORA != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>%s</b> header on images below:\n%s" %(ra, errORA)))
+					errORA = "No %s header on images below:\n%s" %(ra, errORA)
+					self.dispErr(errORA)
 				if errODEC != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>%s</b> header on images below:\n%s" %(dec, errODEC)))
+					errODEC = "No %s header on images below:\n%s" %(dec, errODEC)
+					self.dispErr(errODEC)
 				if errdt != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>%s</b> header on images below:\n%s" %(obd, errdt)))
+					errdt = "No %s header on images below:\n%s" %(obd, errdt)
+					self.dispErr(errdt)
 				if errJD != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>setjd</b> can not handle images below\n%s." %(errJD)))
+					errJD = "Due to an error setjd can not handle images below:\n%s." %(errJD)
+					self.dispErr(errJD)
 				if errSid != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error can not calculate <b>sidereal</b> time for images below\n%s." %(errSid)))
+					errSid = "Due to an error can not calculate sidereal time for images below:\n%s." %(errSid)
+					self.dispErr(errSid)
 				if errAir != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>setairmass</b> can not handle images below\n%s." %(errAir)))
+					errAir = "Due to an error setairmass can not handle images below:\n%s." %(errAir)
+					self.dispErr(errAir)
 				if err != "":
-					QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>phot</b> can not handle images below\n%s." %(err)))
+					err = "Due to an error phot can not handle images below:\n%s." %(err)
+					self.dispErr(err)
 				
 		else:
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some <b>sources</b>."))
@@ -837,7 +1423,8 @@ class MyForm(QtGui.QWidget):
 						self.ui.progressBar_3.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_6.count())))))
 				
 					if err!="":
-						QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>imshift</b> can not align images below\n%s." %(err)))
+						err = "Due to an error imshift can not align images below\n%s." %(err)
+						self.dispErr(err)
 			
 			else:
 				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select coordinates for reference image."))
@@ -867,10 +1454,16 @@ class MyForm(QtGui.QWidget):
 					self.displayManAlign()
   	elif self.ui.tabWidget.currentIndex() == 2:
   		if self.ui.checkBox_7.isChecked():		
-	   		print event.ydata
+	   		#print event.ydata
 	   		if event.ydata != None and event.xdata != None:
   				self.ui.listWidget_8.addItem(str(format(event.xdata, '.4f')) + " - " + str(format(event.ydata, '.4f')))
-  				self.displayCoords()
+  	elif self.ui.tabWidget.currentIndex() == 5:
+		if self.ui.groupBox_29.isChecked():	
+			#print event.ydata
+			if event.ydata != None and event.xdata != None:
+				self.ui.listWidget_17.addItem(str(format(event.xdata, '.4f')) + " - " + str(format(event.ydata, '.4f')))
+				self.displayCoords()
+
 
 #Auto Align#############################################
   def findStars(self):
@@ -969,6 +1562,8 @@ class MyForm(QtGui.QWidget):
 			if self.ui.checkBox_2.checkState() == QtCore.Qt.Checked and self.ui.listWidget_3.count() == 0: d = "Dark\n"
 			if self.ui.checkBox_3.checkState() == QtCore.Qt.Checked and self.ui.listWidget_4.count() == 0: f = "Flat\n"
 			
+			sname = self.ui.lineEdit_14.text()
+			
 			if b != "" or d != "" or f != "":
 				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Add file(s) to\n%s%s%s" %(b,d,f)))
 			else:
@@ -1020,8 +1615,8 @@ class MyForm(QtGui.QWidget):
 					
 					f = open("%s/tmp/flatLST" %(self.HOME), "r")
 					it = 0
-					sname = self.ui.lineEdit_14.text()
-						
+					
+					
 					for i in f:
 						fn = i.replace("\n","")
 						if function.headerRead(fn,sname) == "":
@@ -1064,9 +1659,11 @@ class MyForm(QtGui.QWidget):
 							self.ui.progressBar.setProperty("value", math.ceil(100*(float(float(pit)/float(self.ui.listWidget.count())))))
 						
 						if err != "":
-							QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("<b>ccdproc</b> failed on:\n%s" %(err)))
+							err = "ccdproc failed on:\n%s" %(err)
+							self.dispErr(err)
 						if errs:
-							QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Images below have no <b>%s</b> field in header:\n%s\nSkipped!" %(sname, errs)))
+							errs = "Images below have no %s field in header:\n%s" %(sname, errs)
+							self.dispErr(errs)
 						
 						gui.logging(self, "--- %s - ccdproc finished calibration." %(datetime.datetime.utcnow()))
 						os.popen("rm -rf %s/tmp/flatLS %s/tmp/zeroLST %s/tmp/darkLST %s %s %s" %(self.HOME, self.HOME, self.HOME, zeroFilePath, darkFilePath, flatFilePath))
@@ -1349,4 +1946,5 @@ class MyForm(QtGui.QWidget):
 app = QtGui.QApplication(sys.argv)
 f = MyForm()
 f.show()
+
 app.exec_()

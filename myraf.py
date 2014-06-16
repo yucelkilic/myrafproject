@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created: Mon Jun  9 11:13:32 2014
+# Created: Mon Jun 16 11:56:19 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -1640,7 +1640,7 @@ class Ui_Form(object):
         self.gridLayout_79.addWidget(self.tabWidget, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
-        self.tabWidget.setCurrentIndex(5)
+        self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(0)
         self.tabWidget_3.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(0)

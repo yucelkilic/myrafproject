@@ -297,7 +297,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 					gui.list2file(gui.lisFromLW(self, self.ui.listWidget_14), "%s/tmp/zeroList" %(self.HOME))
 					self.ui.label_71.setText("Zero Combine...")
 					if os.path.isfile("%s/tmp/zero.fit" %(self.HOME)):
-						os.popen("%s/tmp/zero.fit" %(self.HOME))
+						os.popen("rm %s/tmp/zero.fit" %(self.HOME))
 					if function.zeroCombine("%s/tmp/zeroList" %(self.HOME), "%s/tmp/zero.fit" %(self.HOME), com=zC, rej=zR, cty=zCT):
 						biasFiles = "%s/tmp/zero.fit" %(self.HOME)
 						
@@ -305,7 +305,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 					gui.list2file(gui.lisFromLW(self, self.ui.listWidget_15), "%s/tmp/darkList" %(self.HOME))
 					self.ui.label_71.setText("Dark Combine...")
 					if os.path.isfile("%s/tmp/dark.fit" %(self.HOME)):
-						os.popen("%s/tmp/dark.fit" %(self.HOME))
+						os.popen("rm %s/tmp/dark.fit" %(self.HOME))
 					if function.darkCombine("%s/tmp/darkList" %(self.HOME), "%s/tmp/dark.fit" %(self.HOME), com=dC, rej=dR, cty=dCT, scl=dS):
 						darkFiles = "%s/tmp/dark.fit" %(self.HOME)
 
@@ -323,7 +323,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 						self.ui.label_71.setText("There is no %s header in some Flat files. Skipping" %(subf))
 					else:
 						if os.path.isfile("%s/tmp/flat_*.fit" %(self.HOME)):
-							os.popen("%s/tmp/flat_*.fit" %(self.HOME))
+							os.popen("rm %s/tmp/flat_*.fit" %(self.HOME))
 						if function.flatCombine("%s/tmp/flatList" %(self.HOME), "%s/tmp/" %(self.HOME), com=fC, rej=fR, cty=fCT, sub=fS):
 							flatFiles = "%s/tmp/flat_*.fits" %(self.HOME)
 
@@ -364,18 +364,18 @@ class MyForm(QtGui.QWidget, Ui_Form):
 				f.write("# id\tTIME\tMAG%s\tMERR%s\tAIRMASS\n"%(self.ui.lineEdit_15.text().replace(",","\tMAG"), self.ui.lineEdit_15.text().replace(",","\tMERR")))
 				f.close()
 				
-				err = ""
-				errJD = ""
-				errSid = ""
-				errAir = ""
-				errTM = ""
-				errOB = ""
-				errORA = ""
-				errODEC = ""
-				errdt = ""
-				errOBSERVAT = ""
-				errEpoch = ""
-				obsOK = False
+			err = ""
+			errJD = ""
+			errSid = ""
+			errAir = ""
+			errTM = ""
+			errOB = ""
+			errORA = ""
+			errODEC = ""
+			errdt = ""
+			errOBSERVAT = ""
+			errEpoch = ""
+			obsOK = False
 
 			iIt = 0
 
@@ -532,7 +532,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
 				self.ui.checkBox_8.setChecked(True)
 				self.unlockSBias()
 			else:
-				self.ui.groupBox_26.setChecked(False)
 				self.ui.checkBox_8.setChecked(False)
 				self.unlockSBias()
 
@@ -542,7 +541,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
 				self.ui.checkBox_9.setChecked(True)
 				self.unlockSDark()
 			else:
-				self.ui.groupBox_26.setChecked(False)
 				self.ui.checkBox_9.setChecked(False)
 				self.unlockSDark()
 
@@ -552,7 +550,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
 				self.ui.checkBox_10.setChecked(True)
 				self.unlockSFlat()
 			else:
-				self.ui.groupBox_26.setChecked(False)
 				self.ui.checkBox_10.setChecked(False)
 				self.unlockSFlat()
 				

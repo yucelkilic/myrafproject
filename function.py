@@ -91,9 +91,6 @@ def flatCombine(fileList, out, com="median", rej="none", cty="", sub="yes"):
         print("flatcombine failed.")
         return False
 
-
-
-
 def calibration(image, bias, dark, flat, odir, cty="", sub="yes"):
 
     if sub =="no":
@@ -206,6 +203,7 @@ def epoch(inFile, date, time):
 		return t.byear
 	except:
 		return False
+		
 def sideReal(self, inFile, OBS, date, time):
     print("sidereal time calculation for %s image" %(ntpath.basename(str(inFile))))
     try:
@@ -221,7 +219,6 @@ def sideReal(self, inFile, OBS, date, time):
     except:
         return False
         print("Sidereal calculator failed.")
-        
 
 def airmass(inFile, OBS="observat", r="ra", d="dec", equ="epoch", s="st", u="ut", dat="date", exp="exptime"):
     print("Setairmass for %s image" %(ntpath.basename(str(inFile))))

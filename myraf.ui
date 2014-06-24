@@ -2408,7 +2408,7 @@
              <bool>true</bool>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="documentMode">
              <bool>false</bool>
@@ -3307,9 +3307,9 @@
           <attribute name="title">
            <string>Photometry</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_89">
+          <layout class="QGridLayout" name="gridLayout_110">
            <item row="0" column="0">
-            <layout class="QGridLayout" name="gridLayout_68">
+            <layout class="QGridLayout" name="gridLayout_109">
              <item row="0" column="0">
               <widget class="QGroupBox" name="groupBox_14">
                <property name="title">
@@ -3427,47 +3427,7 @@
                </layout>
               </widget>
              </item>
-             <item row="0" column="1" colspan="2">
-              <widget class="QGroupBox" name="groupBox_13">
-               <property name="title">
-                <string>DataPars</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_53">
-                <item row="0" column="1">
-                 <widget class="QLineEdit" name="lineEdit_13">
-                  <property name="text">
-                   <string>exptime</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_39">
-                  <property name="text">
-                   <string>Filter</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_38">
-                  <property name="text">
-                   <string>Exposur</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QLineEdit" name="lineEdit_14">
-                  <property name="text">
-                   <string>subset</string>
-                  </property>
-                  <property name="maxLength">
-                   <number>8</number>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item row="1" column="0" colspan="2">
+             <item row="1" column="0">
               <widget class="QGroupBox" name="groupBox_19">
                <property name="title">
                 <string>Star finder</string>
@@ -3621,7 +3581,51 @@ To find</string>
                </layout>
               </widget>
              </item>
-             <item row="1" column="2">
+            </layout>
+           </item>
+           <item row="0" column="1">
+            <layout class="QGridLayout" name="gridLayout_108">
+             <item row="0" column="0">
+              <widget class="QGroupBox" name="groupBox_13">
+               <property name="title">
+                <string>DataPars</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_53">
+                <item row="0" column="1">
+                 <widget class="QLineEdit" name="lineEdit_13">
+                  <property name="text">
+                   <string>exptime</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_39">
+                  <property name="text">
+                   <string>Filter</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_38">
+                  <property name="text">
+                   <string>Exposur</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="lineEdit_14">
+                  <property name="text">
+                   <string>subset</string>
+                  </property>
+                  <property name="maxLength">
+                   <number>8</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item row="1" column="0">
               <widget class="QGroupBox" name="groupBox_15">
                <property name="title">
                 <string>PhotPars</string>
@@ -3659,7 +3663,54 @@ To find</string>
               </widget>
              </item>
              <item row="2" column="0">
+              <widget class="QGroupBox" name="groupBox_20">
+               <property name="title">
+                <string>WCS</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_71">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_65">
+                  <property name="text">
+                   <string>Right ascension</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLineEdit" name="lineEdit_22">
+                  <property name="text">
+                   <string>ra</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_66">
+                  <property name="text">
+                   <string>Declination</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="lineEdit_23">
+                  <property name="text">
+                   <string>dec</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <layout class="QGridLayout" name="gridLayout_89">
+             <item row="0" column="0">
               <widget class="QGroupBox" name="groupBox_17">
+               <property name="minimumSize">
+                <size>
+                 <width>250</width>
+                 <height>160</height>
+                </size>
+               </property>
                <property name="title">
                 <string>Location and Time</string>
                </property>
@@ -3719,37 +3770,44 @@ To find</string>
                </layout>
               </widget>
              </item>
-             <item row="2" column="1" colspan="2">
-              <widget class="QGroupBox" name="groupBox_20">
+             <item row="0" column="1">
+              <widget class="QGroupBox" name="groupBox_31">
                <property name="title">
-                <string>WCS</string>
+                <string>Extract From Header</string>
                </property>
-               <layout class="QGridLayout" name="gridLayout_71">
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_65">
-                  <property name="text">
-                   <string>Right ascension</string>
+               <layout class="QGridLayout" name="gridLayout_68">
+                <item row="0" column="0" rowspan="2">
+                 <widget class="QListWidget" name="listWidget_19">
+                  <property name="selectionMode">
+                   <enum>QAbstractItemView::ExtendedSelection</enum>
                   </property>
                  </widget>
                 </item>
                 <item row="0" column="1">
-                 <widget class="QLineEdit" name="lineEdit_22">
+                 <widget class="QPushButton" name="pushButton_49">
                   <property name="text">
-                   <string>ra</string>
+                   <string>&gt;&gt;</string>
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_66">
-                  <property name="text">
-                   <string>Declination</string>
+                <item row="0" column="2" rowspan="3">
+                 <widget class="QListWidget" name="listWidget_20">
+                  <property name="selectionMode">
+                   <enum>QAbstractItemView::ExtendedSelection</enum>
                   </property>
                  </widget>
                 </item>
                 <item row="1" column="1">
-                 <widget class="QLineEdit" name="lineEdit_23">
+                 <widget class="QPushButton" name="pushButton_50">
                   <property name="text">
-                   <string>dec</string>
+                   <string>&lt;&lt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QPushButton" name="pushButton_51">
+                  <property name="text">
+                   <string>Update List</string>
                   </property>
                  </widget>
                 </item>

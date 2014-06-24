@@ -6,7 +6,7 @@ Created:------------------------------------------------------------------------
 			Yücel KILIÇ				Developer
 		at:
 			Begin					04.12.2013
-			Last update				16.06.2014
+			Last update				24.06.2014
 Importing things:-----------------------------------------------------------------------------------
 		Must have as installed:
 			python-2.7
@@ -231,8 +231,143 @@ class MyForm(QtGui.QWidget, Ui_Form):
     self.ui.listWidget_18.clicked.connect(self.getSched)
     self.ui.pushButton_48.clicked.connect(lambda: self.uaSched("upd"))
     self.ui.pushButton_24.clicked.connect(self.goSched)
+    
+    self.ui.pushButton_51.clicked.connect(self.getHeaderExtra)
+    self.ui.pushButton_49.clicked.connect(self.extraAdd)
+    self.ui.pushButton_50.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_20))
+    
+    self.ui.listWidget_8.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+    self.connect(self.ui.listWidget_8, QtCore.SIGNAL('customContextMenuRequested(const QPoint&)'), self.on_context_menu)
+    
+    self.popMenu = QtGui.QMenu(self)
+    self.popMenu.addAction('Import', self.impCooPhot)
+    self.popMenu.addAction('Export', self.expCooPhot)
+    
+    
+    self.ui.listWidget_17.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+    self.connect(self.ui.listWidget_17, QtCore.SIGNAL('customContextMenuRequested(const QPoint&)'), self.on_context_menu2)
+    self.popMenu2 = QtGui.QMenu(self)
+    self.popMenu2.addAction('Import', self.impSchPhot)
+    self.popMenu2.addAction('Export', self.expSchPhot)
+    
+##################################################
+  def on_context_menu2(self, point):
+	self.popMenu2.exec_(self.ui.listWidget_17.mapToGlobal(point))
+	
+  def impSchPhot(self):
+	fname = QtGui.QFileDialog.getOpenFileName(self, 'Open MYRaf Coordinates file', '')
+	if os.path.isfile(fname):
+		f = open(fname, 'r')
+		it = self.ui.listWidget_17.count()-1
+		for i in f:
+			try:
+				den, den2 = float(i.replace("\n","").split(" - ")[0]), float(i.replace("\n","").split(" - ")[1])
+				it = it + 1
+				item = QtGui.QListWidgetItem()
+				self.ui.listWidget_17.addItem(item)
+				item = self.ui.listWidget_17.item(it)
+				item.setText(QtGui.QApplication.translate("Form", i.replace("\n",""), None, QtGui.QApplication.UnicodeUTF8))
+			except:
+				print "Not Float"
+			
+  def expSchPhot(self):
+	if self.ui.listWidget_17.count() == 0:
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No Coordinates"))
+	else:
+		ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save MYRaf Coordinates file', 'coo.my', 'my (*.my)')
+		it = -1
+		f = open(ofile, 'w')
+		for i in xrange(self.ui.listWidget_17.count()):
+			it = it + 1
+			coo = self.ui.listWidget_17.item(i)
+			coo = str(coo.text())
+			f.write("%s\n" %(coo))
+		f.close()
 
+##########################################
 
+  def impCooPhot(self):
+	fname = QtGui.QFileDialog.getOpenFileName(self, 'Open MYRaf Coordinates file', '')
+	if os.path.isfile(fname):
+		f = open(fname, 'r')
+		it = self.ui.listWidget_8.count()-1
+		for i in f:
+			try:
+				den, den2 = float(i.replace("\n","").split(" - ")[0]), float(i.replace("\n","").split(" - ")[1])
+				it = it + 1
+				item = QtGui.QListWidgetItem()
+				self.ui.listWidget_8.addItem(item)
+				item = self.ui.listWidget_8.item(it)
+				item.setText(QtGui.QApplication.translate("Form", i.replace("\n",""), None, QtGui.QApplication.UnicodeUTF8))
+			except:
+				print "Not Float"
+			
+  def expCooPhot(self):
+	if self.ui.listWidget_8.count() == 0:
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No Coordinates"))
+	else:
+		ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save MYRaf Coordinates file', 'coo.my', 'my (*.my)')
+		it = -1
+		f = open(ofile, 'w')
+		for i in xrange(self.ui.listWidget_8.count()):
+			it = it + 1
+			coo = self.ui.listWidget_8.item(i)
+			coo = str(coo.text())
+			f.write("%s\n" %(coo))
+		f.close()
+			
+
+  def on_context_menu(self, point):
+	self.popMenu.exec_(self.ui.listWidget_8.mapToGlobal(point))
+#########################################################
+
+  def extraAdd(self):
+	if self.ui.listWidget_19.selectedItems() == []:
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please at least select one header."))
+	else:
+		#deneme
+			
+		for i in self.ui.listWidget_19.selectedItems():
+			if self.ui.listWidget_20.findItems(str(i.text()), Qt.MatchExactly) == []:
+				item = QtGui.QListWidgetItem()
+				self.ui.listWidget_20.addItem(item)
+				item = self.ui.listWidget_20.item(self.ui.listWidget_20.count()-1)
+				item.setText(QtGui.QApplication.translate("Form", "%s" %(str(i.text())), None, QtGui.QApplication.UnicodeUTF8))
+
+  def getHeaderExtra(self):
+	
+	ok = False
+	if self.ui.listWidget_13.count() == 0:
+		if self.ui.listWidget_7.count() == 0:
+			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please add some images to Photometry Image or Scheduler Image list."))
+		else:
+			ok = True
+			lst = self.ui.listWidget_7
+	else:
+		ok = True
+		lst = self.ui.listWidget_13
+	
+	if ok:
+		lst.setCurrentRow(0)
+		img = lst.currentItem()
+		
+		if os.path.isfile(str(img.text())):
+			h = iraf.hedit(str(img.text()), "*", ".", Stdout=1)
+			for x in xrange(self.ui.listWidget_19.count()):
+				self.ui.listWidget_19.takeItem(0)
+			
+			it = -1
+			for i in h:
+				st = i.split(",")[1].split(" = ")[0]
+				it = it + 1
+				item = QtGui.QListWidgetItem()
+				self.ui.listWidget_19.addItem(item)
+				item = self.ui.listWidget_19.item(it)
+				item.setText(QtGui.QApplication.translate("Form", "%s" %(st), None, QtGui.QApplication.UnicodeUTF8))
+				
+			
+				
+###########################################################
 
   def dispErr(self, er):
 	if os.path.isfile("%s/tmp/error" %(self.HOME)):
@@ -261,7 +396,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
 			ofilename = self.ui.listWidget_18.currentItem()
 			ofilename = str(ofilename.text())
 			ofile = "%s/tmp/%s" %(self.HOME, ofilename)
-			
 			
 			zC = com = self.ui.comboBox_2.currentText()
 			zR = com = self.ui.comboBox_3.currentText()
@@ -355,13 +489,21 @@ class MyForm(QtGui.QWidget, Ui_Form):
 				
 				if os.path.exists(ofile):
 					os.popen("rm %s" %(ofile))
+					
+				extFie = ""
+				itExt = 0
+				for ext in xrange(self.ui.listWidget_20.count()):
+					itExt = itExt + 1
+					fie = self.ui.listWidget_20.item(ext)
+					fie = str(fie.text())
+					extFie = "%s\t%s" %(extFie, fie)
 				
 				f = open(ofile, "w")
 				f.write("# STAR = %s\n" %(str(staCount)))
 				f.write("# APERTURE = %s\n" %(str(apert)))
 				f.write("# DO NOT EDIT PARAMETRES ABOVE. You can add comments starts with '#' below ths line.\n")
 				f.write("# If you don't have any experience before, DO NOT EDIT THIS FILE!\n")
-				f.write("# id\tTIME\tMAG%s\tMERR%s\tAIRMASS\n"%(self.ui.lineEdit_15.text().replace(",","\tMAG"), self.ui.lineEdit_15.text().replace(",","\tMERR")))
+				f.write("# id\tTIME\tMAG%s\tMERR%s\tAIRMASS%s\n"%(self.ui.lineEdit_15.text().replace(",","\tMAG"), self.ui.lineEdit_15.text().replace(",","\tMERR"), extFie))
 				f.close()
 				
 			err = ""
@@ -433,7 +575,23 @@ class MyForm(QtGui.QWidget, Ui_Form):
 															if function.phot(self, iImg, "%s/tmp/analyzed/" %(self.HOME), "%s/tmp/pc" %(self.HOME), expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
 																if function.txDump("%s/tmp/analyzed/%s.mag.1"  %(self.HOME, ntpath.basename(iImg)), "%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(iImg))):
 																	os.popen("rm %s/tmp/analyzed/%s.mag.1" %(self.HOME, ntpath.basename(iImg)))
-																	os.popen("cat %s/tmp/analyzed/%s >> %s"  %(self.HOME, ntpath.basename(iImg), ofile))
+																	#os.popen("cat %s/tmp/analyzed/%s >> %s"  %(self.HOME, ntpath.basename(iImg), ofile))
+																	#os.popen("rm %s/tmp/analyzed/%s" %(self.HOME, ntpath.basename(iImg)))
+																	
+																	itExt = 0
+																	val = ""
+																	for ext in xrange(self.ui.listWidget_20.count()):
+																		itExt = itExt + 1
+																		fie = self.ui.listWidget_20.item(ext)
+																		fie = str(fie.text())
+																		val = "%s\t%s" %(val, function.headerRead(iImg, fie))
+																	v = open("%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(iImg)), 'r')
+																	res = open(ofile, 'a')
+																	for r in v:
+																		r = r.replace("\n","")
+																		res.write("%s%s\n" %(r, val))
+																	res.close()
+																	v.close()
 																	os.popen("rm %s/tmp/analyzed/%s" %(self.HOME, ntpath.basename(iImg)))
 															else:
 																err = "PhotErr=%s, %s" %(err, ntpath.basename(iImg))
@@ -1161,7 +1319,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
 
   def coorDel(self):
 	gui.rm(self, self.ui.listWidget_8)
-	self.displayPhot()
 		
   def displayCoords(self):
 	if self.ui.tabWidget.currentIndex() == 2:
@@ -1250,6 +1407,14 @@ class MyForm(QtGui.QWidget, Ui_Form):
 			staCount = self.ui.listWidget_8.count()
 			
 			ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save MYRaf file', 'res.my', 'my (*.my)')
+			itExt = 0
+			extFie = ""
+			for ext in xrange(self.ui.listWidget_20.count()):
+				itExt = itExt + 1
+				fie = self.ui.listWidget_20.item(ext)
+				fie = str(fie.text())
+				extFie = "%s\t%s" %(extFie, fie)
+				
 			if ofile != "":
 				if os.path.exists(ofile):
 					os.popen("rm %s" %(ofile))
@@ -1258,7 +1423,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 				f.write("# APERTURE = %s\n" %(str(apert)))
 				f.write("# DO NOT EDIT PARAMETRES ABOVE. You can add comments starts with '#' below ths line.\n")
 				f.write("# If you don't have any experience before, DO NOT EDIT THIS FILE!\n")
-				f.write("# id\tTIME\tMAG%s\tMERR%s\tAIRMASS\n"%(self.ui.lineEdit_15.text().replace(",","\tMAG"), self.ui.lineEdit_15.text().replace(",","\tMERR")))
+				f.write("# id\tTIME\tMAG%s\tMERR%s\tAIRMASS%s\n" %(self.ui.lineEdit_15.text().replace(",","\tMAG"), self.ui.lineEdit_15.text().replace(",","\tMERR"), extFie))
 				f.close()
 				it = 0
 				err = ""
@@ -1308,8 +1473,20 @@ class MyForm(QtGui.QWidget, Ui_Form):
 															if function.phot(self, img, "%s/tmp/analyzed/" %(self.HOME), "%s/tmp/pc" %(self.HOME), expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
 																if function.txDump("%s/tmp/analyzed/%s.mag.1"  %(self.HOME, ntpath.basename(img)), "%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(img))):
 																	#os.popen("echo '#ap=%s'"%(str()))
-																	os.popen("rm %s/tmp/analyzed/%s.mag.1" %(self.HOME, ntpath.basename(img)))
-																	os.popen("cat %s/tmp/analyzed/%s >> %s"  %(self.HOME, ntpath.basename(img), ofile))
+																	itExt = 0
+																	val = ""
+																	for ext in xrange(self.ui.listWidget_20.count()):
+																		itExt = itExt + 1
+																		fie = self.ui.listWidget_20.item(ext)
+																		fie = str(fie.text())
+																		val = "%s\t%s" %(val, function.headerRead(img, fie))
+																	v = open("%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(img)), 'r')
+																	res = open(ofile, 'a')
+																	for r in v:
+																		r = r.replace("\n","")
+																		res.write("%s%s\n" %(r, val))
+																	res.close()
+																	v.close()
 																	os.popen("rm %s/tmp/analyzed/%s" %(self.HOME, ntpath.basename(img)))
 															else:
 																err = "%s\n%s" %(err, ntpath.basename(img))

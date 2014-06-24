@@ -1935,7 +1935,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
 #Load and set set########################################
   def applySettings(self):
 	  
-	  
 	  f = open("%s/set/setting" %(self.HOME), "r")
 	  for l in f:
 		  #print(l.replace("\n",""))
@@ -2071,8 +2070,20 @@ class MyForm(QtGui.QWidget, Ui_Form):
 			  self.ui.dial_4.setValue(sFluxradi)
 
 
+ 		  if l.startswith("extraVal"):
+			  extraVal = l.split(":")[1].replace("\n","")
+			  extraVals = extraVal.split(',')
+			  it = -1
+			  for i in extraVals:
+				  if i != "":
+					  it = it +1
+					  item = QtGui.QListWidgetItem()
+					  self.ui.listWidget_20.addItem(item)
+					  item = self.ui.listWidget_20.item(it)
+					  item.setText(QtGui.QApplication.translate("Form", i, None, QtGui.QApplication.UnicodeUTF8))
 
-				  
+	  f.close()
+	  
   def saveSettings(self):
 	
 	f = open("%s/set/setting" %(self.HOME), "w")
@@ -2121,8 +2132,13 @@ class MyForm(QtGui.QWidget, Ui_Form):
 	f.write("sMaxFWHM:%s\n" %self.ui.dial_6.value())
 	f.write("sMinFWHM:%s\n" %self.ui.dial_5.value())
 	f.write("sFluxradi:%s\n" %self.ui.dial_4.value())
-		
 	
+	vv = ""
+	for i in xrange(self.ui.listWidget_20.count()):
+		val = self.ui.listWidget_20.item(i)
+		val = str(val.text())
+		vv = "%s,%s" %(val, vv)
+	f.write("extraVal:%s\n" %(vv[:-1]))
 	f.close()
 #########################################################
 #Unlock calibration tabs.################################

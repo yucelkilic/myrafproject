@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # fPlot.py -- Plotting function for embedded matplotlib widget with Ginga.
 #

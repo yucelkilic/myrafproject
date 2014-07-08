@@ -1,47 +1,52 @@
-#!/usr/bin/env python
+#
+# fPlot.py -- Plotting function for embedded matplotlib widget with Ginga.
+#
+# Thanks for Eric Jeschke (eric@naoj.org), https://github.com/ejeschke/ginga
+# Copyleft, Yücel Kılıç (yucelkilic@myrafproject.org) and Mohammad Niaei Shameoni (mshemuni@myrafproject.org).
+# This is open-source software licensed under a GPLv3 license.
+
 import os
-import pyfits
-import numpy as np
+import matplotlib.pyplot as plt
+from ginga.mplw.ImageViewCanvasMpl import ImageViewCanvas
+from ginga.misc import log
+from ginga.AstroImage import AstroImage
+from ginga import cmap
 
 class FitsPlot:
     
-    def __init__(self, filepath, chartDev, objDev):
-        
-        self.objDev = objDev
+    def __init__(self, filepath, chartDev):
+
         self.filepath = filepath
         self.chartDev = chartDev
-        self.image,self.head = pyfits.getdata(self.filepath,header=True)
     
-    def dataFits(self):
-        
-        f = pyfits.open(self.filepath)
-        fitsData = f[0].data
-        return fitsData
-    
-    def drawim(self, slider):
-        '''
-        This fucntion actually handles the drawing of the imshow mpl canvas. It pulls the required elements from the ui on each redraw
-        '''        
-        self.chartDev.ax.cla()
-        cur_xlim = self.chartDev.ax.get_xlim()
-        cur_ylim = self.chartDev.ax.get_ylim()
-        #This next line sets the maximum value in the image according to what vale the slider bar is at, basicaly its the maximum value times
-        #the ratio of of the silder position over 100 added to the minimum value
-        self.imageedit = self.image.copy()
-        self.imageedit[np.where(self.imageedit <=0)]=0.001
-        self.imageedit = np.log(self.imageedit)
-        if slider == "horizontalSlider":
-            self.mx = ((self.imageedit.max()-self.imageedit.min())*self.objDev.horizontalSlider.value()/100. + self.imageedit.min())*1
-        elif slider == "horizontalSlider_2":
-            self.mx = ((self.imageedit.max()-self.imageedit.min())*self.objDev.horizontalSlider_2.value()/100. + self.imageedit.min())*1
-        elif slider == "horizontalSlider_3":
-            self.mx = ((self.imageedit.max()-self.imageedit.min())*self.objDev.horizontalSlider_3.value()/100. + self.imageedit.min())*1
-        elif slider == "horizontalSlider_4":
-            self.mx = ((self.imageedit.max()-self.imageedit.min())*self.objDev.horizontalSlider_4.value()/100. + self.imageedit.min())*1
-            #updated the canvas and draw
-        self.imdata = self.chartDev.ax.imshow(self.imageedit,vmax=float(self.mx),vmin=self.imageedit.min(),cmap="Greys_r", interpolation=None,alpha=1)
-        if cur_xlim[1] != 1 and cur_ylim[1] != 1:
-            self.chartDev.ax.set_xlim([int(cur_xlim[0]), int(cur_xlim[1])])
-            self.chartDev.ax.set_ylim([int(cur_ylim[0]), int(cur_ylim[1])])
+    def plot(self):
+
+        self.chartDev.fig.clf()
+        # add matplotlib colormaps to ginga's own set
+        cmap.add_matplotlib_cmaps()
+
+        # Set to True to get diagnostic logging output
+        use_logger = False
+        logger = log.get_logger(null=not use_logger, log_stderr=True)
+
+        # create a ginga object, initialize some defaults and
+        # tell it about the figure
+        fi = ImageViewCanvas(logger)
+        fi.enable_autocuts('on')
+        fi.set_autocut_params('zscale')
+        #fi.set_cmap(cmap.get_cmap('rainbow3'))
+        fi.set_figure(self.chartDev.fig)
+
+        # enable all interactive ginga features
+        fi.get_bindings().enable_all(True)
+
+        # load an image  
+        image = AstroImage(logger)
+        image.load_file(self.filepath)
+        fi.set_image(image)
+        #fi.rotate(45)
+
+        # plot some example graphics via matplotlib
+        # Note adding axis from ginga (mpl backend) object
+        ax = fi.add_axes()
         self.chartDev.draw()
-        return True

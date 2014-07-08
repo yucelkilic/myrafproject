@@ -25,14 +25,14 @@ from matplotlib.patches import Circle
 os.system("mkdir -p $HOME/.MYRaf2")
 os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - MYRaf started.\" >>$HOME/.MYRaf2/log.my")
 
-try:
-	from PyQt4 import QtGui, QtCore
-	from PyQt4.QtGui import *
-	from PyQt4.QtCore import *
-except:
-	print("Can not load PyQT4")
-	os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - Did you install PyQT4?.\" >>$HOME/.MYRaf2/log.my")
-	raise SystemExit
+#try:
+from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+#except:
+#	print("Can not load PyQT4")
+#	os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - Did you install PyQT4?.\" >>$HOME/.MYRaf2/log.my")
+#	raise SystemExit
 
 try:
 	from myraf import Ui_Form
@@ -213,16 +213,12 @@ class MyForm(QtGui.QWidget, Ui_Form):
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     self.applySettings()
     
-    self.ui.horizontalSlider.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_5.currentItem(), self.ui.dispAuto.canvas, "horizontalSlider"))
-    self.ui.horizontalSlider_2.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_6.currentItem(), self.ui.dispManual.canvas, "horizontalSlider_2"))
-    self.ui.horizontalSlider_3.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_7.currentItem(), self.ui.dispPhoto.canvas, "horizontalSlider_3"))
     self.ui.dispManual.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
     self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
     
     self.ui.disp_chart.canvas.fig.canvas.mpl_connect('pick_event', self.onpick)
 
     self.ui.listWidget_13.clicked.connect(self.displayScheduler)
-    self.ui.horizontalSlider_4.sliderReleased.connect(lambda:self.reDraw(self.ui.listWidget_13.currentItem(), self.ui.dispSched.canvas, "horizontalSlider_4"))
     self.ui.dispSched.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
     self.ui.pushButton_47.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_17))
     self.ui.pushButton_47.clicked.connect(self.displayCoords)
@@ -925,16 +921,8 @@ class MyForm(QtGui.QWidget, Ui_Form):
   def displayScheduler(self):
 	img = self.ui.listWidget_13.currentItem()
 	img = img.text()
-	plotF = FitsPlot(str(img), self.ui.dispSched.canvas, self.ui)
-	if plotF.drawim("horizontalSlider_4"):
-		self.ui.dispSched.canvas.draw()
-		#self.displayCoords()
-		gui.logging(self, "-- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
-	else:
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
-		gui.logging(self, "--- %s - imagemagick failed." %(datetime.datetime.utcnow()))
-
-
+	plotF = FitsPlot(str(img), self.ui.dispSched.canvas)
+	plotF.plot()
 
 # Chart point picker
   def onpick(self, event):
@@ -1308,14 +1296,8 @@ class MyForm(QtGui.QWidget, Ui_Form):
 
 	img = self.ui.listWidget_7.currentItem()
 	img = img.text()
-	plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas, self.ui)
-	if plotF.drawim("horizontalSlider_3"):
-		self.ui.dispPhoto.canvas.draw()
-		#self.displayCoords()
-		gui.logging(self, "-- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
-	else:
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
-		gui.logging(self, "--- %s - imagemagick failed." %(datetime.datetime.utcnow()))
+	plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas)
+	plotF.plot()
 
   def coorDel(self):
 	gui.rm(self, self.ui.listWidget_8)
@@ -1339,13 +1321,13 @@ class MyForm(QtGui.QWidget, Ui_Form):
 				circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
 				circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
 				circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
-				self.ui.dispPhoto.canvas.ax.add_artist(circAnnulus)
-				self.ui.dispPhoto.canvas.ax.add_artist(circDannulus)
-				self.ui.dispPhoto.canvas.ax.add_artist(circAperture)
+				self.ui.dispPhoto.canvas.fig.gca().add_artist(circAnnulus)
+				self.ui.dispPhoto.canvas.fig.gca().add_artist(circDannulus)
+				self.ui.dispPhoto.canvas.fig.gca().add_artist(circAperture)
 				circAperture.center = x, y
 				circAnnulus.center = x, y
 				circDannulus.center = x, y
-				self.ui.dispPhoto.canvas.ax.annotate(lNumber, xy = (x, y), xytext=(int(Aperture/3),int(Aperture/3)), textcoords='offset points', color = "blue", fontsize = 10)
+				self.ui.dispPhoto.canvas.fig.gca().annotate(lNumber, xy = (x, y), xytext=(int(Aperture/3),int(Aperture/3)), textcoords='offset points', color = "blue", fontsize = 10)
 				self.ui.dispPhoto.canvas.draw()
 	#hela vela vel vela
 	elif self.ui.tabWidget.currentIndex() == 5:
@@ -1555,34 +1537,14 @@ class MyForm(QtGui.QWidget, Ui_Form):
   def displayManAlign(self):
 	img = self.ui.listWidget_6.currentItem()
 	img = img.text()
-	plotF = FitsPlot(str(img), self.ui.dispManual.canvas, self.ui)
+	plotF = FitsPlot(str(img), self.ui.dispManual.canvas)
+	plotF.plot()
 	c = function.headerRead(img, "MYRAFCOR")
 	print c
-	if plotF.drawim("horizontalSlider_2"):
-		gui.logging(self, "-- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
-		coors = function.headerRead(img, "MYRafCor")
-		self.ui.label_11.setText(QtGui.QApplication.translate("Form", "%s" %(coors), None, QtGui.QApplication.UnicodeUTF8))
-		if c!="":
-			print "Coor is there"
-			x, y = c.split("-")
-			print x
-			print y
-			mean = 0
-			ap = str(self.ui.lineEdit_15.text())
-			for ape in ap.split(","):
-				mean = mean + int(ape)
-			Aperture = mean/len(ap.split(","))
-			circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none")
-			circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
-			circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
-			self.ui.dispManual.canvas.ax.add_artist(circAnnulus)
-			self.ui.dispManual.canvas.ax.add_artist(circDannulus)
-			self.ui.dispManual.canvas.ax.add_artist(circAperture)
-			circAperture.center = x, y
-			circAnnulus.center = x, y
-			circDannulus.center = x, y
-			self.ui.label_11.setText(str(format(float(x), '.2f')) + " - " + str(format(float(y), '.2f')))
-			self.ui.dispManual.canvas.draw()
+	coors = function.headerRead(img, "MYRafCor")
+	self.ui.label_11.setText(QtGui.QApplication.translate("Form", "%s" %(coors), None, QtGui.QApplication.UnicodeUTF8))
+
+
 		
   def goManAlign(self):
 	if self.ui.listWidget_6.count() != 0:
@@ -1691,25 +1653,12 @@ class MyForm(QtGui.QWidget, Ui_Form):
 					item = self.ui.listWidget_8.item(it)
 					item.setText(QtGui.QApplication.translate("Form", coo, None, QtGui.QApplication.UnicodeUTF8))
 
-  def reDraw(self, listObject, dispObject, horizontalSlider):
-  	if listObject:
-		img = listObject.text()
-		plotF = FitsPlot(str(img), dispObject, self.ui)
-		plotF.drawim(horizontalSlider)
-		#tab denetle....
-		#self.displayCoords()
-
   def displayAutAlign(self):
 	gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
 	img = self.ui.listWidget_5.currentItem()
 	img = img.text()
-	plotF = FitsPlot(str(img), self.ui.dispAuto.canvas, self.ui)
-	if plotF.drawim("horizontalSlider"):
-		self.ui.dispAuto.canvas.draw()
-		gui.logging(self, "--- %s - matplotlib succeed." %(datetime.datetime.utcnow()))
-	else:
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>matplotlib</b> can not handle this job."))
-		gui.logging(self, "--- %s - matplotlib failed." %(datetime.datetime.utcnow()))
+	plotF = FitsPlot(str(img), self.ui.dispAuto.canvas)
+	plotF.plot()
 
   def goAutAlign(self):
 	if self.ui.listWidget_5.count() != 0:

@@ -20,24 +20,35 @@ Importing things:---------------------------------------------------------------
 			f2n						http://obswww.unige.ch/~tewes/f2n_dot_py/
 ----------------------------------------------------------------------------------------------------
 """
-import sys , os, time, string, math, signal, datetime, ntpath, numpy
+try:
+    # force Qt4 API v2
+    import sip
+    for cl in ('QString', 'QVariant'):
+        sip.setapi(cl, 2)
+
+    import os
+    os.environ['QT_API'] = 'pyqt'
+    # force matplotlib to use Qt4 backend
+    import matplotlib
+    matplotlib.use('Qt4Agg')
+    
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtGui import *
+    from PyQt4.QtCore import *
+except:
+	print("Can not load PyQT4")
+	os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - Did you install PyQT4?.\" >>$HOME/.MYRaf2/log.my")
+	raise SystemExit
+
+import sys, time, string, math, signal, datetime, ntpath, numpy
 from matplotlib.patches import Circle
 os.system("mkdir -p $HOME/.MYRaf2")
 os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - MYRaf started.\" >>$HOME/.MYRaf2/log.my")
 
-#try:
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-#except:
-#	print("Can not load PyQT4")
-#	os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - Did you install PyQT4?.\" >>$HOME/.MYRaf2/log.my")
-#	raise SystemExit
-
 try:
-	from myraf import Ui_Form
-	from mainErr import MyForm2
-	import function, gui
+    from myraf import Ui_Form
+    from mainErr import MyForm2
+    import function, gui
 except:
 	print("Can not load MYRaf.")
 	os.system("echo \"-- " + str(datetime.datetime.utcnow()) + " - MYRaf is not installed properly.\">>$HOME/.MYRaf2/log.my")
@@ -76,8 +87,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
     self.ui = Ui_Form()
     self.ui.setupUi(self)
     
-
-    
     ud = os.popen("echo $HOME")
     self.HOME = "%s/.MYRaf2" %(ud.read().replace("\n",""))
     if not os.path.isdir("%s/obsdat" %(self.HOME)):
@@ -93,8 +102,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
     os.system("rm -rf $HOME/.MYRaf2/alipy_out")
     os.system("mkdir -p $HOME/.MYRaf2/tmp/alipy/")
     os.system("mkdir -p $HOME/.MYRaf2/tmp/analyzed/")
-    
-    
     
     f = open('%s/log.my' %(self.HOME), 'r')
     it = self.ui.listWidget_10.count()-1
@@ -125,7 +132,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
     self.ui.tabWidget_8.setTabEnabled(2,False)
     self.ui.tabWidget_8.setTabEnabled(3,False)
 
-
     self.ui.checkBox.clicked.connect(self.unlockBias)
     self.ui.checkBox_2.clicked.connect(self.unlockDark)
     self.ui.checkBox_3.clicked.connect(self.unlockFlat)
@@ -135,7 +141,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
     self.ui.checkBox_10.clicked.connect(self.unlockSFlat)
     
     self.ui.pushButton_18.clicked.connect(self.displayCoords)
-    
     
     self.ui.pushButton_34.clicked.connect(self.saveSettings)
     
@@ -239,7 +244,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
     self.popMenu.addAction('Import', self.impCooPhot)
     self.popMenu.addAction('Export', self.expCooPhot)
     
-    
     self.ui.listWidget_17.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
     self.connect(self.ui.listWidget_17, QtCore.SIGNAL('customContextMenuRequested(const QPoint&)'), self.on_context_menu2)
     self.popMenu2 = QtGui.QMenu(self)
@@ -311,7 +315,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
 			coo = str(coo.text())
 			f.write("%s\n" %(coo))
 		f.close()
-			
 
   def on_context_menu(self, point):
 	self.popMenu.exec_(self.ui.listWidget_8.mapToGlobal(point))
@@ -360,9 +363,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
 				self.ui.listWidget_19.addItem(item)
 				item = self.ui.listWidget_19.item(it)
 				item.setText(QtGui.QApplication.translate("Form", "%s" %(st), None, QtGui.QApplication.UnicodeUTF8))
-				
-			
-				
 ###########################################################
 
   def dispErr(self, er):
@@ -916,13 +916,12 @@ class MyForm(QtGui.QWidget, Ui_Form):
 
 		else:
 			QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Nothing to do."))
-			
 	
   def displayScheduler(self):
 	img = self.ui.listWidget_13.currentItem()
 	img = img.text()
-	plotF = FitsPlot(str(img), self.ui.dispSched.canvas)
-	plotF.plot()
+	plotF = FitsPlot(self.ui.dispSched.canvas)
+	plotF.load(str(img))
 
 # Chart point picker
   def onpick(self, event):
@@ -1296,8 +1295,8 @@ class MyForm(QtGui.QWidget, Ui_Form):
 
 	img = self.ui.listWidget_7.currentItem()
 	img = img.text()
-	plotF = FitsPlot(str(img), self.ui.dispPhoto.canvas)
-	plotF.plot()
+	plotF = FitsPlot(self.ui.dispPhoto.canvas)
+	plotF.load(str(img))
 
   def coorDel(self):
 	gui.rm(self, self.ui.listWidget_8)
@@ -1537,15 +1536,13 @@ class MyForm(QtGui.QWidget, Ui_Form):
   def displayManAlign(self):
 	img = self.ui.listWidget_6.currentItem()
 	img = img.text()
-	plotF = FitsPlot(str(img), self.ui.dispManual.canvas)
-	plotF.plot()
+	plotF = FitsPlot(self.ui.dispManual.canvas)
+	plotF.load(str(img))
 	c = function.headerRead(img, "MYRAFCOR")
 	print c
 	coors = function.headerRead(img, "MYRafCor")
 	self.ui.label_11.setText(QtGui.QApplication.translate("Form", "%s" %(coors), None, QtGui.QApplication.UnicodeUTF8))
 
-
-		
   def goManAlign(self):
 	if self.ui.listWidget_6.count() != 0:
 		if self.ui.listWidget_6.currentItem() != None:
@@ -1577,11 +1574,9 @@ class MyForm(QtGui.QWidget, Ui_Form):
 								gui.logging(self, "--- %s - imshift failed." %(datetime.datetime.utcnow()))
 						self.ui.label_10.setText(QtGui.QApplication.translate("Form", "Aligning:%s" %(ntpath.basename(img)), None, QtGui.QApplication.UnicodeUTF8))
 						self.ui.progressBar_3.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_6.count())))))
-				
 					if err!="":
 						err = "Due to an error imshift can not align images below\n%s." %(err)
 						self.dispErr(err)
-			
 			else:
 				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select coordinates for reference image."))
 		else:
@@ -1620,7 +1615,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
 				self.ui.listWidget_17.addItem(str(format(event.xdata, '.4f')) + " - " + str(format(event.ydata, '.4f')))
 				self.displayCoords()
 
-
 #Auto Align#############################################
   def findStars(self):
   	if self.ui.tabWidget.currentIndex() == 2:
@@ -1657,8 +1651,8 @@ class MyForm(QtGui.QWidget, Ui_Form):
 	gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
 	img = self.ui.listWidget_5.currentItem()
 	img = img.text()
-	plotF = FitsPlot(str(img), self.ui.dispAuto.canvas)
-	plotF.plot()
+	plotF = FitsPlot(self.ui.dispAuto.canvas)
+	plotF.load(str(img))
 
   def goAutAlign(self):
 	if self.ui.listWidget_5.count() != 0:
@@ -1758,7 +1752,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
 					
 					f = open("%s/tmp/flatLST" %(self.HOME), "r")
 					it = 0
-					
 					
 					for i in f:
 						fn = i.replace("\n","")
@@ -2000,7 +1993,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
 			  else:
 				  self.ui.checkBox_4.setChecked(False)
 				  self.ui.lineEdit_25.setEnabled(True)
-
 
  		  if l.startswith("sfMaxStar"):
 			  sfMaxStar = int(l.split(":")[1].replace("\n",""))

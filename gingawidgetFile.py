@@ -12,8 +12,8 @@
 from PyQt4 import QtGui
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
-
 import matplotlib.pyplot as plt
+
  
 class MplCanvas(FigureCanvas):
  
@@ -36,3 +36,5 @@ class gingaWidget(QtGui.QWidget):
         self.vbl.addWidget(self.toolbar)
         self.setLayout(self.vbl)
         self.parent = parent
+
+

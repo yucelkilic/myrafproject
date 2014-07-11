@@ -8,7 +8,7 @@
 import sys
 
 from ginga.mplw.ImageViewCanvasMpl import ImageViewCanvas
-from ginga.mplw.ImageViewCanvasTypesMpl import DrawingCanvas
+from ginga.mplw.FigureCanvasQt import setup_Qt
 from ginga.AstroImage import AstroImage
 from ginga.misc import log
 from ginga import cmap
@@ -28,10 +28,11 @@ class FitsPlot(object):
         fi.set_figure(self.chartDev.fig)
         fi.ui_setActive(True)
         self.fitsimage = fi
+        setup_Qt(chartDev, fi)
 
         # enable all interactive features
         fi.get_bindings().enable_all(True)
-        del fi
+        self.fitsimage = fi
 
     def load(self, fitspath):
         # load an image
@@ -43,9 +44,3 @@ class FitsPlot(object):
         # Note adding axis from ginga (mpl backend) object
         ax = self.fitsimage.add_axes()
         self.chartDev.draw()
-        del self.fitsimage
-        del image
-
-
-
-

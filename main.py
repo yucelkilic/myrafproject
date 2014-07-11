@@ -15,11 +15,11 @@ Importing things:---------------------------------------------------------------
 			pyraf					^
 			sextractor				http://www.astromatic.net/software/sextractor/
 			alipy					http://obswww.unige.ch/~tewes/alipy/
-			astroasciidata			http://www.stecf.org/software/PYTHONtools/astroasciidata/
+			astroasciidata          http://www.stecf.org/software/PYTHONtools/astroasciidata/
 			f2n						http://obswww.unige.ch/~tewes/f2n_dot_py/
 			Ginga                   http://ginga.readthedocs.org/en/latest/
-            matplotlib              http://matplotlib.org/
-            astropy                 http://www.astropy.org/
+			matplotlib              http://matplotlib.org/
+			astropy                 http://www.astropy.org/
 ----------------------------------------------------------------------------------------------------
 """
 try:

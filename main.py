@@ -6,18 +6,20 @@ Created:------------------------------------------------------------------------
 			Yücel KILIÇ				Developer
 		at:
 			Begin					04.12.2013
-			Last update				24.06.2014
+			Last update				11.07.2014
 Importing things:-----------------------------------------------------------------------------------
 		Must have as installed:
 			python-2.7
 			pyqt4-dev-tools
-			imagemagick(convert)
 			iraf					http://www.astro.uson.mx/~favilac/downloads/ubuntu-iraf/iso/
 			pyraf					^
 			sextractor				http://www.astromatic.net/software/sextractor/
 			alipy					http://obswww.unige.ch/~tewes/alipy/
 			astroasciidata			http://www.stecf.org/software/PYTHONtools/astroasciidata/
 			f2n						http://obswww.unige.ch/~tewes/f2n_dot_py/
+			Ginga                   http://ginga.readthedocs.org/en/latest/
+            matplotlib              http://matplotlib.org/
+            astropy                 http://www.astropy.org/
 ----------------------------------------------------------------------------------------------------
 """
 try:

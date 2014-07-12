@@ -6,7 +6,7 @@ Created:------------------------------------------------------------------------
 			Yücel KILIÇ				Developer
 		at:
 			Begin					04.12.2013
-			Last update				11.07.2014
+			Last update				13.07.2014
 Importing things:-----------------------------------------------------------------------------------
 		Must have as installed:
 			python-2.7
@@ -253,6 +253,11 @@ class MyForm(QtGui.QWidget, Ui_Form):
     self.popMenu2.addAction('Import', self.impSchPhot)
     self.popMenu2.addAction('Export', self.expSchPhot)
     
+    self.plotFdA = FitsPlot(self.ui.dispAuto.canvas)
+    self.plotFdM = FitsPlot(self.ui.dispManual.canvas)
+    self.plotFdP = FitsPlot(self.ui.dispPhoto.canvas)
+    self.plotFdS = FitsPlot(self.ui.dispSched.canvas)
+
 ##################################################
   def on_context_menu2(self, point):
 	self.popMenu2.exec_(self.ui.listWidget_17.mapToGlobal(point))
@@ -923,8 +928,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
   def displayScheduler(self):
 	img = self.ui.listWidget_13.currentItem()
 	img = img.text()
-	plotF = FitsPlot(self.ui.dispSched.canvas)
-	plotF.load(str(img))
+	self.plotFdS.load(str(img))
 
 # Chart point picker
   def onpick(self, event):
@@ -1298,8 +1302,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 
 	img = self.ui.listWidget_7.currentItem()
 	img = img.text()
-	plotF = FitsPlot(self.ui.dispPhoto.canvas)
-	plotF.load(str(img))
+	self.plotFdP.load(str(img))
 
   def coorDel(self):
 	gui.rm(self, self.ui.listWidget_8)
@@ -1539,8 +1542,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
   def displayManAlign(self):
 	img = self.ui.listWidget_6.currentItem()
 	img = img.text()
-	plotF = FitsPlot(self.ui.dispManual.canvas)
-	plotF.load(str(img))
+	self.plotFdM.load(str(img))
 	c = function.headerRead(img, "MYRAFCOR")
 	print c
 	coors = function.headerRead(img, "MYRafCor")
@@ -1654,8 +1656,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 	gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
 	img = self.ui.listWidget_5.currentItem()
 	img = img.text()
-	plotF = FitsPlot(self.ui.dispAuto.canvas)
-	plotF.load(str(img))
+	self.plotFdA.load(str(img))
 
   def goAutAlign(self):
 	if self.ui.listWidget_5.count() != 0:

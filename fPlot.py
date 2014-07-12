@@ -39,8 +39,3 @@ class FitsPlot(object):
         image = AstroImage(self.logger)
         image.load_file(fitspath)
         self.fitsimage.set_image(image)
-        
-        # plot some example graphics via matplotlib
-        # Note adding axis from ginga (mpl backend) object
-        ax = self.fitsimage.add_axes()
-        self.chartDev.draw()

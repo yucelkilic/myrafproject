@@ -22,6 +22,8 @@ Importing things:---------------------------------------------------------------
 			astropy                 http://www.astropy.org/
 ----------------------------------------------------------------------------------------------------
 """
+import sys, time, string, math, signal, datetime, ntpath, numpy
+
 try:
     # force Qt4 API v2
     import sip
@@ -42,7 +44,6 @@ except:
 	os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - Did you install PyQT4?.\" >>$HOME/.MYRaf2/log.my")
 	raise SystemExit
 
-import sys, time, string, math, signal, datetime, ntpath, numpy
 from matplotlib.patches import Circle
 os.system("mkdir -p $HOME/.MYRaf2")
 os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - MYRaf started.\" >>$HOME/.MYRaf2/log.my")

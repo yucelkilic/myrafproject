@@ -35,7 +35,11 @@ class FitsPlot(object):
         self.fitsimage = fi
 
     def load(self, fitspath):
+        
+        # clear plotting area    
+        self.chartDev.fig.gca().cla()
         # load an image
         image = AstroImage(self.logger)
         image.load_file(fitspath)
         self.fitsimage.set_image(image)
+        self.fitsimage.add_axes()

@@ -2925,484 +2925,194 @@
           <attribute name="title">
            <string>Photometry</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_80">
+          <layout class="QGridLayout" name="gridLayout_60">
            <item row="0" column="0">
-            <layout class="QGridLayout" name="gridLayout_109">
+            <widget class="QGroupBox" name="groupBox_14">
+             <property name="title">
+              <string>FitSkyPars</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_59">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_42">
+                <property name="text">
+                 <string>Dannulus</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox">
+                <property name="decimals">
+                 <number>4</number>
+                </property>
+                <property name="maximum">
+                 <double>1000.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>25.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_40">
+                <property name="text">
+                 <string>Annulus</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+                <property name="decimals">
+                 <number>4</number>
+                </property>
+                <property name="maximum">
+                 <double>1000.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>5.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="label_46">
+                <property name="text">
+                 <string>CBox</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+                <property name="decimals">
+                 <number>4</number>
+                </property>
+                <property name="maximum">
+                 <double>1000.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>10.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="1" rowspan="2">
+            <layout class="QGridLayout" name="gridLayout_41">
              <item row="0" column="0">
-              <widget class="QGroupBox" name="groupBox_14">
-               <property name="title">
-                <string>FitSkyPars</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_59">
-                <item row="0" column="0">
-                 <layout class="QGridLayout" name="gridLayout_64">
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_40">
-                    <property name="text">
-                     <string>Annulus</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QDial" name="dial">
-                    <property name="minimum">
-                     <number>5</number>
-                    </property>
-                    <property name="maximum">
-                     <number>120</number>
-                    </property>
-                    <property name="pageStep">
-                     <number>1</number>
-                    </property>
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="wrapping">
-                     <bool>false</bool>
-                    </property>
-                    <property name="notchesVisible">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item row="0" column="1">
-                 <layout class="QGridLayout" name="gridLayout_65">
-                  <item row="1" column="0">
-                   <widget class="QDial" name="dial_2">
-                    <property name="minimum">
-                     <number>5</number>
-                    </property>
-                    <property name="maximum">
-                     <number>120</number>
-                    </property>
-                    <property name="pageStep">
-                     <number>1</number>
-                    </property>
-                    <property name="value">
-                     <number>25</number>
-                    </property>
-                    <property name="wrapping">
-                     <bool>false</bool>
-                    </property>
-                    <property name="notchesVisible">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_42">
-                    <property name="text">
-                     <string>Dannulus</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item row="0" column="2">
-                 <layout class="QGridLayout" name="gridLayout_66">
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_46">
-                    <property name="text">
-                     <string>CBox</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QDial" name="dial_3">
-                    <property name="minimum">
-                     <number>5</number>
-                    </property>
-                    <property name="maximum">
-                     <number>120</number>
-                    </property>
-                    <property name="pageStep">
-                     <number>1</number>
-                    </property>
-                    <property name="value">
-                     <number>10</number>
-                    </property>
-                    <property name="wrapping">
-                     <bool>false</bool>
-                    </property>
-                    <property name="notchesVisible">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item row="1" column="0">
               <widget class="QGroupBox" name="groupBox_19">
                <property name="title">
                 <string>Star finder</string>
                </property>
-               <layout class="QGridLayout" name="gridLayout_63">
+               <layout class="QGridLayout" name="gridLayout_58">
                 <item row="0" column="0">
-                 <layout class="QGridLayout" name="gridLayout_58">
-                  <item row="2" column="0">
-                   <widget class="QDial" name="dial_4">
-                    <property name="minimum">
-                     <number>2</number>
-                    </property>
-                    <property name="maximum">
-                     <number>15</number>
-                    </property>
-                    <property name="pageStep">
-                     <number>1</number>
-                    </property>
-                    <property name="value">
-                     <number>2</number>
-                    </property>
-                    <property name="wrapping">
-                     <bool>false</bool>
-                    </property>
-                    <property name="notchesVisible">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QLabel" name="label_64">
-                    <property name="text">
-                     <string>Flux Radius</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item row="0" column="1">
-                 <layout class="QGridLayout" name="gridLayout_60">
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_68">
-                    <property name="text">
-                     <string>Min FWHM</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QDial" name="dial_5">
-                    <property name="minimum">
-                     <number>0</number>
-                    </property>
-                    <property name="maximum">
-                     <number>24</number>
-                    </property>
-                    <property name="pageStep">
-                     <number>1</number>
-                    </property>
-                    <property name="value">
-                     <number>0</number>
-                    </property>
-                    <property name="wrapping">
-                     <bool>false</bool>
-                    </property>
-                    <property name="notchesVisible">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item row="0" column="2">
-                 <layout class="QGridLayout" name="gridLayout_61">
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_69">
-                    <property name="text">
-                     <string>Max FWHM</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QDial" name="dial_6">
-                    <property name="minimum">
-                     <number>1</number>
-                    </property>
-                    <property name="maximum">
-                     <number>25</number>
-                    </property>
-                    <property name="pageStep">
-                     <number>1</number>
-                    </property>
-                    <property name="value">
-                     <number>7</number>
-                    </property>
-                    <property name="wrapping">
-                     <bool>false</bool>
-                    </property>
-                    <property name="notchesVisible">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item row="0" column="3">
-                 <layout class="QGridLayout" name="gridLayout_62">
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_70">
-                    <property name="text">
-                     <string>Maximum Star
-To find</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QDial" name="dial_7">
-                    <property name="minimum">
-                     <number>5</number>
-                    </property>
-                    <property name="maximum">
-                     <number>30000</number>
-                    </property>
-                    <property name="pageStep">
-                     <number>1</number>
-                    </property>
-                    <property name="value">
-                     <number>25</number>
-                    </property>
-                    <property name="wrapping">
-                     <bool>false</bool>
-                    </property>
-                    <property name="notchesVisible">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="0" column="1">
-            <layout class="QGridLayout" name="gridLayout_67">
-             <item row="0" column="0">
-              <widget class="QGroupBox" name="groupBox_13">
-               <property name="title">
-                <string>DataPars</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_53">
-                <item row="0" column="1">
-                 <widget class="QLineEdit" name="lineEdit_13">
+                 <widget class="QLabel" name="label_64">
                   <property name="text">
-                   <string>exptime</string>
+                   <string>Flux Radius</string>
                   </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QLineEdit" name="lineEdit_14">
-                  <property name="text">
-                   <string>subset</string>
-                  </property>
-                  <property name="maxLength">
-                   <number>8</number>
+                  <property name="alignment">
+                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                   </property>
                  </widget>
                 </item>
                 <item row="1" column="0">
-                 <widget class="QLabel" name="label_39">
-                  <property name="text">
-                   <string>Filter</string>
+                 <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
+                  <property name="decimals">
+                   <number>4</number>
                   </property>
-                 </widget>
-                </item>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_38">
-                  <property name="text">
-                   <string>Exposur</string>
+                  <property name="minimum">
+                   <double>2.000000000000000</double>
                   </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QGroupBox" name="groupBox_15">
-               <property name="title">
-                <string>PhotPars</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_20">
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_45">
-                  <property name="text">
-                   <string>ZMag</string>
+                  <property name="maximum">
+                   <double>100.000000000000000</double>
                   </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QLineEdit" name="lineEdit_15">
-                  <property name="text">
-                   <string>10,15,20,25,30</string>
+                  <property name="value">
+                   <double>2.000000000000000</double>
                   </property>
                  </widget>
                 </item>
                 <item row="2" column="0">
-                 <widget class="QLabel" name="label_57">
+                 <widget class="QLabel" name="label_68">
                   <property name="text">
-                   <string>Gain</string>
+                   <string>Min FWHM</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_44">
-                  <property name="text">
-                   <string>Apertur</string>
+                <item row="3" column="0">
+                 <widget class="QDoubleSpinBox" name="doubleSpinBox_5">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>1.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>100.000000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>4.000000000000000</double>
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="1">
-                 <widget class="QLineEdit" name="lineEdit_26">
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_69">
                   <property name="text">
-                   <string>gain</string>
+                   <string>Max FWHM</string>
                   </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QLineEdit" name="lineEdit_16">
-                  <property name="text">
-                   <string>25</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QGroupBox" name="groupBox_20">
-               <property name="title">
-                <string>WCS</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_71">
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_65">
-                  <property name="text">
-                   <string>Right ascension</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QLineEdit" name="lineEdit_22">
-                  <property name="text">
-                   <string>ra</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_66">
-                  <property name="text">
-                   <string>Declination</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QLineEdit" name="lineEdit_23">
-                  <property name="text">
-                   <string>dec</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="1" column="0" colspan="2">
-            <layout class="QGridLayout" name="gridLayout_41">
-             <item row="0" column="0">
-              <widget class="QGroupBox" name="groupBox_17">
-               <property name="minimumSize">
-                <size>
-                 <width>250</width>
-                 <height>160</height>
-                </size>
-               </property>
-               <property name="title">
-                <string>Location and Time</string>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_69">
-                <item row="2" column="0">
-                 <widget class="QLabel" name="label_48">
-                  <property name="text">
-                   <string>Time OBS</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="6" column="2">
-                 <widget class="QLineEdit" name="lineEdit_25"/>
-                </item>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_47">
-                  <property name="text">
-                   <string>Observatory</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="2">
-                 <widget class="QLineEdit" name="lineEdit_18">
-                  <property name="text">
-                   <string>observat</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="2">
-                 <widget class="QLineEdit" name="lineEdit_17">
-                  <property name="text">
-                   <string>time-obs</string>
+                  <property name="alignment">
+                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                   </property>
                  </widget>
                 </item>
                 <item row="5" column="0">
-                 <widget class="QLabel" name="label_67">
-                  <property name="text">
-                   <string>Date OBS</string>
+                 <widget class="QDoubleSpinBox" name="doubleSpinBox_6">
+                  <property name="decimals">
+                   <number>4</number>
                   </property>
-                 </widget>
-                </item>
-                <item row="5" column="2">
-                 <widget class="QLineEdit" name="lineEdit_24">
-                  <property name="text">
-                   <string>date-obs</string>
+                  <property name="minimum">
+                   <double>1.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>100.000000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>9.000000000000000</double>
                   </property>
                  </widget>
                 </item>
                 <item row="6" column="0">
-                 <widget class="QCheckBox" name="checkBox_4">
+                 <widget class="QLabel" name="label_70">
                   <property name="text">
-                   <string>Epoch</string>
+                   <string>Maximum Stars To find</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="0" colspan="3">
-                 <widget class="QCheckBox" name="checkBox_12">
-                  <property name="text">
-                   <string>Time Stamp</string>
+                <item row="7" column="0">
+                 <widget class="QDoubleSpinBox" name="doubleSpinBox_7">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>1.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>10000.000000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>25.000000000000000</double>
                   </property>
                  </widget>
                 </item>
@@ -3410,6 +3120,138 @@ To find</string>
               </widget>
              </item>
              <item row="0" column="1">
+              <layout class="QGridLayout" name="gridLayout_67">
+               <item row="0" column="0">
+                <widget class="QGroupBox" name="groupBox_13">
+                 <property name="title">
+                  <string>DataPars</string>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_53">
+                  <item row="0" column="1">
+                   <widget class="QLineEdit" name="lineEdit_13">
+                    <property name="text">
+                     <string>exptime</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLineEdit" name="lineEdit_14">
+                    <property name="text">
+                     <string>subset</string>
+                    </property>
+                    <property name="maxLength">
+                     <number>8</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="label_39">
+                    <property name="text">
+                     <string>Filter</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="label_38">
+                    <property name="text">
+                     <string>Exposur</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QGroupBox" name="groupBox_15">
+                 <property name="title">
+                  <string>PhotPars</string>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_20">
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="label_45">
+                    <property name="text">
+                     <string>ZMag</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLineEdit" name="lineEdit_15">
+                    <property name="text">
+                     <string>10,15,20,25,30</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QLabel" name="label_57">
+                    <property name="text">
+                     <string>Gain</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="label_44">
+                    <property name="text">
+                     <string>Apertur</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="QLineEdit" name="lineEdit_26">
+                    <property name="text">
+                     <string>gain</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLineEdit" name="lineEdit_16">
+                    <property name="text">
+                     <string>25</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QGroupBox" name="groupBox_20">
+                 <property name="title">
+                  <string>WCS</string>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_71">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="label_65">
+                    <property name="text">
+                     <string>Right ascension</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLineEdit" name="lineEdit_22">
+                    <property name="text">
+                     <string>ra</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="label_66">
+                    <property name="text">
+                     <string>Declination</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLineEdit" name="lineEdit_23">
+                    <property name="text">
+                     <string>dec</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="1" column="0" colspan="2">
               <widget class="QGroupBox" name="groupBox_31">
                <property name="title">
                 <string>Extract From Header</string>
@@ -3454,6 +3296,80 @@ To find</string>
               </widget>
              </item>
             </layout>
+           </item>
+           <item row="1" column="0">
+            <widget class="QGroupBox" name="groupBox_17">
+             <property name="minimumSize">
+              <size>
+               <width>250</width>
+               <height>160</height>
+              </size>
+             </property>
+             <property name="title">
+              <string>Location and Time</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_69">
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_48">
+                <property name="text">
+                 <string>Time OBS</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="2">
+               <widget class="QLineEdit" name="lineEdit_25"/>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_47">
+                <property name="text">
+                 <string>Observatory</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLineEdit" name="lineEdit_18">
+                <property name="text">
+                 <string>observat</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <widget class="QLineEdit" name="lineEdit_17">
+                <property name="text">
+                 <string>time-obs</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0">
+               <widget class="QLabel" name="label_67">
+                <property name="text">
+                 <string>Date OBS</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="2">
+               <widget class="QLineEdit" name="lineEdit_24">
+                <property name="text">
+                 <string>date-obs</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="0">
+               <widget class="QCheckBox" name="checkBox_4">
+                <property name="text">
+                 <string>Epoch</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="3">
+               <widget class="QCheckBox" name="checkBox_12">
+                <property name="text">
+                 <string>Time Stamp</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -3969,8 +3885,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>98</width>
-                <height>28</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3983,7 +3899,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>98</width>
+                <width>96</width>
                 <height>96</height>
                </rect>
               </property>
@@ -4001,8 +3917,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>98</width>
-                    <height>28</height>
+                    <width>76</width>
+                    <height>76</height>
                    </rect>
                   </property>
                  </widget>
@@ -4015,8 +3931,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>98</width>
-                <height>28</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <attribute name="label">
@@ -4029,8 +3945,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>98</width>
-                <height>28</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <attribute name="label">

@@ -499,8 +499,8 @@ class MyForm(QtGui.QWidget, Ui_Form):
 					
 				exp = self.ui.lineEdit_13.text()
 				fil = self.ui.lineEdit_14.text()
-				ann = self.ui.dial.value()
-				dan = self.ui.dial_2.value()
+				ann = self.ui.doubleSpinBox_2.value()
+				dan = self.ui.doubleSpinBox.value()
 				cbo = self.ui.dial_3.value()
 				ape = self.ui.lineEdit_15.text()
 				zma = self.ui.lineEdit_16.text()
@@ -1360,8 +1360,8 @@ class MyForm(QtGui.QWidget, Ui_Form):
 				Aperture = mean/len(ap.split(","))
 				Aperture = mean/len(ap.split(","))
 				circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
-				circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
-				circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
+				circAnnulus = Circle((Aperture + self.ui.doubleSpinBox_2.value(), Aperture + self.ui.doubleSpinBox_2.value()), Aperture + self.ui.doubleSpinBox_2.value(), edgecolor="#00FFFF", facecolor="none")
+				circDannulus = Circle((Aperture + self.ui.doubleSpinBox_2.value() + self.ui.doubleSpinBox.value(), Aperture + self.ui.doubleSpinBox_2.value() + self.ui.doubleSpinBox.value()), Aperture + self.ui.doubleSpinBox_2.value() + self.ui.doubleSpinBox.value(), edgecolor="red", facecolor="none")
 				self.ui.dispPhoto.canvas.fig.gca().add_artist(circAnnulus)
 				self.ui.dispPhoto.canvas.fig.gca().add_artist(circDannulus)
 				self.ui.dispPhoto.canvas.fig.gca().add_artist(circAperture)
@@ -1388,8 +1388,8 @@ class MyForm(QtGui.QWidget, Ui_Form):
 				Aperture = mean/len(ap.split(","))
 				Aperture = mean/len(ap.split(","))
 				circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none") 				
-				circAnnulus = Circle((Aperture + self.ui.dial.value(), Aperture + self.ui.dial.value()), Aperture + self.ui.dial.value(), edgecolor="#00FFFF", facecolor="none")
-				circDannulus = Circle((Aperture + self.ui.dial.value() + self.ui.dial_2.value(), Aperture + self.ui.dial.value() + self.ui.dial_2.value()), Aperture + self.ui.dial.value() + self.ui.dial_2.value(), edgecolor="red", facecolor="none")
+				circAnnulus = Circle((Aperture + self.ui.doubleSpinBox_2.value(), Aperture + self.ui.doubleSpinBox_2.value()), Aperture + self.ui.doubleSpinBox_2.value(), edgecolor="#00FFFF", facecolor="none")
+				circDannulus = Circle((Aperture + self.ui.doubleSpinBox_2.value() + self.ui.doubleSpinBox.value(), Aperture + self.ui.doubleSpinBox_2.value() + self.ui.doubleSpinBox.value()), Aperture + self.ui.doubleSpinBox_2.value() + self.ui.doubleSpinBox.value(), edgecolor="red", facecolor="none")
 				self.ui.dispSched.canvas.ax.add_artist(circAnnulus)
 				self.ui.dispSched.canvas.ax.add_artist(circDannulus)
 				self.ui.dispSched.canvas.ax.add_artist(circAperture)
@@ -1413,8 +1413,8 @@ class MyForm(QtGui.QWidget, Ui_Form):
 			
 			exp = self.ui.lineEdit_13.text()
 			fil = self.ui.lineEdit_14.text()
-			ann = self.ui.dial.value()
-			dan = self.ui.dial_2.value()
+			ann = self.ui.doubleSpinBox_2.value()
+			dan = self.ui.doubleSpinBox.value()
 			cbo = self.ui.dial_3.value()
 			ape = self.ui.lineEdit_15.text()
 			zma = self.ui.lineEdit_16.text()
@@ -1666,15 +1666,15 @@ class MyForm(QtGui.QWidget, Ui_Form):
   def findStars(self):
   	if self.ui.tabWidget.currentIndex() == 2:
   		if self.ui.listWidget_7.currentItem():
-			if self.ui.dial_5.value() > self.ui.dial_6.value():
+			if self.ui.doubleSpinBox_5.value() > self.ui.dial_6.value():
 				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("<b>Min FWHM</b> can not be bigger than <b>Max FWHM</b>"))
 			else:
 				img = self.ui.listWidget_7.currentItem()
 				img = str(img.text())
 				
-				minFWHM = self.ui.dial_5.value()
+				minFWHM = self.ui.doubleSpinBox_5.value()
 				maxFWHM = self.ui.dial_6.value()
-				FluxRadi = self.ui.dial_4.value()
+				FluxRadi = self.ui.doubleSpinBox_4.value()
 				maxStar = self.ui.dial_7.value()
 				
 				
@@ -1989,11 +1989,11 @@ class MyForm(QtGui.QWidget, Ui_Form):
 		  
 		  if l.startswith("fspAnnulus"):
 			  fspAnnulus = int(l.split(":")[1].replace("\n",""))
-			  self.ui.dial.setValue(fspAnnulus)
+			  self.ui.doubleSpinBox_2.setValue(fspAnnulus)
 			  
 		  if l.startswith("fspDannulus"):
 			  fspDannulus = int(l.split(":")[1].replace("\n",""))
-			  self.ui.dial_2.setValue(fspDannulus)
+			  self.ui.doubleSpinBox.setValue(fspDannulus)
 			  
 		  if l.startswith("fspCBox"):
 			  fspCBox = int(l.split(":")[1].replace("\n",""))
@@ -2059,11 +2059,11 @@ class MyForm(QtGui.QWidget, Ui_Form):
 
  		  if l.startswith("sMinFWHM"):
 			  sMinFWHM = int(l.split(":")[1].replace("\n",""))
-			  self.ui.dial_5.setValue(sMinFWHM)
+			  self.ui.doubleSpinBox_5.setValue(sMinFWHM)
 
  		  if l.startswith("sFluxradi"):
 			  sFluxradi = int(l.split(":")[1].replace("\n",""))
-			  self.ui.dial_4.setValue(sFluxradi)
+			  self.ui.doubleSpinBox_4.setValue(sFluxradi)
 
 
  		  if l.startswith("extraVal"):
@@ -2104,8 +2104,8 @@ class MyForm(QtGui.QWidget, Ui_Form):
 	f.write("dpExpTime:%s\n" %self.ui.lineEdit_13.text())
 	f.write("dpFilter:%s\n" %self.ui.lineEdit_14.text())
 
-	f.write("fspAnnulus:%s\n" %self.ui.dial.value())
-	f.write("fspDannulus:%s\n" %self.ui.dial_2.value())
+	f.write("fspAnnulus:%s\n" %self.ui.doubleSpinBox_2.value())
+	f.write("fspDannulus:%s\n" %self.ui.doubleSpinBox.value())
 	f.write("fspCBox:%s\n" %self.ui.dial_3.value())
 	
 	f.write("ppApertur:%s\n" %self.ui.lineEdit_15.text())
@@ -2131,8 +2131,8 @@ class MyForm(QtGui.QWidget, Ui_Form):
 
 	f.write("sfMaxStar:%s\n" %self.ui.dial_7.value())
 	f.write("sMaxFWHM:%s\n" %self.ui.dial_6.value())
-	f.write("sMinFWHM:%s\n" %self.ui.dial_5.value())
-	f.write("sFluxradi:%s\n" %self.ui.dial_4.value())
+	f.write("sMinFWHM:%s\n" %self.ui.doubleSpinBox_5.value())
+	f.write("sFluxradi:%s\n" %self.ui.doubleSpinBox_4.value())
 	
 	vv = ""
 	for i in xrange(self.ui.listWidget_20.count()):

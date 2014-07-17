@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created: Thu Jul 17 18:38:54 2014
+# Created: Thu Jul 17 19:31:23 2014
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!

@@ -499,9 +499,9 @@ class MyForm(QtGui.QWidget, Ui_Form):
                     
                 exp = self.ui.lineEdit_13.text()
                 fil = self.ui.lineEdit_14.text()
-                ann = self.ui.doubleSpinBox_2.value()
                 dan = self.ui.doubleSpinBox.value()
-                cbo = self.ui.doubleSpinBox.value()
+                ann = self.ui.doubleSpinBox_2.value()
+                cbo = self.ui.doubleSpinBox_3.value()
                 ape = self.ui.lineEdit_15.text()
                 zma = self.ui.lineEdit_16.text()
                 obs = self.ui.lineEdit_18.text()
@@ -604,7 +604,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
                                                 if function.JD(iImg, str(obs), str(obd), str(obt), str(ra), str(dec), str("epoch"), str(exp)):
                                                     if function.sideReal(self, iImg, ob, obd, obt):
                                                         if function.airmass(iImg, observatory, ra, dec, "epoch", "st", obt, obd, exp):
-                                                            if function.phot(self, iImg, "%s/tmp/analyzed/" %(self.HOME), "%s/tmp/pc" %(self.HOME), expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma, gain = gai):
+                                                            if function.phot(self, iImg, "%s/tmp/analyzed/" %(self.HOME), "%s/tmp/pc" %(self.HOME), expTime = exp, Filter = fil, centerBOX = int(cbo), annulus = int(ann), dannulus = int(dan), apertur = ape, zmag = zma, gain = gai):
                                                                 if function.txDump("%s/tmp/analyzed/%s.mag.1"  %(self.HOME, ntpath.basename(iImg)), "%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(iImg))):
                                                                     os.popen("rm %s/tmp/analyzed/%s.mag.1" %(self.HOME, ntpath.basename(iImg)))
                                                                     #os.popen("cat %s/tmp/analyzed/%s >> %s"  %(self.HOME, ntpath.basename(iImg), ofile))

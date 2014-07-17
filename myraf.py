@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/msh/Desktop/myraf/myraf.ui'
+# Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created: Thu Jul 17 13:08:53 2014
+# Created: Thu Jul 17 15:49:13 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -1543,13 +1543,13 @@ class Ui_Form(object):
         self.gridLayout_49.setObjectName(_fromUtf8("gridLayout_49"))
         self.toolBox.addItem(self.page, _fromUtf8(""))
         self.page_2 = QtGui.QWidget()
-        self.page_2.setGeometry(QtCore.QRect(0, 0, 100, 30))
+        self.page_2.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.page_2.setObjectName(_fromUtf8("page_2"))
         self.gridLayout_48 = QtGui.QGridLayout(self.page_2)
         self.gridLayout_48.setObjectName(_fromUtf8("gridLayout_48"))
         self.toolBox.addItem(self.page_2, _fromUtf8(""))
         self.page_3 = QtGui.QWidget()
-        self.page_3.setGeometry(QtCore.QRect(0, 0, 96, 96))
+        self.page_3.setGeometry(QtCore.QRect(0, 0, 98, 96))
         self.page_3.setObjectName(_fromUtf8("page_3"))
         self.gridLayout_47 = QtGui.QGridLayout(self.page_3)
         self.gridLayout_47.setObjectName(_fromUtf8("gridLayout_47"))
@@ -1557,19 +1557,19 @@ class Ui_Form(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollArea_3.setObjectName(_fromUtf8("scrollArea_3"))
         self.scrollAreaWidgetContents_3 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 76, 76))
+        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.scrollAreaWidgetContents_3.setObjectName(_fromUtf8("scrollAreaWidgetContents_3"))
         self.scrollArea_3.setWidget(self.scrollAreaWidgetContents_3)
         self.gridLayout_47.addWidget(self.scrollArea_3, 0, 0, 1, 1)
         self.toolBox.addItem(self.page_3, _fromUtf8(""))
         self.page_4 = QtGui.QWidget()
-        self.page_4.setGeometry(QtCore.QRect(0, 0, 100, 30))
+        self.page_4.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.page_4.setObjectName(_fromUtf8("page_4"))
         self.gridLayout_46 = QtGui.QGridLayout(self.page_4)
         self.gridLayout_46.setObjectName(_fromUtf8("gridLayout_46"))
         self.toolBox.addItem(self.page_4, _fromUtf8(""))
         self.page_5 = QtGui.QWidget()
-        self.page_5.setGeometry(QtCore.QRect(0, 0, 100, 30))
+        self.page_5.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.page_5.setObjectName(_fromUtf8("page_5"))
         self.gridLayout_45 = QtGui.QGridLayout(self.page_5)
         self.gridLayout_45.setObjectName(_fromUtf8("gridLayout_45"))
@@ -1620,7 +1620,7 @@ class Ui_Form(object):
         self.tabWidget_4.setCurrentIndex(0)
         self.tabWidget_8.setCurrentIndex(0)
         self.tabWidget_6.setCurrentIndex(0)
-        self.tabWidget_5.setCurrentIndex(1)
+        self.tabWidget_5.setCurrentIndex(0)
         self.toolBox.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
 

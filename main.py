@@ -6,7 +6,7 @@ Created:------------------------------------------------------------------------
             Yücel KILIÇ             Developer
         at:
             Begin                   04.12.2013
-            Last update             13.07.2014
+            Last update             17.07.2014
 Importing things:-----------------------------------------------------------------------------------
         Must have as installed:
             python-2.7
@@ -1675,8 +1675,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
                 minFWHM = self.ui.doubleSpinBox_5.value()
                 maxFWHM = self.ui.doubleSpinBox_6.value()
                 FluxRadi = self.ui.doubleSpinBox_4.value()
-                maxStar = self.ui.doubleSpinBox_7.value()
-                
+                maxStar = int(self.ui.doubleSpinBox_7.value())                
                 
                 sex = runSex(img)
                 stars = sex.run(FluxRadi, minFWHM, maxFWHM, maxStar)

@@ -1666,16 +1666,16 @@ class MyForm(QtGui.QWidget, Ui_Form):
   def findStars(self):
   	if self.ui.tabWidget.currentIndex() == 2:
   		if self.ui.listWidget_7.currentItem():
-			if self.ui.doubleSpinBox_5.value() > self.ui.dial_6.value():
+			if self.ui.doubleSpinBox_5.value() > self.ui.doubleSpinBox_6.value():
 				QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("<b>Min FWHM</b> can not be bigger than <b>Max FWHM</b>"))
 			else:
 				img = self.ui.listWidget_7.currentItem()
 				img = str(img.text())
 				
 				minFWHM = self.ui.doubleSpinBox_5.value()
-				maxFWHM = self.ui.dial_6.value()
+				maxFWHM = self.ui.doubleSpinBox_6.value()
 				FluxRadi = self.ui.doubleSpinBox_4.value()
-				maxStar = self.ui.dial_7.value()
+				maxStar = self.ui.doubleSpinBox_7.value()
 				
 				
 				sex = runSex(img)
@@ -1997,7 +1997,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 			  
 		  if l.startswith("fspCBox"):
 			  fspCBox = int(l.split(":")[1].replace("\n",""))
-			  self.ui.dial_3.setValue(fspCBox)
+			  self.ui.doubleSpinBox_3.setValue(fspCBox)
 			  
 		  if l.startswith("ppApertur"):
 			  ppApertur = l.split(":")[1].replace("\n","")
@@ -2051,11 +2051,11 @@ class MyForm(QtGui.QWidget, Ui_Form):
 
  		  if l.startswith("sfMaxStar"):
 			  sfMaxStar = int(l.split(":")[1].replace("\n",""))
-			  self.ui.dial_7.setValue(sfMaxStar)
+			  self.ui.doubleSpinBox_7.setValue(sfMaxStar)
 
  		  if l.startswith("sMaxFWHM"):
 			  sMaxFWHM = int(l.split(":")[1].replace("\n",""))
-			  self.ui.dial_6.setValue(sMaxFWHM)
+			  self.ui.doubleSpinBox_6.setValue(sMaxFWHM)
 
  		  if l.startswith("sMinFWHM"):
 			  sMinFWHM = int(l.split(":")[1].replace("\n",""))
@@ -2129,8 +2129,8 @@ class MyForm(QtGui.QWidget, Ui_Form):
 	else:
 		f.write("timeStamp:f\n")
 
-	f.write("sfMaxStar:%s\n" %self.ui.dial_7.value())
-	f.write("sMaxFWHM:%s\n" %self.ui.dial_6.value())
+	f.write("sfMaxStar:%s\n" %self.ui.doubleSpinBox_7.value())
+	f.write("sMaxFWHM:%s\n" %self.ui.doubleSpinBox_6.value())
 	f.write("sMinFWHM:%s\n" %self.ui.doubleSpinBox_5.value())
 	f.write("sFluxradi:%s\n" %self.ui.doubleSpinBox_4.value())
 	

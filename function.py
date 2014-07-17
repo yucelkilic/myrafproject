@@ -231,13 +231,14 @@ def airmass(inFile, OBS="observat", r="ra", d="dec", equ="epoch", s="st", u="ut"
         return False
         print("Setairmass failed.")
 
-def phot(self, inFile, outPath, cooFile, expTime = "exptime", Filter = "subset", centerBOX = "10.0", annulus = "25.0", dannulus = "5.0", apertur = "10,15,20,25,30", zmag = "25", airmass = "airmass", otime = "hjd"):
+def phot(self, inFile, outPath, cooFile, expTime = "exptime", Filter = "subset", centerBOX = "10.0", annulus = "25.0", dannulus = "5.0", apertur = "10,15,20,25,30", zmag = "25", airmass = "airmass", otime = "hjd", gain=""):
     print("setParam started via: \n\timg=%s \n\tOutfile=%s \n\tcooFile=%s \n\texpTime=%s \n\tFilter=%s \n\tcenterBOX=%s \n\tannulus=%s \n\tdannulus=%s \n\tapertur=%s \n\tzmag=%s \n\tairmass=%s \n\tobstime=%s" %(inFile, outPath, cooFile, expTime, Filter, centerBOX, annulus, dannulus, apertur, zmag, airmass, otime))
     try:
         iraf.datapars.setParam("exposur", expTime)
         iraf.datapars.setParam("filter", Filter)
         iraf.datapars.setParam("airmass", airmass)
         iraf.datapars.setParam("obstime", otime)
+        iraf.datapars.setParam("gain", gain)
         iraf.datapars.saveParList(filename="%s/uparm/aptdataps.par" %(self.HOME))
         
         iraf.centerpars.setParam("cbox", centerBOX)

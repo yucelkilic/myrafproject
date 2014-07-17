@@ -99,6 +99,10 @@ class MyForm(QtGui.QWidget, Ui_Form):
     if not os.path.isdir("%s/set" %(self.HOME)):
 		os.popen("mkdir -p %s/set/" %(self.HOME))
 		os.popen("cp -rf /usr/share/myraf/set/* %s/set/" %(self.HOME))
+
+    rev = os.popen("svn info http://myrafproject.googlecode.com/svn/trunk/ |grep Revision")
+    rev = rev.read().replace("\n","")
+    self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available" %(rev), None, QtGui.QApplication.UnicodeUTF8))
 	
     os.system("rm -rf $HOME/.MYRaf2/tmp/*")
     os.system("rm -rf $HOME/.MYRaf2/alipy_visu")
@@ -215,6 +219,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
     self.ui.pushButton_17.clicked.connect(self.findStars)
     
     self.ui.checkBox_4.clicked.connect(self.epochUnlock)
+    self.ui.checkBox_12.clicked.connect(self.timeStampUnlock)
     
     self.ui.pushButton_19.clicked.connect(self.chartClear)
   
@@ -257,6 +262,25 @@ class MyForm(QtGui.QWidget, Ui_Form):
     self.plotFdM = FitsPlot(self.ui.dispManual.canvas)
     self.plotFdP = FitsPlot(self.ui.dispPhoto.canvas)
     self.plotFdS = FitsPlot(self.ui.dispSched.canvas)
+
+    self.ui.pushButton_52.clicked.connect(self.updateMe)
+
+##########################################
+
+  def updateMe(self):
+	print "Started to Download"
+	self.ui.label_12.setText(QtGui.QApplication.translate("Form", "Started to Download", None, QtGui.QApplication.UnicodeUTF8))
+	os.popen("svn checkout http://myrafproject.googlecode.com/svn/trunk/ /tmp/myraf")
+	os.popen("cp -rf /tmp/myraf/* /usr/share/myraf/")
+
+	print "copying files"
+	self.ui.label_12.setText(QtGui.QApplication.translate("Form", "Copying files", None, QtGui.QApplication.UnicodeUTF8))
+	rev = os.popen("svn info http://myrafproject.googlecode.com/svn/trunk/ |grep Revision")
+	rev = rev.read().replace("\n","")
+	self.ui.label_12.setText(QtGui.QApplication.translate("Form", "Finished...", None, QtGui.QApplication.UnicodeUTF8))
+	print "Finished..."
+	self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available" %(rev), None, QtGui.QApplication.UnicodeUTF8))
+
 
 ##################################################
   def on_context_menu2(self, point):
@@ -332,7 +356,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
 	if self.ui.listWidget_19.selectedItems() == []:
 		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please at least select one header."))
 	else:
-		#deneme
 			
 		for i in self.ui.listWidget_19.selectedItems():
 			if self.ui.listWidget_20.findItems(str(i.text()), Qt.MatchExactly) == []:
@@ -487,6 +510,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 				ra = self.ui.lineEdit_22.text()
 				dec = self.ui.lineEdit_23.text()
 				epo = self.ui.lineEdit_25.text()
+				gai = self.ui.lineEdit_26.text()
 				
 				apert = self.ui.lineEdit_15.text()
 				staCount = self.ui.listWidget_8.count()
@@ -526,10 +550,14 @@ class MyForm(QtGui.QWidget, Ui_Form):
 			iIt = 0
 
 			for y in xrange(self.ui.listWidget_13.count()):
-				
 				iIt = iIt + 1
 				iImg = self.ui.listWidget_13.item(y)
 				iImg = str(iImg.text())
+				if self.ui.checkBox_12.isChecked():
+					function.headerWrite(iImg, "MYDate", function.headerRead(iImg, self.ui.lineEdit_17.text()).split(self.ui.lineEdit_24.text())[0])
+					function.headerWrite(iImg, "MYTime", function.headerRead(iImg, self.ui.lineEdit_17.text()).split(self.ui.lineEdit_24.text())[1])
+					obt = "MYTime"
+					obd = "MYDate"
 				if self.ui.groupBox_26.isChecked():
 					if function.headerRead(iImg, sname) == "" and subc == "yes":
 						self.ui.label_71.setText("There is no %s header in %s file. Skipping" %(subf, ntpath.basename(str(iImg))))
@@ -576,7 +604,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 												if function.JD(iImg, str(obs), str(obd), str(obt), str(ra), str(dec), str("epoch"), str(exp)):
 													if function.sideReal(self, iImg, ob, obd, obt):
 														if function.airmass(iImg, observatory, ra, dec, "epoch", "st", obt, obd, exp):
-															if function.phot(self, iImg, "%s/tmp/analyzed/" %(self.HOME), "%s/tmp/pc" %(self.HOME), expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
+															if function.phot(self, iImg, "%s/tmp/analyzed/" %(self.HOME), "%s/tmp/pc" %(self.HOME), expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma, gain = gai):
 																if function.txDump("%s/tmp/analyzed/%s.mag.1"  %(self.HOME, ntpath.basename(iImg)), "%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(iImg))):
 																	os.popen("rm %s/tmp/analyzed/%s.mag.1" %(self.HOME, ntpath.basename(iImg)))
 																	#os.popen("cat %s/tmp/analyzed/%s >> %s"  %(self.HOME, ntpath.basename(iImg), ofile))
@@ -1212,6 +1240,14 @@ class MyForm(QtGui.QWidget, Ui_Form):
 		self.ui.lineEdit_2.setEnabled(True)
 		self.ui.comboBox.setEnabled(False)
 		
+  def timeStampUnlock(self):
+	if self.ui.checkBox_12.checkState() == QtCore.Qt.Checked:
+		self.ui.label_48.setText(QtGui.QApplication.translate("Form", "Time Stamp", None, QtGui.QApplication.UnicodeUTF8))
+		self.ui.label_67.setText(QtGui.QApplication.translate("Form", "Separ char", None, QtGui.QApplication.UnicodeUTF8))
+	else:
+		self.ui.label_48.setText(QtGui.QApplication.translate("Form", "Time OBS", None, QtGui.QApplication.UnicodeUTF8))
+		self.ui.label_67.setText(QtGui.QApplication.translate("Form", "Date OBS", None, QtGui.QApplication.UnicodeUTF8))
+
   def epochUnlock(self):
 	if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
 		self.ui.lineEdit_25.setEnabled(False)
@@ -1389,6 +1425,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 			ra = self.ui.lineEdit_22.text()
 			dec = self.ui.lineEdit_23.text()
 			epo = self.ui.lineEdit_25.text()
+			gai = self.ui.lineEdit_26.text()
 			
 			apert = self.ui.lineEdit_15.text()
 			staCount = self.ui.listWidget_8.count()
@@ -1429,6 +1466,11 @@ class MyForm(QtGui.QWidget, Ui_Form):
 					it = it + 1
 					img = self.ui.listWidget_7.item(x)
 					img = str(img.text())
+					if self.ui.checkBox_12.isChecked():
+						function.headerWrite(img, "MYDate", function.headerRead(img, self.ui.lineEdit_17.text()).split(self.ui.lineEdit_24.text())[0])
+						function.headerWrite(img, "MYTime", function.headerRead(img, self.ui.lineEdit_17.text()).split(self.ui.lineEdit_24.text())[1])
+						obt = "MYTime"
+						obd = "MYDate"
 					tm = function.headerRead(img, obt)
 					ob = function.headerRead(img, obs)
 					dt = function.headerRead(img, obd)
@@ -1457,7 +1499,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 												if function.JD(img, str(obs), str(obd), str(obt), str(ra), str(dec), str("epoch"), str(exp)):
 													if function.sideReal(self, img, ob, obd, obt):
 														if function.airmass(img, observatory, ra, dec, "epoch", "st", obt, obd, exp):
-															if function.phot(self, img, "%s/tmp/analyzed/" %(self.HOME), "%s/tmp/pc" %(self.HOME), expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma):
+															if function.phot(self, img, "%s/tmp/analyzed/" %(self.HOME), "%s/tmp/pc" %(self.HOME), expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma, gain = gai):
 																if function.txDump("%s/tmp/analyzed/%s.mag.1"  %(self.HOME, ntpath.basename(img)), "%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(img))):
 																	#os.popen("echo '#ap=%s'"%(str()))
 																	itExt = 0
@@ -1998,6 +2040,15 @@ class MyForm(QtGui.QWidget, Ui_Form):
 				  self.ui.checkBox_4.setChecked(False)
 				  self.ui.lineEdit_25.setEnabled(True)
 
+		  if l.startswith("timeStamp"):
+			  chepoc = l.split(":")[1].replace("\n","")
+			  if chepoc == "t":
+				  self.ui.checkBox_12.setChecked(True)
+				  self.timeStampUnlock()
+			  else:
+				  self.ui.checkBox_12.setChecked(False)
+				  self.timeStampUnlock()
+
  		  if l.startswith("sfMaxStar"):
 			  sfMaxStar = int(l.split(":")[1].replace("\n",""))
 			  self.ui.dial_7.setValue(sfMaxStar)
@@ -2073,6 +2124,11 @@ class MyForm(QtGui.QWidget, Ui_Form):
 	else:
 		f.write("chepoc:f\n")
 	
+	if self.ui.checkBox_12.checkState() == QtCore.Qt.Checked:
+		f.write("timeStamp:t\n")
+	else:
+		f.write("timeStamp:f\n")
+
 	f.write("sfMaxStar:%s\n" %self.ui.dial_7.value())
 	f.write("sMaxFWHM:%s\n" %self.ui.dial_6.value())
 	f.write("sMinFWHM:%s\n" %self.ui.dial_5.value())

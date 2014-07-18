@@ -2932,18 +2932,8 @@
               <string>FitSkyPars</string>
              </property>
              <layout class="QGridLayout" name="gridLayout_59">
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_42">
-                <property name="text">
-                 <string>Dannulus</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QDoubleSpinBox" name="doubleSpinBox">
+              <item row="2" column="0">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
                 <property name="decimals">
                  <number>0</number>
                 </property>
@@ -2955,18 +2945,41 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_40">
+              <item row="7" column="0">
+               <widget class="QLabel" name="label_46">
                 <property name="text">
-                 <string>Annulus</string>
+                 <string>CBox</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                 </property>
                </widget>
               </item>
-              <item row="3" column="0">
-               <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+              <item row="8" column="0">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+                <property name="decimals">
+                 <number>0</number>
+                </property>
+                <property name="maximum">
+                 <double>1000.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>10.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="label_42">
+                <property name="text">
+                 <string>Dannulus</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox">
                 <property name="decimals">
                  <number>0</number>
                 </property>
@@ -2978,26 +2991,13 @@
                 </property>
                </widget>
               </item>
-              <item row="4" column="0">
-               <widget class="QLabel" name="label_46">
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_40">
                 <property name="text">
-                 <string>CBox</string>
+                 <string>Annulus</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="0">
-               <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
-                <property name="decimals">
-                 <number>0</number>
-                </property>
-                <property name="maximum">
-                 <double>1000.000000000000000</double>
-                </property>
-                <property name="value">
-                 <double>10.000000000000000</double>
                 </property>
                </widget>
               </item>
@@ -3871,8 +3871,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
-                <height>26</height>
+                <width>73</width>
+                <height>16</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3885,8 +3885,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
-                <height>26</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3899,7 +3899,7 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
+                <width>95</width>
                 <height>95</height>
                </rect>
               </property>
@@ -3917,8 +3917,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>96</width>
-                    <height>26</height>
+                    <width>79</width>
+                    <height>79</height>
                    </rect>
                   </property>
                  </widget>
@@ -3931,8 +3931,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
-                <height>26</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3945,8 +3945,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>96</width>
-                <height>26</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <attribute name="label">

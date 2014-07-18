@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created: Fri Jul 18 18:04:55 2014
+# Created: Fri Jul 18 18:32:05 2014
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -1151,7 +1151,7 @@ class Ui_Form(object):
         self.label_64.setObjectName(_fromUtf8("label_64"))
         self.gridLayout_58.addWidget(self.label_64, 0, 0, 1, 1)
         self.doubleSpinBox_4 = QtGui.QDoubleSpinBox(self.groupBox_19)
-        self.doubleSpinBox_4.setDecimals(4)
+        self.doubleSpinBox_4.setDecimals(0)
         self.doubleSpinBox_4.setMinimum(2.0)
         self.doubleSpinBox_4.setMaximum(100.0)
         self.doubleSpinBox_4.setProperty("value", 2.0)
@@ -1162,7 +1162,7 @@ class Ui_Form(object):
         self.label_68.setObjectName(_fromUtf8("label_68"))
         self.gridLayout_58.addWidget(self.label_68, 2, 0, 1, 1)
         self.doubleSpinBox_5 = QtGui.QDoubleSpinBox(self.groupBox_19)
-        self.doubleSpinBox_5.setDecimals(4)
+        self.doubleSpinBox_5.setDecimals(0)
         self.doubleSpinBox_5.setMinimum(1.0)
         self.doubleSpinBox_5.setMaximum(100.0)
         self.doubleSpinBox_5.setProperty("value", 4.0)
@@ -1173,7 +1173,7 @@ class Ui_Form(object):
         self.label_69.setObjectName(_fromUtf8("label_69"))
         self.gridLayout_58.addWidget(self.label_69, 4, 0, 1, 1)
         self.doubleSpinBox_6 = QtGui.QDoubleSpinBox(self.groupBox_19)
-        self.doubleSpinBox_6.setDecimals(4)
+        self.doubleSpinBox_6.setDecimals(0)
         self.doubleSpinBox_6.setMinimum(1.0)
         self.doubleSpinBox_6.setMaximum(100.0)
         self.doubleSpinBox_6.setProperty("value", 9.0)

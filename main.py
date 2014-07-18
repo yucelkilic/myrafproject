@@ -149,7 +149,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
     
     self.ui.pushButton_18.clicked.connect(self.displayCoords)
     
-    self.ui.pushButton_34.clicked.connect(self.saveSettings)
+    #self.ui.pushButton_34.clicked.connect(self.saveSettings)
     
     self.ui.pushButton_3.clicked.connect(lambda: gui.add(self, self.ui.listWidget))
     self.ui.pushButton_4.clicked.connect(lambda: gui.rm(self, self.ui.listWidget))
@@ -2103,9 +2103,9 @@ class MyForm(QtGui.QWidget, Ui_Form):
     f.write("dpExpTime:%s\n" %self.ui.lineEdit_13.text())
     f.write("dpFilter:%s\n" %self.ui.lineEdit_14.text())
 
-    f.write("fspAnnulus:%s\n" %self.ui.doubleSpinBox_2.value())
-    f.write("fspDannulus:%s\n" %self.ui.doubleSpinBox.value())
-    f.write("fspCBox:%s\n" %self.ui.doubleSpinBox_3.value())
+    f.write("fspAnnulus:%s\n" %int(self.ui.doubleSpinBox_2.value()))
+    f.write("fspDannulus:%s\n" %int(self.ui.doubleSpinBox.value()))
+    f.write("fspCBox:%s\n" %int(self.ui.doubleSpinBox_3.value()))
     
     f.write("ppApertur:%s\n" %self.ui.lineEdit_15.text())
     f.write("ppZMag:%s\n" %self.ui.lineEdit_16.text())
@@ -2128,10 +2128,10 @@ class MyForm(QtGui.QWidget, Ui_Form):
     else:
         f.write("timeStamp:f\n")
 
-    f.write("sfMaxStar:%s\n" %self.ui.doubleSpinBox_7.value())
-    f.write("sMaxFWHM:%s\n" %self.ui.doubleSpinBox_6.value())
-    f.write("sMinFWHM:%s\n" %self.ui.doubleSpinBox_5.value())
-    f.write("sFluxradi:%s\n" %self.ui.doubleSpinBox_4.value())
+    f.write("sfMaxStar:%s\n" %int(self.ui.doubleSpinBox_7.value()))
+    f.write("sMaxFWHM:%s\n" %int(self.ui.doubleSpinBox_6.value()))
+    f.write("sMinFWHM:%s\n" %int(self.ui.doubleSpinBox_5.value()))
+    f.write("sFluxradi:%s\n" %int(self.ui.doubleSpinBox_4.value()))
     
     vv = ""
     for i in xrange(self.ui.listWidget_20.count()):

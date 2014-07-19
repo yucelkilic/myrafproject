@@ -1250,8 +1250,7 @@
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QComboBox" name="comboBox_11">
-               </widget>
+               <widget class="QComboBox" name="comboBox_11"/>
               </item>
              </layout>
             </item>
@@ -1274,8 +1273,7 @@
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QComboBox" name="comboBox_12">
-               </widget>
+               <widget class="QComboBox" name="comboBox_12"/>
               </item>
              </layout>
             </item>
@@ -1298,8 +1296,7 @@
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QComboBox" name="comboBox_13">
-               </widget>
+               <widget class="QComboBox" name="comboBox_13"/>
               </item>
              </layout>
             </item>
@@ -1322,8 +1319,7 @@
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QComboBox" name="comboBox_14">
-               </widget>
+               <widget class="QComboBox" name="comboBox_14"/>
               </item>
              </layout>
             </item>
@@ -1525,8 +1521,7 @@
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QLineEdit" name="lineEdit_21">
-               </widget>
+               <widget class="QLineEdit" name="lineEdit_21"/>
               </item>
              </layout>
             </item>
@@ -1679,8 +1674,7 @@
              </property>
              <layout class="QGridLayout" name="gridLayout_28">
               <item row="0" column="0">
-               <widget class="QListWidget" name="listWidget_11">
-               </widget>
+               <widget class="QListWidget" name="listWidget_11"/>
               </item>
              </layout>
             </widget>
@@ -1824,8 +1818,7 @@
                  </widget>
                 </item>
                 <item row="2" column="1">
-                 <widget class="QLineEdit" name="lineEdit_2">
-                 </widget>
+                 <widget class="QLineEdit" name="lineEdit_2"/>
                 </item>
                </layout>
               </item>
@@ -2016,16 +2009,13 @@
                  </widget>
                 </item>
                 <item row="3" column="0">
-                 <widget class="QLineEdit" name="lineEdit_4">
-                 </widget>
+                 <widget class="QLineEdit" name="lineEdit_4"/>
                 </item>
                 <item row="7" column="0">
-                 <widget class="QLineEdit" name="lineEdit_6">
-                 </widget>
+                 <widget class="QLineEdit" name="lineEdit_6"/>
                 </item>
                 <item row="9" column="0">
-                 <widget class="QLineEdit" name="lineEdit_7">
-                 </widget>
+                 <widget class="QLineEdit" name="lineEdit_7"/>
                 </item>
                 <item row="4" column="0">
                  <widget class="QLabel" name="label_23">
@@ -2049,8 +2039,7 @@
                  </widget>
                 </item>
                 <item row="5" column="0">
-                 <widget class="QLineEdit" name="lineEdit_5">
-                 </widget>
+                 <widget class="QLineEdit" name="lineEdit_5"/>
                 </item>
                 <item row="8" column="0">
                  <widget class="QLabel" name="label_25">
@@ -2088,8 +2077,7 @@
                  </widget>
                 </item>
                 <item row="1" column="0">
-                 <widget class="QLineEdit" name="lineEdit_3">
-                 </widget>
+                 <widget class="QLineEdit" name="lineEdit_3"/>
                 </item>
                </layout>
               </item>
@@ -3661,8 +3649,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>98</width>
-                <height>28</height>
+                <width>738</width>
+                <height>346</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3754,17 +3742,11 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item row="2" column="0">
-            <spacer name="horizontalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+            <widget class="QProgressBar" name="progressBar_8">
+             <property name="value">
+              <number>24</number>
              </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>613</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
+            </widget>
            </item>
            <item row="2" column="1">
             <widget class="QPushButton" name="pushButton_52">

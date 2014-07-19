@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created: Sat Jul 19 15:02:02 2014
+# Created: Sat Jul 19 17:06:42 2014
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -1496,7 +1496,7 @@ class Ui_Form(object):
         self.toolBox = QtGui.QToolBox(self.tab_17)
         self.toolBox.setObjectName(_fromUtf8("toolBox"))
         self.page = QtGui.QWidget()
-        self.page.setGeometry(QtCore.QRect(0, 0, 98, 28))
+        self.page.setGeometry(QtCore.QRect(0, 0, 738, 346))
         self.page.setObjectName(_fromUtf8("page"))
         self.gridLayout_49 = QtGui.QGridLayout(self.page)
         self.gridLayout_49.setObjectName(_fromUtf8("gridLayout_49"))
@@ -1538,8 +1538,10 @@ class Ui_Form(object):
         self.label_12.setText(_fromUtf8(""))
         self.label_12.setObjectName(_fromUtf8("label_12"))
         self.gridLayout_17.addWidget(self.label_12, 1, 0, 1, 2)
-        spacerItem6 = QtGui.QSpacerItem(613, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.gridLayout_17.addItem(spacerItem6, 2, 0, 1, 1)
+        self.progressBar_8 = QtGui.QProgressBar(self.tab_17)
+        self.progressBar_8.setProperty("value", 24)
+        self.progressBar_8.setObjectName(_fromUtf8("progressBar_8"))
+        self.gridLayout_17.addWidget(self.progressBar_8, 2, 0, 1, 1)
         self.pushButton_52 = QtGui.QPushButton(self.tab_17)
         self.pushButton_52.setObjectName(_fromUtf8("pushButton_52"))
         self.gridLayout_17.addWidget(self.pushButton_52, 2, 1, 1, 1)

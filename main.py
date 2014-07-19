@@ -282,12 +282,14 @@ class MyForm(QtGui.QWidget, Ui_Form):
     print "Started to Download"
     self.ui.label_12.setText(QtGui.QApplication.translate("Form", "Started to Download", None, QtGui.QApplication.UnicodeUTF8))
     os.popen("svn checkout http://myrafproject.googlecode.com/svn/trunk/ /tmp/myraf")
-    os.popen("cp -rf /tmp/myraf/* /usr/share/myraf/")
-
+    self.ui.progressBar_8.setProperty("value", 33)
     print "copying files"
+    os.popen("cp -rf /tmp/myraf/* /usr/share/myraf/")
+    self.ui.progressBar_8.setProperty("value", 66)
     self.ui.label_12.setText(QtGui.QApplication.translate("Form", "Copying files", None, QtGui.QApplication.UnicodeUTF8))
     rev = os.popen("svn info http://myrafproject.googlecode.com/svn/trunk/ |grep Revision")
     rev = rev.read().replace("\n","")
+    self.ui.progressBar_8.setProperty("value", 100)
     self.ui.label_12.setText(QtGui.QApplication.translate("Form", "Finished...", None, QtGui.QApplication.UnicodeUTF8))
     print "Finished..."
     rev = os.popen("svn info http://myrafproject.googlecode.com/svn/trunk/ |grep Revision")

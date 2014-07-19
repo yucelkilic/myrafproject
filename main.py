@@ -100,9 +100,16 @@ class MyForm(QtGui.QWidget, Ui_Form):
         os.popen("mkdir -p %s/set/" %(self.HOME))
         os.popen("cp -rf /usr/share/myraf/set/* %s/set/" %(self.HOME))
 
-    rev = os.popen("svn info http://myrafproject.googlecode.com/svn/trunk/ |grep Revision")
-    rev = rev.read().replace("\n","")
-    self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available" %(rev), None, QtGui.QApplication.UnicodeUTF8))
+    try:
+		frev = open("%s/set/rev" %(self.HOME), "r")
+		for r in frev:
+			irev = r
+		rev = os.popen("svn info http://myrafproject.googlecode.com/svn/trunk/ |grep Revision")
+		rev = rev.read().replace("\n","")
+		self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available, you have revision: %s" %(rev, irev), None, QtGui.QApplication.UnicodeUTF8))
+    except:
+		self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available, you have an unknown revision. Please update MYRaf." %(rev), None, QtGui.QApplication.UnicodeUTF8))
+		
     
     os.system("rm -rf $HOME/.MYRaf2/tmp/*")
     os.system("rm -rf $HOME/.MYRaf2/alipy_visu")
@@ -279,6 +286,11 @@ class MyForm(QtGui.QWidget, Ui_Form):
     rev = rev.read().replace("\n","")
     self.ui.label_12.setText(QtGui.QApplication.translate("Form", "Finished...", None, QtGui.QApplication.UnicodeUTF8))
     print "Finished..."
+    rev = os.popen("svn info http://myrafproject.googlecode.com/svn/trunk/ |grep Revision")
+    rev = rev.read().replace("\n","")
+    f = open("%s/set/rev" %(self.HOME), "w")
+    f.write(rev)
+    f.close()
     self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available" %(rev), None, QtGui.QApplication.UnicodeUTF8))
 
 

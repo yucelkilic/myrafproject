@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created: Sat Jul 19 17:06:42 2014
+# Created: Sat Jul 19 17:10:39 2014
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -1539,7 +1539,7 @@ class Ui_Form(object):
         self.label_12.setObjectName(_fromUtf8("label_12"))
         self.gridLayout_17.addWidget(self.label_12, 1, 0, 1, 2)
         self.progressBar_8 = QtGui.QProgressBar(self.tab_17)
-        self.progressBar_8.setProperty("value", 24)
+        self.progressBar_8.setProperty("value", 0)
         self.progressBar_8.setObjectName(_fromUtf8("progressBar_8"))
         self.gridLayout_17.addWidget(self.progressBar_8, 2, 0, 1, 1)
         self.pushButton_52 = QtGui.QPushButton(self.tab_17)

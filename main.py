@@ -106,7 +106,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
 			irev = r
 		rev = os.popen("svn info http://myrafproject.googlecode.com/svn/trunk/ |grep Revision")
 		rev = rev.read().replace("\n","")
-		self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available, you have revision: %s" %(rev, irev), None, QtGui.QApplication.UnicodeUTF8))
+		self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available, you have %s" %(rev, irev), None, QtGui.QApplication.UnicodeUTF8))
     except:
 		self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available, you have an unknown revision. Please update MYRaf." %(rev), None, QtGui.QApplication.UnicodeUTF8))
 		

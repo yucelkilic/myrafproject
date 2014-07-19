@@ -32,9 +32,6 @@
        <height>641</height>
       </size>
      </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>
      </property>
@@ -71,9 +68,6 @@
              <height>20</height>
             </size>
            </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Activate if you want &lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Bias&lt;/span&gt; correction&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
            <property name="text">
             <string>Bias</string>
            </property>
@@ -93,9 +87,6 @@
              <height>20</height>
             </size>
            </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Activate if you want &lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Dark&lt;/span&gt; correction&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
            <property name="text">
             <string>Dark</string>
            </property>
@@ -114,9 +105,6 @@
              <width>60</width>
              <height>20</height>
             </size>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Activate if you want &lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Flat&lt;/span&gt; correction&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Flat</string>
@@ -168,9 +156,6 @@
                <height>25</height>
               </size>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add to list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="text">
               <string>Add</string>
              </property>
@@ -194,9 +179,6 @@
                <height>25</height>
               </size>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected items from List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="text">
               <string>Remove</string>
              </property>
@@ -215,9 +197,6 @@
            </item>
            <item row="0" column="0" colspan="3">
             <widget class="QListWidget" name="listWidget">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Images List.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="selectionMode">
               <enum>QAbstractItemView::ExtendedSelection</enum>
              </property>
@@ -251,9 +230,6 @@
                <height>25</height>
               </size>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save MasterBias&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="text">
               <string>save</string>
              </property>
@@ -276,9 +252,6 @@
                <width>100</width>
                <height>25</height>
               </size>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected items from List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
               <string>Remove</string>
@@ -303,9 +276,6 @@
                <height>25</height>
               </size>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add to list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="text">
               <string>Add</string>
              </property>
@@ -317,9 +287,6 @@
            </item>
            <item row="0" column="0" colspan="4">
             <widget class="QListWidget" name="listWidget_2">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bias List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="selectionMode">
               <enum>QAbstractItemView::ExtendedSelection</enum>
              </property>
@@ -353,9 +320,6 @@
                <height>25</height>
               </size>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save MasterDark&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="text">
               <string>save</string>
              </property>
@@ -378,9 +342,6 @@
                <width>100</width>
                <height>25</height>
               </size>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected items from List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
               <string>Remove</string>
@@ -405,9 +366,6 @@
                <height>25</height>
               </size>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add to list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="text">
               <string>Add</string>
              </property>
@@ -419,9 +377,6 @@
            </item>
            <item row="0" column="0" colspan="4">
             <widget class="QListWidget" name="listWidget_3">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dark List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="selectionMode">
               <enum>QAbstractItemView::ExtendedSelection</enum>
              </property>
@@ -455,9 +410,6 @@
                <height>25</height>
               </size>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save MasterFlat&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="text">
               <string>save</string>
              </property>
@@ -480,9 +432,6 @@
                <width>100</width>
                <height>25</height>
               </size>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected items from List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
               <string>Remove</string>
@@ -507,9 +456,6 @@
                <height>25</height>
               </size>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add to list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="text">
               <string>Add</string>
              </property>
@@ -521,9 +467,6 @@
            </item>
            <item row="0" column="0" colspan="4">
             <widget class="QListWidget" name="listWidget_4">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Flat List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="selectionMode">
               <enum>QAbstractItemView::ExtendedSelection</enum>
              </property>
@@ -555,9 +498,6 @@
              <width>50</width>
              <height>50</height>
             </size>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Calibration&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>:go</string>
@@ -635,9 +575,6 @@
                   <height>16777215</height>
                  </size>
                 </property>
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;File List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                 <property name="selectionMode">
                  <enum>QAbstractItemView::ExtendedSelection</enum>
                 </property>
@@ -656,9 +593,6 @@
                   <width>100</width>
                   <height>25</height>
                  </size>
-                </property>
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected items from List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string>Remove</string>
@@ -682,9 +616,6 @@
                   <width>100</width>
                   <height>25</height>
                  </size>
-                </property>
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add to list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string>Add</string>
@@ -720,9 +651,6 @@
                  <width>50</width>
                  <height>50</height>
                 </size>
-               </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Auto Align&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="text">
                 <string>:go</string>
@@ -794,9 +722,6 @@
                  <height>50</height>
                 </size>
                </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Manual Align&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
                <property name="text">
                 <string>:go</string>
                </property>
@@ -843,9 +768,6 @@
                <layout class="QGridLayout" name="gridLayout_16">
                 <item row="2" column="0" colspan="2">
                  <widget class="QLabel" name="label_11">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reference corrdinates&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
                   <property name="frameShape">
                    <enum>QFrame::StyledPanel</enum>
                   </property>
@@ -874,9 +796,6 @@
                     <height>25</height>
                    </size>
                   </property>
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add to list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
                   <property name="text">
                    <string>Add</string>
                   </property>
@@ -899,9 +818,6 @@
                     <width>100</width>
                     <height>25</height>
                    </size>
-                  </property>
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected items from List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="text">
                    <string>Remove</string>
@@ -961,9 +877,6 @@
                 </item>
                 <item row="1" column="0">
                  <widget class="QCheckBox" name="checkBox_6">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Activate for star selection on click&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
                   <property name="text">
                    <string>Pick Star</string>
                   </property>
@@ -1007,9 +920,6 @@
              <width>50</width>
              <height>50</height>
             </size>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Photometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>:go</string>
@@ -1069,9 +979,6 @@
                 <height>25</height>
                </size>
               </property>
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected items from List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="text">
                <string>Remove</string>
               </property>
@@ -1095,9 +1002,6 @@
                 <height>25</height>
                </size>
               </property>
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add to list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="text">
                <string>Add</string>
               </property>
@@ -1109,9 +1013,6 @@
             </item>
             <item row="0" column="0" colspan="2">
              <widget class="QListWidget" name="listWidget_7">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;File List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="selectionMode">
                <enum>QAbstractItemView::ExtendedSelection</enum>
               </property>
@@ -1161,9 +1062,6 @@
                 <height>16777215</height>
                </size>
               </property>
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Coordinate List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="selectionMode">
                <enum>QAbstractItemView::ExtendedSelection</enum>
               </property>
@@ -1183,9 +1081,6 @@
                 <height>25</height>
                </size>
               </property>
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected coordinates from list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="text">
                <string>Remove</string>
               </property>
@@ -1197,9 +1092,6 @@
             </item>
             <item row="0" column="0" colspan="2">
              <widget class="QPushButton" name="pushButton_17">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Run Sextractor to find stars with given parameters&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="text">
                <string>Run Sex!</string>
               </property>
@@ -1207,9 +1099,6 @@
             </item>
             <item row="2" column="0">
              <widget class="QPushButton" name="pushButton_18">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display selected coordinates&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="text">
                <string>Display</string>
               </property>
@@ -1239,9 +1128,6 @@
            <layout class="QGridLayout" name="gridLayout_87">
             <item row="1" column="0">
              <widget class="QCheckBox" name="checkBox_7">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Activate for star selection on click&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="text">
                <string>Pick Star</string>
               </property>
@@ -1365,9 +1251,6 @@
               </item>
               <item row="1" column="0">
                <widget class="QComboBox" name="comboBox_11">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select variable star&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                </widget>
               </item>
              </layout>
@@ -1392,9 +1275,6 @@
               </item>
               <item row="1" column="0">
                <widget class="QComboBox" name="comboBox_12">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select check star&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                </widget>
               </item>
              </layout>
@@ -1419,9 +1299,6 @@
               </item>
               <item row="1" column="0">
                <widget class="QComboBox" name="comboBox_13">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select reference star&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                </widget>
               </item>
              </layout>
@@ -1446,9 +1323,6 @@
               </item>
               <item row="1" column="0">
                <widget class="QComboBox" name="comboBox_14">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select an aperture star&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                </widget>
               </item>
              </layout>
@@ -1473,9 +1347,6 @@
               </item>
               <item row="1" column="0">
                <widget class="QComboBox" name="comboBox_15">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select point type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                 <item>
                  <property name="text">
                   <string>+ Plus</string>
@@ -1564,9 +1435,6 @@
              <layout class="QGridLayout" name="gridLayout_74">
               <item row="1" column="0">
                <widget class="QLineEdit" name="lineEdit_19">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Epoch for variable star&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                 <property name="inputMask">
                  <string/>
                 </property>
@@ -1606,9 +1474,6 @@
              <layout class="QGridLayout" name="gridLayout_75">
               <item row="1" column="0">
                <widget class="QLineEdit" name="lineEdit_20">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Period of variable star&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                 <property name="inputMask">
                  <string/>
                 </property>
@@ -1661,9 +1526,6 @@
               </item>
               <item row="1" column="0">
                <widget class="QLineEdit" name="lineEdit_21">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Graphics legend name&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                </widget>
               </item>
              </layout>
@@ -1672,9 +1534,6 @@
              <layout class="QGridLayout" name="gridLayout_92">
               <item row="0" column="0">
                <widget class="QPushButton" name="pushButton_2">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pick a color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                 <property name="text">
                  <string>Point Color</string>
                 </property>
@@ -1714,9 +1573,6 @@
                <height>25</height>
               </size>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open MYRaf out file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="text">
               <string>Open</string>
              </property>
@@ -1740,9 +1596,6 @@
                <height>25</height>
               </size>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Plot selected file with selected parameters&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="text">
               <string>Plot</string>
              </property>
@@ -1765,9 +1618,6 @@
                <width>72</width>
                <height>25</height>
               </size>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear plot area&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
               <string>Clr Plt</string>
@@ -1830,9 +1680,6 @@
              <layout class="QGridLayout" name="gridLayout_28">
               <item row="0" column="0">
                <widget class="QListWidget" name="listWidget_11">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Header of selected file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                </widget>
               </item>
              </layout>
@@ -1876,9 +1723,6 @@
                   <height>25</height>
                  </size>
                 </property>
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add to list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                 <property name="text">
                  <string>Add</string>
                 </property>
@@ -1902,9 +1746,6 @@
                   <height>25</height>
                  </size>
                 </property>
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected files from list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                 <property name="text">
                  <string>Remove</string>
                 </property>
@@ -1927,9 +1768,6 @@
                   <width>211</width>
                   <height>16777215</height>
                  </size>
-                </property>
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;File List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="selectionMode">
                  <enum>QAbstractItemView::ExtendedSelection</enum>
@@ -1959,9 +1797,6 @@
                 </item>
                 <item row="0" column="1" rowspan="2">
                  <widget class="QLineEdit" name="lineEdit">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Field name to &lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Add&lt;/span&gt; or &lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Update&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
                   <property name="maxLength">
                    <number>8</number>
                   </property>
@@ -1969,9 +1804,6 @@
                 </item>
                 <item row="0" column="2">
                  <widget class="QCheckBox" name="checkBox_5">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Activate to add value from an existing field.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
                   <property name="text">
                    <string>Use value from an existing field</string>
                   </property>
@@ -1981,9 +1813,6 @@
                  <widget class="QComboBox" name="comboBox">
                   <property name="enabled">
                    <bool>false</bool>
-                  </property>
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select existing value to add to field&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                  </widget>
                 </item>
@@ -1996,9 +1825,6 @@
                 </item>
                 <item row="2" column="1">
                  <widget class="QLineEdit" name="lineEdit_2">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Value of field name&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
                  </widget>
                 </item>
                </layout>
@@ -2024,9 +1850,6 @@
                   <height>25</height>
                  </size>
                 </property>
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected field&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                 <property name="text">
                  <string>Delete</string>
                 </property>
@@ -2049,9 +1872,6 @@
                   <width>130</width>
                   <height>25</height>
                  </size>
-                </property>
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Insert&lt;/span&gt; or &lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Update&lt;/span&gt; selected Field&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string>Insert/Update</string>
@@ -2113,9 +1933,6 @@
                   <height>25</height>
                  </size>
                 </property>
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected observatories&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                 <property name="text">
                  <string>Delete</string>
                 </property>
@@ -2138,9 +1955,6 @@
                   <width>130</width>
                   <height>25</height>
                  </size>
-                </property>
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Add&lt;/span&gt; or &lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Update&lt;/span&gt; observatory&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string>Insert/Update</string>
@@ -2166,9 +1980,6 @@
               </item>
               <item row="0" column="0" colspan="3">
                <widget class="QListWidget" name="listWidget_12">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Observatory List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
                 <property name="selectionMode">
                  <enum>QAbstractItemView::SingleSelection</enum>
                 </property>
@@ -2206,23 +2017,14 @@
                 </item>
                 <item row="3" column="0">
                  <widget class="QLineEdit" name="lineEdit_4">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Observatory name&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
                  </widget>
                 </item>
                 <item row="7" column="0">
                  <widget class="QLineEdit" name="lineEdit_6">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Observatory latitude&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
                  </widget>
                 </item>
                 <item row="9" column="0">
                  <widget class="QLineEdit" name="lineEdit_7">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Observatory altitude&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
                  </widget>
                 </item>
                 <item row="4" column="0">
@@ -2234,9 +2036,6 @@
                 </item>
                 <item row="13" column="0">
                  <widget class="QPlainTextEdit" name="plainTextEdit">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Comment&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
                   <property name="plainText">
                    <string/>
                   </property>
@@ -2251,9 +2050,6 @@
                 </item>
                 <item row="5" column="0">
                  <widget class="QLineEdit" name="lineEdit_5">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Observatory longitude&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
                  </widget>
                 </item>
                 <item row="8" column="0">
@@ -2272,9 +2068,6 @@
                 </item>
                 <item row="11" column="0">
                  <widget class="QLineEdit" name="lineEdit_8">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Observatory time zone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -2296,9 +2089,6 @@
                 </item>
                 <item row="1" column="0">
                  <widget class="QLineEdit" name="lineEdit_3">
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Observatory acronym&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
                  </widget>
                 </item>
                </layout>
@@ -3840,7 +3630,7 @@
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:12pt; font-weight:600; font-style:italic;&quot;&gt;The MYRaf is a practicable astronomical image reduction and photometry software and interface for IRAF. For this purpose, MYRaf uses iraf, PyRAF and alipy via great programming language Python and Qt framework. Also MYRaf is a absolutely free software and distributed with GPLv3 license. You can use it without restrictive licenses, make copies for your friends, school or business.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:5px; margin-bottom:5px; margin-left:5px; margin-right:5px; -qt-block-indent:0; text-indent:0px; font-family:'Ubuntu'; font-size:12pt; font-weight:600; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:5px; margin-left:5px; margin-right:5px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:12pt; font-weight:600; font-style:italic;&quot;&gt;For more information and help:&lt;/span&gt;&lt;/p&gt;
@@ -3871,8 +3661,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>73</width>
-                <height>16</height>
+                <width>98</width>
+                <height>28</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3885,8 +3675,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>98</width>
+                <height>28</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3899,8 +3689,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>95</width>
-                <height>95</height>
+                <width>98</width>
+                <height>90</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3917,8 +3707,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>79</width>
-                    <height>79</height>
+                    <width>98</width>
+                    <height>28</height>
                    </rect>
                   </property>
                  </widget>
@@ -3931,8 +3721,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>98</width>
+                <height>28</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3945,8 +3735,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>98</width>
+                <height>28</height>
                </rect>
               </property>
               <attribute name="label">
@@ -3996,7 +3786,7 @@ p, li { white-space: pre-wrap; }
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:italic;&quot;&gt;                    GNU GENERAL PUBLIC LICENSE&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:italic;&quot;&gt;                       Version 3, 29 June 2007&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
@@ -4687,7 +4477,7 @@ p, li { white-space: pre-wrap; }
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:italic;&quot;&gt;Created by:&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:italic;&quot;&gt;Yücel KILIÇ: &lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:italic; text-decoration: underline;&quot;&gt;yucelkilic@myrafproject.org&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:italic;&quot;&gt;Muhammed SHEMUNI: &lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:italic; text-decoration: underline;&quot;&gt;m.shemuni@myrafproject.org&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>

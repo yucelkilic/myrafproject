@@ -108,6 +108,8 @@ class MyForm(QtGui.QWidget, Ui_Form):
 		rev = rev.read().replace("\n","")
 		self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available, you have %s" %(rev, irev), None, QtGui.QApplication.UnicodeUTF8))
     except:
+		rev = os.popen("svn info http://myrafproject.googlecode.com/svn/trunk/ |grep Revision")
+		rev = rev.read().replace("\n","")
 		self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available, you have an unknown revision. Please update MYRaf." %(rev), None, QtGui.QApplication.UnicodeUTF8))
 		
     
@@ -302,8 +304,6 @@ class MyForm(QtGui.QWidget, Ui_Form):
     if reply == QtGui.QMessageBox.Yes:
 		self.restart()
 	
-
-
 ##################################################
   def on_context_menu2(self, point):
     self.popMenu2.exec_(self.ui.listWidget_17.mapToGlobal(point))
@@ -1152,22 +1152,22 @@ class MyForm(QtGui.QWidget, Ui_Form):
         if ln.replace(" ","").startswith("observatory"):
             self.ui.lineEdit_3.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
 
-        if ln.replace(" ","").startswith("name"):
+        if ln.replace("\t","").startswith("name"):
             self.ui.lineEdit_4.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
 
-        if ln.replace(" ","").startswith("longitude"):
+        if ln.replace("\t","").startswith("longitude"):
             self.ui.lineEdit_5.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
 
-        if ln.replace(" ","").startswith("latitude"):
+        if ln.replace("\t","").startswith("latitude"):
             self.ui.lineEdit_6.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
 
-        if ln.replace(" ","").startswith("altitude"):
+        if ln.replace("\t","").startswith("altitude"):
             self.ui.lineEdit_7.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
 
-        if ln.replace(" ","").startswith("timezone"):
+        if ln.replace("\t","").startswith("timezone"):
             self.ui.lineEdit_8.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
             
-        if ln.replace(" ","").startswith("#"):
+        if ln.replace("\t","").startswith("#"):
             self.ui.plainTextEdit.setPlainText(QtGui.QApplication.translate("Form", "%s" %(ln.replace("#","")), None, QtGui.QApplication.UnicodeUTF8))
             
   def rmObservatory(self):

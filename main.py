@@ -22,7 +22,7 @@ Importing things:---------------------------------------------------------------
             astropy                 http://www.astropy.org/
 ----------------------------------------------------------------------------------------------------
 """
-import sys, time, string, math, signal, datetime, ntpath, numpy
+import sys, time, string, math, signal, datetime, ntpath, numpy, subprocess
 
 try:
     # force Qt4 API v2
@@ -272,6 +272,10 @@ class MyForm(QtGui.QWidget, Ui_Form):
 
     self.ui.pushButton_52.clicked.connect(self.updateMe)
 
+
+  def restart(self):
+    subprocess.Popen("myraf2")
+    sys.exit(0)
 ##########################################
 
   def updateMe(self):
@@ -292,6 +296,10 @@ class MyForm(QtGui.QWidget, Ui_Form):
     f.write(rev)
     f.close()
     self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available" %(rev), None, QtGui.QApplication.UnicodeUTF8))
+    reply = QtGui.QMessageBox.question(self, 'Message', "If you want to apply changeds please restart MYRaf.\nDo you want to restart MYRaf?", QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+    if reply == QtGui.QMessageBox.Yes:
+		self.restart()
+	
 
 
 ##################################################

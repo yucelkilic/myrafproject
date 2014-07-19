@@ -535,7 +535,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
                 gai = self.ui.lineEdit_26.text()
                 
                 apert = self.ui.lineEdit_15.text()
-                staCount = self.ui.listWidget_8.count()
+                staCount = self.ui.listWidget_17.count()
                 
                 if os.path.exists(ofile):
                     os.popen("rm %s" %(ofile))

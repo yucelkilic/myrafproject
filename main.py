@@ -2047,6 +2047,10 @@ class MyForm(QtGui.QWidget, Ui_Form):
           if l.startswith("obsda"):
               obsda = l.split(":")[1].replace("\n","")
               self.ui.lineEdit_24.setText(QtGui.QApplication.translate("Form", str(obsda), None, QtGui.QApplication.UnicodeUTF8))
+
+          if l.startswith("gain"):
+              gain = l.split(":")[1].replace("\n","")
+              self.ui.lineEdit_26.setText(QtGui.QApplication.translate("Form", str(gain), None, QtGui.QApplication.UnicodeUTF8))
               
           if l.startswith("epoc"):
               epoc = l.split(":")[1].replace("\n","")
@@ -2154,6 +2158,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
     f.write("sMaxFWHM:%s\n" %int(self.ui.doubleSpinBox_6.value()))
     f.write("sMinFWHM:%s\n" %int(self.ui.doubleSpinBox_5.value()))
     f.write("sFluxradi:%s\n" %int(self.ui.doubleSpinBox_4.value()))
+    f.write("gain:%s\n" %self.ui.lineEdit_26.text())
     
     vv = ""
     for i in xrange(self.ui.listWidget_20.count()):

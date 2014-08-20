@@ -278,23 +278,40 @@ def txDump(inFile, outFile, fields="id, otime, mag , merr, xairmass"):
         return False
         print("txDump failed.")
 
-def cosmicsClean(inFile, outFile, mask = "yes", gain=2.2, readnoise=10.0, sigclip = 5.0, sigfrac = 0.3, objlim = 5.0):
-    # Thanks for cosmics.py to Malte Tewes (mtewes (at) astro.uni-bonn.de), http://obswww.unige.ch/people/malte.tewes/cosmics_dot_py/
-    # Read the FITS :
-    array, header = cosmics.fromfits(inFile)
-    # array is a 2D numpy array
+def cosmicsClean(inFile, outFile, mask = "yes", Gain=2.2, Readnoise=10.0, Sigclip = 5.0, Sigfrac = 0.3, Objlim = 5.0):
+	try:
+		print ("MASK=%s, GAIN=%s, READNOISE=%s, SIGCLIP=%s, SIGFRAG=%s, OBJLIM=%s" %(mask, Gain, Readnoise, Sigclip, Sigfrac, Objlim))
+		# Thanks for cosmics.py to Malte Tewes (mtewes (at) astro.uni-bonn.de), http://obswww.unige.ch/people/malte.tewes/cosmics_dot_py/
+		# Read the FITS :
+		array, header = cosmics.fromfits(inFile)
+		# array is a 2D numpy array
 
-    # Build the object :
-    c = cosmics.cosmicsimage(array, gain, readnoise, sigclip, sigfrac, objlim)
-    # There are other options, check the manual...
+		# Build the object :
+		c = cosmics.cosmicsimage(array, gain=Gain, readnoise=Readnoise, sigclip = Sigclip, sigfrac = Sigfrac, objlim = Objlim)
+		# There are other options, check the manual...
 
-    # Run the full artillery :
-    c.run(maxiter = 4)
+		# Run the full artillery :
+		c.run(maxiter = 4)
 
-    # Write the cleaned image into a new FITS file, conserving the original header :
-    cosmics.tofits("%s_clean.fits" %(inFile), c.cleanarray, header)
+		# Write the cleaned image into a new FITS file, conserving the original header :
+		cosmics.tofits("%s" %(outFile), c.cleanarray, header)
 
-    # If you want the mask, here it is :
-    if mask == "yes":
-        cosmics.tofits("%s_mask.fits" %(outFile), c.mask, header)
-        # (c.mask is a boolean numpy array, that gets converted here to an integer array)
+		# If you want the mask, here it is :
+		if mask == "yes":
+			cosmics.tofits("%s" %(outFile), c.mask, header)
+			# (c.mask is a boolean numpy array, that gets converted here to an integer array)
+		print("cosmicsClean succeed.")
+		return True
+	except:
+		print("cosmicsClean failed.")
+		return False
+
+def fit2gif(inFile, outFile):
+	try:
+		iraf.export(str(inFile), outFile, "gif", outband="zscale(i1)")
+		print "fit2gif succeed"
+		return True
+	except:
+		print "fit2gif failed"
+		return False
+		

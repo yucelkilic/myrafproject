@@ -29,6 +29,13 @@ def rm(self, flist):
 	fnumber = flist.count()
 	return True
 
+def unlocDiv(self, chBox, div):
+	if chBox.checkState() == QtCore.Qt.Checked:
+		div.setEnabled(True)
+	else:
+		div.setEnabled(False)
+	return True
+
 def unlocCali(self, chBox, tab):
 	if chBox.checkState() == QtCore.Qt.Checked:
 		self.ui.tabWidget_2.setTabEnabled(tab,True)

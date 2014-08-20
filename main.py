@@ -147,7 +147,10 @@ class MyForm(QtGui.QWidget, Ui_Form):
     self.ui.tabWidget_8.setTabEnabled(1,False)
     self.ui.tabWidget_8.setTabEnabled(2,False)
     self.ui.tabWidget_8.setTabEnabled(3,False)
-
+    
+    self.ui.tabWidget_6.setTabEnabled(3,False)
+    self.ui.tabWidget_4.setTabEnabled(3,False)
+    
     self.ui.checkBox.clicked.connect(self.unlockBias)
     self.ui.checkBox_2.clicked.connect(self.unlockDark)
     self.ui.checkBox_3.clicked.connect(self.unlockFlat)
@@ -271,10 +274,84 @@ class MyForm(QtGui.QWidget, Ui_Form):
     self.plotFdM = FitsPlot(self.ui.dispManual.canvas)
     self.plotFdP = FitsPlot(self.ui.dispPhoto.canvas)
     self.plotFdS = FitsPlot(self.ui.dispSched.canvas)
+    self.plotFdCC = FitsPlot(self.ui.dispCC.canvas)
+    self.plotFdWCS = FitsPlot(self.ui.dispWCS.canvas)
+    
+    self.ui.listWidget_22.clicked.connect(self.displayCC)
+    self.ui.pushButton_55.clicked.connect(self.goCC)
+    
+    self.ui.listWidget_24.clicked.connect(self.displayWCS)
+    self.ui.pushButton_58.clicked.connect(self.goWCS)
 
     self.ui.pushButton_52.clicked.connect(self.updateMe)
+    
+    self.ui.checkBox_13.clicked.connect(lambda: gui.unlocDiv(self, self.ui.checkBox_13, self.ui.doubleSpinBox_8))
+    self.ui.checkBox_14.clicked.connect(lambda: gui.unlocDiv(self, self.ui.checkBox_14, self.ui.doubleSpinBox_9))
+    self.ui.checkBox_15.clicked.connect(lambda: gui.unlocDiv(self, self.ui.checkBox_15, self.ui.doubleSpinBox_15))
+    
+    self.ui.pushButton_57.clicked.connect(lambda: gui.add(self, self.ui.listWidget_22))
+    self.ui.pushButton_56.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_22))
+    self.ui.pushButton_60.clicked.connect(lambda: gui.add(self, self.ui.listWidget_24))
+    self.ui.pushButton_59.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_24))
+###############################################
+  def displayWCS(self):
+    gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
+    img = self.ui.listWidget_24.currentItem()
+    img = img.text()
+    self.plotFdWCS.load(str(img))
 
+  def goWCS(self):
+    if self.ui.listWidget_24.count() != 0:
+		if self.ui.checkBox_18.checkState() == QtCore.Qt.Checked:
+			if self.ui.checkBox_19.checkState() == QtCore.Qt.Checked:
+				print "Hizala baslik gom"
+			else:
+				print "Hizala baslik gomme"
+		else:
+			if self.ui.checkBox_19.checkState() == QtCore.Qt.Checked:
+				print "Hizalama baslik gom"
+			else:
+				print "Hizalama baslik gomme"
+    else:
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please add some images"))
+#############################################
+  def displayCC(self):
+    gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
+    img = self.ui.listWidget_22.currentItem()
+    img = img.text()
+    self.plotFdCC.load(str(img))
 
+  def goCC(self):
+    if self.ui.listWidget_22.count() != 0:
+		odir = QtGui.QFileDialog.getExistingDirectory( self, 'Select Directory to Save Cleaned File(s)')
+		if os.path.exists(odir):
+			it = 0
+			if self.ui.checkBox_16.checkState() == QtCore.Qt.Checked:
+				ccMask = "yes"
+			else:
+				ccMask = "no"
+			ccGaing = float(self.ui.doubleSpinBox_10.value())
+			ccRN = float(self.ui.doubleSpinBox_11.value())
+			ccSC = float(self.ui.doubleSpinBox_12.value())
+			ccSF = float(self.ui.doubleSpinBox_13.value())
+			ccOL = float(self.ui.doubleSpinBox_14.value())
+			
+			errCC = ""
+			
+			for x in xrange(self.ui.listWidget_22.count()):
+				 it = it + 1
+				 img = self.ui.listWidget_22.item(x)
+				 img = str(img.text())
+				 if not function.cosmicsClean(img, "%s/%s" %(odir, ntpath.basename(str(img))), mask = ccMask, Gain=ccGaing, Readnoise=ccRN, Sigclip = ccSC, Sigfrac = ccSF, Objlim = ccOL):
+					 errCC = "%s/%s" %(errCC, ntpath.basename(str(img)))
+				 self.ui.label_58.setText(QtGui.QApplication.translate("Form", "Cleaning %s" %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
+				 self.ui.progressBar_9.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_22.count())))))
+			if errCC != "":
+				errCC = "Cosmic Cleaner can't handle images below\n%s" %(errCC)
+				self.dispErr(errCC)
+    else:
+		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please add some images"))
+############################################
   def restart(self):
     subprocess.Popen("myraf2")
     sys.exit(0)
@@ -2056,6 +2133,42 @@ class MyForm(QtGui.QWidget, Ui_Form):
               epoc = l.split(":")[1].replace("\n","")
               self.ui.lineEdit_25.setText(QtGui.QApplication.translate("Form", str(epoc), None, QtGui.QApplication.UnicodeUTF8))
 
+          if l.startswith("WCSServer"):
+              WCSServer = l.split(":")[1].replace("\n","").replace(";",":")
+              self.ui.lineEdit_27.setText(QtGui.QApplication.translate("Form", str(WCSServer), None, QtGui.QApplication.UnicodeUTF8))
+
+          if l.startswith("WCSApiKey"):
+              WCSApiKey = l.split(":")[1].replace("\n","")
+              self.ui.lineEdit_28.setText(QtGui.QApplication.translate("Form", str(WCSApiKey), None, QtGui.QApplication.UnicodeUTF8))
+
+          if l.startswith("WCSDonNothing"):
+              chepoc = l.split(":")[1].replace("\n","")
+              if chepoc == "t":
+                  self.ui.radioButton.setChecked(True)
+              else:
+                  self.ui.radioButton.setChecked(False)
+
+          if l.startswith("WCSComp"):
+              chepoc = l.split(":")[1].replace("\n","")
+              if chepoc == "t":
+                  self.ui.radioButton_2.setChecked(True)
+              else:
+                  self.ui.radioButton_2.setChecked(False)
+
+          if l.startswith("WCSCon2Bin"):
+              chepoc = l.split(":")[1].replace("\n","")
+              if chepoc == "t":
+                  self.ui.radioButton_3.setChecked(True)
+              else:
+                  self.ui.radioButton_3.setChecked(False)
+
+          if l.startswith("WCSSWCS"):
+              chepoc = l.split(":")[1].replace("\n","")
+              if chepoc == "t":
+                  self.ui.checkBox_19.setChecked(True)
+              else:
+                  self.ui.checkBox_19.setChecked(False)
+
           if l.startswith("chepoc"):
               chepoc = l.split(":")[1].replace("\n","")
               if chepoc == "t":
@@ -2090,6 +2203,32 @@ class MyForm(QtGui.QWidget, Ui_Form):
               sFluxradi = int(l.split(":")[1].replace("\n",""))
               self.ui.doubleSpinBox_4.setValue(sFluxradi)
 
+          if l.startswith("CCMask"):
+              chepoc = l.split(":")[1].replace("\n","")
+              if chepoc == "t":
+                  self.ui.checkBox_16.setChecked(True)
+              else:
+                  self.ui.checkBox_16.setChecked(False)
+
+          if l.startswith("CCGain"):
+              CCGain = float(l.split(":")[1].replace("\n",""))
+              self.ui.doubleSpinBox_10.setValue(CCGain)
+
+          if l.startswith("CCReadNoise"):
+              CCReadNoise = float(l.split(":")[1].replace("\n",""))
+              self.ui.doubleSpinBox_11.setValue(CCReadNoise)
+
+          if l.startswith("CCSigclip"):
+              CCSigclip = float(l.split(":")[1].replace("\n",""))
+              self.ui.doubleSpinBox_12.setValue(CCSigclip)
+
+          if l.startswith("CCsigfrac"):
+              CCsigfrac = float(l.split(":")[1].replace("\n",""))
+              self.ui.doubleSpinBox_13.setValue(CCsigfrac)
+
+          if l.startswith("CCobjlim"):
+              CCobjlim = float(l.split(":")[1].replace("\n",""))
+              self.ui.doubleSpinBox_14.setValue(CCobjlim)
 
           if l.startswith("extraVal"):
               extraVal = l.split(":")[1].replace("\n","")
@@ -2133,6 +2272,13 @@ class MyForm(QtGui.QWidget, Ui_Form):
     f.write("fspDannulus:%s\n" %int(self.ui.doubleSpinBox.value()))
     f.write("fspCBox:%s\n" %int(self.ui.doubleSpinBox_3.value()))
     
+    f.write("CCGain:%s\n" %float(self.ui.doubleSpinBox_10.value()))
+    f.write("CCReadNoise:%s\n" %float(self.ui.doubleSpinBox_11.value()))
+    f.write("CCSigclip:%s\n" %float(self.ui.doubleSpinBox_12.value()))
+    f.write("CCsigfrac:%s\n" %float(self.ui.doubleSpinBox_13.value()))
+    f.write("CCobjlim:%s\n" %float(self.ui.doubleSpinBox_14.value()))
+    
+    
     f.write("ppApertur:%s\n" %self.ui.lineEdit_15.text())
     f.write("ppZMag:%s\n" %self.ui.lineEdit_16.text())
     
@@ -2142,6 +2288,9 @@ class MyForm(QtGui.QWidget, Ui_Form):
     f.write("obser:%s\n" %self.ui.lineEdit_18.text())
     f.write("obsti:%s\n" %self.ui.lineEdit_17.text())
     f.write("obsda:%s\n" %self.ui.lineEdit_24.text())
+
+    f.write("WCSServer:%s\n" %self.ui.lineEdit_27.text().replace(":",";"))
+    f.write("WCSApiKey:%s\n" %self.ui.lineEdit_28.text())
     
     f.write("epoc:%s\n" %self.ui.lineEdit_25.text())
     if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
@@ -2153,6 +2302,31 @@ class MyForm(QtGui.QWidget, Ui_Form):
         f.write("timeStamp:t\n")
     else:
         f.write("timeStamp:f\n")
+        
+    if self.ui.radioButton.isChecked():
+        f.write("WCSDonNothing:t\n")
+    else:
+        f.write("WCSDonNothing:f\n")  
+
+    if self.ui.radioButton_2.isChecked():
+        f.write("WCSComp:t\n")
+    else:
+        f.write("WCSComp:f\n")    
+
+    if self.ui.radioButton_3.isChecked():
+        f.write("WCSCon2Bin:t\n")
+    else:
+        f.write("WCSCon2Bin:f\n")
+        
+    if self.ui.checkBox_19.checkState() == QtCore.Qt.Checked:
+        f.write("WCSSWCS:t\n")
+    else:
+        f.write("WCSSWCS:f\n")
+
+    if self.ui.checkBox_16.checkState() == QtCore.Qt.Checked:
+        f.write("CCMask:t\n")
+    else:
+        f.write("CCMask:f\n")
 
     f.write("sfMaxStar:%s\n" %int(self.ui.doubleSpinBox_7.value()))
     f.write("sMaxFWHM:%s\n" %int(self.ui.doubleSpinBox_6.value()))

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created: Wed Aug 20 12:05:00 2014
+# Created: Wed Aug 20 12:06:42 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -1763,17 +1763,19 @@ class Ui_Form(object):
         self.tab_17.setObjectName(_fromUtf8("tab_17"))
         self.gridLayout_17 = QtGui.QGridLayout(self.tab_17)
         self.gridLayout_17.setObjectName(_fromUtf8("gridLayout_17"))
+        spacerItem8 = QtGui.QSpacerItem(20, 481, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout_17.addItem(spacerItem8, 0, 0, 1, 1)
         self.label_12 = QtGui.QLabel(self.tab_17)
         self.label_12.setText(_fromUtf8(""))
         self.label_12.setObjectName(_fromUtf8("label_12"))
-        self.gridLayout_17.addWidget(self.label_12, 0, 0, 1, 2)
+        self.gridLayout_17.addWidget(self.label_12, 1, 0, 1, 2)
         self.progressBar_8 = QtGui.QProgressBar(self.tab_17)
         self.progressBar_8.setProperty("value", 0)
         self.progressBar_8.setObjectName(_fromUtf8("progressBar_8"))
-        self.gridLayout_17.addWidget(self.progressBar_8, 1, 0, 1, 1)
+        self.gridLayout_17.addWidget(self.progressBar_8, 2, 0, 1, 1)
         self.pushButton_52 = QtGui.QPushButton(self.tab_17)
         self.pushButton_52.setObjectName(_fromUtf8("pushButton_52"))
-        self.gridLayout_17.addWidget(self.pushButton_52, 1, 1, 1, 1)
+        self.gridLayout_17.addWidget(self.pushButton_52, 2, 1, 1, 1)
         self.tabWidget_5.addTab(self.tab_17, _fromUtf8(""))
         self.tab_32 = QtGui.QWidget()
         self.tab_32.setObjectName(_fromUtf8("tab_32"))

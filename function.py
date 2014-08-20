@@ -281,6 +281,8 @@ def txDump(inFile, outFile, fields="id, otime, mag , merr, xairmass"):
 def cosmicsClean(inFile, outFile, mask = "yes", Gain=2.2, Readnoise=10.0, Sigclip = 5.0, Sigfrac = 0.3, Objlim = 5.0):
 	try:
 		print ("MASK=%s, GAIN=%s, READNOISE=%s, SIGCLIP=%s, SIGFRAG=%s, OBJLIM=%s" %(mask, Gain, Readnoise, Sigclip, Sigfrac, Objlim))
+		fp, fn = os.path.split(outFile)
+		fn = fn.split(".")[0]
 		# Thanks for cosmics.py to Malte Tewes (mtewes (at) astro.uni-bonn.de), http://obswww.unige.ch/people/malte.tewes/cosmics_dot_py/
 		# Read the FITS :
 		array, header = cosmics.fromfits(inFile)
@@ -294,11 +296,12 @@ def cosmicsClean(inFile, outFile, mask = "yes", Gain=2.2, Readnoise=10.0, Sigcli
 		c.run(maxiter = 4)
 
 		# Write the cleaned image into a new FITS file, conserving the original header :
-		cosmics.tofits("%s" %(outFile), c.cleanarray, header)
+		cosmics.tofits(outFile, c.cleanarray, header)
 
 		# If you want the mask, here it is :
 		if mask == "yes":
-			cosmics.tofits("%s" %(outFile), c.mask, header)
+			print("%s/%s_mask.fit" %(fp, fn))
+			cosmics.tofits("%s/%s_mask.fit" %(fp, fn), c.mask, header)
 			# (c.mask is a boolean numpy array, that gets converted here to an integer array)
 		print("cosmicsClean succeed.")
 		return True

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/msh/Desktop/myrafproject/myraf.ui'
+# Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created: Wed Aug 20 09:50:40 2014
+# Created: Wed Aug 20 11:15:16 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -1848,7 +1848,7 @@ class Ui_Form(object):
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(0)
         self.tabWidget_3.setCurrentIndex(0)
-        self.tabWidget_4.setCurrentIndex(0)
+        self.tabWidget_4.setCurrentIndex(3)
         self.tabWidget_8.setCurrentIndex(0)
         self.tabWidget_6.setCurrentIndex(0)
         self.tabWidget_5.setCurrentIndex(0)
@@ -2098,7 +2098,7 @@ class Ui_Form(object):
         self.comboBox_10.setItemText(1, _translate("Form", "no", None))
         self.label_34.setText(_translate("Form", "ccdtype", None))
         self.tabWidget_6.setTabText(self.tabWidget_6.indexOf(self.tab_21), _translate("Form", "Calibration", None))
-        self.checkBox_16.setText(_translate("Form", "Mask", None))
+        self.checkBox_16.setText(_translate("Form", "Additionally Create Mask Files", None))
         self.label_74.setText(_translate("Form", "Gain", None))
         self.label_75.setText(_translate("Form", "Read Noise", None))
         self.label_76.setText(_translate("Form", "Sigclip", None))

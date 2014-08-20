@@ -1657,7 +1657,7 @@
        <item row="0" column="0">
         <widget class="QTabWidget" name="tabWidget_4">
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab_12">
           <attribute name="title">
@@ -4354,118 +4354,302 @@ p, li { white-space: pre-wrap; }
           </attribute>
           <layout class="QGridLayout" name="gridLayout_17">
            <item row="0" column="0" colspan="2">
-            <widget class="QToolBox" name="toolBox">
-             <property name="currentIndex">
-              <number>0</number>
-             </property>
-             <widget class="QWidget" name="page">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>98</width>
-                <height>28</height>
-               </rect>
-              </property>
-              <attribute name="label">
-               <string>Starting With MYRaf</string>
-              </attribute>
-              <layout class="QGridLayout" name="gridLayout_49"/>
-             </widget>
-             <widget class="QWidget" name="page_2">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>98</width>
-                <height>28</height>
-               </rect>
-              </property>
-              <attribute name="label">
-               <string>Calibration</string>
-              </attribute>
-              <layout class="QGridLayout" name="gridLayout_48"/>
-             </widget>
-             <widget class="QWidget" name="page_3">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>98</width>
-                <height>96</height>
-               </rect>
-              </property>
-              <attribute name="label">
-               <string>Align</string>
-              </attribute>
-              <layout class="QGridLayout" name="gridLayout_47">
-               <item row="0" column="0">
-                <widget class="QScrollArea" name="scrollArea_3">
-                 <property name="widgetResizable">
-                  <bool>true</bool>
-                 </property>
-                 <widget class="QWidget" name="scrollAreaWidgetContents_3">
-                  <property name="geometry">
-                   <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>98</width>
-                    <height>28</height>
-                   </rect>
-                  </property>
-                 </widget>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-             <widget class="QWidget" name="page_4">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>98</width>
-                <height>28</height>
-               </rect>
-              </property>
-              <attribute name="label">
-               <string>Photometry</string>
-              </attribute>
-              <layout class="QGridLayout" name="gridLayout_46"/>
-             </widget>
-             <widget class="QWidget" name="page_5">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>98</width>
-                <height>28</height>
-               </rect>
-              </property>
-              <attribute name="label">
-               <string>Editor</string>
-              </attribute>
-              <layout class="QGridLayout" name="gridLayout_45"/>
-             </widget>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="2">
             <widget class="QLabel" name="label_12">
              <property name="text">
               <string/>
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
+           <item row="1" column="0">
             <widget class="QProgressBar" name="progressBar_8">
              <property name="value">
               <number>0</number>
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
+           <item row="1" column="1">
             <widget class="QPushButton" name="pushButton_52">
              <property name="text">
               <string>Update MYRaf</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab_32">
+          <attribute name="title">
+           <string>Ginga (Display)</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_45">
+           <item row="0" column="0">
+            <widget class="QTextBrowser" name="textBrowser_4">
+             <property name="html">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#fcfcfc;&quot;&gt;&lt;span style=&quot; font-family:'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif'; font-size:xx-large; font-weight:696; color:#404040; background-color:#fcfcfc;&quot;&gt;Ginga Quick Reference&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;main-image-window&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif'; font-size:x-large; font-weight:696; color:#404040;&quot;&gt;M&lt;/span&gt;&lt;span style=&quot; font-family:'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif'; font-size:x-large; font-weight:696; color:#404040;&quot;&gt;ain image window&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:24px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:16px; color:#404040;&quot;&gt;These keyboard and mouse operations are available when the main image window has the focus.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;panning-and-zooming-commands&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif'; font-size:large; font-weight:696; color:#404040;&quot;&gt;P&lt;/span&gt;&lt;span style=&quot; font-family:'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif'; font-size:large; font-weight:696; color:#404040;&quot;&gt;anning and Zooming commands&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:24px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:16px; color:#404040;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;table border=&quot;1&quot; style=&quot; margin-top:0px; margin-bottom:24px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Scroll wheel turned&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Zoom in or out&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Digit (1234567890)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Zoom image to zoom steps 1, 2, ..., 9, 10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Shift + Digit&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Zoom image to zoom steps -1, -2, ..., -9, -10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Backquote (`)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Zoom image to fit window and center it&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; font-weight:600; color:#404040;&quot;&gt;Minus, Underscore&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:24px; margin-left:24px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040;&quot;&gt;(-, _)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Zoom out&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; font-weight:600; color:#ffffff;&quot;&gt;Equals, Plus&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:24px; margin-left:24px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff;&quot;&gt;(=, +)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Zoom in&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Middle (scroll) button drag&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Pan image freely (when zoomed in)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;p&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Set pan position for zooming&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Shift + Left click&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Set pan position for zooming&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;c&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Set pan position to the center of the image&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;q&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Pan image freely (when zoomed in); Left drag&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Ctrl + Left drag&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; font-weight:600; color:#ffffff;&quot;&gt;Proportional pan (press and drag left mouse&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:24px; margin-left:24px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff;&quot;&gt;button&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;apostrophe (‘)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Set autozoom for new images to&lt;/span&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; font-style:italic; color:#404040;&quot;&gt;override&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;doublequote (”)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Set autozoom for new images to&lt;/span&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; font-style:italic; color:#ffffff;&quot;&gt;on&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; font-weight:600; color:#404040;&quot;&gt;Ctrl + Scroll wheel&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:24px; margin-left:24px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040;&quot;&gt;turned&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Adjust zoom by intermediate coarse steps&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; font-weight:600; color:#ffffff;&quot;&gt;Shift + Scroll wheel&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:24px; margin-left:24px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff;&quot;&gt;turned&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Adjust zoom by intermediate fine steps&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;cut-levels-and-colormap-commands&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif'; font-size:large; font-weight:696; color:#404040;&quot;&gt;C&lt;/span&gt;&lt;span style=&quot; font-family:'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif'; font-size:large; font-weight:696; color:#404040;&quot;&gt;ut levels and colormap commands&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:24px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:16px; color:#404040;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;table border=&quot;1&quot; style=&quot; margin-top:0px; margin-bottom:24px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;a&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Auto cut levels&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;s&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Cycle color distribution algorithm&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;S&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Reset color distribution algorithm to “linear”&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;period (.)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; font-weight:600; color:#ffffff;&quot;&gt;Interactive cut &lt;/span&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; font-weight:600; font-style:italic; color:#ffffff;&quot;&gt;both&lt;/span&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; font-weight:600; color:#ffffff;&quot;&gt; low and high (with left&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:24px; margin-left:24px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff;&quot;&gt;mouse button)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;slash (/)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; font-weight:600; color:#404040;&quot;&gt;Interactive warp colormap (with left mouse&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:24px; margin-left:24px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040;&quot;&gt;button)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;semicolon (;)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Set autocuts for new images to&lt;/span&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; font-style:italic; color:#ffffff;&quot;&gt;override&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;colon (:)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Set autocuts for new images to&lt;/span&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; font-style:italic; color:#404040;&quot;&gt;on&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;question (?)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Restore the color map to its original state&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;transform-commands&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif'; font-size:large; font-weight:696; color:#404040;&quot;&gt;T&lt;/span&gt;&lt;span style=&quot; font-family:'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif'; font-size:large; font-weight:696; color:#404040;&quot;&gt;ransform commands&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:24px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:16px; color:#404040;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;table border=&quot;1&quot; style=&quot; margin-top:0px; margin-bottom:24px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Left bracket ([)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Toggle flip image in X&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Left brace ({)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Reset to no flip of image in X&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Right bracket (])&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Toggle flip image in Y&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Right brace (})&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Reset to no flip image in Y&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Backslash (\)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Swap X and Y axes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Vertical bar (|)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Reset to no swap of X and Y axes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;r&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Interactive rotate (with left mouse button)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;R&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Restore rotation to 0 degrees&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;e&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Increment current rotation by 90 degrees&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;E&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Increment current rotation by -90 degrees&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;o&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Orient image by WCS so North=Up and East=Left&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;O&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Orient image by WCS so North=Up and East=Right&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;reference-viewer-only&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif'; font-size:large; font-weight:696; color:#404040;&quot;&gt;R&lt;/span&gt;&lt;span style=&quot; font-family:'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif'; font-size:large; font-weight:696; color:#404040;&quot;&gt;eference Viewer Only&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:24px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:16px; color:#404040;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;table border=&quot;1&quot; style=&quot; margin-top:0px; margin-bottom:24px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;I&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Raise Info tab&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;H&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Raise Header tab&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Z&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Raise Zoom tab&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;D&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Raise Dialogs tab&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;T&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Raise Thumbs tab&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Raise Contents tab&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;left angle (&amp;lt;)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Toggle collapse left pane&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;right angle (&amp;gt;)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Toggle collapse right pane&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;f&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Toggle full screen&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;F&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#000000&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#ffffff; background-color:#000000;&quot;&gt;Panoramic full screen&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;m&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#f3f6f6&quot; style=&quot; vertical-align:middle; padding-left:16; padding-right:16; padding-top:8; padding-bottom:8;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:14px; color:#404040; background-color:#f3f6f6;&quot;&gt;Maximize window&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:12px; margin-left:-12px; margin-right:-12px; -qt-block-indent:0; text-indent:0px; background-color:#6ab0de;&quot;&gt;&lt;span style=&quot; font-family:'inherit'; font-size:16px; font-weight:600; color:#ffffff; background-color:#6ab0de;&quot;&gt;Note&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:24px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:16px; color:#404040;&quot;&gt;If there are one or more plugins active, additional mouse or keyboard bindings may be present. In general, the left mouse button is used to select, pick or move, and the right mouse button is used to draw a shape for the operation.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; font-size:16px; color:#404040;&quot;&gt;On the Mac, control + mouse button can also be used to draw or right click. You can also press and release the space bar to make the next drag operation a drawing operation.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ref = &lt;a href=&quot;http://ginga.readthedocs.org/en/latest/quickref.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://ginga.readthedocs.org/en/latest/quickref.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>

@@ -13,6 +13,8 @@ if [ ! -f "login.cl" ]; then
 	echo xgterm | mkiraf;
 fi
 
+unset LANG
+
 python2.7 /usr/share/myraf/main.py -style QtCurve
 
 popd > /dev/null

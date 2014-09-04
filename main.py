@@ -397,7 +397,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
                 item = QtGui.QListWidgetItem()
                 self.ui.listWidget_17.addItem(item)
                 item = self.ui.listWidget_17.item(it)
-                item.setText(QtGui.QApplication.translate("Form", i.replace("\n",""), None, QtGui.QApplication.UnicodeUTF8))
+                item.setText(QtGui.QApplication.translate("Form", "%s-%s" %(den, den2), None, QtGui.QApplication.UnicodeUTF8))
             except:
                 print "Not Float"
             
@@ -429,7 +429,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
                 item = QtGui.QListWidgetItem()
                 self.ui.listWidget_8.addItem(item)
                 item = self.ui.listWidget_8.item(it)
-                item.setText(QtGui.QApplication.translate("Form", i.replace("\n",""), None, QtGui.QApplication.UnicodeUTF8))
+                item.setText(QtGui.QApplication.translate("Form", "%s-%s" %(den, den2), None, QtGui.QApplication.UnicodeUTF8))
             except:
                 print "Not Float"
             

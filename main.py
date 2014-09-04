@@ -392,7 +392,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
         it = self.ui.listWidget_17.count()-1
         for i in f:
             try:
-                den, den2 = float(i.replace("\n","").split("-")[0]), float(i.replace("\n","").split(" - ")[1])
+                den, den2 = float(i.replace("\n","").split("-")[0].strip()), float(i.replace("\n","").split(" - ")[1].strip())
                 it = it + 1
                 item = QtGui.QListWidgetItem()
                 self.ui.listWidget_17.addItem(item)
@@ -424,7 +424,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
         it = self.ui.listWidget_8.count()-1
         for i in f:
             try:
-                den, den2 = float(i.replace("\n","").split("-")[0]), float(i.replace("\n","").split(" - ")[1])
+                den, den2 = float(i.replace("\n","").split("-")[0].strip()), float(i.replace("\n","").split(" - ")[1].strip())
                 it = it + 1
                 item = QtGui.QListWidgetItem()
                 self.ui.listWidget_8.addItem(item)

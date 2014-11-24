@@ -196,55 +196,60 @@ class hOP():
 		@type verb: boolean
 		@return: list
 		"""
-		img = self.hopen(fileName, "readonly", verb=verb)
-		h = img[0].header
-		hd = []
-		proc = ""
-		if key == "i":
-			if "ZEROCOR" in h:
-				proc = "%sZ" %proc
-			if "DARKCOR" in h:
-				proc = "%sD" %proc
-			if "FLATCOR" in h:
-				proc = "%sF" %proc
-			if proc == "":
-				proc = "No Process..."
-			hd = "%s:%s:%s" %(fileName, img[0].data.shape, proc)
-			return hd
-			if verb:
-				print "'imhead' done."	
-		
-		if key == "*":
-			for i in self.hlist(fileName):
-				if i != "":
-					hd.append([i, h[i]])
-			return hd
-			if verb:
-				print "'imhead' done."	
-				
-		if type(key) == str and key != "i" and key != "*":
-			hd = self.imheadSTR(fileName, key, verb=verb)
-			if verb:
-				print "'imhead' done."	
-			return hd
-			img.close()
-		elif type(key) == int:
-			hd = self.imheadINT(fileName, key, verb=verb)
-			if verb:
-				print "'imhead' done."	
-			return hd
-			img.close()
-		elif type(key) == list:
-			hd = self.imheadARR(fileName, key, verb=verb)
-			if verb:
-				print "'imhead' done."	
-			img.close()
-			return hd
-			if verb:
-				print "'imhead' done."	
+		if self.envos.isFile(fileName):
+			img = self.hopen(fileName, "readonly", verb=verb)
+			h = img[0].header
+			hd = []
+			proc = ""
+			if key == "i":
+				if "ZEROCOR" in h:
+					proc = "%sZ" %proc
+				if "DARKCOR" in h:
+					proc = "%sD" %proc
+				if "FLATCOR" in h:
+					proc = "%sF" %proc
+				if proc == "":
+					proc = "No Process..."
+				hd = "%s:%s:%s" %(fileName, img[0].data.shape, proc)
+				return hd
+				if verb:
+					print "'imhead' done."	
+			
+			if key == "*":
+				for i in self.hlist(fileName):
+					if i != "":
+						hd.append([i, h[i]])
+				return hd
+				if verb:
+					print "'imhead' done."	
+					
+			if type(key) == str and key != "i" and key != "*":
+				hd = self.imheadSTR(fileName, key, verb=verb)
+				if verb:
+					print "'imhead' done."	
+				return hd
+				img.close()
+			elif type(key) == int:
+				hd = self.imheadINT(fileName, key, verb=verb)
+				if verb:
+					print "'imhead' done."	
+				return hd
+				img.close()
+			elif type(key) == list:
+				hd = self.imheadARR(fileName, key, verb=verb)
+				if verb:
+					print "'imhead' done."	
+				img.close()
+				return hd
+				if verb:
+					print "'imhead' done."	
+			else:
+				if verb:
+					print "Unexpected input type for key value.\nString, Integer or Array expected.\nReceived %s" %(type(key))
 		else:
 			if verb:
-				print "Unexpected input type for key value.\nString, Integer or Array expected.\nReceived %s" %(type(key))
+				print "%s: No such file." %(fileName)
+			return []
 		
 	def hedit(self, fileName, key, value, comm="", upd=False, verb=False):
 		"""

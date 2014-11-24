@@ -57,7 +57,7 @@ class cOP():
 		"""
 		self.fitstat.imcom(inFiles, method, rejection, oFile, skp=skp, verb=verb)
 		
-	def zerocombine(self, inFiles, oFile, method, rejection, ccdType=[], skp=True, verb=False):
+	def zerocombine(self, inFiles, oFile, method, rejection, ccdType=[], verb=True):
 		"""
 		zerocombine(self, inFiles, oFile, method, rejection, verb=verb) -> None
 		Creates a combine of a list of zero images.
@@ -72,8 +72,6 @@ class cOP():
 		@type rejection: string
 		@param ccdType: Looks for a value in given header to decide to use the image or not.
 		@type ccdType: list
-		@param skp: Skip files not exist.
-		@type skp: boolean (Optional, False by True)
 		@param verb: Get information while operation (Optional, False by default).
 		@type verb: boolean
 		@return: None
@@ -85,8 +83,9 @@ class cOP():
 				if len(ccdType) == 2:
 					lst = []
 					for i in inFiles:
-						if ccdType[1] == self.fithead.imhead(i, key=ccdType[0])[1]:
-							lst.append(i)
+						if len(self.fithead.imhead(i, key=ccdType[0])) == 2:
+							if ccdType[1] == self.fithead.imhead(i, key=ccdType[0])[1]:
+								lst.append(i)
 					if "MEDIAN".startswith(method.upper()) or "AVERAGE".startswith(method.upper()):
 						self.fitstat.imcom(lst, method, rejection, oFile, skp=False, verb=verb)
 					else:

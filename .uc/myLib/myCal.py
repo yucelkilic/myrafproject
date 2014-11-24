@@ -17,7 +17,7 @@ class cOP():
 	cOP stands for CALIBRATION OPERATIONS.
 	This class contains functions to hanlding header of FIT/FITS files.
 	"""
-	__all__ = ["__init__"]
+	__all__ = ["__init__", "combine", "zerocombine"]
 
 	def __init__(self, verb=False):
 		"""

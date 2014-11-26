@@ -19,19 +19,19 @@ __date__="19.11.2014"
 __package__=__name__
 
 try:
-	import myLib.myEnv
+	import myraflib.myEnv
 except:
 	print "Something went wrong with myEnv."
 	exit(1)
 
 try:
-	import myLib.myFit
+	import myraflib.myFit
 except:
 	print "Something went wrong with myFit."
 	exit(1)
 
 try:
-	import myLib.myCal
+	import myraflib.myCal
 except:
 	print "Something went wrong with myCal."
 	exit(1)

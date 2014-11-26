@@ -6,8 +6,8 @@ Note that all modules with name started by 'my' such as myFit, myEnv are MYRaf's
 Dependencies: pyfits
 For further information:
 
-	import myLib
-	help(myLib)
+	import myraflib
+	help(myraflib)
 """
 __authors__	=[["Mohammad SHAMEONI NIAEI", "m.shemuni@myrafproject.org"], ["Yucel KILIC", "ykilic@myrafproject.org"]]
 __copyright__="Copyleft 2010, The MYRaf Project"

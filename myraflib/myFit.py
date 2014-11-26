@@ -5,7 +5,7 @@ MYRaf FIT/FITS Module.
 Note that all modules with name started by 'my' such as myFit, myEnv are MYRaf's third party modules.
 For further information:
 
-	From myLib import myFit
+	From myraflib import myFit
 	help(myFit)
 """
 

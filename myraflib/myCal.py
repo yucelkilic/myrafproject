@@ -12,27 +12,14 @@ For further information:
 import myEnv
 import myFit
 
+envos = myEnv.oOP()
+fitdata = myFit.dOP()
+fitstat = myFit.sOP()
+fithead = myFit.hOP()
 
-__all__ = ["__init__", "combine", "zerocombine"]
+__all__ = ["combine", "zerocombine"]
 
-def __init__(self, verb=False):
-	"""
-	__init__(self, verb=False) -> None
-	Initial function. Welcome the user.
-	
-	@param verb: Get information while operations (Optional, False by default).
-	@type verb: boolean
-	@return: None
-	"""
-	self.envos = myEnv.oOP(verb=verb)
-	self.fitdata = myFit.dOP(verb=verb)
-	self.fitstat = myFit.sOP(verb=verb)
-	self.fithead = myFit.hOP(verb=verb)
-	
-	if verb:
-		print "Welcome to data Operation class of myFit."
-
-def combine(self, inFiles, oFile, method, rejection, skp=True, verb=False):
+def combine(inFiles, oFile, method, rejection, skp=True, verb=False):
 	"""
 	combine(self, inFiles, oFile, method, rejection, verb=verb) -> None
 	Creates a combine of a list of images.
@@ -51,9 +38,29 @@ def combine(self, inFiles, oFile, method, rejection, skp=True, verb=False):
 	@type verb: boolean
 	@return: None
 	"""
-	self.fitstat.imcom(inFiles, method, rejection, oFile, skp=skp, verb=verb)
-	
-def zerocombine(self, inFiles, oFile, method, rejection, ccdType=[], skp=True, verb=True):
+	fitstat.imcom(inFiles, method, rejection, oFile, skp=skp, verb=verb)
+
+def hreject(inFiles, head, verb=False):
+	if type(inFiles) == list:
+		if type(head) == list:
+			if len(head) == 2:
+				lst = []
+				for i in inFiles:
+					if len(fithead.imhead(i, key=head[0])) == 2:
+						if head[1] == fithead.imhead(i, key=head[0])[1]:
+							lst.append(i)
+				return lst
+			else:
+				if verb:
+					print "head have to be 1D with 2 elements. Got %s element(s)" %(len(head))
+		else:
+			if verb:
+				print "Unexpected input type for head value. Array expected. Received: %s" %(type(head))
+	else:
+		if verb:
+			print "Unexpected input type for inFiles value. Array expected. Received: %s" %(type(inFiles))
+
+def zerocombine(inFiles, oFile, method, rejection, ccdType=[], skp=True, verb=False):
 	"""
 	zerocombine(self, inFiles, oFile, method, rejection, verb=verb) -> None
 	Creates a combine of a list of zero images.
@@ -66,7 +73,7 @@ def zerocombine(self, inFiles, oFile, method, rejection, ccdType=[], skp=True, v
 	@type method: string
 	@param rejection: Rejection type. 'MINMAX' or 'NONE'.
 	@type rejection: string
-	@param ccdType: Looks for a value in given header for Image Type to decide to use the image or not.
+	@param ccdType: Looks for a value in given header for Image Type to decide to use the image or not. skp will be activated with this option.
 	@type ccdType: list
 	@param skp: Skip not existing input files (Optional, True by default).
 	@type skp: boolean
@@ -75,32 +82,23 @@ def zerocombine(self, inFiles, oFile, method, rejection, ccdType=[], skp=True, v
 	@return: None
 	"""
 	if ccdType == []:
-		self.fitstat.imcom(inFiles, method, rejection, oFile, skp=skp, verb=verb)
+		fitstat.imcom(inFiles, method, rejection, None, oFile, skp=skp, verb=verb)
 	else:
-		if type(ccdType) == list:
-			if len(ccdType) == 2:
-				lst = []
-				for i in inFiles:
-					if len(self.fithead.imhead(i, key=ccdType[0])) == 2:
-						if ccdType[1] == self.fithead.imhead(i, key=ccdType[0])[1]:
-							lst.append(i)
-							
-												
-				if "MEDIAN".startswith(method.upper()) or "AVERAGE".startswith(method.upper()):
-					self.fitstat.imcom(lst, method, rejection, oFile, skp=False, verb=verb)
-				else:
-					if verb:
-						print "Unknown combine type:%s" %(method)
+		
+		lst = hreject(inFiles, ccdType, verb=False)
+		if len(lst) !=0:					
+			if "MEDIAN".startswith(method.upper()) or "AVERAGE".startswith(method.upper()):
+				fitstat.imcom(lst, method, rejection, None, oFile, skp=False, verb=verb)
 			else:
 				if verb:
-					print "ccdType have to contein ['keyname', 'key Value']."
+					print "Unknown combine type:%s" %(method)
 		else:
 			if verb:
-				print "Unexpected input type for ccdType value. Array expected. Received: %s" %(type(ccdType))
+				print "All input files rejected. Check ccdType and try again."
 
-def flatcombine(self, inFiles, oFile, method, rejection, ccdType=[], subset=[], verb=True):
+def flatcombine(inFiles, oFile, method, rejection, ccdType=[], subset=[], skp=True, verb=False):
 	"""
-	flatcombine(self, inFiles, oFile, method, rejection, verb=verb) -> None
+	flatcombine(inFiles, oFile, method, rejection, verb=verb) -> None
 	Creates a combine of a list of flat images.
 	
 	@param inFiles: List of input files name.
@@ -111,32 +109,124 @@ def flatcombine(self, inFiles, oFile, method, rejection, ccdType=[], subset=[], 
 	@type method: string
 	@param rejection: Rejection type. 'MINMAX' or 'NONE'.
 	@type rejection: string
-	@param ccdType: Looks for a value in given header for Image Type to decide to use the image or not.
+	@param ccdType: Looks for a value in given header for Image Type to decide to use the image or not. skp will be activated with this option.
 	@type ccdType: list
-	@param subset: Looks for a value in given header for Filter Value to decide to use the image or not.
+	@param subset: Looks for a value in given header for Filter Value to decide to use the image or not. skp will be activated with this option.
 	@type subset: list
+	@param skp: Skip not existing input files (Optional, True by default).
+	@type skp: boolean
 	@param verb: Get information while operation (Optional, False by default).
 	@type verb: boolean
 	@return: None
 	"""
-	if ccdType == []:
-		self.fitstat.imcom(inFiles, method, rejection, oFile, skp=skp, verb=verb)
-	else:
-		if type(ccdType) == list:
-			if len(ccdType) == 2:
-				lst = []
-				for i in inFiles:
-					if len(self.fithead.imhead(i, key=ccdType[0])) == 2:
-						if ccdType[1] == self.fithead.imhead(i, key=ccdType[0])[1]:
-							lst.append(i)
-				if "MEDIAN".startswith(method.upper()) or "AVERAGE".startswith(method.upper()):
-					self.fitstat.imcom(lst, method, rejection, oFile, skp=False, verb=verb)
-				else:
-					if verb:
-						print "Unknown combine type:%s" %(method)
+	if ccdType == [] and subset == []:
+		fitstat.imcom(inFiles, method, rejection, None, oFile, skp=skp, verb=verb)
+		
+	elif ccdType != [] and subset == []:
+		lst = hreject(inFiles, ccdType, verb=verb)
+		if len(lst) !=0:					
+			if "MEDIAN".startswith(method.upper()) or "AVERAGE".startswith(method.upper()):
+				fitstat.imcom(lst, method, rejection, None, oFile, skp=False, verb=verb)
 			else:
 				if verb:
-					print "ccdType have to contein ['keyname', 'key Value']."
+					print "Unknown combine type:%s" %(method)
 		else:
 			if verb:
-				print "Unexpected input type for ccdType value. Array expected. Received: %s" %(type(ccdType))
+				print "All input files rejected. Check ccdType and try again."
+				
+	elif ccdType == [] and subset != []:
+		lst = hreject(inFiles, subset, verb=verb)
+		if len(lst) !=0:					
+			if "MEDIAN".startswith(method.upper()) or "AVERAGE".startswith(method.upper()):
+				fitstat.imcom(lst, method, rejection, None, oFile, skp=False, verb=verb)
+			else:
+				if verb:
+					print "Unknown combine type:%s" %(method)
+		else:
+			if verb:
+				print "All input files rejected. Check ccdType and try again."
+				
+	else:
+		lst = hreject(inFiles, ccdType, verb=verb)
+		print lst
+		lst = hreject(lst, subset, verb=verb)
+		print lst
+		if len(lst) !=0:					
+			if "MEDIAN".startswith(method.upper()) or "AVERAGE".startswith(method.upper()):
+				fitstat.imcom(lst, method, rejection, None, oFile, skp=False, verb=verb)
+			else:
+				if verb:
+					print "Unknown combine type:%s" %(method)
+		else:
+			if verb:
+				print "All input files rejected. Check ccdType and try again."
+
+
+def darkcombine(inFiles, oFile, method, rejection, ccdType=[], scale=None, skp=True, verb=False):
+	"""
+	darkcombine(inFiles, oFile, method, rejection, verb=verb) -> None
+	Creates a combine of a list of dark images.
+	
+	@param inFiles: List of input files name.
+	@type inFiles: list
+	@param oFile: Path for output file.
+	@type oFile: string
+	@param method: Combine type. 'MEDIAN', 'AVERAGE'.
+	@type method: string
+	@param rejection: Rejection type. 'MINMAX' or 'NONE'.
+	@type rejection: string
+	@param ccdType: Looks for a value in given header for Image Type to decide to use the image or not. skp will be activated with this option.
+	@type ccdType: list
+	@param scale: Scale with exposure time with given card (Optional, True by default).
+	@type scale: None or string
+	@param skp: Skip not existing input files (Optional, True by default).
+	@type skp: boolean
+	@param verb: Get information while operation (Optional, False by default).
+	@type verb: boolean
+	@return: None
+	"""
+	if ccdType == [] and subset == []:
+		if scale == None or type(scale) == str:
+			fitstat.imcom(inFiles, method, rejection, scale, oFile, skp=skp, verb=verb)
+		else:
+			if verb:
+				print "scale must be None or string."
+		
+	elif ccdType != [] and subset == []:
+		lst = hreject(inFiles, ccdType, verb=verb)
+		if len(lst) !=0:					
+			if "MEDIAN".startswith(method.upper()) or "AVERAGE".startswith(method.upper()):
+				fitstat.imcom(lst, method, rejection, scale, oFile, skp=False, verb=verb)
+			else:
+				if verb:
+					print "Unknown combine type:%s" %(method)
+		else:
+			if verb:
+				print "All input files rejected. Check ccdType and try again."
+				
+	elif ccdType == [] and subset != []:
+		lst = hreject(inFiles, subset, verb=verb)
+		if len(lst) !=0:					
+			if "MEDIAN".startswith(method.upper()) or "AVERAGE".startswith(method.upper()):
+				fitstat.imcom(lst, method, rejection, scale, oFile, skp=False, verb=verb)
+			else:
+				if verb:
+					print "Unknown combine type:%s" %(method)
+		else:
+			if verb:
+				print "All input files rejected. Check ccdType and try again."
+				
+	else:
+		lst = hreject(inFiles, ccdType, verb=verb)
+		print lst
+		lst = hreject(lst, subset, verb=verb)
+		print lst
+		if len(lst) !=0:					
+			if "MEDIAN".startswith(method.upper()) or "AVERAGE".startswith(method.upper()):
+				fitstat.imcom(lst, method, rejection, scale, oFile, skp=False, verb=verb)
+			else:
+				if verb:
+					print "Unknown combine type:%s" %(method)
+		else:
+			if verb:
+				print "All input files rejected. Check ccdType and try again."

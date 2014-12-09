@@ -767,7 +767,7 @@ class sOP():
 			if verb:
 				print "Unexpected input type for input arrays.numpy.array expected.Received %s" %(type(inArray))
 
-	def imcom(self, fileList, method, rejection, outFile, skp=True, verb=False):
+	def imcom(self, fileList, method, rejection, scale, outFile, skp=True, verb=False):
 		"""
 		imcom(self, fileList, method, rejection, outFile, skp=True, verb=False) -> None
 		Creates a combine of a list of images.
@@ -778,6 +778,8 @@ class sOP():
 		@type method: string
 		@param rejection: Rejection type. 'MINMAX' or 'NONE'.
 		@type rejection: string
+		@param scale: Exposure Time header key to scale using exposure time. None for no scale.
+		@type scale: string, None
 		@param outFile: Name of output file.
 		@type outFile: string
 		@param skp: Skip not existing input files (Optional, True by default).
@@ -792,6 +794,7 @@ class sOP():
 			shp = []
 			err = ""
 			u = 0
+			k = 0
 			for  i in fileList:
 				if not self.envos.isFile(i):
 					u = u + 1
@@ -822,14 +825,23 @@ class sOP():
 				if con:
 					h = hOP()
 					headers = h.imhead(lst[0], "*")
+					if scale != None:
+						headers[scale] = 1
+					sc = 1
 					for i in lst:
-						ilst.append(self.sopen(i, "readonly", verb=verb)[0].data)
+						if scale != None:
+							if h.imhead(i, scale, verb=verb)[1] != "Err":
+								sc = h.imhead(i, scale, verb=verb)
+								ilst.append(self.sopen(i, "readonly", verb=verb)[0].data/sc)
+							else:
+								ilst.append(self.sopen(i, "readonly", verb=verb)[0].data)
+						else:
+							ilst.append(self.sopen(i, "readonly", verb=verb)[0].data)
 					ilst = numpy.asarray(ilst)
 					
 					for i in ilst:
 						shp.append(i.shape)
 					if len(set(shp)) == 1:
-
 						if "SUM".startswith(method.upper()):
 							if "MINMAX".startswith(rejection.upper()):
 								fl = self.minmaxrej(ilst, verb=verb)
@@ -882,7 +894,7 @@ class sOP():
 								err = "RejectFalse"
 								if verb:
 									print "%s:Unknown rejection method." %(rejection)
-
+									
 						else:
 							err = "CombFalse"
 							if verb:
@@ -998,7 +1010,6 @@ class dOP():
 					hdu.header["BZERO"] = 0
 				hdu.data = inArr
 				
-
 				if verb:
 					"'Image created' done."
 			else:
@@ -1019,4 +1030,3 @@ class dOP():
 			else:
 				if verb:
 					print "'%s' file does exist. Will not overwrite it." %(oFile)
-

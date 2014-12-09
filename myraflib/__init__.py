@@ -18,22 +18,10 @@ __email__="info@myrafproject.org"
 __date__="19.11.2014"
 __package__=__name__
 
-try:
-	import myraflib.myEnv
-except:
-	print "Something went wrong with myEnv."
-	exit(1)
 
-try:
-	import myraflib.myFit
-except:
-	print "Something went wrong with myFit."
-	exit(1)
+import myraflib.myEnv
+import myraflib.myFit
+import myraflib.myCal
 
-try:
-	import myraflib.myCal
-except:
-	print "Something went wrong with myCal."
-	exit(1)
 
 __all__ = ["myFit", "myEnv", "myCal"]

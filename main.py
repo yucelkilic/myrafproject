@@ -1468,7 +1468,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
                 circAnnulus.center = x, y
                 circDannulus.center = x, y
                 self.ui.dispPhoto.canvas.fig.gca().annotate(lNumber, xy = (x, y), xytext=(int(Aperture/3),int(Aperture/3)), textcoords='offset points', color = "blue", fontsize = 10)
-                self.ui.dispPhoto.canvas.draw()
+            self.ui.dispPhoto.canvas.draw()
     #hela vela vel vela
     elif self.ui.tabWidget.currentIndex() == 5:
         if self.ui.listWidget_17.count() != 0:
@@ -1496,7 +1496,7 @@ class MyForm(QtGui.QWidget, Ui_Form):
                 circAnnulus.center = x, y
                 circDannulus.center = x, y
                 self.ui.dispSched.canvas.ax.annotate(lNumber, xy = (x, y), xytext=(int(Aperture/3),int(Aperture/3)), textcoords='offset points', color = "blue", fontsize = 10)
-                self.ui.dispSched.canvas.draw()
+            self.ui.dispSched.canvas.draw()
             
   def goPhot(self):
     if self.ui.listWidget_7.count() != 0:

@@ -1,0 +1,7 @@
+# Submitted by Eugene Esemenko 4/11/13  (BTA 6m, http://www.sao.ru/Doc-en/)
+observatory = "saoras" 
+       name = "Special Astrophysical Observatory, Russia" 
+       longitude = -41:26:25.61 
+       latitude = 43:38:48.57 
+       altitude = 2080. 
+       timezone = -4

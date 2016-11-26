@@ -1,0 +1,8 @@
+# Submitted by Nuno Peixinho 6/7/2000
+# Parameters for the Sierra Nevada Observatory (Spain)
+observatory = "osn"
+        name = "Observatorio de Sierra Nevada"
+        longitude = 3:23:05
+        latitude = 37:03:51
+        altitude = 2896
+        timezone = -1

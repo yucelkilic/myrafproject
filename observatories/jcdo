@@ -1,0 +1,7 @@
+# Submitted by Robert D. Collier 9/1/10
+observatory = "jcdo"
+       name = "Jack C. Davis Observatory, Western Nevada College"
+       longitude = 119:47:26.4
+       latitude = 39:11:08.6
+       altitude = 1534
+       timezone = 8 

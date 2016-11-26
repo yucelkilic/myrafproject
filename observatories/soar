@@ -1,0 +1,7 @@
+# Submitted by Mairan Teodoro 1/27/10
+observatory = "soar" 
+	name = "Southern Astrophysical Research Telescope" 
+	longitude = 70:44:01.4 
+	latitude = -30:14:16.8 
+	altitude = 2738 
+	timezone = 4

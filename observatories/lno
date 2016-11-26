@@ -1,0 +1,7 @@
+# Submitted by mas_nomi1711@yahoo.com 3/16/12
+observatory = "lno"
+       name = "Langkawi National Observatory"
+       longitude = 260:13:08.0
+       latitude = 06:18:25.0
+       altitude = 111
+       timezone = -8 

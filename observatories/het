@@ -1,0 +1,7 @@
+# Added MJF 6/1/2010
+observatory = "het"
+        name = "McDonald Observatory - Hobby-Eberly Telescope"
+        longitude = 104.014722222
+        latitude = 30.68144444
+        altitude = 2026
+        timezone = 6

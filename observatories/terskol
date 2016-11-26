@@ -1,0 +1,7 @@
+# Submitted by Eugene Esemenko 4/11/13 (http://www.terskol.com/)
+observatory = "terskol" 
+       name = "Terskol mountain observatory, Russia" 
+       longitude = -42:30:00.0 
+       latitude = 43:16:22.0 
+       altitude = 3100. 
+       timezone = -4 

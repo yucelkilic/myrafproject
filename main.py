@@ -1,2361 +1,2084 @@
 # -*- coding: utf-8 -*-
-"""
-Created:--------------------------------------------------------------------------------------------
-        By:
-            Muhammed SHEMUNI        Developer
-            Yücel KILIÇ             Developer
-        at:
-            Begin                   04.12.2013
-            Last update             18.07.2014
-Importing things:-----------------------------------------------------------------------------------
-        Must have as installed:
-            python-2.7
-            pyqt4-dev-tools
-            iraf                    http://www.astro.uson.mx/~favilac/downloads/ubuntu-iraf/iso/
-            pyraf                   ^
-            sextractor              http://www.astromatic.net/software/sextractor/
-            alipy                   http://obswww.unige.ch/~tewes/alipy/
-            astroasciidata          http://www.stecf.org/software/PYTHONtools/astroasciidata/
-            f2n                     http://obswww.unige.ch/~tewes/f2n_dot_py/
-            Ginga                   http://ginga.readthedocs.org/en/latest/
-            matplotlib              http://matplotlib.org/
-            astropy                 http://www.astropy.org/
-----------------------------------------------------------------------------------------------------
-"""
-import sys, time, string, math, signal, datetime, ntpath, numpy, subprocess
-
-try:
-    # force Qt4 API v2
-    import sip
-    for cl in ('QString', 'QVariant'):
-        sip.setapi(cl, 2)
-
-    import os
-    os.environ['QT_API'] = 'pyqt'
-    # force matplotlib to use Qt4 backend
-    import matplotlib
-    matplotlib.use('Qt4Agg')
-    
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import *
-    from PyQt4.QtCore import *
-except:
-    print("Can not load PyQT4")
-    os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - Did you install PyQT4?.\" >>$HOME/.MYRaf2/log.my")
-    raise SystemExit
-
-from matplotlib.patches import Circle
-os.system("mkdir -p $HOME/.MYRaf2")
-os.system("echo \"- " + str(datetime.datetime.utcnow()) + " - MYRaf started.\" >>$HOME/.MYRaf2/log.my")
-
-try:
-    from myraf import Ui_Form
-    from mainErr import MyForm2
-    import function, gui
-except:
-    print("Can not load MYRaf.")
-    os.system("echo \"-- " + str(datetime.datetime.utcnow()) + " - MYRaf is not installed properly.\">>$HOME/.MYRaf2/log.my")
-    raise SystemExit
-
-try:
-    from fPlot import *
-    from sexCat import *
-except:
-    print("Where is fPlot?")
-    raise SystemExit
-
-try:
-    from pyraf import iraf
-    from pyraf.iraf import noao, imred, ccdred, darkcombine, flatcombine, ccdproc ,astutil, setjd, setairmass, asthedit, digiphot, apphot, phot, ptools, txdump, artdata, imgeom
-    from astropy.stats import sigma_clip
-    from numpy import mean
-    import numpy as np
-except:
-    print("Can not load PyRAF, iraf")
-    os.system("echo \"-- " + str(datetime.datetime.utcnow()) + " - Did you install PyRAF, iraf?\">>$HOME/.MYRaf2/log.my")
-    raise SystemExit
-
-try:
-    import alipy
-    import glob
-except:
-    print("Did you install 'alipy'? To furter information:\nhttp://obswww.unige.ch/~tewes/alipy/")
-    os.system("echo \"-- " + str(datetime.datetime.utcnow()) + " - Where is alipy & glob?\">>$HOME/.MYRaf2/log.my")
-    raise SystemExit    
 
 
-class MyForm(QtGui.QWidget, Ui_Form):
-  def __init__(self):
-    super(MyForm, self).__init__()
-    self.ui = Ui_Form()
-    self.ui.setupUi(self)
-    
-    ud = os.popen("echo $HOME")
-    self.HOME = "%s/.MYRaf2" %(ud.read().replace("\n",""))
-    if not os.path.isdir("%s/obsdat" %(self.HOME)):
-        os.popen("mkdir -p %s/obsdat/" %(self.HOME))
-        os.popen("cp -rf /usr/share/myraf/obsdat/* %s/obsdat/" %(self.HOME))
-        
-    if not os.path.isdir("%s/set" %(self.HOME)):
-        os.popen("mkdir -p %s/set/" %(self.HOME))
-        os.popen("cp -rf /usr/share/myraf/set/* %s/set/" %(self.HOME))
+from myraflib import myEnv
+from myraflib import myFit
+from myraflib import mySta
 
-    try:
-		frev = open("%s/set/rev" %(self.HOME), "r")
-		for r in frev:
-			irev = r
-		rev = os.popen("svn info http://myrafproject.googlecode.com/svn/trunk/ |grep Revision")
-		rev = rev.read().replace("\n","")
-		self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available, you have %s" %(rev, irev), None, QtGui.QApplication.UnicodeUTF8))
-    except:
-		rev = os.popen("svn info http://myrafproject.googlecode.com/svn/trunk/ |grep Revision")
-		rev = rev.read().replace("\n","")
-		self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available, you have an unknown revision. Please update MYRaf." %(rev), None, QtGui.QApplication.UnicodeUTF8))
-		
-    
-    os.system("rm -rf $HOME/.MYRaf2/tmp/*")
-    os.system("rm -rf $HOME/.MYRaf2/alipy_visu")
-    os.system("rm -rf $HOME/.MYRaf2/alipy_out")
-    os.system("mkdir -p $HOME/.MYRaf2/tmp/alipy/")
-    os.system("mkdir -p $HOME/.MYRaf2/tmp/analyzed/")
-    
-    f = open('%s/log.my' %(self.HOME), 'r')
-    it = self.ui.listWidget_10.count()-1
-    for line in f:
-        li=line.strip()
-        li = str(li)
-        it = it+1
-        item = QtGui.QListWidgetItem()
-        self.ui.listWidget_10.addItem(item)
-        item = self.ui.listWidget_10.item(it)
-        item.setText(QtGui.QApplication.translate("Form", str(li), None, QtGui.QApplication.UnicodeUTF8))
+import sys
+import sip
+for cl in ('QString', 'QVariant'):
+    sip.setapi(cl, 2)
 
-    it = self.ui.listWidget_12.count()-1
-    for files in glob.glob("%s/obsdat/*" %(self.HOME)):
-        fn = ntpath.basename(str(files))
-        it = it+1
-        item = QtGui.QListWidgetItem()
-        self.ui.listWidget_12.addItem(item)
-        item = self.ui.listWidget_12.item(it)
-        item.setText(QtGui.QApplication.translate("Form", str(fn), None, QtGui.QApplication.UnicodeUTF8))
-    self.ui.listWidget_12.sortItems()
-      
-    self.ui.tabWidget_2.setTabEnabled(1,False)
-    self.ui.tabWidget_2.setTabEnabled(2,False)
-    self.ui.tabWidget_2.setTabEnabled(3,False)
-    
-    self.ui.tabWidget_8.setTabEnabled(1,False)
-    self.ui.tabWidget_8.setTabEnabled(2,False)
-    self.ui.tabWidget_8.setTabEnabled(3,False)
-    
-    self.ui.tabWidget_6.setTabEnabled(3,False)
-    self.ui.tabWidget_4.setTabEnabled(3,False)
-    
-    self.ui.checkBox.clicked.connect(self.unlockBias)
-    self.ui.checkBox_2.clicked.connect(self.unlockDark)
-    self.ui.checkBox_3.clicked.connect(self.unlockFlat)
-    
-    self.ui.checkBox_8.clicked.connect(self.unlockSBias)
-    self.ui.checkBox_9.clicked.connect(self.unlockSDark)
-    self.ui.checkBox_10.clicked.connect(self.unlockSFlat)
-    
-    self.ui.pushButton_18.clicked.connect(self.displayCoords)
-    
-    #self.ui.pushButton_34.clicked.connect(self.saveSettings)
-    
-    self.ui.pushButton_3.clicked.connect(lambda: gui.add(self, self.ui.listWidget))
-    self.ui.pushButton_4.clicked.connect(lambda: gui.rm(self, self.ui.listWidget))
-    self.ui.pushButton_5.clicked.connect(lambda: gui.add(self, self.ui.listWidget_2))
-    self.ui.pushButton_6.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_2))
-    self.ui.pushButton_10.clicked.connect(lambda: gui.add(self, self.ui.listWidget_3))
-    self.ui.pushButton_8.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_3))
-    self.ui.pushButton_13.clicked.connect(lambda: gui.add(self, self.ui.listWidget_4))
-    self.ui.pushButton_11.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_4))
-    self.ui.pushButton_15.clicked.connect(lambda: gui.add(self, self.ui.listWidget_5))
-    self.ui.pushButton_16.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_5))
-    self.ui.pushButton_22.clicked.connect(lambda: gui.add(self, self.ui.listWidget_6))
-    self.ui.pushButton_21.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_6))
-    self.ui.pushButton_33.clicked.connect(lambda: gui.add(self, self.ui.listWidget_7))
-    self.ui.pushButton_32.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_7))
-    self.ui.pushButton_36.clicked.connect(lambda: gui.add(self, self.ui.listWidget_9))
-    self.ui.pushButton_37.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_9))
-    
-    self.ui.pushButton_20.clicked.connect(lambda: gui.add(self, self.ui.listWidget_13))
-    self.ui.pushButton_23.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_13))
-    self.ui.pushButton_26.clicked.connect(lambda: gui.add(self, self.ui.listWidget_14))
-    self.ui.pushButton_25.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_14))
-    self.ui.pushButton_30.clicked.connect(lambda: gui.add(self, self.ui.listWidget_15))
-    self.ui.pushButton_29.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_15))
-    self.ui.pushButton_43.clicked.connect(lambda: gui.add(self, self.ui.listWidget_16))
-    self.ui.pushButton_42.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_16))
-    
-    self.ui.pushButton_3.clicked.connect(self.displayCalibLabel)
-    self.ui.pushButton_4.clicked.connect(self.displayCalibLabel)
-    self.ui.pushButton_5.clicked.connect(self.displayCalibLabel)
-    self.ui.pushButton_6.clicked.connect(self.displayCalibLabel)
-    self.ui.pushButton_10.clicked.connect(self.displayCalibLabel)
-    self.ui.pushButton_8.clicked.connect(self.displayCalibLabel)
-    self.ui.pushButton_13.clicked.connect(self.displayCalibLabel)
-    self.ui.pushButton_11.clicked.connect(self.displayCalibLabel)
-    
-    self.ui.listWidget_5.clicked.connect(self.displayAutAlign)
-    self.ui.pushButton_14.clicked.connect(self.goAutAlign)
-    
-    self.ui.listWidget_6.clicked.connect(self.displayManAlign)
-    self.ui.pushButton_27.clicked.connect(self.goManAlign)
-    
-    self.ui.listWidget_7.clicked.connect(self.displayPhot)
-    self.ui.pushButton_45.clicked.connect(self.coorDel)
-    self.ui.pushButton_35.clicked.connect(self.goPhot)
-    
-    self.ui.listWidget_9.clicked.connect(self.getHeader)
-    self.ui.listWidget_11.clicked.connect(self.getVlueFromHeader)
-    self.ui.checkBox_5.clicked.connect(self.unlockGetHeaderFromValue)
-    self.ui.pushButton_39.clicked.connect(self.goHeaderAdd)
-    self.ui.pushButton_38.clicked.connect(self.goHeaderDel)
-    
-    self.ui.listWidget_12.clicked.connect(self.getObservat)
-    self.ui.pushButton_41.clicked.connect(self.rmObservatory)
-    self.ui.pushButton_40.clicked.connect(self.addObservatory)
-    
-    self.ui.pushButton_7.clicked.connect(self.masterZero)
-    self.ui.pushButton_9.clicked.connect(self.masterDark)
-    self.ui.pushButton_12.clicked.connect(self.masterFlat)
-    self.ui.pushButton_2.clicked.connect(self.choosePointCol)
-    
-    self.ui.pushButton.clicked.connect(self.calib)
-    
-    self.ui.pushButton_44.clicked.connect(self.readStars)
-    self.ui.pushButton_46.clicked.connect(self.plotChart)
-    
-    self.ui.pushButton_17.clicked.connect(self.findStars)
-    
-    self.ui.checkBox_4.clicked.connect(self.epochUnlock)
-    self.ui.checkBox_12.clicked.connect(self.timeStampUnlock)
-    
-    self.ui.pushButton_19.clicked.connect(self.chartClear)
-  
-    self.ui.pushButton_34.clicked.connect(self.saveSettings)
-    self.applySettings()
-    
-    self.ui.dispManual.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
-    self.ui.dispPhoto.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
-    
-    self.ui.disp_chart.canvas.fig.canvas.mpl_connect('pick_event', self.onpick)
+from PyQt4 import QtGui
+from PyQt4 import QtCore
+import gui as g
+import functions as f
 
-    self.ui.listWidget_13.clicked.connect(self.displayScheduler)
-    self.ui.dispSched.canvas.fig.canvas.mpl_connect('button_press_event',self.mouseClick)
-    self.ui.pushButton_47.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_17))
-    self.ui.pushButton_47.clicked.connect(self.displayCoords)
-    self.ui.pushButton_28.clicked.connect(lambda: self.uaSched("add"))
-    self.ui.pushButton_31.clicked.connect(self.rmSched)
-    self.ui.listWidget_18.clicked.connect(self.getSched)
-    self.ui.pushButton_48.clicked.connect(lambda: self.uaSched("upd"))
-    self.ui.pushButton_24.clicked.connect(self.goSched)
-    
-    self.ui.pushButton_51.clicked.connect(self.getHeaderExtra)
-    self.ui.pushButton_49.clicked.connect(self.extraAdd)
-    self.ui.pushButton_50.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_20))
-    
-    self.ui.listWidget_8.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-    self.connect(self.ui.listWidget_8, QtCore.SIGNAL('customContextMenuRequested(const QPoint&)'), self.on_context_menu)
-    
-    self.popMenu = QtGui.QMenu(self)
-    self.popMenu.addAction('Import', self.impCooPhot)
-    self.popMenu.addAction('Export', self.expCooPhot)
-    
-    self.ui.listWidget_17.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-    self.connect(self.ui.listWidget_17, QtCore.SIGNAL('customContextMenuRequested(const QPoint&)'), self.on_context_menu2)
-    self.popMenu2 = QtGui.QMenu(self)
-    self.popMenu2.addAction('Import', self.impSchPhot)
-    self.popMenu2.addAction('Export', self.expSchPhot)
-    
-    self.plotFdA = FitsPlot(self.ui.dispAuto.canvas)
-    self.plotFdM = FitsPlot(self.ui.dispManual.canvas)
-    self.plotFdP = FitsPlot(self.ui.dispPhoto.canvas)
-    self.plotFdS = FitsPlot(self.ui.dispSched.canvas)
-    self.plotFdCC = FitsPlot(self.ui.dispCC.canvas)
-    self.plotFdWCS = FitsPlot(self.ui.dispWCS.canvas)
-    
-    self.ui.listWidget_22.clicked.connect(self.displayCC)
-    self.ui.pushButton_55.clicked.connect(self.goCC)
-    
-    self.ui.listWidget_24.clicked.connect(self.displayWCS)
-    self.ui.pushButton_58.clicked.connect(self.goWCS)
+from fPlot import *
 
-    self.ui.pushButton_52.clicked.connect(self.updateMe)
-    
-    self.ui.checkBox_13.clicked.connect(lambda: gui.unlocDiv(self, self.ui.checkBox_13, self.ui.doubleSpinBox_8))
-    self.ui.checkBox_14.clicked.connect(lambda: gui.unlocDiv(self, self.ui.checkBox_14, self.ui.doubleSpinBox_9))
-    self.ui.checkBox_15.clicked.connect(lambda: gui.unlocDiv(self, self.ui.checkBox_15, self.ui.doubleSpinBox_15))
-    
-    self.ui.pushButton_57.clicked.connect(lambda: gui.add(self, self.ui.listWidget_22))
-    self.ui.pushButton_56.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_22))
-    self.ui.pushButton_60.clicked.connect(lambda: gui.add(self, self.ui.listWidget_24))
-    self.ui.pushButton_59.clicked.connect(lambda: gui.rm(self, self.ui.listWidget_24))
-###############################################
-  def displayWCS(self):
-    gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
-    img = self.ui.listWidget_24.currentItem()
-    img = img.text()
-    self.plotFdWCS.load(str(img))
+from uis.main import Ui_MainWindow
+from uis.error import Ui_MainWindowErr
 
-  def goWCS(self):
-    if self.ui.listWidget_24.count() != 0:
-		if self.ui.checkBox_18.checkState() == QtCore.Qt.Checked:
-			if self.ui.checkBox_19.checkState() == QtCore.Qt.Checked:
-				print "Hizala baslik gom"
-			else:
-				print "Hizala baslik gomme"
-		else:
-			if self.ui.checkBox_19.checkState() == QtCore.Qt.Checked:
-				print "Hizalama baslik gom"
-			else:
-				print "Hizalama baslik gomme"
-    else:
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please add some images"))
-#############################################
-  def displayCC(self):
-    gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
-    img = self.ui.listWidget_22.currentItem()
-    img = img.text()
-    self.plotFdCC.load(str(img))
 
-  def goCC(self):
-    if self.ui.listWidget_22.count() != 0:
-		odir = QtGui.QFileDialog.getExistingDirectory( self, 'Select Directory to Save Cleaned File(s)')
-		if os.path.exists(odir):
-			it = 0
-			if self.ui.checkBox_16.checkState() == QtCore.Qt.Checked:
-				ccMask = "yes"
-			else:
-				ccMask = "no"
-			ccGaing = float(self.ui.doubleSpinBox_10.value())
-			ccRN = float(self.ui.doubleSpinBox_11.value())
-			ccSC = float(self.ui.doubleSpinBox_12.value())
-			ccSF = float(self.ui.doubleSpinBox_13.value())
-			ccOL = float(self.ui.doubleSpinBox_14.value())
-			
-			errCC = ""
-			
-			for x in xrange(self.ui.listWidget_22.count()):
-				 it = it + 1
-				 img = self.ui.listWidget_22.item(x)
-				 img = str(img.text())
-				 if not function.cosmicsClean(img, "%s/%s" %(odir, ntpath.basename(str(img))), mask = ccMask, Gain=ccGaing, Readnoise=ccRN, Sigclip = ccSC, Sigfrac = ccSF, Objlim = ccOL):
-					 errCC = "%s/%s" %(errCC, ntpath.basename(str(img)))
-				 self.ui.label_58.setText(QtGui.QApplication.translate("Form", "Cleaning %s" %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-				 self.ui.progressBar_9.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_22.count())))))
-			if errCC != "":
-				errCC = "Cosmic Cleaner can't handle images below\n%s" %(errCC)
-				self.dispErr(errCC)
-    else:
-		QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please add some images"))
-############################################
-  def restart(self):
-    subprocess.Popen("myraf2")
-    sys.exit(0)
-##########################################
+class MyForm(QtGui.QMainWindow, Ui_MainWindow):
+    def __init__(self, verb=True):
+        super(MyForm, self).__init__()
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+        self.verb = verb
+        self.ggui = g.Gui(verb=self.verb)
+        self.meetc = myEnv.etc(verb=self.verb)
+        self.mefo = myEnv.file_operation(verb=self.verb)
+        self.fset = f.settings(verb=self.verb)
+        self.mfst = myFit.statistics_operation(verb=self.verb)
+        self.mffo = myFit.fits_operation(verb=self.verb)
+        self.mfho = myFit.header_operation(verb=self.verb)
+        self.msetc = mySta.etc(verb=self.verb)
 
-  def updateMe(self):
-    print "Started to Download"
-    self.ui.label_12.setText(QtGui.QApplication.translate("Form", "Started to Download", None, QtGui.QApplication.UnicodeUTF8))
-    os.popen("svn checkout http://myrafproject.googlecode.com/svn/trunk/ /tmp/myraf")
-    self.ui.progressBar_8.setProperty("value", 33)
-    print "copying files"
-    os.popen("cp -rf /tmp/myraf/* /usr/share/myraf/")
-    self.ui.progressBar_8.setProperty("value", 66)
-    self.ui.label_12.setText(QtGui.QApplication.translate("Form", "Copying files", None, QtGui.QApplication.UnicodeUTF8))
-    rev = os.popen("svn info http://myrafproject.googlecode.com/svn/trunk/ |grep Revision")
-    rev = rev.read().replace("\n","")
-    self.ui.progressBar_8.setProperty("value", 100)
-    self.ui.label_12.setText(QtGui.QApplication.translate("Form", "Finished...", None, QtGui.QApplication.UnicodeUTF8))
-    print "Finished..."
-    rev = os.popen("svn info http://myrafproject.googlecode.com/svn/trunk/ |grep Revision")
-    rev = rev.read().replace("\n","")
-    f = open("%s/set/rev" %(self.HOME), "w")
-    f.write(rev)
-    f.close()
-    self.ui.label_12.setText(QtGui.QApplication.translate("Form", "%s is available" %(rev), None, QtGui.QApplication.UnicodeUTF8))
-    reply = QtGui.QMessageBox.question(self, 'Message', "If you want to apply changeds please restart MYRaf.\nDo you want to restart MYRaf?", QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
-    if reply == QtGui.QMessageBox.Yes:
-		self.restart()
-	
-##################################################
-  def on_context_menu2(self, point):
-    self.popMenu2.exec_(self.ui.listWidget_17.mapToGlobal(point))
-    
-  def impSchPhot(self):
-    fname = QtGui.QFileDialog.getOpenFileName(self, 'Open MYRaf Coordinates file', '')
-    if os.path.isfile(fname):
-        f = open(fname, 'r')
-        it = self.ui.listWidget_17.count()-1
-        for i in f:
-            try:
-                den, den2 = float(i.replace("\n","").split("-")[0].strip()), float(i.replace("\n","").split("-")[1].strip())
-                it = it + 1
-                item = QtGui.QListWidgetItem()
-                self.ui.listWidget_17.addItem(item)
-                item = self.ui.listWidget_17.item(it)
-                item.setText(QtGui.QApplication.translate("Form", "%s-%s" %(den, den2), None, QtGui.QApplication.UnicodeUTF8))
-            except:
-                print "Not Float"
-            
-  def expSchPhot(self):
-    if self.ui.listWidget_17.count() == 0:
-        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No Coordinates"))
-    else:
-        ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save MYRaf Coordinates file', 'coo.my', 'my (*.my)')
-        it = -1
-        f = open(ofile, 'w')
-        for i in xrange(self.ui.listWidget_17.count()):
-            it = it + 1
-            coo = self.ui.listWidget_17.item(i)
-            coo = str(coo.text())
-            f.write("%s\n" %(coo))
-        f.close()
+        self.phot_r_click_coor = [0.0, 0.0]
 
-##########################################
+        #Add icon files.
+        icon_app = QtGui.QIcon()
+        icon_app.addFile('icons/app/myraf/16x16.png',
+            QtCore.QSize(16, 16))
+        icon_app.addFile('icons/app/myraf/24x24.png',
+            QtCore.QSize(24, 24))
+        icon_app.addFile('icons/app/myraf/32x32.png',
+            QtCore.QSize(32, 32))
+        icon_app.addFile('icons/app/myraf/48x48.png',
+            QtCore.QSize(48, 48))
+        icon_app.addFile('icons/app/myraf/256x256.png',
+            QtCore.QSize(256, 256))
+        app.setWindowIcon(icon_app)
 
-  def impCooPhot(self):
-    fname = QtGui.QFileDialog.getOpenFileName(self, 'Open MYRaf Coordinates file', '')
-    if os.path.isfile(fname):
-        f = open(fname, 'r')
-        it = self.ui.listWidget_8.count()-1
-        for i in f:
-            try:
-                den, den2 = float(i.replace("\n","").split("-")[0].strip()), float(i.replace("\n","").split("-")[1].strip())
-                it = it + 1
-                item = QtGui.QListWidgetItem()
-                self.ui.listWidget_8.addItem(item)
-                item = self.ui.listWidget_8.item(it)
-                item.setText(QtGui.QApplication.translate("Form", "%s-%s" %(den, den2), None, QtGui.QApplication.UnicodeUTF8))
-            except:
-                print "Not Float"
-            
-  def expCooPhot(self):
-    if self.ui.listWidget_8.count() == 0:
-        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No Coordinates"))
-    else:
-        ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save MYRaf Coordinates file', 'coo.my', 'my (*.my)')
-        it = -1
-        f = open(ofile, 'w')
-        for i in xrange(self.ui.listWidget_8.count()):
-            it = it + 1
-            coo = self.ui.listWidget_8.item(i)
-            coo = str(coo.text())
-            f.write("%s\n" %(coo))
-        f.close()
+        #Desible not ready features
+        self.ui.tabWidget.setTabEnabled(5, False)
+        self.ui.tabWidget_5.setTabEnabled(4, False)
+        self.ui.tabWidget_6.setTabEnabled(0, False)
 
-  def on_context_menu(self, point):
-    self.popMenu.exec_(self.ui.listWidget_8.mapToGlobal(point))
-#########################################################
+        #Set display items
+        self.cosmic_disp = FitsPlot(self.ui.disp_cosmic_clean.canvas)
+        self.manali_disp = FitsPlot(self.ui.disp_man_align.canvas)
+        self.autali_disp = FitsPlot(self.ui.disp_aut_align.canvas)
+        self.phot_disp = FitsPlot(self.ui.disp_phot.canvas)
 
-  def extraAdd(self):
-    if self.ui.listWidget_19.selectedItems() == []:
-        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please at least select one header."))
-    else:
-            
-        for i in self.ui.listWidget_19.selectedItems():
-            if self.ui.listWidget_20.findItems(str(i.text()), Qt.MatchExactly) == []:
-                item = QtGui.QListWidgetItem()
-                self.ui.listWidget_20.addItem(item)
-                item = self.ui.listWidget_20.item(self.ui.listWidget_20.count()-1)
-                item.setText(QtGui.QApplication.translate("Form", "%s" %(str(i.text())), None, QtGui.QApplication.UnicodeUTF8))
+        #Popups
+        #Bias
+        self.popMenu_bias_stat = QtGui.QMenu(self)
+        self.popMenu_bias_stat.addAction('Show Stats', lambda:
+            self.show_stats(self.ui.listWidget_10))
+        self.popMenu_bias_stat.addAction('Show All Stats', lambda:
+            self.show_infos_for_all(self.ui.listWidget_10, "Bias Combin"))
+        self.popMenu_bias_stat.setEnabled(False)
 
-  def getHeaderExtra(self):
-    
-    ok = False
-    if self.ui.listWidget_13.count() == 0:
-        if self.ui.listWidget_7.count() == 0:
-            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please add some images to Photometry Image or Scheduler Image list."))
-        else:
-            ok = True
-            lst = self.ui.listWidget_7
-    else:
-        ok = True
-        lst = self.ui.listWidget_13
-    
-    if ok:
-        lst.setCurrentRow(0)
-        img = lst.currentItem()
-        
-        if os.path.isfile(str(img.text())):
-            h = iraf.hedit(str(img.text()), "*", ".", Stdout=1)
-            for x in xrange(self.ui.listWidget_19.count()):
-                self.ui.listWidget_19.takeItem(0)
-            
-            it = -1
-            for i in h:
-                st = i.split(",")[1].split(" = ")[0]
-                it = it + 1
-                item = QtGui.QListWidgetItem()
-                self.ui.listWidget_19.addItem(item)
-                item = self.ui.listWidget_19.item(it)
-                item.setText(QtGui.QApplication.translate("Form", "%s" %(st), None, QtGui.QApplication.UnicodeUTF8))
-###########################################################
+        self.ui.listWidget_10.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.connect(self.ui.listWidget_10, QtCore.SIGNAL(
+            'customContextMenuRequested(const QPoint&)'),
+                self.on_context_menu_bias)
 
-  def dispErr(self, er):
-    if os.path.isfile("%s/tmp/error" %(self.HOME)):
-        os.popen("rm -rf %s/tmp/error" %(self.HOME))
-    fl = open("%s/tmp/error" %(self.HOME), "w")
-    fl.write(er)
-    fl.close()
-    f2 = MyForm2()
-    f2.setParent(f)
-    flags = QtCore.Qt.Tool
-    f2.setWindowFlags(flags)
-    f2.show()
+        #Dark
+        self.popMenu_dark_stat = QtGui.QMenu(self)
+        self.popMenu_dark_stat.addAction('Show Stats', lambda:
+            self.show_stats(self.ui.listWidget_11))
+        self.popMenu_dark_stat.addAction('Show All Stats', lambda:
+            self.show_infos_for_all(self.ui.listWidget_11, "Dark Combin"))
+        self.popMenu_dark_stat.setEnabled(False)
 
-#Scheduler#########################
-  def goSched(self):    
-    if self.ui.listWidget_18.count() == 0:
-        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Nothing to do."))
-    else:
-        it = 0
-        rows = self.ui.listWidget_18.count()
-        img = self.ui.listWidget_18.setCurrentRow(0)
-        
-        for x in xrange(rows):
-            self.getSched()
-            it = it + 1
-            ofilename = self.ui.listWidget_18.currentItem()
-            ofilename = str(ofilename.text())
-            ofile = "%s/tmp/%s" %(self.HOME, ofilename)
-            
-            zC = com = self.ui.comboBox_2.currentText()
-            zR = com = self.ui.comboBox_3.currentText()
-            zCT = self.ui.lineEdit_9.text()
-            
-            dC = com = self.ui.comboBox_4.currentText()
-            dR = com = self.ui.comboBox_5.currentText()
-            dS = com = self.ui.comboBox_8.currentText()
-            dCT = self.ui.lineEdit_10.text()
-            
-            fC = com = self.ui.comboBox_6.currentText()
-            fR = com = self.ui.comboBox_7.currentText()
-            fS = com = self.ui.comboBox_9.currentText()
-            fCT = self.ui.lineEdit_11.text()
-            
-            cS = com = self.ui.comboBox_10.currentText()
-            cCT = self.ui.lineEdit_12.text()
-            
-            sname = self.ui.lineEdit_14.text()
-            subf = self.ui.comboBox_9.currentText()
-            subc = self.ui.comboBox_10.currentText()
-            
-            biasFiles = ""
-            darkFiles = ""
-            flatFiles = ""
-            
-            fErr = ""
-            cErr = ""
-            
-            if self.ui.groupBox_26.isChecked():
-                if self.ui.checkBox_8.isChecked():
-                    
-                    gui.list2file(gui.lisFromLW(self, self.ui.listWidget_14), "%s/tmp/zeroList" %(self.HOME))
-                    self.ui.label_71.setText("Zero Combine...")
-                    if os.path.isfile("%s/tmp/zero.fit" %(self.HOME)):
-                        os.popen("rm %s/tmp/zero.fit" %(self.HOME))
-                    if function.zeroCombine("%s/tmp/zeroList" %(self.HOME), "%s/tmp/zero.fit" %(self.HOME), com=zC, rej=zR, cty=zCT):
-                        biasFiles = "%s/tmp/zero.fit" %(self.HOME)
-                        
-                if self.ui.checkBox_9.isChecked():
-                    gui.list2file(gui.lisFromLW(self, self.ui.listWidget_15), "%s/tmp/darkList" %(self.HOME))
-                    self.ui.label_71.setText("Dark Combine...")
-                    if os.path.isfile("%s/tmp/dark.fit" %(self.HOME)):
-                        os.popen("rm %s/tmp/dark.fit" %(self.HOME))
-                    if function.darkCombine("%s/tmp/darkList" %(self.HOME), "%s/tmp/dark.fit" %(self.HOME), com=dC, rej=dR, cty=dCT, scl=dS):
-                        darkFiles = "%s/tmp/dark.fit" %(self.HOME)
+        self.ui.listWidget_11.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.connect(self.ui.listWidget_11, QtCore.SIGNAL(
+            'customContextMenuRequested(const QPoint&)'),
+                self.on_context_menu_dark)
 
-                if self.ui.checkBox_10.isChecked():
-                    gui.list2file(gui.lisFromLW(self, self.ui.listWidget_16), "%s/tmp/flatList" %(self.HOME))
-                    self.ui.label_71.setText("Flat Combine...")
-                    f = open("%s/tmp/flatList" %(self.HOME), "r")
-                    itF = 0
-                    for z in f:
-                        fn = z.replace("\n","")
-                        if function.headerRead(fn,sname) == "":
-                            itF = itF + 1
-                    f.close()
-                    if subf == "yes" and itF != 0:
-                        self.ui.label_71.setText("There is no %s header in some Flat files. Skipping" %(subf))
-                    else:
-                        if os.path.isfile("%s/tmp/flat_*.fit" %(self.HOME)):
-                            os.popen("rm %s/tmp/flat_*.fit" %(self.HOME))
-                        if function.flatCombine("%s/tmp/flatList" %(self.HOME), "%s/tmp/" %(self.HOME), com=fC, rej=fR, cty=fCT, sub=fS):
-                            flatFiles = "%s/tmp/flat_*.fits" %(self.HOME)
+        #Flat
+        self.popMenu_flat_stat = QtGui.QMenu(self)
+        self.popMenu_flat_stat.addAction('Show Stats', lambda:
+            self.show_stats(self.ui.listWidget_12))
+        self.popMenu_flat_stat.addAction('Show All Stats', lambda:
+            self.show_infos_for_all(self.ui.listWidget_12, "Flat Combin"))
+        self.popMenu_flat_stat.setEnabled(False)
 
-            if self.ui.groupBox_29.isChecked():
-                f = open("%s/tmp/pc" %(self.HOME), "w")
-                for x in xrange(self.ui.listWidget_17.count()):
-                    coo = self.ui.listWidget_17.item(x)
-                    coo = str(coo.text())
-                    coo = coo.replace("-", " ")
-                    f.write("%s\n" %(coo))
-                f.close()
-                    
-                exp = self.ui.lineEdit_13.text()
-                fil = self.ui.lineEdit_14.text()
-                dan = self.ui.doubleSpinBox.value()
-                ann = self.ui.doubleSpinBox_2.value()
-                cbo = self.ui.doubleSpinBox_3.value()
-                ape = self.ui.lineEdit_15.text()
-                zma = self.ui.lineEdit_16.text()
-                obs = self.ui.lineEdit_18.text()
-                obt = self.ui.lineEdit_17.text()
-                obd = self.ui.lineEdit_24.text()
-                ra = self.ui.lineEdit_22.text()
-                dec = self.ui.lineEdit_23.text()
-                epo = self.ui.lineEdit_25.text()
-                gai = self.ui.lineEdit_26.text()
-                
-                apert = self.ui.lineEdit_15.text()
-                staCount = self.ui.listWidget_17.count()
-                
-                if os.path.exists(ofile):
-                    os.popen("rm %s" %(ofile))
-                    
-                extFie = ""
-                itExt = 0
-                for ext in xrange(self.ui.listWidget_20.count()):
-                    itExt = itExt + 1
-                    fie = self.ui.listWidget_20.item(ext)
-                    fie = str(fie.text())
-                    extFie = "%s\t%s" %(extFie, fie)
-                
-                f = open(ofile, "w")
-                f.write("# STAR = %s\n" %(str(staCount)))
-                f.write("# APERTURE = %s\n" %(str(apert)))
-                f.write("# DO NOT EDIT PARAMETRES ABOVE. You can add comments starts with '#' below ths line.\n")
-                f.write("# If you don't have any experience before, DO NOT EDIT THIS FILE!\n")
-                f.write("# id\tTIME\tMAG%s\tMERR%s\tAIRMASS%s\n"%(self.ui.lineEdit_15.text().replace(",","\tMAG"), self.ui.lineEdit_15.text().replace(",","\tMERR"), extFie))
-                f.close()
-                
-            err = ""
-            errJD = ""
-            errSid = ""
-            errAir = ""
-            errTM = ""
-            errOB = ""
-            errORA = ""
-            errODEC = ""
-            errdt = ""
-            errOBSERVAT = ""
-            errEpoch = ""
-            obsOK = False
+        self.ui.listWidget_12.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.connect(self.ui.listWidget_12, QtCore.SIGNAL(
+            'customContextMenuRequested(const QPoint&)'),
+                self.on_context_menu_flat)
 
-            iIt = 0
+        #RunSex
+        self.popMenu_run_sex = QtGui.QMenu(self)
+        self.popMenu_run_sex.addAction('Run SEX!', lambda:
+            self.auto_source_finder())
+        self.popMenu_run_sex.addAction('Show Stats', lambda:
+            self.show_phot_source_stats())
+        self.popMenu_run_sex.setEnabled(False)
 
-            for y in xrange(self.ui.listWidget_13.count()):
-                iIt = iIt + 1
-                iImg = self.ui.listWidget_13.item(y)
-                iImg = str(iImg.text())
-                if self.ui.checkBox_12.isChecked():
-                    function.headerWrite(iImg, "MYDate", function.headerRead(iImg, self.ui.lineEdit_17.text()).split(self.ui.lineEdit_24.text())[0])
-                    function.headerWrite(iImg, "MYTime", function.headerRead(iImg, self.ui.lineEdit_17.text()).split(self.ui.lineEdit_24.text())[1])
-                    obt = "MYTime"
-                    obd = "MYDate"
-                if self.ui.groupBox_26.isChecked():
-                    if function.headerRead(iImg, sname) == "" and subc == "yes":
-                        self.ui.label_71.setText("There is no %s header in %s file. Skipping" %(subf, ntpath.basename(str(iImg))))
-                    else:
-                        function.headerWrite(iImg, "subset", str("'(@\"%s\")'" %sname))
-                        if not function.calibration(iImg, biasFiles, darkFiles, flatFiles, "%s/tmp" %(self.HOME), cCT, sub=cS):
-                            cErr = "%s, %s" %(iImg, cErr)
+        self.ui.disp_phot.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.connect(self.ui.disp_phot, QtCore.SIGNAL(
+            'customContextMenuRequested(const QPoint&)'),
+                self.on_context_menu_run_sex)
+
+        #Settings->Load settings
+        self.ui.pushButton_70.clicked.connect(lambda: (
+            self.load_selected_settings()))
+        #Settings->Save settings
+        self.ui.pushButton_60.clicked.connect(lambda: (self.save_settings()))
+
+        #Help->Save log
+        self.ui.pushButton_10.clicked.connect(lambda: (self.save_logs()))
+        #Help->Delete log
+        self.ui.pushButton_11.clicked.connect(lambda: (self.delete_log_file()))
+
+        #add to and remove from list triggers
+        #Calibration->Data
+        self.ui.pushButton_22.clicked.connect(lambda: (
+            self.add_files(self.ui.listWidget_9)))
+        self.ui.pushButton_21.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_9)))
+        #Calibration->Bias
+        self.ui.pushButton_23.clicked.connect(lambda: (
+            self.add_files(self.ui.listWidget_10)))
+        self.ui.pushButton_24.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_10)))
+        #Calibration->Dark
+        self.ui.pushButton_27.clicked.connect(lambda: (
+            self.add_files(self.ui.listWidget_11)))
+        self.ui.pushButton_26.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_11)))
+        #Calibration->Flat
+        self.ui.pushButton_30.clicked.connect(lambda: (
+            self.add_files(self.ui.listWidget_12)))
+        self.ui.pushButton_29.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_12)))
+        #Align->Auto
+        self.ui.pushButton_2.clicked.connect(lambda: (
+            self.add_files(self.ui.listWidget)))
+        self.ui.pushButton_3.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget)))
+        #Align->Manual
+        self.ui.pushButton_6.clicked.connect(lambda: (
+            self.add_files(self.ui.listWidget_2)))
+        self.ui.pushButton_5.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_2)))
+        #Photometry->Apperture
+        self.ui.pushButton_9.clicked.connect(lambda: (
+            self.add_files(self.ui.listWidget_3)))
+        self.ui.pushButton_8.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_3)))
+        #Photometry->Remove from source list
+        self.ui.pushButton_32.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_4)))
+        #Editor->Header
+        self.ui.pushButton_36.clicked.connect(lambda: (
+            self.add_files(self.ui.listWidget_14)))
+        self.ui.pushButton_37.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_14)))
+        #Editor->Cosmic Cleaner
+        self.ui.pushButton_42.clicked.connect(lambda: (
+            self.add_files(self.ui.listWidget_16)))
+        self.ui.pushButton_41.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_16)))
+        #Editor->Convert to Fits
+        self.ui.pushButton_45.clicked.connect(lambda: (
+            self.add_files_imh(self.ui.listWidget_17)))
+        self.ui.pushButton_44.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_17)))
+        #Scheduler->Data
+        self.ui.pushButton_52.clicked.connect(lambda: (
+            self.add_files(self.ui.listWidget_19)))
+        self.ui.pushButton_51.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_19)))
+        #Scheduler->Bias
+        self.ui.pushButton_54.clicked.connect(lambda: (
+            self.add_files(self.ui.listWidget_20)))
+        self.ui.pushButton_53.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_20)))
+        #Scheduler->Dark
+        self.ui.pushButton_56.clicked.connect(lambda: (
+            self.add_files(self.ui.listWidget_21)))
+        self.ui.pushButton_55.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_21)))
+        #Scheduler->Flat
+        self.ui.pushButton_58.clicked.connect(lambda: (
+            self.add_files(self.ui.listWidget_22)))
+        self.ui.pushButton_57.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_22)))
+        #Scheduler->Remove from source list
+        self.ui.pushButton_59.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_23)))
+        #Scheduler->Remove from task list
+        self.ui.pushButton_48.clicked.connect(lambda: (
+            self.rm_files(self.ui.listWidget_18)))
+
+        #Editor->Header->Display headers
+        self.ui.listWidget_14.clicked.connect(lambda: (self.load_header()))
+        #Editor->Header->Select header
+        self.ui.listWidget_13.clicked.connect(lambda: (self.select_header()))
+        #Editor->Header->Unlock existing header value
+        self.ui.checkBox.clicked.connect(lambda: (
+            self.unlock_get_value_from_existing_header()))
+        #Editor->Header->Add update header
+        self.ui.pushButton_38.clicked.connect(lambda: (
+            self.add_update_header()))
+        #Editor->Header->Delete header
+        self.ui.pushButton_35.clicked.connect(lambda: (self.delete_header()))
+        #Editor->Convert to fits
+        self.ui.pushButton_46.clicked.connect(lambda: (self.convert_files()))
+        #Editor->Cosmic cleaner
+        self.ui.pushButton_31.clicked.connect(lambda: (self.save_flat()))
+        self.ui.listWidget_16.clicked.connect(lambda: (self.display_cc()))
+        #Editor->Load values from observatory file
+        self.ui.listWidget_15.clicked.connect(lambda: (self.load_observatory()))
+        #Editor->Delete from observatory file
+        self.ui.pushButton_39.clicked.connect(lambda: (
+            self.delete_observatory()))
+        #Editor->Add/Update from observatory file
+        self.ui.pushButton_40.clicked.connect(lambda: (
+            self.add_update_observatory()))
+
+        #Save Combine
+        #Save Zerocombine
+        self.ui.pushButton_25.clicked.connect(lambda: (self.save_zero()))
+        #Save Darkcombine
+        self.ui.pushButton_28.clicked.connect(lambda: (self.save_dark()))
+        #Save Flatcombine
+        self.ui.pushButton_43.clicked.connect(lambda: (self.cosmic_clean()))
+
+        #Clibration
+        self.ui.pushButton.clicked.connect(lambda: (self.calibration()))
+
+        #Align
+        #Manual Align display
+        self.ui.listWidget_2.clicked.connect(lambda: (self.display_ma()))
+        #Manual Align get coord
+        self.ui.disp_man_align.canvas.fig.canvas.mpl_connect(
+            'button_press_event', self.get_manali_coors)
+        #Manual Align Do the harlem shake
+        self.ui.pushButton_7.clicked.connect(lambda: (self.manual_align()))
+        #Auto Alin display
+        self.ui.listWidget.clicked.connect(lambda: (self.display_aa()))
+        #Auto Align
+        self.ui.pushButton_4.clicked.connect(lambda: (self.auto_align()))
+
+        #Photometry
+        #Photometry Display
+        self.ui.listWidget_3.clicked.connect(lambda: (self.display_ph()))
+        #Photometry Display coordinates
+        self.ui.pushButton_33.clicked.connect(lambda: (
+            self.display_phot_coor()))
+        #Photometry get coord
+        self.ui.disp_phot.canvas.fig.canvas.mpl_connect(
+            'button_press_event', self.get_phot_coors)
+        #Photometry go
+        self.ui.pushButton_34.clicked.connect(lambda: (self.ap_photometry()))
+
+        self.initial()
+
+    def ap_photometry(self):
+        do_phot = False
+        file_count = self.ggui.get_count_of_list(self.ui.listWidget_3)
+        if file_count[0]:
+            if file_count[1] > 0:
+                file_list = self.ggui.get_all_items_from_list(
+                    self.ui.listWidget_3)
+                if file_list[0]:
+                    coor_count = self.ggui.get_count_of_list(
+                        self.ui.listWidget_4)
+                    if coor_count[0]:
+                        if coor_count[1] > 0:
+                            do_phot = True
                         else:
-                            os.popen("mv -f %s/tmp/%s %s" %(self.HOME, ntpath.basename(str(iImg)), iImg))
-                            
-                if self.ui.checkBox_11.isChecked():
-                    refImage = self.ui.listWidget_13.currentItem()
-                    refImage = str(refImage.text())
-                    if not function.autoAlign(self, iImg, refImage, os.path.split(iImg)[0], mkPNG=False, visu=False):
-                        self.ui.label_71.setText("Can not align %s" %(ntpath.basename(str(iImg))))
-                
-                if self.ui.groupBox_29.isChecked():
-                    tm = function.headerRead(iImg, obt)
-                    ob = function.headerRead(iImg, obs)
-                    dt = function.headerRead(iImg, obd)
-                    ora = function.headerRead(iImg, ra)
-                    odec = function.headerRead(iImg, dec)
-                    observatory = function.headerRead(img, obs)
-                    
-                    if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
-                        epo = function.epoch(iImg, obd, obt)
-                        if epo == False:
-                            errEpoch = "%sBad time-date header:%s\n" %(errEpoch, iImg)
-                        else:
-                            function.headerWrite(iImg, "epoch", epo)
-                            
-                    function.headerWrite(iImg, "epoch", epo)
-                    if errEpoch == "":
-                        obsFiles = glob.glob("%s/obsdat/*" %(self.HOME))
-                        for i in obsFiles:
-                            if i.replace("%s/obsdat/" %(self.HOME),"").lower() == ob.lower():
-                                obsOK = True
-                        if obsOK:
-                            if dt !="":
-                                if ob !="":
-                                    if tm != "":
-                                        if ora != "":
-                                            if odec != "":
-                                                if function.JD(iImg, str(obs), str(obd), str(obt), str(ra), str(dec), str("epoch"), str(exp)):
-                                                    if function.sideReal(self, iImg, ob, obd, obt):
-                                                        if function.airmass(iImg, observatory, ra, dec, "epoch", "st", obt, obd, exp):
-                                                            if function.phot(self, iImg, "%s/tmp/analyzed/" %(self.HOME), "%s/tmp/pc" %(self.HOME), expTime = exp, Filter = fil, centerBOX = int(cbo), annulus = int(ann), dannulus = int(dan), apertur = ape, zmag = zma, gain = gai):
-                                                                if function.txDump("%s/tmp/analyzed/%s.mag.1"  %(self.HOME, ntpath.basename(iImg)), "%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(iImg))):
-                                                                    os.popen("rm %s/tmp/analyzed/%s.mag.1" %(self.HOME, ntpath.basename(iImg)))
-                                                                    #os.popen("cat %s/tmp/analyzed/%s >> %s"  %(self.HOME, ntpath.basename(iImg), ofile))
-                                                                    #os.popen("rm %s/tmp/analyzed/%s" %(self.HOME, ntpath.basename(iImg)))
-                                                                    
-                                                                    itExt = 0
-                                                                    val = ""
-                                                                    for ext in xrange(self.ui.listWidget_20.count()):
-                                                                        itExt = itExt + 1
-                                                                        fie = self.ui.listWidget_20.item(ext)
-                                                                        fie = str(fie.text())
-                                                                        val = "%s\t%s" %(val, function.headerRead(iImg, fie))
-                                                                    v = open("%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(iImg)), 'r')
-                                                                    res = open(ofile, 'a')
-                                                                    for r in v:
-                                                                        r = r.replace("\n","")
-                                                                        res.write("%s%s\n" %(r, val))
-                                                                    res.close()
-                                                                    v.close()
-                                                                    os.popen("rm %s/tmp/analyzed/%s" %(self.HOME, ntpath.basename(iImg)))
-                                                            else:
-                                                                err = "PhotErr=%s, %s" %(err, ntpath.basename(iImg))
-                                                        else:
-                                                            errAir = "AiMaErr=%s, %s" %(errAir, ntpath.basename(iImg))
-                                                    else:
-                                                        errSid = "SiReErr%s, %s" %(errSid, ntpath.basename(iImg))
-                                                else:
-                                                    errJD = "JDErr%s, %s" %(errJD, ntpath.basename(iImg))
-                                            else:
-                                                errODEC = "EpoErr%s, %s" %(errODEC, ntpath.basename(iImg))
-                                        else:
-                                            errORA = "RAErr%s, %s" %(errORA, ntpath.basename(iImg))
-                                    else:
-                                        errTM = "No %s header=%s, %s" %(obt, errTM, ntpath.basename(iImg))
-                                else:
-                                    errOB = "No %s header=%s, %s" %(obs, errOB, ntpath.basename(iImg))
-                            else:
-                                errdt = "No %s header=%s, %s" %(obd, errdt, ntpath.basename(iImg))
-                        else:
-                            errOBSERVAT = "No obervat %s=%s, %s" %(ob, errOBSERVAT, ntpath.basename(iImg))
-                        
-                self.ui.progressBar_7.setProperty("value", math.ceil(100*(float(float(iIt)/float(self.ui.listWidget_13.count())))))
-            
-            self.ui.progressBar_6.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_18.count())))))
-            row = self.ui.listWidget_18.currentRow()
-            if row < rows-1:
-                self.ui.listWidget_18.setCurrentRow(row+1)
-        if self.ui.groupBox_29.isChecked():
-            os.popen("cp %s %s" %(ofile, os.path.dirname(iImg)))
-    
-    e=""
-    if err != "":
-        e = ("%s%s" %(e, err))
-    if errAir != "":
-        e = ("%s%s" %(e, errAir))
-    if errSid != "":
-        e = ("%s%s" %(e, errSid))
-    if errJD != "":
-        e = ("%s%s" %(e, errJD))
-    if errODEC != "":
-        e = ("%s%s" %(e, errODEC))
-    if errORA != "":
-        e = ("%s%s" %(e, errORA))
-    if errTM != "":
-        e = ("%s%s" %(e, errTM))
-    if errOB != "":
-        e = ("%s%s" %(e, errOB))
-    if errdt != "":
-        e = ("%s%s" %(e, errdt))
-    if errOBSERVAT != "":
-        e = ("%s%s" %(e, errOBSERVAT))
-    if errEpoch != "":
-        e = ("%s%s" %(e, errEpoch))
-        
-    if err != "" or errAir != "" or errSid != "" or errJD != "" or errODEC != "" or errORA != "" or errTM != "" or errOB != "" or errdt != "" or errOBSERVAT != "" or errEpoch != "":
-        self.dispErr(e)
-        
-        
-  def getSched(self):
-    sFile = self.ui.listWidget_18.currentItem()
-    sFile = "%s/tmp/sf%s" %(self.HOME, sFile.text())
-    f = open(sFile, "r")
-    itImg = -1
-    itBia = -1
-    itDar = -1
-    itFla = -1
-    itPhot = -1
-    
-    for x in xrange(self.ui.listWidget_13.count()):
-        self.ui.listWidget_13.takeItem(0)
-        
-    for x in xrange(self.ui.listWidget_14.count()):
-        self.ui.listWidget_14.takeItem(0)
-        
-    for x in xrange(self.ui.listWidget_15.count()):
-        self.ui.listWidget_15.takeItem(0)
-        
-    for x in xrange(self.ui.listWidget_16.count()):
-        self.ui.listWidget_16.takeItem(0)
-        
-    for x in xrange(self.ui.listWidget_17.count()):
-        self.ui.listWidget_17.takeItem(0)
-        
-    self.ui.groupBox_26.setChecked(False)
-    self.ui.groupBox_29.setChecked(False)
-    self.ui.checkBox_8.setChecked(False)
-    self.ui.checkBox_9.setChecked(False)
-    self.ui.checkBox_10.setChecked(False)
-    self.ui.checkBox_11.setChecked(False)
-    
-    for i in f:
-        if i.startswith("isBia"):
-            if i.split(" = ")[1].replace("\n","") == "True":
-                self.ui.groupBox_26.setChecked(True)
-                self.ui.checkBox_8.setChecked(True)
-                self.unlockSBias()
-            else:
-                self.ui.checkBox_8.setChecked(False)
-                self.unlockSBias()
-
-        if i.startswith("isDar"):
-            if i.split(" = ")[1].replace("\n","") == "True":
-                self.ui.groupBox_26.setChecked(True)
-                self.ui.checkBox_9.setChecked(True)
-                self.unlockSDark()
-            else:
-                self.ui.checkBox_9.setChecked(False)
-                self.unlockSDark()
-
-        if i.startswith("isFla"):
-            if i.split(" = ")[1].replace("\n","") == "True":
-                self.ui.groupBox_26.setChecked(True)
-                self.ui.checkBox_10.setChecked(True)
-                self.unlockSFlat()
-            else:
-                self.ui.checkBox_10.setChecked(False)
-                self.unlockSFlat()
-                
-        if i.startswith("isAli"):
-            if i.split(" = ")[1].replace("\n","") == "True":
-                self.ui.checkBox_11.setChecked(True)
-            else:
-                self.ui.checkBox_11.setChecked(False)
-
-        if i.startswith("isPhot"):
-            if i.split(" = ")[1].replace("\n","") == "True":
-                self.ui.groupBox_29.setChecked(True)
-            else:
-                self.ui.groupBox_29.setChecked(False)
-                
-        if(i.startswith("img")):
-            itImg = itImg +1
-            item = QtGui.QListWidgetItem()
-            self.ui.listWidget_13.addItem(item)
-            item = self.ui.listWidget_13.item(itImg)
-            item.setText(QtGui.QApplication.translate("Form", "%s" %(i.split(" = ")[1].replace("\n","")), None, QtGui.QApplication.UnicodeUTF8))
-
-        if(i.startswith("bia")):
-            itBia = itBia +1
-            item = QtGui.QListWidgetItem()
-            self.ui.listWidget_14.addItem(item)
-            item = self.ui.listWidget_14.item(itBia)
-            item.setText(QtGui.QApplication.translate("Form", "%s" %(i.split(" = ")[1].replace("\n","")), None, QtGui.QApplication.UnicodeUTF8))
-
-        if(i.startswith("dar")):
-            itDar = itDar +1
-            item = QtGui.QListWidgetItem()
-            self.ui.listWidget_15.addItem(item)
-            item = self.ui.listWidget_15.item(itDar)
-            item.setText(QtGui.QApplication.translate("Form", "%s" %(i.split(" = ")[1].replace("\n","")), None, QtGui.QApplication.UnicodeUTF8))
-
-        if(i.startswith("fla")):
-            itFla = itFla +1
-            item = QtGui.QListWidgetItem()
-            self.ui.listWidget_16.addItem(item)
-            item = self.ui.listWidget_16.item(itFla)
-            item.setText(QtGui.QApplication.translate("Form", "%s" %(i.split(" = ")[1].replace("\n","")), None, QtGui.QApplication.UnicodeUTF8))
-
-        if(i.startswith("ref")):
-            ind = i.split(" = ")[1].replace("\n","")
-            print ind
-            self.ui.listWidget_13.setCurrentRow(int(ind))
-
-        if(i.startswith("coo")):
-            for m in i.split(" = ")[1].replace("\n","").split(","):
-                if m != "":
-                    itPhot = itPhot +1
-                    item = QtGui.QListWidgetItem()
-                    self.ui.listWidget_17.addItem(item)
-                    item = self.ui.listWidget_17.item(itPhot)
-                    item.setText(QtGui.QApplication.translate("Form", "%s" %(m), None, QtGui.QApplication.UnicodeUTF8))
-
-  def rmSched(self):
-    for x in self.ui.listWidget_18.selectedItems():
-        self.ui.listWidget_18.takeItem(self.ui.listWidget_18.row(x))
-        os.popen("rm -rf %s/tmp/sf%s" %(self.HOME, x.text()))
-        
-  def uaSched(self, st):    
-    if self.ui.listWidget_13.count() == 0:
-        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No Image to process."))
-    else:
-        if (self.ui.groupBox_26.isChecked() and self.ui.checkBox_8.checkState() == QtCore.Qt.Checked) or (self.ui.groupBox_26.isChecked() and self.ui.checkBox_9.checkState() == QtCore.Qt.Checked) or (self.ui.groupBox_26.isChecked() and self.ui.checkBox_10.checkState() == QtCore.Qt.Checked):
-            std = True
-        elif self.ui.checkBox_11.checkState() == QtCore.Qt.Checked:
-            std = True
-        elif self.ui.groupBox_29.isChecked():
-            std = True
-        else:
-            std = False
-    
-        if std:
-            isBia = False
-            isDar = False
-            isFla = False
-            isAli = False
-            isPho = False
-            
-            fImg = []
-            fBia = []
-            fDar = []
-            fFla = []
-            fCoo = ""
-            
-            err = True
-            
-            if st == "add":
-                ts = time.time()
-                sFl = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d_%H%M%S')
-            elif st == "upd":
-                sFl = self.ui.listWidget_18.currentItem()
-                sFl = sFl.text()
-            
-            
-            if self.ui.groupBox_26.isChecked():
-                if self.ui.checkBox_8.checkState() == QtCore.Qt.Checked:
-                    if self.ui.listWidget_14.count() != 0:
-                        isBia = True
+                            self.ggui.show_dialog(self, "critic",
+                                "Photometry", "Add some sources first")
                     else:
-                        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Add some Bias images."))
-                        err = False
-
-                if self.ui.checkBox_9.checkState() == QtCore.Qt.Checked:
-                    if self.ui.listWidget_15.count() != 0:
-                        isDar = True
-                    else:
-                        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Add some Dark images."))
-                        err = False
-
-                if self.ui.checkBox_10.checkState() == QtCore.Qt.Checked:
-                    if self.ui.listWidget_16.count() != 0:
-                        isFla = True
-                    else:
-                        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Add some Flat images."))
-                        err = False
-                    
-            if self.ui.checkBox_11.checkState() == QtCore.Qt.Checked:
-                if self.ui.listWidget_13.currentItem() != None:
-                    isAli = True
+                        self.ggui.show_dialog(self, "critic", "Photometry",
+                            "Can not get source count")
                 else:
-                    QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select a reference image."))
-                    err = False
-
-            if self.ui.groupBox_29.isChecked():
-                if self.ui.listWidget_17.count() != 0:
-                    isPho = True
-                else:
-                    QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Select coordinates for Photometry."))
-                    err = False
-            
-            if err:
-                f = open("%s/tmp/sf%s" %(self.HOME, sFl), "w")
-                for i in xrange(self.ui.listWidget_13.count()):
-                    img = self.ui.listWidget_13.item(i)
-                    img = str(img.text())
-                    fImg.append(img)
-                
-                if isBia:
-                    f.write("isBia = True\n")
-                    for i in xrange(self.ui.listWidget_14.count()):
-                        img = self.ui.listWidget_14.item(i)
-                        img = str(img.text())
-                        fBia.append(img)
-                else:
-                    f.write("isBia = False\n")
-
-                if isDar:
-                    f.write("isDar = True\n")
-                    for i in xrange(self.ui.listWidget_15.count()):
-                        img = self.ui.listWidget_15.item(i)
-                        img = str(img.text())
-                        fDar.append(img)
-                else:
-                    f.write("isDar = False\n")
-
-                if isFla:
-                    f.write("isFla = True\n")
-                    for i in xrange(self.ui.listWidget_16.count()):
-                        img = self.ui.listWidget_16.item(i)
-                        img = str(img.text())
-                        fFla.append(img)
-                else:
-                    f.write("isFla = False\n")
-
-                if isAli:
-                    f.write("isAli = True\n")
-                else:
-                    f.write("isAli = False\n")
-
-                if isPho:
-                    f.write("isPhot = True\n")
-                    for i in xrange(self.ui.listWidget_17.count()):
-                        coo = self.ui.listWidget_17.item(i)
-                        coo = str(coo.text())
-                        fCoo = "%s,%s" %(fCoo, coo)
-                else:
-                    f.write("isPhot = False\n")
-                    
-                for i in fImg:
-                    f.write("img = %s\n" %(i))
-                    
-                for i in fBia:
-                    f.write("bia = %s\n" %(i))
-                
-                for i in fDar:
-                    f.write("dar = %s\n" %(i))
-                    
-                for i in fFla:
-                    f.write("fla = %s\n" %(i))
-                    
-                if isAli:
-                    reImg = self.ui.listWidget_13.currentRow()
-                    f.write("ref = %s\n" %(reImg))
-                    
-                if isPho:
-                    f.write("coo = %s\n" %(fCoo))
-                    
-                    
-                if st == "add":
-                    it = self.ui.listWidget_18.count()
-                    item = QtGui.QListWidgetItem()
-                    self.ui.listWidget_18.addItem(item)
-                    item = self.ui.listWidget_18.item(it)
-                    item.setText(QtGui.QApplication.translate("Form", "%s" %(sFl), None, QtGui.QApplication.UnicodeUTF8))
-                f.close()
-
-        else:
-            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Nothing to do."))
-    
-  def displayScheduler(self):
-    img = self.ui.listWidget_13.currentItem()
-    img = img.text()
-    self.plotFdS.load(str(img))
-
-# Chart point picker
-  def onpick(self, event):
-    thisline = event.artist
-    xdata = thisline.get_xdata()
-    ydata = thisline.get_ydata()
-    ind = event.ind
-    self.ui.label_9.setText("x=" + str(format(xdata[ind][0], '.3f')) + " y=" + str(format(ydata[ind][0], '.3f')))
-
-  #Chart area clear
-  def chartClear(self):
-    data = []
-    self.ui.disp_chart.canvas.ax.hold(False)
-    self.ui.disp_chart.canvas.ax.plot(data) 
-    self.ui.disp_chart.canvas.draw()
-     
-#Choose Point Color of Chart###################################
-  def choosePointCol(self):
-      col = QtGui.QColorDialog.getColor()
-      if col:
-          if col.isValid():
-              pcol = self.ui.label_55.setText(QtGui.QApplication.translate("Form", "%s" %(str(col.name())), None, QtGui.QApplication.UnicodeUTF8))
-              return pcol
-
-#other###################################
-  def displayCalibLabel(self):
-    imC = self.ui.listWidget.count()
-    biC = self.ui.listWidget_2.count()
-    daC = self.ui.listWidget_3.count()
-    flC = self.ui.listWidget_4.count()
-    self.ui.label_3.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will be calibrated by using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
-    self.ui.label_4.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will be calibrated by using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
-    self.ui.label_5.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will be calibrated by using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
-    self.ui.label_6.setText(QtGui.QApplication.translate("Form", "<b>%s</b> image(s) will be calibrated by using <b>%s</b> Bias(es), <b>%s</b> Dark(s) and <b>%s</b> Flat(s)." %(imC, biC, daC, flC), None, QtGui.QApplication.UnicodeUTF8))
-    
-
-#Read Stars ID to Graph Tab###################################
-  def readStars(self):
-    filename = QtGui.QFileDialog.getOpenFileName(self ,"MYRaf Result File...","",("My Files (*.my *.myf)"))
-    if filename:
-        try:    
-            self.ui.label_43.setText(QtGui.QApplication.translate("Form", "File location: %s" %(filename), None, QtGui.QApplication.UnicodeUTF8))
-            # counting stars in result file
-            with open(filename) as resultFile:
-                head=[resultFile.next() for x in xrange(3)]
-            capStar, starCount = head[0].split(" = ")
-            capStar, apertures = head[1].split(" = ")
-            #clearing comboxBoxs
-            self.ui.comboBox_11.clear()
-            self.ui.comboBox_12.clear()
-            self.ui.comboBox_13.clear()
-            for i in range(1, int(starCount.replace("\n",""))+1):
-                self.ui.comboBox_11.addItem(str(i))
-                self.ui.comboBox_12.addItem(str(i))
-                self.ui.comboBox_13.addItem(str(i))
-            self.ui.comboBox_14.clear()
-            #getting apertures
-            apertures = apertures.replace("\n","")
-            for aperture in apertures.split(","):
-                self.ui.comboBox_14.addItem(aperture.replace("\n", ""))
-        except:
-            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Error reading MYRaf <b>result file</b>!"))
-            gui.logging(self, "--- %s - Error reading MYRaf result file!" %(datetime.datetime.utcnow()))            
-
-#Plot Chart#############################################
-  def plotChart(self):
-    # reading form
-    if self.ui.label_43.text():
-        #Checking result file
-        if self.ui.lineEdit_19.text() and self.ui.lineEdit_20.text() and self.ui.lineEdit_21.text() and self.ui.label_55.text() and self.ui.comboBox_11.currentText() and self.ui.comboBox_12.currentText() and self.ui.comboBox_13.currentText() and self.ui.comboBox_14.currentText():
-            varStarID = self.ui.comboBox_11.currentText()
-            checkStarID = self.ui.comboBox_12.currentText()
-            refStarID = self.ui.comboBox_13.currentText()
-            apertureIndex = self.ui.comboBox_14.currentIndex() + 3
-            legendName = self.ui.lineEdit_21.text().replace(" ",  "")
-            
-            # reading result file
-            neednt,  filename = self.ui.label_43.text().split(":")
-            filename = filename.replace("\n", "")
-            function.readResultFile(self, filename, varStarID, apertureIndex)
-            function.readResultFile(self, filename, checkStarID, apertureIndex)
-            function.readResultFile(self, filename, refStarID, apertureIndex)
-            
-            # varStar
-            filep = open("%s/tmp/idjdmag_%s.my" %(self.HOME, varStarID), "r")
-            varDatas = filep.readlines()
-            filep.close()
-            # checkStar
-            filep = open("%s/tmp/idjdmag_%s.my" %(self.HOME, checkStarID), "r")
-            checkDatas = filep.readlines()
-            filep.close()
-            # refStar
-            filep = open("%s/tmp/idjdmag_%s.my" %(self.HOME, refStarID), "r")
-            refDatas = filep.readlines()
-            filep.close()  
-            # numpy operations
-            varPhase1 = []
-            varMag1 = []
-            checkMag1 = []
-            refMag1 = []
-            diffMag = []
-            residuMag = []
-            # Variable
-            for varData in varDatas:
-                vData = varData.split()
-                try:
-                    varPhase1.append(((float(vData[1]) - float(self.ui.lineEdit_19.text()))/(float(self.ui.lineEdit_20.text()))) - int(((float(vData[1]) - float(self.ui.lineEdit_19.text()))/(float(self.ui.lineEdit_20.text())))))
-                    varMag1.append(float(vData[2]))
-                except:
-                    varMag1.append(np.nan)
-            # Check
-            for checkData in checkDatas:
-                cData = checkData.split()
-                try:
-                    checkMag1.append(float(cData[2]))
-                except:
-                    checkMag1.append(np.nan)
-            # Ref
-            for refData in refDatas:
-                rData = refData.split()
-                try:
-                    refMag1.append(float(rData[2]))
-                except:
-                    refMag1.append(np.nan)
-             
-            # Masking INDEF content
-            varPhase = np.array(varPhase1)
-            varMag2 = np.array(varMag1)
-            varMag = np.ma.masked_array(varMag2, np.isnan(varMag2))
-            
-            checkMag2 = np.array(checkMag1)
-            checkMag = np.ma.masked_array(checkMag2, np.isnan(checkMag2))
-            
-            refMag2 = np.array(refMag1)
-            refMag = np.ma.masked_array(refMag2, np.isnan(refMag2))
-            # Rejecting scattered points from array
-            diffMag1 = varMag - checkMag
-            diffMag = sigma_clip(diffMag1, 3, None, mean, copy=False)
-            
-            residuMag1 = checkMag - refMag
-            residuMag = sigma_clip(residuMag1, 3, None, mean, copy=False)
-            
-            #Plot
-            pointColor = self.ui.label_55.text()
-            sp = str(self.ui.comboBox_15.currentText()).split(" ")[0]
-            gui.PlotFunc(self,  self.ui.disp_chart.canvas, varPhase, (diffMag*(-1)),  residuMag, pointColor,  legendName, sp)
-        else:
-            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please <b>fill/select</b> the required informations!"))
-            gui.logging(self, "--- %s - Please fill/select the required informations!" %(datetime.datetime.utcnow()))
-    else:
-        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select MYRaf <b>result file</b>!"))
-        gui.logging(self, "--- %s - Please select MYRaf result file!" %(datetime.datetime.utcnow()))
-########################################################
-
-#Pohtometry#############################################
-  def getObservat(self):
-    fl = self.ui.listWidget_12.currentItem()
-    fl = fl.text()
-    
-    self.ui.lineEdit_3.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
-    self.ui.lineEdit_4.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
-    self.ui.lineEdit_5.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
-    self.ui.lineEdit_6.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
-    self.ui.lineEdit_7.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
-    self.ui.lineEdit_8.setText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
-    self.ui.plainTextEdit.setPlainText(QtGui.QApplication.translate("Form", "", None, QtGui.QApplication.UnicodeUTF8))
-    
-    f = open("%s/obsdat/%s" %(self.HOME, str(fl)), "r")
-    for i in f:
-        ln = i.replace("\n","")
-        if ln.replace(" ","").startswith("observatory"):
-            self.ui.lineEdit_3.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
-
-        if ln.replace("\t","").startswith("name"):
-            self.ui.lineEdit_4.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
-
-        if ln.replace("\t","").startswith("longitude"):
-            self.ui.lineEdit_5.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
-
-        if ln.replace("\t","").startswith("latitude"):
-            self.ui.lineEdit_6.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
-
-        if ln.replace("\t","").startswith("altitude"):
-            self.ui.lineEdit_7.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
-
-        if ln.replace("\t","").startswith("timezone"):
-            self.ui.lineEdit_8.setText(QtGui.QApplication.translate("Form", str(ln).split(" = ")[1].replace("\"",""), None, QtGui.QApplication.UnicodeUTF8))
-            
-        if ln.replace("\t","").startswith("#"):
-            self.ui.plainTextEdit.setPlainText(QtGui.QApplication.translate("Form", "%s" %(ln.replace("#","")), None, QtGui.QApplication.UnicodeUTF8))
-            
-  def rmObservatory(self):
-    fl = self.ui.listWidget_12.currentItem()
-    fl = fl.text()
-    os.popen("rm -rf %s/obsdat/%s" %(self.HOME, str(fl)))
-    c=self.ui.listWidget_12.count()
-    for i in xrange(c):
-        self.ui.listWidget_12.takeItem(0)
-    
-    it = self.ui.listWidget_12.count()-1
-    for files in glob.glob("%s/obsdat/*" %(self.HOME)):
-        fn = ntpath.basename(str(files))
-        it = it+1
-        item = QtGui.QListWidgetItem()
-        self.ui.listWidget_12.addItem(item)
-        item = self.ui.listWidget_12.item(it)
-        item.setText(QtGui.QApplication.translate("Form", str(fn), None, QtGui.QApplication.UnicodeUTF8))
-    self.ui.listWidget_12.sortItems()
-    os.popen("cat %s/obsdat/* > /iraf/iraf/noao/lib/obsdb.dat" %(self.HOME))
-
-  def addObservatory(self):
-    fl = self.ui.listWidget_12.currentItem()
-    
-    observatory = self.ui.lineEdit_3.text()
-    name = self.ui.lineEdit_4.text()
-    longitude = self.ui.lineEdit_5.text()
-    latitude = self.ui.lineEdit_6.text()
-    altitude = self.ui.lineEdit_7.text()
-    timeZone = self.ui.lineEdit_8.text()
-    other = str(self.ui.plainTextEdit.toPlainText())
-    
-    f = open("%s/obsdat/%s" %(self.HOME, observatory), "w")
-    f.write("#%s\n" %(other.replace("\n"," ")))
-    f.write("observatory = \"%s\"\n" %(observatory))
-    f.write("\tname = \"%s\"\n" %(name))
-    f.write("\tlongitude = %s\n" %(longitude))
-    f.write("\tlatitude = %s\n" %(latitude))
-    f.write("\taltitude = %s\n" %(altitude))
-    f.write("\ttimezone = %s\n" %(timeZone))
-    f.close()
-    
-    c=self.ui.listWidget_12.count()
-    for i in xrange(c):
-        self.ui.listWidget_12.takeItem(0)
-    
-    it = self.ui.listWidget_12.count()-1
-    for files in glob.glob("%s/obsdat/*" %(self.HOME)):
-        fn = ntpath.basename(str(files))
-        it = it+1
-        item = QtGui.QListWidgetItem()
-        self.ui.listWidget_12.addItem(item)
-        item = self.ui.listWidget_12.item(it)
-        item.setText(QtGui.QApplication.translate("Form", str(fn), None, QtGui.QApplication.UnicodeUTF8))
-    self.ui.listWidget_12.sortItems()
-    
-    os.popen("cat %s/obsdat/* > /iraf/iraf/noao/lib/obsdb.dat" %(self.HOME))
-        
-########################################################
-#Header Editor##########################################
-  def getHeader(self):
-    
-    img = self.ui.listWidget_9.currentItem()
-    img = img.text()
-    h = iraf.hedit(img, "*", ".", Stdout=1)
-    
-    c=self.ui.listWidget_11.count()
-    for i in xrange(c):
-        self.ui.listWidget_11.takeItem(0)
-        
-    it = self.ui.listWidget_11.count()-1
-    for i in h:
-        it = it+1
-        item = QtGui.QListWidgetItem()
-        self.ui.listWidget_11.addItem(item)
-        item = self.ui.listWidget_11.item(it)
-        item.setText(QtGui.QApplication.translate("Form", i.split(",")[1], None, QtGui.QApplication.UnicodeUTF8))
-        self.ui.comboBox.addItem(i.split(",")[1])
-        
-  def getVlueFromHeader(self):
-    hed = self.ui.listWidget_11.currentItem()
-    hed = hed.text()
-    field, val = hed.split(" = ")
-    self.ui.lineEdit.setText(QtGui.QApplication.translate("Form", str(field), None, QtGui.QApplication.UnicodeUTF8))
-    self.ui.lineEdit_2.setText(QtGui.QApplication.translate("Form", str(val), None, QtGui.QApplication.UnicodeUTF8))
-    
-  def unlockGetHeaderFromValue(self):
-    if self.ui.checkBox_5.checkState() == QtCore.Qt.Checked:
-        self.ui.lineEdit_2.setEnabled(False)
-        self.ui.comboBox.setEnabled(True)
-    else:
-        self.ui.lineEdit_2.setEnabled(True)
-        self.ui.comboBox.setEnabled(False)
-        
-  def timeStampUnlock(self):
-    if self.ui.checkBox_12.checkState() == QtCore.Qt.Checked:
-        self.ui.label_48.setText(QtGui.QApplication.translate("Form", "Time Stamp", None, QtGui.QApplication.UnicodeUTF8))
-        self.ui.label_67.setText(QtGui.QApplication.translate("Form", "Separ char", None, QtGui.QApplication.UnicodeUTF8))
-    else:
-        self.ui.label_48.setText(QtGui.QApplication.translate("Form", "Time OBS", None, QtGui.QApplication.UnicodeUTF8))
-        self.ui.label_67.setText(QtGui.QApplication.translate("Form", "Date OBS", None, QtGui.QApplication.UnicodeUTF8))
-
-  def epochUnlock(self):
-    if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
-        self.ui.lineEdit_25.setEnabled(False)
-    else:
-        self.ui.lineEdit_25.setEnabled(True)
-        
-  def unlockSBias(self):
-    if self.ui.checkBox_8.checkState() == QtCore.Qt.Checked:
-        self.ui.tabWidget_8.setTabEnabled(1,True)
-    else:
-        self.ui.tabWidget_8.setTabEnabled(1,False)
-
-  def unlockSDark(self):
-    if self.ui.checkBox_9.checkState() == QtCore.Qt.Checked:
-        self.ui.tabWidget_8.setTabEnabled(2,True)
-    else:
-        self.ui.tabWidget_8.setTabEnabled(2,False)
-
-  def unlockSFlat(self):
-    if self.ui.checkBox_10.checkState() == QtCore.Qt.Checked:
-        self.ui.tabWidget_8.setTabEnabled(3,True)
-    else:
-        self.ui.tabWidget_8.setTabEnabled(3,False)
-
-
-  def goHeaderAdd(self):
-    if self.ui.listWidget_9.count() != 0:
-        f = self.ui.lineEdit.text()
-        if str(f).strip():
-            headErr = ""
-            it = 0
-            for x in xrange(self.ui.listWidget_9.count()):
-                it = it + 1
-                img = self.ui.listWidget_9.item(x)
-                img = str(img.text())
-                field = self.ui.lineEdit.text()
-                field = str(field).strip()
-                    
-                if self.ui.checkBox_5.checkState() != QtCore.Qt.Checked:
-                    val = self.ui.lineEdit_2.text()
-                else:
-                    h = self.ui.comboBox.currentText()
-                    selectedField = h.split(" = ")[0]
-                    val = str("'(@\"%s\")'" %selectedField)
-                
-                self.ui.progressBar_4.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_9.count())))))
-                self.ui.label_41.setText(QtGui.QApplication.translate("Form", "Header: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-                    
-                if not function.headerWrite(img, field, val):
-                    headErr = "%s\n%s" %(headErr, ntpath.basename(str(img)))
-                        
-            if self.ui.listWidget_9.currentIndex():
-                self.getHeader()
-            if headErr != "" :
-                QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>hedit</b> can not handle this job for images below\n%s" %(headErr)))
-        else:
-            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please fill the \"Field\" section!"))         
-    else:
-        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some <b>images</b>."))
-    
-  def goHeaderDel(self):
-    if self.ui.listWidget_9.count() != 0:
-        f = self.ui.listWidget_11.currentItem()
-        f = f.text()
-        field = f.split(" = ")[0]
-        heErr = ""
-        it = 0
-        for x in xrange(self.ui.listWidget_9.count()):
-            it = it + 1
-            img = self.ui.listWidget_9.item(x)
-            img = str(img.text())
-            if function.headerDel(img, field):
-                self.getHeader()
+                    self.ggui.show_dialog(self, "critic", "Photometry",
+                        "Can not get file list")
             else:
-                heErr = "%s\n%s" %(heErr, ntpath.basename(str(img)))                    
-                
-            self.ui.progressBar_4.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_9.count())))))
-            self.ui.label_41.setText(QtGui.QApplication.translate("Form", "Header: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-
-        if heErr != "":
-            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>hedit</b> can not handle this job for images below\n%s" %(heErr)))
-            
-    else:
-        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some <b>images</b>."))
-########################################################
-#Pohtometry#############################################
-  def displayPhot(self):
-
-    img = self.ui.listWidget_7.currentItem()
-    img = img.text()
-    self.plotFdP.load(str(img))
-
-  def coorDel(self):
-    gui.rm(self, self.ui.listWidget_8)
-        
-  def displayCoords(self):
-    if self.ui.tabWidget.currentIndex() == 2:
-        if self.ui.listWidget_8.count() != 0:
-            self.displayPhot()
-            lNumber = 0 
-            for x in self.ui.listWidget_8.selectedItems():
-                lNumber = lNumber +1
-                coo = str(x.text())
-                print coo
-                x, y = coo.split("-")
-                mean = 0
-                ap = str(self.ui.lineEdit_15.text())
-                for ape in ap.split(","):
-                    mean = mean + int(ape)
-                Aperture = mean/len(ap.split(","))
-                Aperture = mean/len(ap.split(","))
-                circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none")                
-                circAnnulus = Circle((Aperture + self.ui.doubleSpinBox_2.value(), Aperture + self.ui.doubleSpinBox_2.value()), Aperture + self.ui.doubleSpinBox_2.value(), edgecolor="#00FFFF", facecolor="none")
-                circDannulus = Circle((Aperture + self.ui.doubleSpinBox_2.value() + self.ui.doubleSpinBox.value(), Aperture + self.ui.doubleSpinBox_2.value() + self.ui.doubleSpinBox.value()), Aperture + self.ui.doubleSpinBox_2.value() + self.ui.doubleSpinBox.value(), edgecolor="red", facecolor="none")
-                self.ui.dispPhoto.canvas.fig.gca().add_artist(circAnnulus)
-                self.ui.dispPhoto.canvas.fig.gca().add_artist(circDannulus)
-                self.ui.dispPhoto.canvas.fig.gca().add_artist(circAperture)
-                circAperture.center = x, y
-                circAnnulus.center = x, y
-                circDannulus.center = x, y
-                self.ui.dispPhoto.canvas.fig.gca().annotate(lNumber, xy = (x, y), xytext=(int(Aperture/3),int(Aperture/3)), textcoords='offset points', color = "blue", fontsize = 10)
-            self.ui.dispPhoto.canvas.draw()
-    #hela vela vel vela
-    elif self.ui.tabWidget.currentIndex() == 5:
-        if self.ui.listWidget_17.count() != 0:
-            self.displayScheduler()
-            lNumber = 0 
-            for x in xrange(self.ui.listWidget_17.count()):
-                lNumber = lNumber +1
-                coo = self.ui.listWidget_17.item(x)
-                coo = str(coo.text())
-                print coo
-                x, y = coo.split("-")
-                mean = 0
-                ap = str(self.ui.lineEdit_15.text())
-                for ape in ap.split(","):
-                    mean = mean + int(ape)
-                Aperture = mean/len(ap.split(","))
-                Aperture = mean/len(ap.split(","))
-                circAperture = Circle((Aperture, Aperture), Aperture, edgecolor="#00FF00", facecolor="none")                
-                circAnnulus = Circle((Aperture + self.ui.doubleSpinBox_2.value(), Aperture + self.ui.doubleSpinBox_2.value()), Aperture + self.ui.doubleSpinBox_2.value(), edgecolor="#00FFFF", facecolor="none")
-                circDannulus = Circle((Aperture + self.ui.doubleSpinBox_2.value() + self.ui.doubleSpinBox.value(), Aperture + self.ui.doubleSpinBox_2.value() + self.ui.doubleSpinBox.value()), Aperture + self.ui.doubleSpinBox_2.value() + self.ui.doubleSpinBox.value(), edgecolor="red", facecolor="none")
-                self.ui.dispSched.canvas.ax.add_artist(circAnnulus)
-                self.ui.dispSched.canvas.ax.add_artist(circDannulus)
-                self.ui.dispSched.canvas.ax.add_artist(circAperture)
-                circAperture.center = x, y
-                circAnnulus.center = x, y
-                circDannulus.center = x, y
-                self.ui.dispSched.canvas.ax.annotate(lNumber, xy = (x, y), xytext=(int(Aperture/3),int(Aperture/3)), textcoords='offset points', color = "blue", fontsize = 10)
-            self.ui.dispSched.canvas.draw()
-            
-  def goPhot(self):
-    if self.ui.listWidget_7.count() != 0:
-        if self.ui.listWidget_8.count() != 0:
-            gui.logging(self, "-- %s - phot started." %(datetime.datetime.utcnow()))
-            f = open("%s/tmp/pc" %(self.HOME), "w")
-            for x in xrange(self.ui.listWidget_8.count()):
-                coo = self.ui.listWidget_8.item(x)
-                coo = str(coo.text())
-                coo = coo.replace("-", " ")
-                f.write("%s\n" %(coo))
-            f.close()
-            
-            exp = self.ui.lineEdit_13.text()
-            fil = self.ui.lineEdit_14.text()
-            ann = self.ui.doubleSpinBox_2.value()
-            dan = self.ui.doubleSpinBox.value()
-            cbo = self.ui.doubleSpinBox_3.value()
-            ape = self.ui.lineEdit_15.text()
-            zma = self.ui.lineEdit_16.text()
-            obs = self.ui.lineEdit_18.text()
-            print(obs)
-            obt = self.ui.lineEdit_17.text()
-            obd = self.ui.lineEdit_24.text()
-            ra = self.ui.lineEdit_22.text()
-            dec = self.ui.lineEdit_23.text()
-            epo = self.ui.lineEdit_25.text()
-            gai = self.ui.lineEdit_26.text()
-            
-            apert = self.ui.lineEdit_15.text()
-            staCount = self.ui.listWidget_8.count()
-            
-            ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save MYRaf file', 'res.my', 'my (*.my)')
-            itExt = 0
-            extFie = ""
-            for ext in xrange(self.ui.listWidget_20.count()):
-                itExt = itExt + 1
-                fie = self.ui.listWidget_20.item(ext)
-                fie = str(fie.text())
-                extFie = "%s\t%s" %(extFie, fie)
-                
-            if ofile != "":
-                if os.path.exists(ofile):
-                    os.popen("rm %s" %(ofile))
-                f = open(ofile, "w")
-                f.write("# STAR = %s\n" %(str(staCount)))
-                f.write("# APERTURE = %s\n" %(str(apert)))
-                f.write("# DO NOT EDIT PARAMETRES ABOVE. You can add comments starts with '#' below ths line.\n")
-                f.write("# If you don't have any experience before, DO NOT EDIT THIS FILE!\n")
-                f.write("# id\tTIME\tMAG%s\tMERR%s\tAIRMASS%s\n" %(self.ui.lineEdit_15.text().replace(",","\tMAG"), self.ui.lineEdit_15.text().replace(",","\tMERR"), extFie))
-                f.close()
-                it = 0
-                err = ""
-                errJD = ""
-                errSid = ""
-                errAir = ""
-                errTM = ""
-                errOB = ""
-                errORA = ""
-                errODEC = ""
-                errdt = ""
-                errOBSERVAT = ""
-                errEpoch = ""
-                obsOK = False
-                for x in xrange(self.ui.listWidget_7.count()):
-                    it = it + 1
-                    img = self.ui.listWidget_7.item(x)
-                    img = str(img.text())
-                    if self.ui.checkBox_12.isChecked():
-                        function.headerWrite(img, "MYDate", function.headerRead(img, self.ui.lineEdit_17.text()).split(self.ui.lineEdit_24.text())[0])
-                        function.headerWrite(img, "MYTime", function.headerRead(img, self.ui.lineEdit_17.text()).split(self.ui.lineEdit_24.text())[1])
-                        obt = "MYTime"
-                        obd = "MYDate"
-                    tm = function.headerRead(img, obt)
-                    ob = function.headerRead(img, obs)
-                    dt = function.headerRead(img, obd)
-                    ora = function.headerRead(img, ra)
-                    odec = function.headerRead(img, dec)
-                    observatory = function.headerRead(img, obs)
-                    if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
-                        epo = function.epoch(img, obd, obt)
-                        if epo == False:
-                            errEpoch = "%s\n%s" %(errEpoch, img)
-                        else:
-                            function.headerWrite(img, "epoch", epo)
-                        
-                    function.headerWrite(img, "epoch", epo)
-                    if errEpoch == "":
-                        obsFiles = glob.glob("%s/obsdat/*" %(self.HOME))
-                        for i in obsFiles:
-                            if i.replace("%s/obsdat/" %(self.HOME),"").lower() == ob.lower():
-                                obsOK = True
-                        if obsOK:
-                            if dt !="":
-                                if ob !="":
-                                    if tm != "":
-                                        if ora != "":
-                                            if odec != "":
-                                                if function.JD(img, str(obs), str(obd), str(obt), str(ra), str(dec), str("epoch"), str(exp)):
-                                                    if function.sideReal(self, img, ob, obd, obt):
-                                                        if function.airmass(img, observatory, ra, dec, "epoch", "st", obt, obd, exp):
-                                                            if function.phot(self, img, "%s/tmp/analyzed/" %(self.HOME), "%s/tmp/pc" %(self.HOME), expTime = exp, Filter = fil, centerBOX = cbo, annulus = ann, dannulus = dan, apertur = ape, zmag = zma, gain = gai):
-                                                                if function.txDump("%s/tmp/analyzed/%s.mag.1"  %(self.HOME, ntpath.basename(img)), "%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(img))):
-                                                                    #os.popen("echo '#ap=%s'"%(str()))
-                                                                    itExt = 0
-                                                                    val = ""
-                                                                    for ext in xrange(self.ui.listWidget_20.count()):
-                                                                        itExt = itExt + 1
-                                                                        fie = self.ui.listWidget_20.item(ext)
-                                                                        fie = str(fie.text())
-                                                                        val = "%s\t%s" %(val, function.headerRead(img, fie))
-                                                                    v = open("%s/tmp/analyzed/%s"  %(self.HOME, ntpath.basename(img)), 'r')
-                                                                    res = open(ofile, 'a')
-                                                                    for r in v:
-                                                                        r = r.replace("\n","")
-                                                                        res.write("%s%s\n" %(r, val))
-                                                                    res.close()
-                                                                    v.close()
-                                                                    os.popen("rm %s/tmp/analyzed/%s" %(self.HOME, ntpath.basename(img)))
-                                                            else:
-                                                                err = "%s\n%s" %(err, ntpath.basename(img))
-                                                        else:
-                                                            errAir = "%s\n%s" %(errAir, ntpath.basename(img))
-                                                    else:
-                                                        errSid = "%s\n%s" %(errSid, ntpath.basename(img))
-                                                else:
-                                                    errJD = "%s\n%s" %(errJD, ntpath.basename(img))
-                                            else:
-                                                errODEC = "%s\n%s" %(errODEC, ntpath.basename(img))
-                                        else:
-                                            errORA = "%s\n%s" %(errORA, ntpath.basename(img))
-                                    else:
-                                        errTM = "%s\n%s" %(errTM, ntpath.basename(img))
-                                else:
-                                    errOB = "%s\n%s" %(errOB, ntpath.basename(img))
-                            else:
-                                errdt = "%s\n%s" %(errdt, ntpath.basename(img))
-                        else:
-                            errOBSERVAT = "%s\n%s" %(errOBSERVAT, ntpath.basename(img))
-                    self.ui.progressBar_5.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_7.count())))))
-                    self.ui.label_14.setText(QtGui.QApplication.translate("Form", "Photometry: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-                if errOBSERVAT != "":
-                    errOBSERVAT = "Can't find Observatory in obsdb for images below:\nYou can add your observatory using editor.\n%s" %(errOBSERVAT)
-                    self.dispErr(errOBSERVAT)
-                    
-                if errTM != "":
-                    errTM = "No %s header on images below:\n%s" %(obt, errTM)
-                    self.dispErr(errTM)
-                if errEpoch != "":
-                    errEpoch = "Time format is not correct for images below:\nYou can change value from header or choose manual epoch from setting tab.\n%s" %(errEpoch)
-                    self.dispErr(errEpoch)
-                if errOB != "":
-                    errOB = "No %s header on images below:\n%s" %(obs, errOB)
-                    self.dispErr(errOB)
-                if errORA != "":
-                    errORA = "No %s header on images below:\n%s" %(ra, errORA)
-                    self.dispErr(errORA)
-                if errODEC != "":
-                    errODEC = "No %s header on images below:\n%s" %(dec, errODEC)
-                    self.dispErr(errODEC)
-                if errdt != "":
-                    errdt = "No %s header on images below:\n%s" %(obd, errdt)
-                    self.dispErr(errdt)
-                if errJD != "":
-                    errJD = "Due to an error setjd can not handle images below:\n%s." %(errJD)
-                    self.dispErr(errJD)
-                if errSid != "":
-                    errSid = "Due to an error can not calculate sidereal time for images below:\n%s." %(errSid)
-                    self.dispErr(errSid)
-                if errAir != "":
-                    errAir = "Due to an error setairmass can not handle images below:\n%s." %(errAir)
-                    self.dispErr(errAir)
-                if err != "":
-                    err = "Due to an error phot can not handle images below:\n%s." %(err)
-                    self.dispErr(err)
-                
+                self.ggui.show_dialog(self, "critic", "Photometry",
+                    "Add some files first")
         else:
-            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select some <b>sources</b>."))
-    else:
-        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>image</b> for Photometry."))
-        
-########################################################
-#Manual Align############################################
-  def displayManAlign(self):
-    img = self.ui.listWidget_6.currentItem()
-    img = img.text()
-    self.plotFdM.load(str(img))
-    c = function.headerRead(img, "MYRAFCOR")
-    print c
-    coors = function.headerRead(img, "MYRafCor")
-    self.ui.label_11.setText(QtGui.QApplication.translate("Form", "%s" %(coors), None, QtGui.QApplication.UnicodeUTF8))
+            self.ggui.show_dialog(self, "critic", "Photometry",
+                "Can not get file count")
 
-  def goManAlign(self):
-    if self.ui.listWidget_6.count() != 0:
-        if self.ui.listWidget_6.currentItem() != None:
-            img = self.ui.listWidget_6.currentItem()
-            img = img.text()
-            coorRef = function.headerRead(img, "MYRafCor").split("-")
-            if str(coorRef) != "['']":
-                xref = coorRef[0]
-                yref = coorRef[1]
-                odir = QtGui.QFileDialog.getExistingDirectory( self, 'Select Directory to Save Aligned File(s)')
-                if os.path.exists(odir):
-                    it = 0
-                    err = ""
-                    for x in xrange(self.ui.listWidget_6.count()):
-                        it = it + 1
-                        img = self.ui.listWidget_6.item(x)
-                        img = str(img.text())
-                        self.ui.label_10.setText(QtGui.QApplication.translate("Form", "Aligning: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-                        ofile = "%s/%s" %(odir, ntpath.basename(str(img)))
-                        coorImg = function.headerRead(img, "MYRafCor").split("-")
-                        if str(coorImg) != "['']":
-                            ximg = coorImg[0]
-                            yimg = coorImg[1]
-                            x = float(xref) - float(ximg)
-                            y = float(yref) - float(yimg)
-                            print x, y
-                            if not function.manAlign(img, x, y, ofile):
-                                err = "%s, %s" %(err, ntpath.basename(str(img)))
-                                gui.logging(self, "--- %s - imshift failed." %(datetime.datetime.utcnow()))
-                        self.ui.label_10.setText(QtGui.QApplication.translate("Form", "Aligning:%s" %(ntpath.basename(img)), None, QtGui.QApplication.UnicodeUTF8))
-                        self.ui.progressBar_3.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_6.count())))))
-                    if err!="":
-                        err = "Due to an error imshift can not align images below\n%s." %(err)
-                        self.dispErr(err)
+        if do_phot:
+            print "Do the harlem shake"
+
+    def show_phot_source_stats(self):
+        coors = self.phot_r_click_coor
+        file_name = self.ggui.get_item_from_list(self.ui.listWidget_3)
+        if file_name[0]:
+            stats = self.mfst.get_stats_object(file_name[1], coors)
+            if stats[0]:
+                self.ggui.show_dialog(self, "info", "Statics For Object",
+                    "File: %s\nx:%s, y:%s\nFWHM:%s" % (file_name[1],
+                    stats[1][0], stats[1][1], stats[1][2]))
+                use_it = self.ggui.show_are_you_sure(self,
+                    "Do you want me to use FWHM*2.5 as Aperture?")
+                if use_it:
+                    self.ui.lineEdit_35.setText("%s,%s,%s" % (
+                        int(abs(-5 + stats[1][2] * 2.5)),
+                        int(abs(stats[1][2] * 2.5)),
+                        int(abs(5 + stats[1][2] * 2.5))))
             else:
-                QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select coordinates for reference image."))
+                self.ggui.show_dialog(self, "critic",
+                    "Photometry", "Can not get statistics")
         else:
-            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select a reference image first."))
-    else:
-        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please add some <b>Image</b> files."))
-    
-########################################################
-  def mouseClick(self, event):
-    if self.ui.tabWidget.currentIndex() == 1:
-        if self.ui.tabWidget_3.currentIndex() == 1:
-            if self.ui.checkBox_6.isChecked():
-                if event.ydata != None and event.xdata != None:
-                    rows = self.ui.listWidget_6.count()
-                    row = self.ui.listWidget_6.currentRow()
-                    img = self.ui.listWidget_6.currentItem()
-                    img = img.text()
-                    height = function.headerRead(img, "i_naxis2")
+            self.ggui.show_dialog(self, "critic",
+                "Photometry", "Can not get file")
+
+    def auto_source_finder(self):
+        count = 25
+        set_file_name = self.current_set_file_name()
+        if set_file_name[0]:
+            current_set_file = "./sessions/%s.set" % (set_file_name[1])
+            stfn_set = self.fset.read_settings_phot_starfind(current_set_file)
+            count = float(stfn_set[1]["phot_stfi_mstf"])
+
+        file_name = self.ggui.get_item_from_list(self.ui.listWidget_3)
+        if file_name[0]:
+            src = self.mfst.get_sources(file_name[1], count=count)
+            if src[0]:
+                send_it = []
+                for i in src[1]:
+                    send_it.append("%s - %s - %s" % (i[2], i[0], i[1]))
+                self.show_error_form(title="Detected Objects",
+                    owner="Photometry", disp=send_it)
+            else:
+                self.ggui.show_dialog(self, "critic",
+                    "Photometry", "Auto Source Finder Failed")
+        else:
+            self.ggui.show_dialog(self, "critic",
+                "Photometry", "Can not get file")
+
+    def display_phot_coor(self):
+        file_name = self.ggui.get_item_from_list(self.ui.listWidget_3)
+        if file_name[0]:
+            self.display_ph()
+            coors_count = self.ggui.get_count_of_list(self.ui.listWidget_4)
+            if coors_count[0]:
+                if coors_count[1] > 0:
+                    coors = self.ggui.get_selected_items_from_list(
+                        self.ui.listWidget_4)
+                    if coors[0]:
+                        set_file_name = self.current_set_file_name()
+                        if set_file_name[0]:
+                            current_set_file = "./sessions/%s.set" % (
+                                set_file_name[1])
+                            phot_set = self.fset.read_settings_phot_photpar(
+                                current_set_file)
+                            app = 20.0
+                            if phot_set[0]:
+                                appers = phot_set[1]["phot_php_aper"].split(",")
+                                all_appers = 0
+                                for i in appers:
+                                    all_appers = all_appers + float(i)
+                                app = all_appers / len(appers)
+
+                            phot_set = self.fset.read_settings_phot_fitskypar(
+                                current_set_file)
+                            ann = 25
+                            dan = 5
+                            if phot_set[0]:
+                                ann = float(phot_set[1]["phot_fsp_annu"])
+                                dan = float(phot_set[1]["phot_fsp_dann"])
+                            it = 0
+                            for i in coors[1]:
+                                it = it + 1
+                                x = float(i.split(" - ")[0])
+                                y = float(i.split(" - ")[1])
+                                self.ggui.draw_a_circle(self.ui.disp_phot, x, y,
+                                    app, "#ffff00")
+                                self.ggui.draw_a_circle(self.ui.disp_phot, x, y,
+                                    app + ann, "#ff00ff")
+                                self.ggui.draw_a_circle(self.ui.disp_phot, x, y,
+                                    app + ann + dan, "#00ffff", label=it)
+                                self.ui.progressBar_4.setValue(
+                                    self.ggui.calc_percentage(
+                                        it, len(coors[1])))
+        self.ui.progressBar_4.setValue(0)
+
+    def get_phot_coors(self, event):
+        if event.button == 1:
+            if event.ydata is not None and event.xdata is not None:
+                file_name = self.ggui.get_item_from_list(self.ui.listWidget_3)
+                if file_name[0]:
                     x = event.xdata
                     y = event.ydata
-                    function.headerWrite(img, "MYRafCor", "%s-%s" %(str(x), str(y)))
-                    if row < rows-1:
-                        self.ui.listWidget_6.setCurrentRow(row+1)
-                    else:
-                        self.ui.listWidget_6.setCurrentRow(0)
-                    self.displayManAlign()
-    elif self.ui.tabWidget.currentIndex() == 2:
-        if self.ui.checkBox_7.isChecked():      
-            #print event.ydata
-            if event.ydata != None and event.xdata != None:
-                self.ui.listWidget_8.addItem(str(format(event.xdata, '.4f')) + " - " + str(format(event.ydata, '.4f')))
-    elif self.ui.tabWidget.currentIndex() == 5:
-        if self.ui.groupBox_29.isChecked(): 
-            #print event.ydata
-            if event.ydata != None and event.xdata != None:
-                self.ui.listWidget_17.addItem(str(format(event.xdata, '.4f')) + " - " + str(format(event.ydata, '.4f')))
-                self.displayCoords()
-
-#Auto Align#############################################
-  def findStars(self):
-    if self.ui.tabWidget.currentIndex() == 2:
-        if self.ui.listWidget_7.currentItem():
-            if self.ui.doubleSpinBox_5.value() > self.ui.doubleSpinBox_6.value():
-                QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("<b>Min FWHM</b> can not be bigger than <b>Max FWHM</b>"))
-            else:
-                img = self.ui.listWidget_7.currentItem()
-                img = str(img.text())
-                
-                minFWHM = self.ui.doubleSpinBox_5.value()
-                maxFWHM = self.ui.doubleSpinBox_6.value()
-                FluxRadi = self.ui.doubleSpinBox_4.value()
-                maxStar = int(self.ui.doubleSpinBox_7.value())                
-                
-                sex = runSex(img)
-                stars = sex.run(FluxRadi, minFWHM, maxFWHM, maxStar)
-                
-                c=self.ui.listWidget_8.count()
-                for i in xrange(c):
-                    self.ui.listWidget_8.takeItem(0)
-                
-                it = -1
-                for x in stars:
-                    it = it+1
-                    coo = "%s-%s" %(x[0],x[1])
-                    item = QtGui.QListWidgetItem()
-                    self.ui.listWidget_8.addItem(item)
-                    item = self.ui.listWidget_8.item(it)
-                    item.setText(QtGui.QApplication.translate("Form", coo, None, QtGui.QApplication.UnicodeUTF8))
-
-  def displayAutAlign(self):
-    gui.logging(self, "-- %s - image conversion started." %(datetime.datetime.utcnow()))
-    img = self.ui.listWidget_5.currentItem()
-    img = img.text()
-    self.plotFdA.load(str(img))
-
-  def goAutAlign(self):
-    if self.ui.listWidget_5.count() != 0:
-        if self.ui.listWidget_5.currentItem() != None:
-            gui.logging(self, "-- %s - AutoAlign started." %(datetime.datetime.utcnow()))
-            ref = self.ui.listWidget_5.currentItem()
-            ref = str(ref.text())
-            it = 0
-            odir = QtGui.QFileDialog.getExistingDirectory( self, 'Select Directory to Save Aligned File(s)')
-            if os.path.exists(odir):
-                aliErr = ""
-                for x in xrange(self.ui.listWidget_5.count()):
-                    it = it + 1
-                    img = self.ui.listWidget_5.item(x)
-                    img = str(img.text())
-                    self.ui.label_7.setText(QtGui.QApplication.translate("Form", "Aligning: %s" %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-                    if not function.autoAlign(self, img, ref, odir):
-                        aliErr = "%s, %s" %(aliErr, ntpath.basename(str(img)))
-                        gui.logging(self, "--- %s - alipy failed." %(datetime.datetime.utcnow()))
-                    self.ui.progressBar_2.setProperty("value", math.ceil(100*(float(float(it)/float(self.ui.listWidget_5.count())))))
-                    os.popen("rm -rf %s/alipy_cats/ %s/alipy_out/" %(self.HOME, self.HOME))
-                gui.logging(self, "-- %s - AutoAlign finished aligning." %(datetime.datetime.utcnow()))
-                if aliErr != "":
-                    QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>alipy</b> can not align images below\n%s") %(aliErr))
-
+                    coor_line = "%s - %s" % (x, y)
+                    self.ggui.set_values_to_list(
+                        self, self.ui.listWidget_4, [coor_line])
         else:
-            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please select a <b>reference image</b> first."))
-    else:
-        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Please add some <b>Image</b> files."))
-########################################################
-#Calibration############################################
-  def calib(self):
-    if self.ui.listWidget.count() != 0:
-        if self.ui.checkBox.checkState() != QtCore.Qt.Checked and self.ui.checkBox_2.checkState() != QtCore.Qt.Checked and self.ui.checkBox_3.checkState() != QtCore.Qt.Checked:
-            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Nothing to do!"))
-        else:
-            gui.logging(self, "-- %s - Calibration started." %(datetime.datetime.utcnow()))
-            go = True
-            
-            os.popen("rm -rf %s/tmp/dark.fits %s/tmp/dark.fits %s/tmp/flat_*.fits" %(self.HOME, self.HOME, self.HOME))
-                
-            b, d, f="","",""
-            if self.ui.checkBox.checkState() == QtCore.Qt.Checked and self.ui.listWidget_2.count() == 0: b = "Bias\n"
-            if self.ui.checkBox_2.checkState() == QtCore.Qt.Checked and self.ui.listWidget_3.count() == 0: d = "Dark\n"
-            if self.ui.checkBox_3.checkState() == QtCore.Qt.Checked and self.ui.listWidget_4.count() == 0: f = "Flat\n"
-            
-            sname = self.ui.lineEdit_14.text()
-            
-            if b != "" or d != "" or f != "":
-                QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Add file(s) to\n%s%s%s" %(b,d,f)))
+            x = event.xdata
+            y = event.ydata
+            self.phot_r_click_coor = [x, y]
+
+    def display_ph(self):
+        file_name = self.ggui.get_item_from_list(self.ui.listWidget_3)
+        if file_name[0]:
+            self.ggui.display(str(file_name[1]), self.phot_disp)
+
+        self.update_info()
+
+    def auto_align(self):
+        file_count = self.ggui.get_count_of_list(self.ui.listWidget)
+        if file_count[0]:
+            if file_count[1] > 0:
+                file_list = self.ggui.get_all_items_from_list(
+                    self.ui.listWidget)
+                if file_list[0]:
+                    ref_image = self.ggui.get_current_item_from_list(
+                        self.ui.listWidget)
+                    if ref_image[0]:
+                        failed_files = []
+                        it = 0
+                        out_dir = self.ggui.get_folder(self)
+                        if out_dir[0]:
+                            for i in file_list[1]:
+                                it = it + 1
+                                if not self.mffo.auto_align(str(i),
+                                    str(ref_image[1]), str(out_dir[1])):
+                                    failed_files.append(
+                                        "Can not align file(%s)" % (i))
+                                self.ui.label_2.setText(i)
+                                self.ui.progressBar_2.setValue(
+                                    self.ggui.calc_percentage(
+                                        it, file_count[1]))
+                            if not len(failed_files) == 0:
+                                self.show_error_form(title="Error",
+                                    owner="%s - %s" % ("Manual Align",
+                                        "Failed with files below"),
+                                            disp=failed_files)
+                            self.ui.progressBar_2.setValue(0)
+
+                    else:
+                        self.ggui.show_dialog(self, "critic", "Auto Align",
+                            "Please select a reference image")
+                else:
+                    self.ggui.show_dialog(self, "critic", "Auto Align",
+                        "Can not get file list")
             else:
-                print "basla"
-                zeroFilePath, darkFilePath, flatFilePath = "", "", ""
-                
-                if self.ui.checkBox.checkState() == QtCore.Qt.Checked:
-                    self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Bias.", None, QtGui.QApplication.UnicodeUTF8))
-                    gui.logging(self, "--- %s - zerocombine started for calibration." %(datetime.datetime.utcnow()))
-                    lst = gui.lisFromLW(self, self.ui.listWidget_2)
-                    gui.list2file(lst, "%s/tmp/zeroLST" %(self.HOME))
-                    comb = self.ui.comboBox_4.currentText()
-                    rejb = self.ui.comboBox_5.currentText()
-                    ctyb = self.ui.lineEdit_10.text()
-                    if not function.zeroCombine("%s/tmp/zeroLST" %(self.HOME), "%s/tmp/zero.fits" %(self.HOME), com=comb, rej=rejb, cty=ctyb):
-                        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>zerocombine</b> can not handle this job."))
-                        gui.logging(self, "--- %s - zerocombine failed." %(datetime.datetime.utcnow()))
-                    else:
-                        gui.logging(self, "--- %s - zerocombine succeed." %(datetime.datetime.utcnow()))
-                        zeroFilePath = "%s/tmp/zero.fits"  %(self.HOME)
-                    os.popen("rm -rf %s/tmp/zeroLST"  %(self.HOME))
-                
-                if self.ui.checkBox_2.checkState() == QtCore.Qt.Checked:
-                    self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Dark.", None, QtGui.QApplication.UnicodeUTF8))
-                    gui.logging(self, "--- %s - darkcombine started for calibration." %(datetime.datetime.utcnow()))
-                    lst = gui.lisFromLW(self, self.ui.listWidget_3)
-                    gui.list2file(lst, "%s/tmp/darkLST" %(self.HOME))
-                    comd = self.ui.comboBox_4.currentText()
-                    rejd = self.ui.comboBox_5.currentText()
-                    scld = self.ui.comboBox_8.currentText()
-                    ctyd = self.ui.lineEdit_10.text()
-                    if not function.darkCombine("%s/tmp/darkLST" %(self.HOME), "%s/tmp/dark.fits" %(self.HOME), com=comd, rej=rejd, cty=ctyd, scl=scld):
-                        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>darkcombine</b> can not handle this job."))
-                        gui.logging(self, "--- %s - darkcombine failed." %(datetime.datetime.utcnow()))
-                    else:
-                        gui.logging(self, "--- %s - darkcombine succeed." %(datetime.datetime.utcnow()))
-                        darkFilePath = "%s/tmp/dark.fits" %(self.HOME)
-                    os.popen("rm -rf %s/tmp/darkLST" %(self.HOME))
-            
-                if self.ui.checkBox_3.checkState() == QtCore.Qt.Checked:
-                    self.ui.label.setText(QtGui.QApplication.translate("Form", "Creating Masster Flat.", None, QtGui.QApplication.UnicodeUTF8))
-                    gui.logging(self, "--- %s - flatcombine started for calibration." %(datetime.datetime.utcnow()))
-                    lst = gui.lisFromLW(self, self.ui.listWidget_4)
-                    gui.list2file(lst, "%s/tmp/flatLST" %(self.HOME))
-                    comf = self.ui.comboBox_6.currentText()
-                    rejf = self.ui.comboBox_7.currentText()
-                    subf = self.ui.comboBox_10.currentText()
-                    ctyf = self.ui.lineEdit_11.text()
-                    
-                    f = open("%s/tmp/flatLST" %(self.HOME), "r")
-                    it = 0
-                    
-                    for i in f:
-                        fn = i.replace("\n","")
-                        if function.headerRead(fn,sname) == "":
-                            it = it + 1
-                    f.close()
-                    
-                    if subf == "yes" and it != 0:
-                        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no <b>%s</b> field in header.\nAdd <b>%s</b> field to headers." %(sname, sname)))
-                        go = False
-                    else:
-                        function.headerWrite("@%s/tmp/flatLST" %(self.HOME), "subset", str("'(@\"%s\")'" %sname))
-                        if not function.flatCombine("%s/tmp/flatLST" %(self.HOME), "%s/tmp" %(self.HOME), com=comf, rej=rejf, cty=ctyf, sub=subf):
-                            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>flatcombine</b> can not handle this job."))
-                            gui.logging(self, "--- %s - flatcombine failed." %(datetime.datetime.utcnow()))
+                self.ggui.show_dialog(self, "critic", "Auto Align",
+                    "Add some files first")
+        else:
+            self.ggui.show_dialog(self, "critic", "Auto Align",
+                "Can not get file count")
+
+    def manual_align(self):
+        file_count = self.ggui.get_count_of_list(self.ui.listWidget_2)
+        if file_count[0]:
+            if file_count[1] > 0:
+                file_list = self.ggui.get_all_items_from_list(
+                    self.ui.listWidget_2)
+                if file_list[0]:
+                    ref_image = self.ggui.get_current_item_from_list(
+                        self.ui.listWidget_2)
+                    if ref_image[0]:
+                        ref_coor = self.mfho.get_header(ref_image[1], "MYCOOR")
+                        if ref_coor[0]:
+                            x_ref, y_ref = ref_coor[1].replace(
+                                "\"", "").split("-")
+                            x_ref = float(x_ref)
+                            y_ref = float(y_ref)
+                            it = 0
+                            failed_files = []
+                            out_dir = self.ggui.get_folder(self)
+                            if out_dir[0]:
+                                for i in file_list[1]:
+                                    pfn = self.mefo.get_base_name(i)
+                                    if pfn:
+                                        it = it + 1
+                                        coor = self.mfho.get_header(i, "MYCOOR")
+                                        if coor[0]:
+                                            x, y = coor[1].replace(
+                                                "\"", "").split("-")
+                                            x = float(x)
+                                            y = float(y)
+
+                                            x_diif = x_ref - x
+                                            y_diif = y_ref - y
+
+                                            if not self.mffo.manual_align(i,
+                                                x_diif, y_diif, "%s/%s" %
+                                                (out_dir[1], pfn[1][1])):
+                                                failed_files.append(
+                                                    "Can not align dile(%s)" % (
+                                                        i))
+                                        else:
+                                            failed_files.append(
+                                                "No coor found for file(%s)" % (
+                                                    i))
+                                    self.ui.label_4.setText(i)
+                                    self.ui.progressBar_3.setValue(
+                                        self.ggui.calc_percentage(
+                                            it, file_count[1]))
+
+                                if not len(failed_files) == 0:
+                                    self.show_error_form(title="Error",
+                                        owner="%s - %s" % ("Manual Align",
+                                            "Failed with files below"),
+                                                disp=failed_files)
+                                self.ui.progressBar_3.setValue(0)
+
                         else:
-                            gui.logging(self, "--- %s - flatcombine succeed." %(datetime.datetime.utcnow()))
-                            flatFilePath = "%s/tmp/flat_*.fits" %(self.HOME)
-                        os.popen("rm -rf %s/tmp/flatLST" %(self.HOME))
-                
-                if go:  
-                    odir = QtGui.QFileDialog.getExistingDirectory(self, 'Select Directory to Save calibrated files')
-                    err = ""
-                    errs = ""
-                    subc = self.ui.comboBox_10.currentText()
-                    ctyc = self.ui.lineEdit_12.text()
-                    if os.path.isdir(odir):
-                        pit = 0
-                        gui.logging(self, "--- %s - ccdproc started for calibration." %(datetime.datetime.utcnow()))
-                        for x in xrange(self.ui.listWidget.count()):
-                            pit = pit + 1
-                            ln = self.ui.listWidget.item(x)
-                            img = ln.text()
-                            if function.headerRead(img, sname) == "" and subc == "yes":
-                                errs = "%s, %s" %(errs, ntpath.basename(str(img)))
-                            else:
-                                function.headerWrite(img, "subset", str("'(@\"%s\")'" %sname))
-                                if not function.calibration(img, zeroFilePath, darkFilePath, flatFilePath, odir, sub=subc, cty=ctyc):
-                                    err = "%s, %s" %(err, ntpath.basename(str(img)))
-                            self.ui.label.setText(QtGui.QApplication.translate("Form", "Calibration: %s." %(ntpath.basename(str(img))), None, QtGui.QApplication.UnicodeUTF8))
-                            self.ui.progressBar.setProperty("value", math.ceil(100*(float(float(pit)/float(self.ui.listWidget.count())))))
-                        
-                        if err != "":
-                            err = "ccdproc failed on:\n%s" %(err)
-                            self.dispErr(err)
-                        if errs:
-                            errs = "Images below have no %s field in header:\n%s" %(sname, errs)
-                            self.dispErr(errs)
-                        
-                        gui.logging(self, "--- %s - ccdproc finished calibration." %(datetime.datetime.utcnow()))
-                        os.popen("rm -rf %s/tmp/flatLS %s/tmp/zeroLST %s/tmp/darkLST %s %s %s" %(self.HOME, self.HOME, self.HOME, zeroFilePath, darkFilePath, flatFilePath))
-    else:
-        QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("No <b>image</b> to calibrate."))
-########################################################
-#Create master files####################################
-  def masterZero(self):
-    gui.logging(self, "-- %s - zerocombine started." %(datetime.datetime.utcnow()))
-    lst = gui.lisFromLW(self, self.ui.listWidget_2)
-    gui.list2file(lst, "%s/tmp/zeroLST" %(self.HOME))
-    ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save Master Bias file', 'zero.fits', 'Fit or Fits (*.fits *.fit)')
-    if ofile != "":
-        com = self.ui.comboBox_2.currentText()
-        rej = self.ui.comboBox_3.currentText()
-        cty = self.ui.lineEdit_9.text()
-        if not function.zeroCombine("%s/tmp/zeroLST" %(self.HOME), ofile, com=com, rej=rej, cty=cty):
-            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>zerocombine</b> can not handle this job."))
-            gui.logging(self, "-- %s - zerocombine failed." %(datetime.datetime.utcnow()))
-        else:
-            gui.logging(self, "-- %s - zerocombine succeed." %(datetime.datetime.utcnow()))
-    os.popen("rm -rf %s/tmp/zeroLST" %(self.HOME))
+                            self.ggui.show_dialog(self, "critic",
+                                "Manual Align",
+                                "Can not get referance image's coordinates")
+                    else:
+                        self.ggui.show_dialog(self, "critic",
+                            "Manual Align", "Select a reference image first!")
 
-  def masterDark(self):
-    gui.logging(self, "-- %s - darkcombine started." %(datetime.datetime.utcnow()))
-    lst = gui.lisFromLW(self, self.ui.listWidget_3)
-    gui.list2file(lst, "%s/tmp/darkLST" %(self.HOME))
-    ofile = QtGui.QFileDialog.getSaveFileName( self, 'Save Master Dark file', 'dark.fits', 'Fit or Fits (*.fits *.fit)')
-    if ofile != "":
-        com = self.ui.comboBox_4.currentText()
-        rej = self.ui.comboBox_5.currentText()
-        scl = self.ui.comboBox_8.currentText()
-        cty = self.ui.lineEdit_10.text()
-        if not function.darkCombine("%s/tmp/darkLST" %(self.HOME), ofile, com=com, rej=rej, cty=cty, scl=scl):
-            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>darkcombine</b> can not handle this job."))
-            gui.logging(self, "-- %s - darkcombine failed." %(datetime.datetime.utcnow()))
-        else:
-            gui.logging(self, "-- %s - darkcombine succeed." %(datetime.datetime.utcnow()))
-    os.popen("rm -rf %s/tmp/darkLST" %(self.HOME))
-        
-  def masterFlat(self):
-    gui.logging(self, "-- %s - flatcombine started." %(datetime.datetime.utcnow()))
-    lst = gui.lisFromLW(self, self.ui.listWidget_4)
-    gui.list2file(lst, "%s/tmp/flatLST" %(self.HOME))
-    odir = QtGui.QFileDialog.getExistingDirectory( self, 'Select Directory to Save Flat(s)')
-    f = open("%s/tmp/flatLST" %(self.HOME), "r")
-    it = 0
-    sname = self.ui.lineEdit_14.text()
-    
-    for i in f:
-        fn = i.replace("\n","")
-        if function.headerRead(fn,sname) == "":
-            it = it + 1
-    f.close()
-    
-    com = self.ui.comboBox_6.currentText()
-    rej = self.ui.comboBox_7.currentText()
-    sub = self.ui.comboBox_9.currentText()
-    cty = self.ui.lineEdit_11.text()
-    
-    if os.path.isdir(odir):
-        if sub == "yes" and it != 0:
-            QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Subset classification is enabled but one or more images have no <b>%s</b> field in header.\nAdd <b>%s</b> field to headers." %(sname, sname)))
-        else:
-            
-            function.headerWrite("@%s/tmp/flatLST" %(self.HOME), "subset", str("'(@\"%s\")'" %sname))
-            if not function.flatCombine("%s/tmp/flatLST" %(self.HOME), odir, com=com, rej=rej, cty=cty, sub=sub):
-                QtGui.QMessageBox.critical( self,  ("MYRaf Error"), ("Due to an error <b>flatcombine</b> can not handle this job."))
-                gui.logging(self, "-- %s - flatcombine failed." %(datetime.datetime.utcnow()))
             else:
-                gui.logging(self, "-- %s - flatcombine succeed." %(datetime.datetime.utcnow()))
-    os.popen("rm -rf %s/tmp/flatLST" %(self.HOME))
-    
-########################################################
-#Load and set set########################################
-  def applySettings(self):
-      
-      f = open("%s/set/setting" %(self.HOME), "r")
-      for l in f:
-          #print(l.replace("\n",""))
-          
-          if l.startswith("zCombine"):
-              zCombine = int(l.split(":")[1].replace("\n",""))
-              self.ui.comboBox_2.setCurrentIndex(zCombine)
+                self.ggui.show_dialog(self, "critic",
+                    "Cosmic Cleaner", "Add some files first.")
+        else:
+            self.ggui.show_dialog(self, "critic",
+                "Cosmic Cleaner", "Can not get file list")
 
-          if l.startswith("zReject"):
-              zReject = int(l.split(":")[1].replace("\n",""))
-              self.ui.comboBox_3.setCurrentIndex(zReject)
-              
-          if l.startswith("zccdtype"):
-              zccdtype = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_9.setText(QtGui.QApplication.translate("Form", str(zccdtype), None, QtGui.QApplication.UnicodeUTF8))
+    def get_manali_coors(self, event):
+        if event.button == 1:
+            if event.ydata is not None and event.xdata is not None:
+                file_count = self.ggui.get_count_of_list(self.ui.listWidget_2)
+                if file_count[0]:
+                    if file_count[1] > 0:
+                        total_rows = file_count[1] - 1
+                        cuurent_row = self.ggui.get_current_index_from_list(
+                            self.ui.listWidget_2)
+                        file_name = self.ggui.get_current_item_from_list(
+                            self.ui.listWidget_2)
+                        if file_name[0]:
+                            if self.mefo.is_file(file_name[1]):
+                                x = event.xdata
+                                y = event.ydata
+                                self.mfho.add_update_header(file_name[1],
+                                    "MYCOOR", '%s - %s' % (x, y))
+                                if cuurent_row[0]:
+                                    if total_rows > cuurent_row[1]:
+                                        self.ggui.set_current_index_from_list(
+                                            self.ui.listWidget_2,
+                                            cuurent_row[1] + 1)
+                                    else:
+                                        self.ggui.set_current_index_from_list(
+                                            self.ui.listWidget_2, 0)
 
-          if l.startswith("dCombine"):
-              dCombine = int(l.split(":")[1].replace("\n",""))
-              self.ui.comboBox_4.setCurrentIndex(dCombine)
+                                    self.display_ma()
 
-          if l.startswith("dReject"):
-              dReject = int(l.split(":")[1].replace("\n",""))
-              self.ui.comboBox_5.setCurrentIndex(dReject)
+    def display_aa(self):
+        file_name = self.ggui.get_item_from_list(self.ui.listWidget)
+        if file_name[0]:
+            self.ggui.display(str(file_name[1]), self.autali_disp)
 
-          if l.startswith("dScale"):
-              dScale = int(l.split(":")[1].replace("\n",""))
-              self.ui.comboBox_8.setCurrentIndex(dScale)
+    def display_ma(self):
+        file_name = self.ggui.get_item_from_list(self.ui.listWidget_2)
+        if file_name[0]:
+            self.ggui.display(str(file_name[1]), self.manali_disp)
+            if self.mfho.does_header_exist(str(file_name[1]), "MYCOOR"):
+                coors = self.mfho.get_header(str(file_name[1]), "MYCOOR")
+                if coors[0]:
+                    self.ui.label_3.setText(coors[1].replace("\"", ""))
+                    x, y = coors[1].replace("\"", "").split("-")
+                    width = self.mfho.get_header(str(file_name[1]), "i_naxis1")
+                    if width[0]:
+                        radi = int(int(width[1]) / 50)
+                    else:
+                        radi = 30
+                    self.ggui.draw_a_circle(self.ui.disp_man_align, x, y,
+                        radi, "#00FFFF")
+            else:
+                self.ui.label_3.setText("")
 
-          if l.startswith("dccdtype"):
-              dccdtype = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_10.setText(QtGui.QApplication.translate("Form", str(dccdtype), None, QtGui.QApplication.UnicodeUTF8))
+    def add_update_observatory(self):
+        observat = self.ui.lineEdit_3.text().strip()
+        name = self.ui.lineEdit_4.text().strip()
+        longitude = self.ui.lineEdit_5.text().strip()
+        latitude = self.ui.lineEdit_6.text().strip()
+        altitude = self.ui.lineEdit_7.text().strip()
+        timezone = self.ui.lineEdit_8.text().strip()
 
-          if l.startswith("fCombine"):
-              fCombine = int(l.split(":")[1].replace("\n",""))
-              self.ui.comboBox_6.setCurrentIndex(dCombine)
+        if (observat == "") or (name == "") or (longitude == "") or (
+            latitude == "") or (altitude == "") or (timezone == ""):
+            self.ggui.show_dialog(self, "critic",
+                "Observatory Editor - Add/Update", "Fill all fields first!")
+        else:
+            comm = self.ui.plainTextEdit.toPlainText()
+            if self.mefo.create_obs_file(observat, name, longitude, latitude,
+                altitude, timezone, comm=comm):
+                self.load_observatories()
 
-          if l.startswith("fReject"):
-              fReject = int(l.split(":")[1].replace("\n",""))
-              self.ui.comboBox_7.setCurrentIndex(fReject)
+    def delete_observatory(self):
+        selected_item = self.ggui.get_item_from_list(self.ui.listWidget_15)
+        if selected_item[0]:
+            obs_file = "./observatories/%s" % (selected_item[1])
+            if self.mefo.is_file(obs_file):
+                if self.mefo.delete_file(obs_file):
+                    self.load_observatories()
+        else:
+            self.ggui.show_dialog(self, "critic",
+                "Observatory Editor - Delete", "Choose an Observatory first!")
 
-          if l.startswith("fSubset"):
-              fSubset = int(l.split(":")[1].replace("\n",""))
-              self.ui.comboBox_9.setCurrentIndex(fSubset)
+    def load_observatory(self):
+        selected_item = self.ggui.get_item_from_list(self.ui.listWidget_15)
+        if selected_item[0]:
+            vals = self.mefo.get_values_from_obs_file(selected_item[1])
+            if vals[0]:
+                self.ui.lineEdit_3.setText(str(vals[1]["observatory"]))
+                self.ui.lineEdit_4.setText(str(vals[1]["name"]))
+                self.ui.lineEdit_5.setText(str(vals[1]["longitude"]))
+                self.ui.lineEdit_6.setText(str(vals[1]["latitude"]))
+                self.ui.lineEdit_7.setText(str(vals[1]["altitude"]))
+                self.ui.lineEdit_8.setText(str(vals[1]["timezone"]))
+                self.ui.plainTextEdit.setPlainText(str(vals[1]["commands"]))
 
-          if l.startswith("fccdtype"):
-              fccdtype = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_11.setText(QtGui.QApplication.translate("Form", str(fccdtype), None, QtGui.QApplication.UnicodeUTF8))
-              
-          if l.startswith("cSubset"):
-              cSubset = int(l.split(":")[1].replace("\n",""))
-              self.ui.comboBox_10.setCurrentIndex(cSubset)
-              
-          if l.startswith("cccdtype"):
-              cccdtype = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_12.setText(QtGui.QApplication.translate("Form", str(cccdtype), None, QtGui.QApplication.UnicodeUTF8))
-              
-          if l.startswith("dpExpTime"):
-              dpExpTime = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_13.setText(QtGui.QApplication.translate("Form", str(dpExpTime), None, QtGui.QApplication.UnicodeUTF8))
-              
-          if l.startswith("dpFilter"):
-              dpFilter = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_14.setText(QtGui.QApplication.translate("Form", str(dpFilter), None, QtGui.QApplication.UnicodeUTF8))
-          
-          if l.startswith("fspAnnulus"):
-              fspAnnulus = int(l.split(":")[1].replace("\n",""))
-              self.ui.doubleSpinBox_2.setValue(fspAnnulus)
-              
-          if l.startswith("fspDannulus"):
-              fspDannulus = int(l.split(":")[1].replace("\n",""))
-              self.ui.doubleSpinBox.setValue(fspDannulus)
-              
-          if l.startswith("fspCBox"):
-              fspCBox = int(l.split(":")[1].replace("\n",""))
-              self.ui.doubleSpinBox_3.setValue(fspCBox)
-              
-          if l.startswith("ppApertur"):
-              ppApertur = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_15.setText(QtGui.QApplication.translate("Form", str(ppApertur), None, QtGui.QApplication.UnicodeUTF8))
-              
-          if l.startswith("ppZMag"):
-              ppZMag = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_16.setText(QtGui.QApplication.translate("Form", str(ppZMag), None, QtGui.QApplication.UnicodeUTF8))        
-              
-          if l.startswith("oRa"):
-              oRa = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_22.setText(QtGui.QApplication.translate("Form", str(oRa), None, QtGui.QApplication.UnicodeUTF8))
-        
-          if l.startswith("oDec"):
-              oDec = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_23.setText(QtGui.QApplication.translate("Form", str(oDec), None, QtGui.QApplication.UnicodeUTF8))
+    def load_observatories(self):
+        all_files = self.mefo.get_file_name_list("./observatories/", "*")
+        if all_files[0]:
+            self.ggui.reload_list_with_new_items(self,
+                self.ui.listWidget_15, all_files[1])
+            self.ui.listWidget_15.sortItems()
 
-          if l.startswith("obser"):
-              obser = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_18.setText(QtGui.QApplication.translate("Form", str(obser), None, QtGui.QApplication.UnicodeUTF8))
-        
-          if l.startswith("obsti"):
-              obsti = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_17.setText(QtGui.QApplication.translate("Form", str(obsti), None, QtGui.QApplication.UnicodeUTF8))
+    def calibration(self):
+        set_file_name = self.current_set_file_name()
+        if set_file_name[0]:
+            current_set_file = "./sessions/%s.set" % (set_file_name[1])
 
-          if l.startswith("obsda"):
-              obsda = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_24.setText(QtGui.QApplication.translate("Form", str(obsda), None, QtGui.QApplication.UnicodeUTF8))
+        do_bias = False
+        do_dark = False
+        do_flat = False
+        err_bias = []
+        err_dark = []
+        err_flat = []
+        err_all = []
+        it = 0
 
-          if l.startswith("gain"):
-              gain = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_26.setText(QtGui.QApplication.translate("Form", str(gain), None, QtGui.QApplication.UnicodeUTF8))
-              
-          if l.startswith("epoc"):
-              epoc = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_25.setText(QtGui.QApplication.translate("Form", str(epoc), None, QtGui.QApplication.UnicodeUTF8))
+        bias_file_count = self.ggui.get_count_of_list(self.ui.listWidget_10)
+        if bias_file_count[0]:
+            if bias_file_count[1] > 0:
+                do_bias = True
+                bias_set = self.fset.read_settings_calib_zerocombine(
+                    current_set_file)
 
-          if l.startswith("WCSServer"):
-              WCSServer = l.split(":")[1].replace("\n","").replace(";",":")
-              self.ui.lineEdit_27.setText(QtGui.QApplication.translate("Form", str(WCSServer), None, QtGui.QApplication.UnicodeUTF8))
+        dark_file_count = self.ggui.get_count_of_list(self.ui.listWidget_11)
+        if dark_file_count[0]:
+            if dark_file_count[1] > 0:
+                do_dark = True
+                dark_set = self.fset.read_settings_calib_darkcombine(
+                    current_set_file)
 
-          if l.startswith("WCSApiKey"):
-              WCSApiKey = l.split(":")[1].replace("\n","")
-              self.ui.lineEdit_28.setText(QtGui.QApplication.translate("Form", str(WCSApiKey), None, QtGui.QApplication.UnicodeUTF8))
+        flat_file_count = self.ggui.get_count_of_list(self.ui.listWidget_12)
+        if flat_file_count[0]:
+            if flat_file_count[1] > 0:
+                do_flat = True
+                flat_set = self.fset.read_settings_calib_flatcombine(
+                    current_set_file)
 
-          if l.startswith("WCSDonNothing"):
-              chepoc = l.split(":")[1].replace("\n","")
-              if chepoc == "t":
-                  self.ui.radioButton.setChecked(True)
-              else:
-                  self.ui.radioButton.setChecked(False)
+        cali_set = self.fset.read_settings_calib_calib(current_set_file)
 
-          if l.startswith("WCSComp"):
-              chepoc = l.split(":")[1].replace("\n","")
-              if chepoc == "t":
-                  self.ui.radioButton_2.setChecked(True)
-              else:
-                  self.ui.radioButton_2.setChecked(False)
+        out_dir = self.mefo.get_tmp_dir()
 
-          if l.startswith("WCSCon2Bin"):
-              chepoc = l.split(":")[1].replace("\n","")
-              if chepoc == "t":
-                  self.ui.radioButton_3.setChecked(True)
-              else:
-                  self.ui.radioButton_3.setChecked(False)
+        if do_bias:
 
-          if l.startswith("WCSSWCS"):
-              chepoc = l.split(":")[1].replace("\n","")
-              if chepoc == "t":
-                  self.ui.checkBox_19.setChecked(True)
-              else:
-                  self.ui.checkBox_19.setChecked(False)
+            do_bias = False
 
-          if l.startswith("chepoc"):
-              chepoc = l.split(":")[1].replace("\n","")
-              if chepoc == "t":
-                  self.ui.checkBox_4.setChecked(True)
-                  self.ui.lineEdit_25.setEnabled(False)
-              else:
-                  self.ui.checkBox_4.setChecked(False)
-                  self.ui.lineEdit_25.setEnabled(True)
+            b_comb = "median"
+            b_reje = "minmax"
+            b_ccdt = ""
 
-          if l.startswith("timeStamp"):
-              chepoc = l.split(":")[1].replace("\n","")
-              if chepoc == "t":
-                  self.ui.checkBox_12.setChecked(True)
-                  self.timeStampUnlock()
-              else:
-                  self.ui.checkBox_12.setChecked(False)
-                  self.timeStampUnlock()
+            if bias_set[0]:
+                if bias_set[1]["cali_zero_comb"] == '0':
+                    b_comb = "median"
+                elif bias_set[1]["cali_zero_comb"] == '1':
+                    b_comb = "average"
+                else:
+                    b_comb = "average"
 
-          if l.startswith("sfMaxStar"):
-              sfMaxStar = int(l.split(":")[1].replace("\n",""))
-              self.ui.doubleSpinBox_7.setValue(sfMaxStar)
+                if bias_set[1]["cali_zero_reje"] == '0':
+                    b_reje = "none"
+                elif bias_set[1]["cali_zero_reje"] == '1':
+                    b_reje = "minmax"
+                elif bias_set[1]["cali_zero_reje"] == '2':
+                    b_reje = "ccdclip"
+                elif bias_set[1]["cali_zero_reje"] == '3':
+                    b_reje = "crreject"
+                elif bias_set[1]["cali_zero_reje"] == '4':
+                    b_reje = "sigclip"
+                elif bias_set[1]["cali_zero_reje"] == '5':
+                    b_reje = "avsigclip"
+                elif bias_set[1]["cali_zero_reje"] == '6':
+                    b_reje = "pclip"
+                else:
+                    b_reje = "none"
 
-          if l.startswith("sMaxFWHM"):
-              sMaxFWHM = int(l.split(":")[1].replace("\n",""))
-              self.ui.doubleSpinBox_6.setValue(sMaxFWHM)
+                b_ccdt = bias_set[1]["cali_zero_ccty"]
 
-          if l.startswith("sMinFWHM"):
-              sMinFWHM = int(l.split(":")[1].replace("\n",""))
-              self.ui.doubleSpinBox_5.setValue(sMinFWHM)
+                b_data_count = self.ggui.get_count_of_list(
+                    self.ui.listWidget_10)
+                if b_data_count[0]:
+                    if b_data_count[1] > 0:
+                        b_data_list = self.ggui.get_all_items_from_list(
+                            self.ui.listWidget_10)
+                        if b_data_list[0]:
+                            if out_dir[0]:
+                                out_file = "%s/%s" % (out_dir[1],
+                                    "zero.fit")
+                                if self.mffo.zerocombine(b_data_list[1],
+                                    out_file, combine=b_comb, reject=b_reje,
+                                    ccdtype=b_ccdt):
+                                    do_bias = True
+                                else:
+                                    err_bias = ["Zerocombine failed"]
 
-          if l.startswith("sFluxradi"):
-              sFluxradi = int(l.split(":")[1].replace("\n",""))
-              self.ui.doubleSpinBox_4.setValue(sFluxradi)
+        if do_dark:
 
-          if l.startswith("CCMask"):
-              chepoc = l.split(":")[1].replace("\n","")
-              if chepoc == "t":
-                  self.ui.checkBox_16.setChecked(True)
-              else:
-                  self.ui.checkBox_16.setChecked(False)
+            do_dark = False
 
-          if l.startswith("CCGain"):
-              CCGain = float(l.split(":")[1].replace("\n",""))
-              self.ui.doubleSpinBox_10.setValue(CCGain)
+            d_comb = "median"
+            d_reje = "minmax"
+            d_scal = "exposure"
+            d_ccdt = ""
 
-          if l.startswith("CCReadNoise"):
-              CCReadNoise = float(l.split(":")[1].replace("\n",""))
-              self.ui.doubleSpinBox_11.setValue(CCReadNoise)
+            if dark_set[0]:
+                if dark_set[1]["cali_dark_comb"] == '0':
+                    d_comb = "median"
+                elif dark_set[1]["cali_dark_comb"] == '1':
+                    d_comb = "average"
+                else:
+                    d_comb = "average"
 
-          if l.startswith("CCSigclip"):
-              CCSigclip = float(l.split(":")[1].replace("\n",""))
-              self.ui.doubleSpinBox_12.setValue(CCSigclip)
+                if dark_set[1]["cali_dark_reje"] == '0':
+                    d_reje = "none"
+                elif dark_set[1]["cali_dark_reje"] == '1':
+                    d_reje = "minmax"
+                elif dark_set[1]["cali_dark_reje"] == '2':
+                    d_reje = "ccdclip"
+                elif dark_set[1]["cali_dark_reje"] == '3':
+                    d_reje = "crreject"
+                elif dark_set[1]["cali_dark_reje"] == '4':
+                    d_reje = "sigclip"
+                elif dark_set[1]["cali_dark_reje"] == '5':
+                    d_reje = "avsigclip"
+                elif dark_set[1]["cali_dark_reje"] == '6':
+                    d_reje = "pclip"
+                else:
+                    d_reje = "none"
 
-          if l.startswith("CCsigfrac"):
-              CCsigfrac = float(l.split(":")[1].replace("\n",""))
-              self.ui.doubleSpinBox_13.setValue(CCsigfrac)
+                if dark_set[1]["cali_dark_scal"] == '0':
+                    d_scal = "exposure"
+                elif dark_set[1]["cali_dark_scal"] == '1':
+                    d_scal = "none"
+                elif dark_set[1]["cali_dark_scal"] == '2':
+                    d_scal = "mode"
+                elif dark_set[1]["cali_dark_scal"] == '3':
+                    d_scal = "median"
+                elif dark_set[1]["cali_dark_scal"] == '4':
+                    d_scal = "mean"
+                else:
+                    d_scal = "none"
 
-          if l.startswith("CCobjlim"):
-              CCobjlim = float(l.split(":")[1].replace("\n",""))
-              self.ui.doubleSpinBox_14.setValue(CCobjlim)
+                d_ccdt = dark_set[1]["cali_dark_ccty"]
 
-          if l.startswith("extraVal"):
-              extraVal = l.split(":")[1].replace("\n","")
-              extraVals = extraVal.split(',')
-              it = -1
-              for i in extraVals:
-                  if i != "":
-                      it = it +1
-                      item = QtGui.QListWidgetItem()
-                      self.ui.listWidget_20.addItem(item)
-                      item = self.ui.listWidget_20.item(it)
-                      item.setText(QtGui.QApplication.translate("Form", i, None, QtGui.QApplication.UnicodeUTF8))
+                d_data_count = self.ggui.get_count_of_list(
+                    self.ui.listWidget_11)
+                if d_data_count[0]:
+                    if d_data_count[1] > 0:
+                        d_data_list = self.ggui.get_all_items_from_list(
+                            self.ui.listWidget_11)
+                        if d_data_list[0]:
+                            if out_dir[0]:
+                                out_file = "%s/%s" % (out_dir[1],
+                                "dark.fit")
+                                if self.mffo.darkcombine(d_data_list[1],
+                                    out_file, combine=d_comb, reject=d_reje,
+                                    scale=d_scal, ccdtype=d_ccdt):
+                                    do_dark = True
+                                else:
+                                    err_dark = ["Darkcombine Failed"]
 
-      f.close()
-      
-  def saveSettings(self):
-    
-    f = open("%s/set/setting" %(self.HOME), "w")
-    
-    f.write("zCombine:%s\n" %self.ui.comboBox_2.currentIndex())
-    f.write("zReject:%s\n" %self.ui.comboBox_3.currentIndex())
-    f.write("zccdtype:%s\n" %self.ui.lineEdit_9.text())
-    
-    f.write("dCombine:%s\n" %self.ui.comboBox_4.currentIndex())
-    f.write("dReject:%s\n" %self.ui.comboBox_5.currentIndex())
-    f.write("dScale:%s\n" %self.ui.comboBox_8.currentIndex())
-    f.write("dccdtype:%s\n" %self.ui.lineEdit_10.text())
-    
-    f.write("fCombine:%s\n" %self.ui.comboBox_6.currentIndex())
-    f.write("fReject:%s\n" %self.ui.comboBox_7.currentIndex())
-    f.write("fSubset:%s\n" %self.ui.comboBox_9.currentIndex())
-    f.write("fccdtype:%s\n" %self.ui.lineEdit_11.text())
-    
-    f.write("cSubset:%s\n" %self.ui.comboBox_10.currentIndex())
-    f.write("ccdtype:%s\n" %self.ui.lineEdit_12.text())
+        if do_flat:
 
-    f.write("dpExpTime:%s\n" %self.ui.lineEdit_13.text())
-    f.write("dpFilter:%s\n" %self.ui.lineEdit_14.text())
+            do_flat = False
 
-    f.write("fspAnnulus:%s\n" %int(self.ui.doubleSpinBox_2.value()))
-    f.write("fspDannulus:%s\n" %int(self.ui.doubleSpinBox.value()))
-    f.write("fspCBox:%s\n" %int(self.ui.doubleSpinBox_3.value()))
-    
-    f.write("CCGain:%s\n" %float(self.ui.doubleSpinBox_10.value()))
-    f.write("CCReadNoise:%s\n" %float(self.ui.doubleSpinBox_11.value()))
-    f.write("CCSigclip:%s\n" %float(self.ui.doubleSpinBox_12.value()))
-    f.write("CCsigfrac:%s\n" %float(self.ui.doubleSpinBox_13.value()))
-    f.write("CCobjlim:%s\n" %float(self.ui.doubleSpinBox_14.value()))
-    
-    
-    f.write("ppApertur:%s\n" %self.ui.lineEdit_15.text())
-    f.write("ppZMag:%s\n" %self.ui.lineEdit_16.text())
-    
-    f.write("oRa:%s\n" %self.ui.lineEdit_22.text())
-    f.write("oDec:%s\n" %self.ui.lineEdit_23.text())
-    
-    f.write("obser:%s\n" %self.ui.lineEdit_18.text())
-    f.write("obsti:%s\n" %self.ui.lineEdit_17.text())
-    f.write("obsda:%s\n" %self.ui.lineEdit_24.text())
+            f_comb = "median"
+            f_reje = "minmax"
+            f_subset = "no"
+            f_ccdt = ""
 
-    f.write("WCSServer:%s\n" %self.ui.lineEdit_27.text().replace(":",";"))
-    f.write("WCSApiKey:%s\n" %self.ui.lineEdit_28.text())
-    
-    f.write("epoc:%s\n" %self.ui.lineEdit_25.text())
-    if self.ui.checkBox_4.checkState() == QtCore.Qt.Checked:
-        f.write("chepoc:t\n")
-    else:
-        f.write("chepoc:f\n")
-    
-    if self.ui.checkBox_12.checkState() == QtCore.Qt.Checked:
-        f.write("timeStamp:t\n")
-    else:
-        f.write("timeStamp:f\n")
-        
-    if self.ui.radioButton.isChecked():
-        f.write("WCSDonNothing:t\n")
-    else:
-        f.write("WCSDonNothing:f\n")  
+            if cali_set[0]:
+                if cali_set[1]["cali_cali_subs"] == '0':
+                    f_subset = "yes"
+                elif cali_set[1]["cali_cali_subs"] == '1':
+                    f_subset = "no"
+                else:
+                    f_subset = "no"
 
-    if self.ui.radioButton_2.isChecked():
-        f.write("WCSComp:t\n")
-    else:
-        f.write("WCSComp:f\n")    
+            if flat_set[0]:
+                if flat_set[1]["cali_flat_comb"] == '0':
+                    f_comb = "median"
+                elif flat_set[1]["cali_flat_comb"] == '1':
+                    f_comb = "average"
+                else:
+                    f_comb = "average"
 
-    if self.ui.radioButton_3.isChecked():
-        f.write("WCSCon2Bin:t\n")
-    else:
-        f.write("WCSCon2Bin:f\n")
-        
-    if self.ui.checkBox_19.checkState() == QtCore.Qt.Checked:
-        f.write("WCSSWCS:t\n")
-    else:
-        f.write("WCSSWCS:f\n")
+                if flat_set[1]["cali_flat_reje"] == '0':
+                    f_reje = "none"
+                elif flat_set[1]["cali_flat_reje"] == '1':
+                    f_reje = "minmax"
+                elif flat_set[1]["cali_flat_reje"] == '2':
+                    f_reje = "ccdclip"
+                elif flat_set[1]["cali_flat_reje"] == '3':
+                    f_reje = "crreject"
+                elif flat_set[1]["cali_flat_reje"] == '4':
+                    f_reje = "sigclip"
+                elif flat_set[1]["cali_flat_reje"] == '5':
+                    f_reje = "avsigclip"
+                elif flat_set[1]["cali_flat_reje"] == '6':
+                    f_reje = "pclip"
+                else:
+                    f_reje = "none"
 
-    if self.ui.checkBox_16.checkState() == QtCore.Qt.Checked:
-        f.write("CCMask:t\n")
-    else:
-        f.write("CCMask:f\n")
+                f_ccdt = flat_set[1]["cali_flat_ccty"]
 
-    f.write("sfMaxStar:%s\n" %int(self.ui.doubleSpinBox_7.value()))
-    f.write("sMaxFWHM:%s\n" %int(self.ui.doubleSpinBox_6.value()))
-    f.write("sMinFWHM:%s\n" %int(self.ui.doubleSpinBox_5.value()))
-    f.write("sFluxradi:%s\n" %int(self.ui.doubleSpinBox_4.value()))
-    f.write("gain:%s\n" %self.ui.lineEdit_26.text())
-    
-    vv = ""
-    for i in xrange(self.ui.listWidget_20.count()):
-        val = self.ui.listWidget_20.item(i)
-        val = str(val.text())
-        vv = "%s,%s" %(val, vv)
-    f.write("extraVal:%s\n" %(vv[:-1]))
-    f.close()
-#########################################################
-#Unlock calibration tabs.################################
-  def unlockBias(self):
-    gui.unlocCali(self, self.ui.checkBox, 1)
-  def unlockDark(self):
-    gui.unlocCali(self, self.ui.checkBox_2, 2)
-  def unlockFlat(self):
-    gui.unlocCali(self, self.ui.checkBox_3, 3)
-########################################################
-  def closeEvent(self, event):
-    gui.logging(self, "- %s - MYRaf closed." %(datetime.datetime.utcnow()))
-    exit(0)
-########################################################
-app = QtGui.QApplication(sys.argv)
-f = MyForm()
-f.show()
+                f_data_count = self.ggui.get_count_of_list(
+                    self.ui.listWidget_12)
+                if f_data_count[0]:
+                    if f_data_count[1] > 0:
+                        flt_files = self.ggui.get_all_items_from_list(
+                            self.ui.listWidget_12)
+                        if flt_files[0]:
+                            if f_subset == "yes":
+                                dp_set = self.fset.read_settings_phot_datapar(
+                                    current_set_file)
+                                if dp_set[0]:
+                                    fltr_value = dp_set[1]["phot_dap_fltr"]
+                                    has_header = []
+                                    for i in flt_files[1]:
+                                        if self.mfho.does_header_exist(i,
+                                            fltr_value):
+                                            if self.mfho.add_update_header(i,
+                                                "subset", "'(@\"%s\")'" % (
+                                                    fltr_value)):
+                                                has_header.append(i)
+                                            else:
+                                                err_all.append(
+                                                    "%s Can't add header(%s)"
+                                                    % (i, fltr_value))
+                                        else:
+                                            err_all.append(
+                                                "%s header not found(%s)" % (
+                                                    i, fltr_value))
 
-app.exec_()
+                                    if out_dir[0]:
+                                        out_files = out_dir[1]
+                                        if self.mffo.flatcombine(has_header,
+                                            out_files, combine=f_comb,
+                                            reject=f_reje, subset="yes",
+                                            ccdtype=f_ccdt):
+                                            do_flat = True
+                                        else:
+                                            err_flat = ["Flatcombine Failed"]
+
+                            else:
+                                if out_dir[0]:
+                                    out_file = "%s/%s" % (out_dir[1],
+                                        "myraf_flat.fit")
+                                    if self.mffo.flatcombine(flt_files[1],
+                                        out_file, combine=f_comb,
+                                        reject=f_reje, subset="no",
+                                        ccdtype=f_ccdt):
+                                        do_flat = True
+                                    else:
+                                        err_flat = ["Flatcombine Failed"]
+
+        data_count = self.ggui.get_count_of_list(self.ui.listWidget_9)
+        if data_count[0]:
+            if data_count[1] > 0:
+                all_data = self.ggui.get_all_items_from_list(
+                    self.ui.listWidget_9)
+                subset = "no"
+                ccdty = ""
+                if all_data[0]:
+                    if cali_set[0]:
+                        if cali_set[1]["cali_cali_subs"] == '0':
+                            subset = "yes"
+                        elif cali_set[1]["cali_cali_subs"] == '1':
+                            subset = "no"
+                        else:
+                            subset = "no"
+
+                        if do_bias:
+                            the_bias_file = "%s/%s" % (out_dir[1], "zero.fit")
+                        else:
+                            the_bias_file = ""
+
+                        if do_dark:
+                            the_dark_file = "%s/%s" % (out_dir[1], "dark.fit")
+                        else:
+                            the_dark_file = ""
+
+                        if do_flat:
+                            the_flat_file = "%s/%s" % (out_dir[1],
+                                "flat_*.fits")
+                        else:
+                            the_flat_file = ""
+
+                        if do_bias or do_dark or do_flat:
+                            ccdty = cali_set[1]["cali_cali_ccty"]
+                            cal_has_header = []
+                            cal_out_dir = self.ggui.get_folder(self)
+                            if cal_out_dir[0]:
+                                if subset == "yes":
+                                    dp_set = \
+                                    self.fset.read_settings_phot_datapar(
+                                        current_set_file)
+                                    if dp_set[0]:
+                                        fltr_value = dp_set[1]["phot_dap_fltr"]
+                                        for i in all_data[1]:
+                                            if self.mfho.does_header_exist(
+                                                i, fltr_value):
+                                                if self.mfho.add_update_header(
+                                                    i, "subset", "'(@\"%s\")'"
+                                                    % (fltr_value)):
+                                                    cal_has_header.append(i)
+                                                else:
+                                                    err_all.append("%s%s" % (i,
+                                                    "Can not add header(%s)" % (
+                                                        fltr_value)))
+                                            else:
+                                                err_all.append(
+                                                    "%s header not found(%s)" %
+                                                    (i, fltr_value))
+
+                                        for i in cal_has_header:
+                                            pfn = self.mefo.get_base_name(i)
+                                            if pfn:
+                                                it = it + 1
+                                                if not self.mffo.calibration(i,
+                                                    "%s/%s" % (cal_out_dir[1],
+                                                        pfn[1][1]),
+                                                    bias_file=the_bias_file,
+                                                    dark_file=the_dark_file,
+                                                    flat_file=the_flat_file,
+                                                    ccdty=ccdty, subs="yes"):
+                                                    err_all.append(
+                                                        "Calibration Failed(%s)"
+                                                        % (i))
+                                                self.ui.label.setText(i)
+                                                self.ui.progressBar_6.setValue(
+                                                    self.ggui.calc_percentage(
+                                                        it,
+                                                        len(cal_has_header)))
+                                if subset == "no":
+                                    for i in cal_has_header:
+                                        pfn = self.mefo.get_base_name(i)
+                                        if pfn:
+                                            it = it + 1
+                                            if not self.mffo.calibration(i,
+                                                "%s/%s" % (cal_out_dir[1],
+                                                    pfn[1][1]),
+                                                bias_file=the_bias_file,
+                                                dark_file=the_dark_file,
+                                                flat_file=the_flat_file,
+                                                ccdty=ccdty, subs="no"):
+                                                err_all.append("%s%s" % (i,
+                                                "Can not do the calibration"))
+
+                                        self.ui.label.setText(i)
+                                        self.ui.progressBar_6.setValue(
+                                            self.ggui.calc_percentage(it,
+                                                len(cal_has_header)))
+
+                        else:
+                            self.ggui.show_dialog(self, "info",
+                                "Calibration", "Nothing to do")
+
+                if not len(err_bias) == 0:
+                    err_all.append(err_bias)
+                if not len(err_dark) == 0:
+                    err_all.append(err_dark)
+                if not len(err_flat) == 0:
+                    err_all.append(err_flat)
+
+                if not len(err_all) == 0:
+                    self.show_error_form(title="Error", owner="%s - %s" % (
+                        "Calibration", "Failed with files below"),
+                            disp=err_all)
+
+            else:
+                self.ggui.show_dialog(self, "critic",
+                    "Calibration", "Add some files first.")
+        else:
+            self.ggui.show_dialog(self, "critic",
+                "Calibration", "Can not get file list")
+
+    def display_cc(self):
+        file_name = self.ggui.get_item_from_list(self.ui.listWidget_16)
+        if file_name[0]:
+            self.ggui.display(str(file_name[1]), self.cosmic_disp)
+
+    def cosmic_clean(self):
+        set_file_name = self.current_set_file_name()
+        if set_file_name[0]:
+            current_set_file = "./sessions/%s.set" % (set_file_name[1])
+            the_set = self.fset.read_settings_ccleaner(current_set_file)
+            acmf = False
+            gain = 2.2
+            read_noise = 10
+            sigma_clip = 5
+            sigma_frac = 0.3
+            object_lim = 5
+            if the_set[0]:
+                if the_set[1]['coce_acmf'] == "t":
+                    acmf = True
+                else:
+                    acmf = False
+                gain = float(the_set[1]['coce_gain'])
+                read_noise = float(the_set[1]['coce_reno'])
+                sigma_clip = float(the_set[1]['coce_sicl'])
+                sigma_frac = float(the_set[1]['coce_sifr'])
+                object_lim = float(the_set[1]['coce_obli'])
+
+        file_count = self.ggui.get_count_of_list(self.ui.listWidget_16)
+        if file_count[0]:
+            if file_count[1] > 0:
+                file_list = self.ggui.get_all_items_from_list(
+                    self.ui.listWidget_16)
+                if file_list[0]:
+                    it = 0
+                    failed_files = []
+                    out_dir = self.ggui.get_folder(self)
+                    if out_dir[0]:
+                        for i in file_list[1]:
+                            pfn = self.mefo.get_base_name(i)
+                            if pfn:
+                                it = it + 1
+                                self.ggui.display(str(i), self.cosmic_disp)
+                                if not self.mffo.cosmic_clean(str(i),
+                                    "%s/%s" % (out_dir[1], pfn[1][1]),
+                                    mask=acmf, gain=gain, readnoise=read_noise,
+                                    sigclip=sigma_clip, sigfrac=sigma_frac,
+                                    objlim=object_lim):
+                                    failed_files.append(i)
+                            self.ui.label_17.setText(i)
+                            self.ui.progressBar_6.setValue(
+                                self.ggui.calc_percentage(it, file_count[1]))
+
+                        if not len(failed_files) == 0:
+                            self.show_error_form(title="Error",
+                                owner="%s - %s" % ("Cosmic Cleaner",
+                                    "Failed with files below"),
+                                        disp=failed_files)
+                        self.ui.progressBar_6.setValue(0)
+            else:
+                self.ggui.show_dialog(self, "critic",
+                    "Cosmic Cleaner", "Add some files first.")
+        else:
+            self.ggui.show_dialog(self, "critic",
+                "Cosmic Cleaner", "Can not get file list")
+
+    def convert_files(self):
+        file_count = self.ggui.get_count_of_list(self.ui.listWidget_17)
+        if file_count[0]:
+            if file_count[1] > 0:
+                file_list = self.ggui.get_all_items_from_list(
+                    self.ui.listWidget_17)
+                if file_list[0]:
+                    it = 0
+                    failed_files = []
+                    out_dir = self.ggui.get_folder(self)
+                    if out_dir[0]:
+                        for i in file_list[1]:
+                            pfn = self.mefo.get_base_name(i)
+                            if pfn:
+                                it = it + 1
+                                if not self.mffo.convert_to_fits(
+                                    str(i), "%s/%s" % (out_dir[1], pfn[1][1])):
+                                    failed_files.append(i)
+                                self.ui.label_18.setText(i)
+                                self.ui.progressBar_7.setValue(
+                                    self.ggui.calc_percentage(
+                                        it, file_count[1]))
+
+                    if not len(failed_files) == 0:
+                        self.show_error_form(title="Error",
+                            owner="Convert tp Fits - Failed with files below",
+                            disp=failed_files)
+
+                    self.ui.progressBar_7.setValue(0)
+            else:
+                self.ggui.show_dialog(self, "critic",
+                    "Fits Coverter", "Add some files first.")
+        else:
+            self.ggui.show_dialog(self, "critic",
+                "Fits Coverter", "Can not get file list")
+
+    def delete_header(self):
+        file_count = self.ggui.get_count_of_list(self.ui.listWidget_14)
+        if file_count[0]:
+            if file_count[1] > 0:
+                file_list = self.ggui.get_all_items_from_list(
+                    self.ui.listWidget_14)
+                if file_list[0]:
+                    key = self.ui.lineEdit.text()
+                    failed_files = []
+                    it = 0
+                    for i in file_list[1]:
+                        it = it + 1
+                        if not self.mfho.delete_header(i, key):
+                            failed_files.append(i)
+                        self.ui.label_16.setText(i)
+                        self.ui.progressBar_5.setValue(
+                            self.ggui.calc_percentage(it, file_count[1]))
+
+                    if not len(failed_files) == 0:
+                        self.show_error_form(title="Error",
+                            owner="Header Editor - Failed with files below",
+                            disp=failed_files)
+
+                    self.ui.progressBar_5.setValue(0)
+                    self.load_header()
+            else:
+                self.ggui.show_dialog(self, "critic",
+                    "Header Editor", "Add some files first.")
+        else:
+            self.ggui.show_dialog(self, "critic",
+                "Header Editor", "Can not get file list")
+
+    def add_update_header(self):
+        file_count = self.ggui.get_count_of_list(self.ui.listWidget_14)
+        if file_count[0]:
+            if file_count[1] > 0:
+                file_list = self.ggui.get_all_items_from_list(
+                    self.ui.listWidget_14)
+                if file_list[0]:
+                    key = self.ui.lineEdit.text()
+                    if self.ggui.is_checked(self.ui.checkBox):
+                        selected_header_key = self.ggui.get_item_from_combo(
+                            self.ui.comboBox)
+                        if selected_header_key[0]:
+                            header = str("'(@\"%s\")'" % (
+                                selected_header_key[1].split("=")[0].strip()))
+                        else:
+                            header = ""
+                    else:
+                        header = self.ui.lineEdit_2.text()
+
+                    failed_files = []
+                    it = 0
+                    for i in file_list[1]:
+                        it = it + 1
+                        if not self.mfho.add_update_header(i, key, header):
+                            failed_files.append(i)
+                        self.ui.label_16.setText(i)
+                        self.ui.progressBar_5.setValue(
+                            self.ggui.calc_percentage(it, file_count[1]))
+
+                    if not len(failed_files) == 0:
+                        self.show_error_form(title="Error",
+                            owner="Header Editor - Failed with files below",
+                            disp=failed_files)
+
+                    self.ui.progressBar_5.setValue(0)
+                    self.load_header()
+            else:
+                self.ggui.show_dialog(self, "critic",
+                    "Header Editor", "Add some files first.")
+        else:
+            self.ggui.show_dialog(self, "critic",
+                "Header Editor", "Can not get file list")
+
+    def unlock_get_value_from_existing_header(self):
+        self.ggui.set_enabled(self.ui.comboBox,
+            self.ggui.is_checked(self.ui.checkBox))
+        self.ggui.set_enabled(self.ui.lineEdit_2,
+            not self.ggui.is_checked(self.ui.checkBox))
+
+    def select_header(self):
+        header_and_value = self.ggui.get_item_from_list(self.ui.listWidget_13)
+        if header_and_value[0]:
+            h = header_and_value[1].split("=")[0].strip()
+            v = header_and_value[1].split("=")[1].strip()
+            self.ui.lineEdit.setText(h)
+            self.ui.lineEdit_2.setText(v)
+
+    def list_headers(self, file_name):
+        headers = self.mfho.get_list_header(file_name)
+        hlist = []
+        if headers[0]:
+            for i in headers[1]:
+                hlist.append("%s = %s" % (i[0], i[1]))
+            self.ggui.reload_list_with_new_items(self,
+                self.ui.listWidget_13, hlist)
+            self.ggui.reload_combo_with_new_items(self,
+                self.ui.comboBox, hlist)
+        else:
+            self.ggui.show_dialog(self, "critic", "Header Editor",
+            "Can not get header from file")
+
+    def load_header(self):
+        file_name = self.ggui.get_item_from_list(self.ui.listWidget_14)
+        if file_name[0]:
+            self.list_headers(file_name[1])
+
+    def save_flat(self):
+        set_file_name = self.current_set_file_name()
+        if set_file_name[0]:
+            current_set_file = "./sessions/%s.set" % (set_file_name[1])
+            the_set = self.fset.read_settings_calib_flatcombine(
+                current_set_file)
+            comb = "median"
+            reje = "minmax"
+            subset = "no"
+            ccdt = ""
+            if the_set[0]:
+
+                if the_set[1]["cali_flat_comb"] == '0':
+                    comb = "median"
+                elif the_set[1]["cali_flat_comb"] == '1':
+                    comb = "average"
+                else:
+                    comb = "average"
+
+                if the_set[1]["cali_flat_reje"] == '0':
+                    reje = "none"
+                elif the_set[1]["cali_flat_reje"] == '1':
+                    reje = "minmax"
+                elif the_set[1]["cali_flat_reje"] == '2':
+                    reje = "ccdclip"
+                elif the_set[1]["cali_flat_reje"] == '3':
+                    reje = "crreject"
+                elif the_set[1]["cali_flat_reje"] == '4':
+                    reje = "sigclip"
+                elif the_set[1]["cali_flat_reje"] == '5':
+                    reje = "avsigclip"
+                elif the_set[1]["cali_flat_reje"] == '6':
+                    reje = "pclip"
+                else:
+                    reje = "none"
+
+                if the_set[1]["cali_flat_subs"] == '0':
+                    subset = "yes"
+                elif the_set[1]["cali_flat_subs"] == '1':
+                    subset = "no"
+                else:
+                    subset = "no"
+
+                ccdt = the_set[1]["cali_flat_ccty"]
+
+                data_count = self.ggui.get_count_of_list(self.ui.listWidget_12)
+                if data_count[0]:
+                    if data_count[1] > 0:
+                        flt_files = self.ggui.get_all_items_from_list(
+                            self.ui.listWidget_12)
+                        if flt_files[0]:
+                            if subset == "yes":
+                                dp_set = self.fset.read_settings_phot_datapar(
+                                    current_set_file)
+                                if dp_set[0]:
+                                    fltr_value = dp_set[1]["phot_dap_fltr"]
+                                    no_header = []
+                                    has_header = []
+                                    for i in flt_files[1]:
+                                        if self.mfho.does_header_exist(
+                                            i, fltr_value):
+                                            if self.mfho.add_update_header(i,
+                                                "subset", "'(@\"%s\")'" % (
+                                                    fltr_value)):
+                                                has_header.append(i)
+                                            else:
+                                                no_header.append(i)
+                                        else:
+                                            no_header.append(i)
+
+                                    out_dir = self.ggui.get_folder(self)
+                                    if out_dir[0]:
+                                        out_file = out_dir[1]
+                                        if not self.mffo.flatcombine(has_header,
+                                            out_file, combine=comb, reject=reje,
+                                            subset="yes", ccdtype=ccdt):
+                                            self.ggui.show_dialog(self,
+                                                "critic", "Flatcombine",
+                                                "Can not create master flats.")
+
+                                    if len(no_header):
+                                        self.show_error_form(
+                                            title="Flatcombine",
+                                            owner="No (%s) found. Skiped" % (
+                                                fltr_value), disp=no_header)
+
+                            else:
+                                out_file = self.ggui.get_file(self, "flat.fit",
+                                    "fit")
+                                if out_file[0]:
+                                    if not self.mffo.flatcombine(flt_files[1],
+                                        out_file[1], combine=comb, reject=reje,
+                                        subset="no", ccdtype=ccdt):
+                                        self.ggui.show_dialog(self, "critic",
+                                            "Flatcombine",
+                                            "Can not create master flat.")
+
+    def save_dark(self):
+        set_file_name = self.current_set_file_name()
+        if set_file_name[0]:
+            current_set_file = "./sessions/%s.set" % (set_file_name[1])
+            the_set = self.fset.read_settings_calib_darkcombine(
+                current_set_file)
+            comb = "median"
+            reje = "minmax"
+            scal = "exposure"
+            ccdt = ""
+            if the_set[0]:
+
+                if the_set[1]["cali_dark_comb"] == '0':
+                    comb = "median"
+                elif the_set[1]["cali_dark_comb"] == '1':
+                    comb = "average"
+                else:
+                    comb = "average"
+
+                if the_set[1]["cali_dark_reje"] == '0':
+                    reje = "none"
+                elif the_set[1]["cali_dark_reje"] == '1':
+                    reje = "minmax"
+                elif the_set[1]["cali_dark_reje"] == '2':
+                    reje = "ccdclip"
+                elif the_set[1]["cali_dark_reje"] == '3':
+                    reje = "crreject"
+                elif the_set[1]["cali_dark_reje"] == '4':
+                    reje = "sigclip"
+                elif the_set[1]["cali_dark_reje"] == '5':
+                    reje = "avsigclip"
+                elif the_set[1]["cali_dark_reje"] == '6':
+                    reje = "pclip"
+                else:
+                    reje = "none"
+
+                if the_set[1]["cali_dark_scal"] == '0':
+                    scal = "exposure"
+                elif the_set[1]["cali_dark_scal"] == '1':
+                    scal = "none"
+                elif the_set[1]["cali_dark_scal"] == '2':
+                    scal = "mode"
+                elif the_set[1]["cali_dark_scal"] == '3':
+                    scal = "median"
+                elif the_set[1]["cali_dark_scal"] == '4':
+                    scal = "mean"
+                else:
+                    scal = "none"
+
+                ccdt = the_set[1]["cali_dark_ccty"]
+
+                data_count = self.ggui.get_count_of_list(self.ui.listWidget_11)
+                if data_count[0]:
+                    if data_count[1] > 0:
+                        data_list = self.ggui.get_all_items_from_list(
+                            self.ui.listWidget_11)
+                        if data_list[0]:
+                            out_file = self.ggui.get_file(self,
+                                "dark.fit", "fit")
+                            if out_file[0]:
+                                if not self.mffo.darkcombine(data_list[1],
+                                    out_file[1], combine=comb, reject=reje,
+                                    scale=scal, ccdtype=ccdt):
+                                    self.ggui.show_dialog(self, "critic",
+                                    "Darkcombine",
+                                    "Can not create master dark.")
+                        else:
+                            self.ggui.show_dialog(self, "critic",
+                                "Darkcombine", "Can not get file list.")
+                    else:
+                        self.ggui.show_dialog(self, "critic",
+                            "Darkcombine", "No file found.")
+                else:
+                    self.ggui.show_dialog(self, "critic",
+                        "Darkcombine", "Add some files first.")
+
+    def save_zero(self):
+        set_file_name = self.current_set_file_name()
+        if set_file_name[0]:
+            current_set_file = "./sessions/%s.set" % (set_file_name[1])
+            the_set = self.fset.read_settings_calib_zerocombine(
+                current_set_file)
+            comb = "median"
+            reje = "minmax"
+            ccdt = ""
+            if the_set[0]:
+
+                if the_set[1]["cali_zero_comb"] == '0':
+                    comb = "median"
+                elif the_set[1]["cali_zero_comb"] == '1':
+                    comb = "average"
+                else:
+                    comb = "average"
+
+                if the_set[1]["cali_zero_reje"] == '0':
+                    reje = "none"
+                elif the_set[1]["cali_zero_reje"] == '1':
+                    reje = "minmax"
+                elif the_set[1]["cali_zero_reje"] == '2':
+                    reje = "ccdclip"
+                elif the_set[1]["cali_zero_reje"] == '3':
+                    reje = "crreject"
+                elif the_set[1]["cali_zero_reje"] == '4':
+                    reje = "sigclip"
+                elif the_set[1]["cali_zero_reje"] == '5':
+                    reje = "avsigclip"
+                elif the_set[1]["cali_zero_reje"] == '6':
+                    reje = "pclip"
+                else:
+                    reje = "none"
+
+                ccdt = the_set[1]["cali_zero_ccty"]
+
+                data_count = self.ggui.get_count_of_list(self.ui.listWidget_10)
+                if data_count[0]:
+                    if data_count[1] > 0:
+                        data_list = self.ggui.get_all_items_from_list(
+                            self.ui.listWidget_10)
+                        if data_list[0]:
+                            out_file = self.ggui.get_file(
+                                self, "zero.fit", "fit")
+                            if out_file[0]:
+                                if not self.mffo.zerocombine(data_list[1],
+                                    out_file[1], combine=comb,
+                                    reject=reje, ccdtype=ccdt):
+                                    self.ggui.show_dialog(self, "critic",
+                                    "Zerocombine",
+                                    "Can not create master zero.")
+                        else:
+                            self.ggui.show_dialog(self, "critic",
+                                "Zerocombine", "Can not get file list.")
+                    else:
+                        self.ggui.show_dialog(self, "critic",
+                            "Zerocombine", "No file found.")
+                else:
+                    self.ggui.show_dialog(self, "critic",
+                        "Zerocombine", "Add some files first.")
+
+    def save_settings(self):
+        set_name = str(self.ui.lineEdit_47.text())
+
+        gen_cpus = str(self.ui.dial_2.value())
+
+        cal_zero_comb = str(self.ui.comboBox_12.currentIndex())
+        cal_zero_rejc = str(self.ui.comboBox_13.currentIndex())
+        cal_zero_ccdt = str(self.ui.lineEdit_21.text())
+
+        cal_dark_comb = str(self.ui.comboBox_14.currentIndex())
+        cal_dark_rejc = str(self.ui.comboBox_15.currentIndex())
+        cal_dark_scale = str(self.ui.comboBox_16.currentIndex())
+        cal_dark_ccdt = str(self.ui.lineEdit_30.text())
+
+        cal_flat_comb = str(self.ui.comboBox_17.currentIndex())
+        cal_flat_rejc = str(self.ui.comboBox_18.currentIndex())
+        cal_flat_subs = str(self.ui.comboBox_19.currentIndex())
+        cal_flat_ccdt = str(self.ui.lineEdit_31.text())
+
+        cal_cali_subs = str(self.ui.comboBox_20.currentIndex())
+        cal_cali_ccdt = str(self.ui.lineEdit_32.text())
+
+        phot_fsp_anna = str(self.ui.doubleSpinBox_8.value())
+        phot_fsp_dand = str(self.ui.doubleSpinBox_9.value())
+        phot_fsp_cbox = str(self.ui.doubleSpinBox_15.value())
+
+        phot_dpe_xpti = str(self.ui.lineEdit_33.text())
+        phot_dpt_filt = str(self.ui.lineEdit_34.text())
+
+        phot_php_aper = str(self.ui.lineEdit_35.text())
+        phot_php_zmag = str(self.ui.lineEdit_36.text())
+        phot_php_gain = str(self.ui.lineEdit_37.text())
+        phot_php_fxpx = str(self.ui.lineEdit_38.text())
+
+        phot_wcs_raa = str(self.ui.lineEdit_39.text())
+        phot_wcs_dec = str(self.ui.lineEdit_40.text())
+
+        phot_lot_obse = str(self.ui.lineEdit_42.text())
+        if self.ggui.is_checked(self.ui.checkBox_13):
+            phot_lot_tmsp = "t"
+        else:
+            phot_lot_tmsp = "f"
+
+        phot_lot_time = str(self.ui.lineEdit_43.text())
+        phot_lot_date = str(self.ui.lineEdit_44.text())
+        if self.ggui.is_checked(self.ui.checkBox_5):
+            phot_lot_epca = "t"
+        else:
+            phot_lot_epca = "f"
+
+        phot_lot_epch = str(self.ui.lineEdit_41.text())
+
+        phot_stf_fxra = str(self.ui.doubleSpinBox_16.value())
+        phot_stf_mnfh = str(self.ui.doubleSpinBox_17.value())
+        phot_stf_mxfh = str(self.ui.doubleSpinBox_18.value())
+        phot_stf_mstf = str(self.ui.doubleSpinBox_19.value())
+
+        phot_hex = ""
+        all_items = self.ggui.get_all_items_from_list(self.ui.listWidget_26)
+        if all_items[0]:
+            for i in all_items[1]:
+                phot_hex = "%s,%s" % (phot_hex, i)
+
+        if self.ggui.is_checked(self.ui.checkBox_17):
+            phot_ccl_acmf = "t"
+        else:
+            phot_ccl_acmf = "f"
+
+        phot_ccl_gain = str(self.ui.doubleSpinBox_20.value())
+        phot_ccl_rnoi = str(self.ui.doubleSpinBox_21.value())
+        phot_ccl_scli = str(self.ui.doubleSpinBox_22.value())
+        phot_ccl_sfra = str(self.ui.doubleSpinBox_23.value())
+        phot_ccl_olim = str(self.ui.doubleSpinBox_24.value())
+
+        phot_wct_serv = str(self.ui.lineEdit_45.text())
+        phot_wct_apke = str(self.ui.lineEdit_46.text())
+
+        phot_wct_befl = ""
+        if self.ui.radioButton_4.isChecked():
+            phot_wct_befl = "Nothing"
+        elif self.ui.radioButton_5.isChecked():
+            phot_wct_befl = "Compress"
+        elif self.ui.radioButton_6.isChecked():
+            phot_wct_befl = "Binary"
+        else:
+            phot_wct_befl = "Nothing"
+
+        if self.ggui.is_checked(self.ui.checkBox_20):
+            phot_wct_abap = "t"
+        else:
+            phot_wct_abap = "f"
+
+        if self.ggui.is_checked(self.ui.checkBox_21):
+            phot_wct_scli = "t"
+        else:
+            phot_wct_scli = "f"
+
+        self.fset.create_settings(set_name, gen_cpus=gen_cpus,
+            cal_zero_comb=cal_zero_comb, cal_zero_rejc=cal_zero_rejc,
+            cal_zero_ccdt=cal_zero_ccdt, cal_dark_comb=cal_dark_comb,
+            cal_dark_rejc=cal_dark_rejc, cal_dark_scale=cal_dark_scale,
+            cal_dark_ccdt=cal_dark_ccdt, cal_flat_comb=cal_flat_comb,
+            cal_flat_rejc=cal_flat_rejc, cal_flat_subs=cal_flat_subs,
+            cal_flat_ccdt=cal_flat_ccdt, cal_cali_subs=cal_cali_subs,
+            cal_cali_ccdt=cal_cali_ccdt, phot_fsp_anna=phot_fsp_anna,
+            phot_fsp_dand=phot_fsp_dand, phot_fsp_cbox=phot_fsp_cbox,
+            phot_dpe_xpti=phot_dpe_xpti, phot_dpt_filt=phot_dpt_filt,
+            phot_php_aper=phot_php_aper, phot_php_zmag=phot_php_zmag,
+            phot_php_gain=phot_php_gain, phot_php_fxpx=phot_php_fxpx,
+            phot_wcs_raa=phot_wcs_raa, phot_wcs_dec=phot_wcs_dec,
+            phot_lot_obse=phot_lot_obse, phot_lot_tmsp=phot_lot_tmsp,
+            phot_lot_time=phot_lot_time, phot_lot_date=phot_lot_date,
+            phot_lot_epca=phot_lot_epca, phot_lot_epch=phot_lot_epch,
+            phot_stf_fxra=phot_stf_fxra, phot_stf_mnfh=phot_stf_mnfh,
+            phot_stf_mxfh=phot_stf_mxfh, phot_stf_mstf=phot_stf_mstf,
+            phot_hex=phot_hex, phot_ccl_acmf=phot_ccl_acmf,
+            phot_ccl_gain=phot_ccl_gain, phot_ccl_rnoi=phot_ccl_rnoi,
+            phot_ccl_scli=phot_ccl_scli, phot_ccl_sfra=phot_ccl_sfra,
+            phot_ccl_olim=phot_ccl_olim, phot_wct_serv=phot_wct_serv,
+            phot_wct_apke=phot_wct_apke, phot_wct_befl=phot_wct_befl,
+            phot_wct_abap=phot_wct_abap, phot_wct_scli=phot_wct_scli)
+
+    def add_files_imh(self, list_widget):
+        files = self.ggui.get_file_list(self,
+        "All Files (*.*);;FIT or FITS (*.fits *.fit *.fits);;IMH (*.img)",
+        check_fits=False)
+        if files[0]:
+            self.ggui.set_values_to_list(self, list_widget, files[1])
+        else:
+            self.ggui.show_dialog(self, "info",
+                "File Problem", "No file selected!")
+
+        self.load_logs()
+        self.update_info()
+
+    def add_files(self, list_widget):
+        files = self.ggui.get_file_list(self,
+        "FIT or FITS (*.fits *.fit *.fits)")
+        if files[0]:
+            self.ggui.set_values_to_list(self, list_widget, files[1])
+        else:
+            self.ggui.show_dialog(self, "info",
+                "File Problem", "No file selected!")
+
+        self.load_logs()
+        self.update_info()
+
+    def delete_log_file(self):
+        if self.ggui.show_are_you_sure(self, "%s\n%s" % (
+            "Are you sure you want to dlete log files?",
+            "We highly recommend you to save the log files first.")):
+            self.mefo.delete_log_files()
+        self.load_logs()
+
+    def rm_files(self, list_widget):
+        self.ggui.remove_values_from_list(list_widget)
+        self.update_info()
+
+    def load_selected_settings(self):
+        set_name = self.ggui.get_current_item_from_combo(self.ui.comboBox_21)
+        if set_name[0]:
+            self.load_settings(set_name[1])
+
+        self.load_logs()
+
+    def initial(self):
+        self.refresh_settings_list()
+        csfn = self.current_set_file_name()
+        if csfn[0]:
+            self.load_settings(csfn[1])
+
+        self.load_logs()
+        self.update_info()
+        self.load_observatories()
+
+    def refresh_settings_list(self):
+        set_file_list = self.mefo.get_file_name_list("./sessions/", "*.set")
+        if set_file_list[0]:
+            self.ggui.reload_combo_with_new_items(self,
+                self.ui.comboBox_21, set_file_list[1])
+        self.load_logs()
+
+    def current_set_file_name(self):
+        ret = [False, None]
+        try:
+            cur_set = open("sessions/current")
+            for i in cur_set:
+                ret = [True, i.strip()]
+        except Exception as e:
+            self.meetc.print_if(e)
+
+        self.load_logs()
+        return ret
+
+    def load_logs(self):
+        list_of_logs = self.meetc.get_mini_log_file()
+        if list_of_logs[0]:
+            self.ggui.reload_list_with_new_items(self,
+                self.ui.listWidget_28, list_of_logs[1])
+
+        log_file_size = self.mefo.get_total_log_file_size()
+        if log_file_size[0]:
+            self.ui.label_6.setText(
+                "Total Log file size is: %s" % (log_file_size[1]))
+
+    def load_settings(self, set_file_name):
+        current_set_file = "./sessions/%s.set" % (set_file_name)
+
+        self.ui.lineEdit_47.setText(set_file_name)
+
+        set_cpu_num = self.fset.read_settings_general_cpu(current_set_file)
+        if set_cpu_num[0]:
+            self.ui.dial_2.setValue(int(set_cpu_num[1]["cpus"]))
+
+        cur_cal_set = self.fset.read_settings_calibration(current_set_file)
+        if cur_cal_set[0]:
+            self.ui.comboBox_12.setCurrentIndex(
+                int(cur_cal_set[1]["cali_zero_comb"]))
+            self.ui.comboBox_13.setCurrentIndex(
+                int(cur_cal_set[1]["cali_zero_reje"]))
+            self.ui.lineEdit_21.setText(
+                cur_cal_set[1]["cali_zero_ccty"].strip())
+
+            self.ui.comboBox_17.setCurrentIndex(
+                int(cur_cal_set[1]["cali_flat_comb"]))
+            self.ui.comboBox_18.setCurrentIndex(
+                int(cur_cal_set[1]["cali_flat_reje"]))
+            self.ui.comboBox_19.setCurrentIndex(
+                int(cur_cal_set[1]["cali_flat_subs"]))
+            self.ui.lineEdit_31.setText(
+                cur_cal_set[1]["cali_flat_ccty"].strip())
+
+            self.ui.comboBox_14.setCurrentIndex(
+                int(cur_cal_set[1]["cali_dark_comb"]))
+            self.ui.comboBox_15.setCurrentIndex(
+                int(cur_cal_set[1]["cali_dark_reje"]))
+            self.ui.comboBox_16.setCurrentIndex(
+                int(cur_cal_set[1]["cali_dark_scal"]))
+            self.ui.lineEdit_30.setText(
+                cur_cal_set[1]["cali_dark_ccty"].strip())
+
+            self.ui.comboBox_20.setCurrentIndex(
+                int(cur_cal_set[1]["cali_cali_subs"]))
+            self.ui.lineEdit_32.setText(
+                cur_cal_set[1]["cali_cali_ccty"].strip())
+
+        cur_phot_set = self.fset.read_settings_photometry(current_set_file)
+        if cur_phot_set[0]:
+            self.ui.doubleSpinBox_8.setValue(
+                float(cur_phot_set[1]["phot_fsp_annu"]))
+            self.ui.doubleSpinBox_9.setValue(
+                float(cur_phot_set[1]["phot_fsp_dann"]))
+            self.ui.doubleSpinBox_15.setValue(
+                float(cur_phot_set[1]["phot_fsp_cbox"]))
+
+            self.ui.lineEdit_33.setText(
+                cur_phot_set[1]["phot_dap_expo"])
+            self.ui.lineEdit_34.setText(
+                cur_phot_set[1]["phot_dap_fltr"])
+
+            self.ui.lineEdit_35.setText(
+                cur_phot_set[1]["phot_php_aper"])
+            self.ui.lineEdit_36.setText(
+                cur_phot_set[1]["phot_php_zmag"])
+            self.ui.lineEdit_37.setText(
+                cur_phot_set[1]["phot_php_gain"])
+            self.ui.lineEdit_38.setText(
+                cur_phot_set[1]["phot_php_fxpx"])
+
+            self.ui.lineEdit_39.setText(
+                cur_phot_set[1]["phot_pwcs_rias"])
+            self.ui.lineEdit_40.setText(
+                cur_phot_set[1]["phot_pwcs_decl"])
+
+            self.ui.lineEdit_42.setText(
+                cur_phot_set[1]["phot_loti_obsv"])
+            self.ui.lineEdit_43.setText(
+                cur_phot_set[1]["phot_loti_tmob"])
+            self.ui.lineEdit_44.setText(
+                cur_phot_set[1]["phot_loti_dtob"])
+            self.ui.lineEdit_41.setText(
+                cur_phot_set[1]["phot_loti_epoc"])
+
+            if cur_phot_set[1]["phot_loti_tmsp"] == "t":
+                self.ui.checkBox_13.setChecked(True)
+                self.ggui.timestamp_checked(self, True)
+            else:
+                self.ui.checkBox_13.setChecked(False)
+                self.ggui.timestamp_checked(self, False)
+
+            if cur_phot_set[1]["phot_loti_epca"] == "t":
+                self.ggui.epoch_calculator(self, True)
+            else:
+                self.ggui.epoch_calculator(self, False)
+
+            self.ui.doubleSpinBox_16.setValue(
+                float(cur_phot_set[1]["phot_stfi_flra"]))
+            self.ui.doubleSpinBox_17.setValue(
+                float(cur_phot_set[1]["phot_stfi_mifh"]))
+            self.ui.doubleSpinBox_18.setValue(
+                float(cur_phot_set[1]["phot_stfi_mafh"]))
+            self.ui.doubleSpinBox_19.setValue(
+                float(cur_phot_set[1]["phot_stfi_mstf"]))
+
+            extraction = []
+            for i in cur_phot_set[1]["phot_heex_extr"].split(","):
+                extraction.append(i)
+
+            self.ggui.reload_list_with_new_items(self,
+                self.ui.listWidget_26, extraction)
+
+        cur_cclean_set = self.fset.read_settings_ccleaner(current_set_file)
+        if cur_cclean_set[0]:
+            if cur_cclean_set[1]["coce_acmf"] == "t":
+                self.ggui.set_state(self.ui.checkBox_17, True)
+            else:
+                self.ggui.set_state(self.ui.checkBox_17, False)
+
+            self.ui.doubleSpinBox_20.setValue(
+                float(cur_cclean_set[1]["coce_gain"]))
+            self.ui.doubleSpinBox_21.setValue(
+                float(cur_cclean_set[1]["coce_reno"]))
+            self.ui.doubleSpinBox_22.setValue(
+                float(cur_cclean_set[1]["coce_sicl"]))
+            self.ui.doubleSpinBox_23.setValue(
+                float(cur_cclean_set[1]["coce_sifr"]))
+            self.ui.doubleSpinBox_24.setValue(
+                float(cur_cclean_set[1]["coce_obli"]))
+
+        cur_wcs_set = self.fset.read_settings_wcs(current_set_file)
+        if cur_wcs_set[0]:
+            self.ui.lineEdit_45.setText(cur_wcs_set[1]["wcs_serv"])
+            self.ui.lineEdit_46.setText(cur_wcs_set[1]["wcs_apke"])
+
+            if cur_wcs_set[1]["wcs_belo"] == "Nothing":
+                self.ui.radioButton_4.setChecked(True)
+            elif cur_wcs_set[1]["wcs_belo"] == "Compress":
+                self.ui.radioButton_5.setChecked(True)
+            elif cur_wcs_set[1]["wcs_belo"] == "Binary":
+                self.ui.radioButton_6.setChecked(True)
+            else:
+                self.ui.radioButton.setChecked(True)
+
+            if cur_wcs_set[1]["wcs_abap"] == "t":
+                self.ggui.set_state(self.ui.checkBox_20, True)
+            else:
+                self.ggui.set_state(self.ui.checkBox_20, False)
+
+            if cur_wcs_set[1]["wcs_cwhs"] == "t":
+                self.ggui.set_state(self.ui.checkBox_21, True)
+            else:
+                self.ggui.set_state(self.ui.checkBox_21, False)
+
+        self.mefo.write_to_file("sessions/current",
+            set_file_name, "w", force=True)
+
+        self.load_logs()
+
+    def show_stats(self, list_dev):
+        file_name = self.ggui.get_current_item_from_list(list_dev)
+        if file_name[0]:
+            stat = self.mfst.get_stats([file_name[1]])
+            if stat[0]:
+                    pfn = self.mefo.get_base_name(stat[1][0][0])
+                    if pfn[0]:
+                        self.ggui.show_dialog(self, "info", "stats",
+                            "File Name: %s\nStddev: %s\nMean: %s" % (
+                                pfn[1][1], stat[1][0][3], stat[1][0][2]))
+        self.load_logs()
+
+    def show_infos_for_all(self, lst_dev, owner):
+        res = []
+        it = 0
+        list_of_files = self.ggui.get_all_items_from_list(lst_dev)
+        cou = self.ggui.get_count_of_list(lst_dev)
+        if cou[0]:
+            if list_of_files[0]:
+                for i in list_of_files[1]:
+                    it = it + 1
+                    stats = self.mfst.get_stats([i])
+                    if stats[0]:
+                        res.append(
+                            "%s, MEAN:%s, STDDEV:%s, MIN:%s, MAX:%s" % (
+                                stats[1][0][0], stats[1][0][2], stats[1][0][3],
+                                stats[1][0][4], stats[1][0][5]))
+                    self.ui.progressBar.setValue(
+                        self.ggui.calc_percentage(float(it), float(cou[1])))
+        self.ui.progressBar.setValue(0)
+        self.show_error_form(title="Resoullt of imstatistics", owner=owner,
+            disp=res)
+
+        self.load_logs()
+
+    def on_context_menu_bias(self, point):
+        self.popMenu_bias_stat.exec_(self.ui.listWidget_10.mapToGlobal(point))
+
+    def on_context_menu_dark(self, point):
+        self.popMenu_dark_stat.exec_(self.ui.listWidget_11.mapToGlobal(point))
+
+    def on_context_menu_flat(self, point):
+        self.popMenu_flat_stat.exec_(self.ui.listWidget_12.mapToGlobal(point))
+
+    def on_context_menu_run_sex(self, point):
+        self.popMenu_run_sex.exec_(self.ui.disp_phot.mapToGlobal(point))
+
+    def save_logs(self):
+        file_to_save = self.ggui.get_file(self, "MYRaf.log", "log")
+        all_lines = self.ggui.get_all_items_from_list(self.ui.listWidget_28)
+        if file_to_save[0]:
+            if all_lines[0]:
+                self.mefo.save_1d_array_to_file(file_to_save[1], all_lines[1])
+        self.load_logs()
+
+    def show_error_form(self, title="Error",
+    owner="No one", disp=["Noting to show"]):
+        self.load_logs()
+        err_dia = MyFormErr(self,
+            verb=True, header=title, who_sent=owner, values=disp)
+        err_dia.setParent(form2load)
+        flags = QtCore.Qt.Tool
+        err_dia.setWindowFlags(flags)
+
+        position = self.pos()
+        self_height = err_dia.height()
+        self_width = err_dia.width()
+        pos_x = position.x()
+        pos_y = position.y()
+        err_pos_y = (pos_y + self_height / 2)
+        err_pos_x = (pos_x + self_width / 2)
+        err_dia.setGeometry(err_pos_x, err_pos_y, 500, 300)
+
+        err_dia.show()
+
+    def update_info(self):
+        cou_data = 0
+        data = self.ggui.get_count_of_list(self.ui.listWidget_9)
+        cou_bias = 0
+        bias = self.ggui.get_count_of_list(self.ui.listWidget_10)
+        cou_dark = 0
+        dark = self.ggui.get_count_of_list(self.ui.listWidget_11)
+        cou_flat = 0
+        flat = self.ggui.get_count_of_list(self.ui.listWidget_12)
+
+        if data[0]:
+            cou_data = data[1]
+        if bias[0]:
+            cou_bias = bias[1]
+        if dark[0]:
+            cou_dark = dark[1]
+        if flat[0]:
+            cou_flat = flat[1]
+
+        pho_file = self.ggui.get_current_item_from_list(self.ui.listWidget_3)
+        if pho_file[0]:
+            self.popMenu_run_sex.setEnabled(True)
+        else:
+            self.popMenu_run_sex.setEnabled(False)
+
+        if cou_bias == 0:
+            self.popMenu_bias_stat.setEnabled(False)
+        else:
+            self.popMenu_bias_stat.setEnabled(True)
+
+        if cou_dark == 0:
+            self.popMenu_dark_stat.setEnabled(False)
+        else:
+            self.popMenu_dark_stat.setEnabled(True)
+
+        if cou_flat == 0:
+            self.popMenu_flat_stat.setEnabled(False)
+        else:
+            self.popMenu_flat_stat.setEnabled(True)
+
+        self.ui.label_10.setText("%s file(s) selected" % (cou_data))
+        self.ui.label_11.setText("%s file(s) selected" % (cou_bias))
+        self.ui.label_12.setText("%s file(s) selected" % (cou_dark))
+        self.ui.label_13.setText("%s file(s) selected" % (cou_flat))
+
+        self.ui.label.setText("%s %s %s Bias(es), %s Dark(s), %s Flat(s)" % (
+            cou_data, "file(s) will be calibrated using",
+            cou_bias, cou_dark, cou_flat))
+
+
+class MyFormErr(QtGui.QMainWindow, Ui_MainWindowErr):
+    def __init__(self, parent=None, verb=True, header="Error",
+        who_sent="Unknown", values=["Nothing to show"]):
+        super(MyFormErr, self).__init__()
+        self.ui = Ui_MainWindowErr()
+        self.ui.setupUi(self)
+        self.verb = verb
+        self.ggui = g.Gui(verb=self.verb)
+        self.mefo = myEnv.file_operation(verb=self.verb)
+        self.who_sent = who_sent
+
+        self.setWindowTitle("MYRaf 3 - %s" % (header))
+        self.ui.Err_label.setText(who_sent)
+        self.ggui.reload_list_with_new_items(
+            self, self.ui.Err_listWidget, values)
+
+        self.ui.Err_pushButton.clicked.connect(lambda:
+            self.save_res(self.ui.Err_listWidget))
+
+        self.ui.Err_pushButton_2.clicked.connect(lambda: self.close_me())
+
+        if who_sent == "Bias Combin":
+            self.popMenu_dark_stat_select_over_bias = QtGui.QMenu(self)
+            self.popMenu_dark_stat_select_over_bias.addAction(
+                'Select on Bias Combin', lambda: self.re_select(
+                    parent.ui.listWidget_10, self.ui.Err_listWidget))
+
+            self.ui.Err_listWidget.setContextMenuPolicy(
+                QtCore.Qt.CustomContextMenu)
+            self.connect(self.ui.Err_listWidget, QtCore.SIGNAL(
+                'customContextMenuRequested(const QPoint&)'),
+                    self.on_context_menu_select_over_bias)
+
+        if who_sent == "Dark Combin":
+            self.popMenu_dark_stat_select_over_dark = QtGui.QMenu(self)
+            self.popMenu_dark_stat_select_over_dark.addAction(
+                'Select on Dark Combin', lambda: self.re_select(
+                    parent.ui.listWidget_11, self.ui.Err_listWidget))
+
+            self.ui.Err_listWidget.setContextMenuPolicy(
+                QtCore.Qt.CustomContextMenu)
+            self.connect(self.ui.Err_listWidget, QtCore.SIGNAL(
+                'customContextMenuRequested(const QPoint&)'),
+                    self.on_context_menu_select_over_dark)
+
+        if who_sent == "Flat Combin":
+            self.popMenu_dark_stat_select_over_flat = QtGui.QMenu(self)
+            self.popMenu_dark_stat_select_over_flat.addAction(
+                'Select on Flat Combin', lambda: self.re_select(
+                    parent.ui.listWidget_12, self.ui.Err_listWidget))
+
+            self.ui.Err_listWidget.setContextMenuPolicy(
+                QtCore.Qt.CustomContextMenu)
+            self.connect(self.ui.Err_listWidget, QtCore.SIGNAL(
+                'customContextMenuRequested(const QPoint&)'),
+                    self.on_context_menu_select_over_flat)
+
+        if who_sent == "Photometry":
+            self.popMenu_display_on_image = QtGui.QMenu(self)
+            self.popMenu_display_on_image.addAction(
+                'Show me', lambda: self.show_on_phot(parent))
+            self.popMenu_display_on_image.addAction(
+                'Add to Sources List', lambda: self.get_coors(parent))
+
+            self.ui.Err_listWidget.setContextMenuPolicy(
+                QtCore.Qt.CustomContextMenu)
+            self.connect(self.ui.Err_listWidget, QtCore.SIGNAL(
+                'customContextMenuRequested(const QPoint&)'),
+                    self.on_context_menu_show_on_phot)
+
+    def get_coors(self, parent):
+        coors = self.ggui.get_selected_items_from_list(self.ui.Err_listWidget)
+        add_coors = []
+        if coors[0]:
+            for i in coors[1]:
+                x = float(i.split(" - ")[1])
+                y = float(i.split(" - ")[2])
+                add_coors.append("%s - %s" % (x, y))
+
+            self.ggui.set_values_to_list(parent,
+                parent.ui.listWidget_4, add_coors)
+
+    def show_on_phot(self, parent):
+        parent.display_ph()
+        coors = self.ggui.get_selected_items_from_list(self.ui.Err_listWidget)
+        app = 20
+        ann = 25
+        dan = 5
+        it = 0
+        if coors[0]:
+            for i in coors[1]:
+                it = it + 1
+                flux = float(i.split(" - ")[0])
+                x = float(i.split(" - ")[1])
+                y = float(i.split(" - ")[2])
+                self.ggui.draw_a_circle(parent.ui.disp_phot, x, y,
+                    app, "#ffff00")
+                self.ggui.draw_a_circle(parent.ui.disp_phot, x, y,
+                    app + ann, "#ff00ff")
+                self.ggui.draw_a_circle(parent.ui.disp_phot, x, y,
+                    app + ann + dan, "#00ffff", label=flux)
+
+                parent.ui.progressBar_4.setValue(
+                    self.ggui.calc_percentage(it, len(coors[1])))
+        parent.ui.progressBar_4.setValue(0)
+
+    def save_res(self, lst_dev):
+        file_to_save = self.ggui.get_file(self, "%s.txt" % (
+            self.who_sent), "txt")
+        all_lines = self.ggui.get_all_items_from_list(lst_dev)
+        if file_to_save[0]:
+            if all_lines[0]:
+                self.mefo.save_1d_array_to_file(file_to_save[1], all_lines[1])
+
+    def re_select(self, remote_list_dev, local_list_dev):
+        list_of_indexes = self.ggui.get_list_index_of_selected_items_from_list(
+            local_list_dev)
+        if list_of_indexes[0]:
+            self.ggui.select_given_range_in_list(remote_list_dev,
+                list_of_indexes[1])
+
+    def on_context_menu_select_over_bias(self, point):
+        self.popMenu_dark_stat_select_over_bias.exec_(
+            self.ui.Err_listWidget.mapToGlobal(point))
+
+    def on_context_menu_select_over_dark(self, point):
+        self.popMenu_dark_stat_select_over_dark.exec_(
+            self.ui.Err_listWidget.mapToGlobal(point))
+
+    def on_context_menu_select_over_flat(self, point):
+        self.popMenu_dark_stat_select_over_flat.exec_(
+            self.ui.Err_listWidget.mapToGlobal(point))
+
+    def on_context_menu_show_on_phot(self, point):
+        self.popMenu_display_on_image.exec_(
+            self.ui.Err_listWidget.mapToGlobal(point))
+
+    def close_me(self):
+        self.close()
+
+
+if __name__ == "__main__":
+    app = QtGui.QApplication(sys.argv)
+    form2load = MyForm()
+    form2load.show()
+    app.exec_()

@@ -51,7 +51,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_10">
               <property name="text">
-               <string>TextLabel</string>
+               <string/>
               </property>
              </widget>
             </item>
@@ -129,7 +129,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_11">
               <property name="text">
-               <string>TextLabel</string>
+               <string/>
               </property>
              </widget>
             </item>
@@ -188,7 +188,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_12">
               <property name="text">
-               <string>TextLabel</string>
+               <string/>
               </property>
              </widget>
             </item>
@@ -259,7 +259,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_13">
               <property name="text">
-               <string>TextLabel</string>
+               <string/>
               </property>
              </widget>
             </item>
@@ -336,7 +336,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>TextLabel</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -481,7 +481,7 @@
               <item row="0" column="0">
                <widget class="QLabel" name="label_2">
                 <property name="text">
-                 <string>TextLabel</string>
+                 <string/>
                 </property>
                </widget>
               </item>
@@ -545,7 +545,7 @@
                <item row="1" column="0">
                 <widget class="QLabel" name="label_3">
                  <property name="text">
-                  <string>TextLabel</string>
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -623,7 +623,7 @@
               <item row="0" column="0">
                <widget class="QLabel" name="label_4">
                 <property name="text">
-                 <string>TextLabel</string>
+                 <string/>
                 </property>
                </widget>
               </item>
@@ -671,210 +671,451 @@
        <attribute name="title">
         <string>Photometry</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_26">
+       <layout class="QGridLayout" name="gridLayout_10">
         <item row="0" column="0">
-         <widget class="QTabWidget" name="tabWidget_4">
+         <widget class="QTabWidget" name="tabWidget_9">
           <property name="currentIndex">
            <number>0</number>
           </property>
-          <widget class="QWidget" name="tab_14">
+          <widget class="QWidget" name="tab_5">
            <attribute name="title">
-            <string>Apperture</string>
+            <string>Static Object</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_21">
-            <item row="0" column="0" rowspan="2">
-             <widget class="QGroupBox" name="groupBox_5">
-              <property name="title">
-               <string>Display</string>
+           <layout class="QGridLayout" name="gridLayout_17">
+            <item row="0" column="0">
+             <widget class="QTabWidget" name="tabWidget_4">
+              <property name="currentIndex">
+               <number>0</number>
               </property>
-              <layout class="QGridLayout" name="gridLayout_22">
-               <item row="0" column="0">
-                <widget class="QGraphicsView" name="graphicsView_3"/>
-               </item>
-              </layout>
+              <widget class="QWidget" name="tab_14">
+               <attribute name="title">
+                <string>Aperture</string>
+               </attribute>
+               <layout class="QGridLayout" name="gridLayout_21">
+                <item row="0" column="0" rowspan="2">
+                 <widget class="QGroupBox" name="groupBox_5">
+                  <property name="title">
+                   <string>Display</string>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_9">
+                   <item row="0" column="0">
+                    <widget class="gingaWidget" name="disp_phot" native="true">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QGroupBox" name="groupBox_6">
+                  <property name="minimumSize">
+                   <size>
+                    <width>200</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="title">
+                   <string>Files</string>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_23">
+                   <item row="1" column="0">
+                    <widget class="QPushButton" name="pushButton_8">
+                     <property name="minimumSize">
+                      <size>
+                       <width>70</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>70</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Remove</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QPushButton" name="pushButton_9">
+                     <property name="minimumSize">
+                      <size>
+                       <width>75</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>75</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Add</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0" colspan="2">
+                    <widget class="QListWidget" name="listWidget_3">
+                     <property name="selectionMode">
+                      <enum>QAbstractItemView::ExtendedSelection</enum>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QGroupBox" name="groupBox_7">
+                  <property name="minimumSize">
+                   <size>
+                    <width>200</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="title">
+                   <string>Sources</string>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_24">
+                   <item row="1" column="0">
+                    <widget class="QPushButton" name="pushButton_32">
+                     <property name="minimumSize">
+                      <size>
+                       <width>70</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>70</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Remove</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QPushButton" name="pushButton_33">
+                     <property name="minimumSize">
+                      <size>
+                       <width>75</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>75</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Display</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0" colspan="2">
+                    <widget class="QListWidget" name="listWidget_4">
+                     <property name="selectionMode">
+                      <enum>QAbstractItemView::ExtendedSelection</enum>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="2" column="0" colspan="2">
+                 <layout class="QGridLayout" name="gridLayout_25">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="label_5">
+                    <property name="text">
+                     <string>TextLabel</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1" rowspan="2">
+                   <widget class="QPushButton" name="pushButton_34">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>50</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>50</width>
+                      <height>50</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>:go</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QProgressBar" name="progressBar_4">
+                    <property name="value">
+                     <number>0</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_15">
+               <attribute name="title">
+                <string>Ensemble</string>
+               </attribute>
+              </widget>
              </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QGroupBox" name="groupBox_6">
-              <property name="minimumSize">
-               <size>
-                <width>200</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>200</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="title">
-               <string>Files</string>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_23">
-               <item row="1" column="0">
-                <widget class="QPushButton" name="pushButton_8">
-                 <property name="minimumSize">
-                  <size>
-                   <width>70</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>70</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Remove</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QPushButton" name="pushButton_9">
-                 <property name="minimumSize">
-                  <size>
-                   <width>75</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>75</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Add</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0" colspan="2">
-                <widget class="QListWidget" name="listWidget_3">
-                 <property name="selectionMode">
-                  <enum>QAbstractItemView::ExtendedSelection</enum>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QGroupBox" name="groupBox_7">
-              <property name="minimumSize">
-               <size>
-                <width>200</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>200</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="title">
-               <string>Sources</string>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_24">
-               <item row="1" column="0">
-                <widget class="QPushButton" name="pushButton_32">
-                 <property name="minimumSize">
-                  <size>
-                   <width>70</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>70</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Remove</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QPushButton" name="pushButton_33">
-                 <property name="minimumSize">
-                  <size>
-                   <width>75</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>75</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Display</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0" colspan="2">
-                <widget class="QListWidget" name="listWidget_4">
-                 <property name="selectionMode">
-                  <enum>QAbstractItemView::ExtendedSelection</enum>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="2" column="0" colspan="2">
-             <layout class="QGridLayout" name="gridLayout_25">
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_5">
-                <property name="text">
-                 <string>TextLabel</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1" rowspan="2">
-               <widget class="QPushButton" name="pushButton_34">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>50</width>
-                  <height>50</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>50</width>
-                  <height>50</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>:go</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QProgressBar" name="progressBar_4">
-                <property name="value">
-                 <number>0</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_15">
+          <widget class="QWidget" name="tab_6">
            <attribute name="title">
-            <string>Ensemble</string>
+            <string>NEO</string>
            </attribute>
+           <layout class="QGridLayout" name="gridLayout_22">
+            <item row="0" column="0">
+             <widget class="QTabWidget" name="tabWidget_10">
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <widget class="QWidget" name="tab_7">
+               <attribute name="title">
+                <string>Aperture</string>
+               </attribute>
+               <layout class="QGridLayout" name="gridLayout_62">
+                <item row="0" column="0" rowspan="2">
+                 <widget class="QGroupBox" name="groupBox_17">
+                  <property name="title">
+                   <string>Display</string>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_57">
+                   <item row="0" column="0">
+                    <widget class="gingaWidget" name="disp_phot_neo" native="true">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QGroupBox" name="groupBox_19">
+                  <property name="minimumSize">
+                   <size>
+                    <width>200</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="title">
+                   <string>Files</string>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_60">
+                   <item row="1" column="0">
+                    <widget class="QPushButton" name="pushButton_13">
+                     <property name="minimumSize">
+                      <size>
+                       <width>70</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>70</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Remove</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QPushButton" name="pushButton_14">
+                     <property name="minimumSize">
+                      <size>
+                       <width>75</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>75</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Add</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0" colspan="2">
+                    <widget class="QListWidget" name="listWidget_6">
+                     <property name="selectionMode">
+                      <enum>QAbstractItemView::ExtendedSelection</enum>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QGroupBox" name="groupBox_18">
+                  <property name="minimumSize">
+                   <size>
+                    <width>200</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="title">
+                   <string>Sources</string>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_58">
+                   <item row="1" column="0">
+                    <widget class="QPushButton" name="pushButton_61">
+                     <property name="minimumSize">
+                      <size>
+                       <width>70</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>70</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Remove</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QPushButton" name="pushButton_62">
+                     <property name="minimumSize">
+                      <size>
+                       <width>75</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>75</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Display</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0" colspan="2">
+                    <widget class="QListWidget" name="listWidget_5">
+                     <property name="selectionMode">
+                      <enum>QAbstractItemView::ExtendedSelection</enum>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="2" column="0" colspan="2">
+                 <layout class="QGridLayout" name="gridLayout_59">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="label_8">
+                    <property name="text">
+                     <string>TextLabel</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1" rowspan="2">
+                   <widget class="QPushButton" name="pushButton_63">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>50</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>50</width>
+                      <height>50</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>:go</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QProgressBar" name="progressBar_10">
+                    <property name="value">
+                     <number>0</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_8">
+               <attribute name="title">
+                <string>Ensemble</string>
+               </attribute>
+              </widget>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </widget>
         </item>
@@ -882,8 +1123,67 @@
       </widget>
       <widget class="QWidget" name="tab_16">
        <attribute name="title">
-        <string>Graph</string>
+        <string>Extract/Graph</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_26">
+        <item row="0" column="0">
+         <widget class="QTabWidget" name="tabWidget_11">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tab_30">
+           <attribute name="title">
+            <string>Data Extractor</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_56">
+            <item row="0" column="0" colspan="2">
+             <widget class="QTableWidget" name="tableWidget"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>File_name</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="pushButton_12">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Import</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_25">
+           <attribute name="title">
+            <string>Graph</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_61">
+            <item row="0" column="0">
+             <widget class="QGroupBox" name="groupBox_16">
+              <property name="title">
+               <string>Display</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_17">
        <attribute name="title">
@@ -2169,7 +2469,7 @@
         <item row="0" column="0" colspan="2">
          <widget class="QTabWidget" name="tabWidget_6">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tab_35">
            <attribute name="title">
@@ -3080,6 +3380,9 @@
                  </item>
                  <item row="0" column="1">
                   <widget class="QDoubleSpinBox" name="doubleSpinBox_16">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
                    <property name="decimals">
                     <number>0</number>
                    </property>
@@ -3112,6 +3415,9 @@
                  </item>
                  <item row="1" column="1">
                   <widget class="QDoubleSpinBox" name="doubleSpinBox_17">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
                    <property name="decimals">
                     <number>0</number>
                    </property>
@@ -3144,6 +3450,9 @@
                  </item>
                  <item row="2" column="1">
                   <widget class="QDoubleSpinBox" name="doubleSpinBox_18">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
                    <property name="decimals">
                     <number>0</number>
                    </property>
@@ -3976,6 +4285,26 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif'; color:#404040;&quot;&gt;On the Mac, control + mouse button can also be used to draw or right click. You can also press and release the space bar to make the next drag operation a drawing operation.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ref = http://ginga.readthedocs.org/en/latest/quickref.html&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_31">
+           <attribute name="title">
+            <string>A-Track</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_63">
+            <item row="0" column="0">
+             <widget class="QTextBrowser" name="textBrowser_6">
+              <property name="html">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Thanks to &lt;span style=&quot; font-weight:600;&quot;&gt;A-Track&lt;/span&gt; Team, MYRaf can track moving object(NEOs, Asteroids, etc) in file series.&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;ref: https://github.com/yucelkilic/A-Track&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>

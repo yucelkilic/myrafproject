@@ -302,7 +302,74 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
                 "Can not get file count")
 
         if do_phot:
-            print "Do the harlem shake"
+            annu = "25"
+            dann = "5"
+            cbox = "10"
+            expt = "exptime"
+            subs = "subset"
+            aper = "10,15,20,25,30"
+            zmag = "25"
+            gain = "gain"
+            tobs = "time-obs"
+            dobs = "date-obs"
+            epoc = "epoch"
+            otime = "my_hjd"
+            airmass = "airmass"
+            obse = "observat"
+            timestamp = False
+            epochcal = False
+
+            set_file_name = self.current_set_file_name()
+            if set_file_name[0]:
+                current_set_file = "./sessions/%s.set" % (set_file_name[1])
+                pfsp_set = self.fset.read_settings_phot_fitskypar(
+                    current_set_file)
+                if pfsp_set[0]:
+                    annu = pfsp_set[1]["phot_fsp_annu"]
+                    dann = pfsp_set[1]["phot_fsp_dann"]
+                    cbox = pfsp_set[1]["phot_fsp_cbox"]
+
+                pdp_set = self.fset.read_settings_phot_datapar(current_set_file)
+                if pdp_set[0]:
+                    expt = pdp_set[1]["phot_dap_expo"]
+                    subs = pdp_set[1]["phot_dap_fltr"]
+
+                ppp_set = self.fset.read_settings_phot_photpar(current_set_file)
+                if ppp_set[0]:
+                    aper = ppp_set[1]["phot_php_aper"]
+                    zmag = ppp_set[1]["phot_php_zmag"]
+                    gain = ppp_set[1]["phot_php_gain"]
+
+                plt_set = self.fset.read_settings_phot_locTime(current_set_file)
+                if plt_set[0]:
+                    tobs = plt_set[1]["phot_loti_tmob"]
+                    dobs = plt_set[1]["phot_loti_dtob"]
+                    epoc = plt_set[1]["phot_loti_epoc"]
+                    obse = plt_set[1]["phot_loti_obsv"]
+                    if plt_set[1]["phot_loti_tmsp"] == "t":
+                        timestamp = True
+
+                    if plt_set[1]["phot_loti_epca"] == "t":
+                        epochcal = True
+
+        if do_phot:
+            for i in file_list[1]:
+                if epochcal:
+                    ep = self.msetc.get_epoch(
+                        i, tobs, dobs, timestamp=timestamp)
+                    if ep[0]:
+                        self.mfho.add_update_header(i, "myepoch", ep[1])
+                else:
+                    self.mfho.add_update_header(i, "myepoch", epoc)
+
+                srt = get_sidereal(i, obse, tobs, dobs, timestamp=timestamp)
+                if srt[0]:
+                    self.mfho.add_update_header(i, "mysrt", epoc)
+
+                if self.mfho.does_header_exist(i, "mysrt"):
+                    if self.mfho.does_header_exist(i, "myepoch"):
+                        if not set_airmass(self, in_file, observat="observat", rightascension="ra", declination="dec", equinox="epoch", sidereal_time="st", u_time="ut", dat="date", exposure="exptime"):
+                            do_phot = False
 
     def show_phot_source_stats(self):
         coors = self.phot_r_click_coor
@@ -554,11 +621,11 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
                                     "MYCOOR", '%s - %s' % (x, y))
                                 if cuurent_row[0]:
                                     if total_rows > cuurent_row[1]:
-                                        self.ggui.set_current_index_from_list(
+                                        self.ggui.set_current_index_to_list(
                                             self.ui.listWidget_2,
                                             cuurent_row[1] + 1)
                                     else:
-                                        self.ggui.set_current_index_from_list(
+                                        self.ggui.set_current_index_to_list(
                                             self.ui.listWidget_2, 0)
 
                                     self.display_ma()

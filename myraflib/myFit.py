@@ -289,7 +289,7 @@ class fits_operation():
         return ret
 
     def darkcombine(self, file_list, out_file, combine="median",
-        reject="minmax", scale="exposure", ccdtype=""):
+                    reject="minmax", scale="exposure", ccdtype=""):
         file_list_str = self.meetc.join_list_items_to_string(file_list)
         self.meetc.print_if("%s%s" % (
             "Darkcombining files:(%s) with " % (file_list_str[1]),

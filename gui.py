@@ -89,7 +89,9 @@ class Gui():
                         file_names.append(str(i))
                 else:
                     file_names.append(str(i))
+
             ret = [True, file_names]
+
         except Exception as e:
             self.meetc.print_if(e)
 
@@ -123,7 +125,8 @@ class Gui():
             out_file = QtGui.QFileDialog.getSaveFileName(him,
                 'Save file', "%s/%s" % (o_dir, file_to_save),
                 '%s (*.%s)' % (file_filter, file_filter))
-            ret = [True, out_file]
+            if out_file != "":
+                ret = [True, out_file]
         except Exception as e:
             self.meetc.print_if(e)
 

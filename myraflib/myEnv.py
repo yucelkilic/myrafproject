@@ -354,6 +354,7 @@ class file_operation():
         try:
             outfile = open(file_name, "w")
             outfile.write("\n".join(list_to_write))
+            outfile.write("\n")
             outfile.close()
             ret = True
         except Exception as e:

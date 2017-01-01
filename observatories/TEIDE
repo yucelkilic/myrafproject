@@ -1,0 +1,7 @@
+#Submitted by Biwei JIANG 11/28/95
+observatory = "TEIDE"
+	name = "TEIDE"
+	longitude = 28:18:00
+	latitude = 16:30:35
+	altitude = 2390
+	timezone = -8

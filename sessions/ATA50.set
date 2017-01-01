@@ -1,0 +1,237 @@
+<?xml version="1.0" ?>
+<Settings>
+  <!--ATA50 settings for MYRaf-->
+  <Name>
+    ATA50
+    <!--Name of setting-->
+  </Name>
+  <General>
+    <!--General top settings for MYRaf-->
+    <CPU>
+      <!--CPU settings for MYRaf-->
+      <CPUs>6</CPUs>
+    </CPU>
+  </General>
+  <Calibration>
+    <!--Calibration top settings for MYRaf-->
+    <Zerocombine>
+      <!--Zerocombine settings for MYRaf-->
+      <zero_zerocom>
+        1
+        <!--Combine type: 0=median, 1=average-->
+      </zero_zerocom>
+      <zero_reject>
+        1
+        <!--Rejection: Rejection type: 0=none, 1=minmax, 2=ccdclip,3=crreject, 4=sigclip, 5=avsigclip, 6=pclip-->
+      </zero_reject>
+      <zero_ccdtype>
+        <!--Header specifier-->
+      </zero_ccdtype>
+    </Zerocombine>
+    <Darkcombine>
+      <!--Darkcombine settings for MYRaf-->
+      <dark_darkcom>
+        1
+        <!--Combine type: 0=median, 1=average-->
+      </dark_darkcom>
+      <dark_reject>
+        1
+        <!--Rejection: Rejection type: 0=none, 1=minmax, 2=ccdclip,3=crreject, 4=sigclip, 5=avsigclip, 6=pclip-->
+      </dark_reject>
+      <dark_scale>
+        0
+        <!--Scale: Scale type: 0=exposure, 1=none,2=mode, 3=median, 4=mean-->
+      </dark_scale>
+      <dark_ccdtype>
+        <!--Header specifier-->
+      </dark_ccdtype>
+    </Darkcombine>
+    <Flatcombine>
+      <!--Flatcombine settings for MYRaf-->
+      <flat_flatcom>
+        1
+        <!--Combine type: 0=median, 1=average-->
+      </flat_flatcom>
+      <flat_reject>
+        1
+        <!--Recetion: Rejection type: 0=none, 1=minmax, 2=ccdclip,3=crreject, 4=sigclip, 5=avsigclip, 6=pclip-->
+      </flat_reject>
+      <flat_subset>
+        0
+        <!--Select by Filter: t=yes, f=no-->
+      </flat_subset>
+      <flat_ccdtype>
+        <!--Header specifier-->
+      </flat_ccdtype>
+    </Flatcombine>
+    <Calib>
+      <!--Calibration settings for MYRaf-->
+      <cal_subset>
+        0
+        <!--Select by Filter: t=yes, f=no-->
+      </cal_subset>
+      <cal_ccdtype>
+        <!--Header specifier-->
+      </cal_ccdtype>
+    </Calib>
+  </Calibration>
+  <Photometry>
+    <!--Photometry top settings for MYRaf-->
+    <FitSkyPar>
+      <!--Fit Sky Parameters settings for MYRaf-->
+      <Annulus>
+        25.0
+        <!--An integer for annulus value-->
+      </Annulus>
+      <Dannulus>
+        5.0
+        <!--An integer for Dannulus value-->
+      </Dannulus>
+      <cbox>
+        10.0
+        <!--An integer for Centering Box value-->
+      </cbox>
+    </FitSkyPar>
+    <Datapar>
+      <!--Data Parameters settings for MYRaf-->
+      <Exposure>
+        exptime
+        <!--Where to find EXPOSURE value in header-->
+      </Exposure>
+      <Filter>
+        FILTER
+        <!--Where to find FILTER value in header-->
+      </Filter>
+    </Datapar>
+    <PhotoPar>
+      <!--Photometry Parameters settings for MYRaf-->
+      <Aperture>
+        10,15,20,25,30
+        <!--List of Aperture values. Like: 15,20,25-->
+      </Aperture>
+      <ZMag>
+        25
+        <!--An integer for Zero point of magnitude-->
+      </ZMag>
+      <Gain>
+        gain
+        <!--Where to find GAIN value in header-->
+      </Gain>
+      <FixPix>
+        <!--DixPix area-->
+      </FixPix>
+    </PhotoPar>
+    <WCS>
+      <!--WCS Parameters settings for MYRaf-->
+      <RightAscension>
+        ra
+        <!--Where to find RIGHTASCENSION value in header-->
+        <!--Where to find DECLINATION value in header-->
+      </RightAscension>
+      <Declination>dec</Declination>
+    </WCS>
+    <LocationAndTime>
+      <!--Location and Time settings for MYRaf-->
+      <Observatory>
+        observat
+        <!--Where to find OBSERVATORY value in header-->
+      </Observatory>
+      <Timestamp>
+        f
+        <!--Using Timestamp? t=yes f=no.-->
+      </Timestamp>
+      <TimeOBS>
+        time-obs
+        <!--Where to find OBSERVATION TIME value in header.If Timestamp=yes than OBSERVATION TIMESTAMP-->
+      </TimeOBS>
+      <DateOBS>
+        date-obs
+        <!--Where to find OBSERVATION TIME value in header.If Timestamp=yes than SEPERATOR-->
+      </DateOBS>
+      <EpochCalculator>
+        f
+        <!--Calculate the Epoch. t=yes f=no-->
+      </EpochCalculator>
+      <Epoch>
+        Epoch
+        <!--A float for epoch-->
+      </Epoch>
+    </LocationAndTime>
+    <StarFind>
+      <!--SExtractor settings for MYRaf-->
+      <FluxRadius>
+        3.0
+        <!--An integer for FLUX RADIUS-->
+      </FluxRadius>
+      <MinFWHM>
+        1.0
+        <!--An integer for MINUMUM FWHM-->
+      </MinFWHM>
+      <MaxFWHM>
+        2.0
+        <!--An integer for MAXIMUM FWHM-->
+      </MaxFWHM>
+      <MaxStarsToFind>
+        5.0
+        <!--An integer for MAXIMUM STAR TO FIND-->
+      </MaxStarsToFind>
+    </StarFind>
+    <HeaderExtractor>
+      <!--Header Extractor settings for MYRaf-->
+      <exract>
+        ,,,,,,,,,,,,,,,,,,,,,,,,,subset
+        <!--List of headers to extract-->
+      </exract>
+    </HeaderExtractor>
+  </Photometry>
+  <CosmicCleaner>
+    <!--Cosmic Cleaner top settings for MYRaf-->
+    <AutoCreateMaskFile>
+      t
+      <!--Auto Create Mask File. t=yes f=no-->
+    </AutoCreateMaskFile>
+    <Gain>
+      3.2
+      <!--A Float for Gain value-->
+    </Gain>
+    <ReadNoise>
+      11.0
+      <!--A Float for Read Noise value-->
+    </ReadNoise>
+    <SigmaClip>
+      6.0
+      <!--A Float for Sigma Clip value-->
+    </SigmaClip>
+    <SigmaFrac>
+      1.3
+      <!--A Float for Sigma Frac value-->
+    </SigmaFrac>
+    <ObjectLimit>
+      6.0
+      <!--A Float for Object Limit value-->
+    </ObjectLimit>
+  </CosmicCleaner>
+  <WCS>
+    <!--WCS top settings for MYRaf-->
+    <Server>
+      http://nova.astrometry.net/api/
+      <!--Server-->
+    </Server>
+    <ApliKey>
+      apiKey
+      <!--Api Key-->
+    </ApliKey>
+    <BeforeLoad>
+      Compress
+      <!--What to do before Upload.Nothing, Compress and Binary-->
+    </BeforeLoad>
+    <AlignBeforeApplication>
+      t
+      <!--Align Before Application. t=yes f=no-->
+    </AlignBeforeApplication>
+    <CreateWCSHeadersSeparately>
+      f
+      <!--Create WCS Headers Separately.t=yes f=no-->
+    </CreateWCSHeadersSeparately>
+  </WCS>
+</Settings>

@@ -5,3 +5,4 @@ uparm/
 pyraf/
 logfile
 cats/
+*.pyc

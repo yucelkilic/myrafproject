@@ -21,6 +21,9 @@ from pyraf.iraf import centerpars
 from pyraf.iraf import fitskypars
 from pyraf.iraf import photpars
 from pyraf.iraf import phot as pt
+from pyraf.iraf import txdump
+
+from shutil import rmtree
 
 import alipy
 import glob
@@ -52,15 +55,24 @@ class statistics_operation():
     def __init__(self, verb=True):
         self.verb = verb
         self.meetc = myEnv.etc(verb=self.verb)
+        self.mefo = myEnv.file_operation(verb=self.verb)
         self.etc = etc(verb=self.verb)
+        self.fo = fits_operation(verb=self.verb)
 
     def get_stats_object(self, in_file, coords):
         self.meetc.print_if("Getting statistics for source(%s-%s) in file(%s)"
             % (coords[0], coords[1], in_file))
         ret = [False, None]
         try:
-            stat = 7.8
-            ret = [True, [coords[0], coords[1], stat]]
+            tmp_dir = self.mefo.get_tmp_dir()
+            if tmp_dir[0]:
+                coos = open("%s/coors" % (tmp_dir[1]), "w")
+                coos.write("%s %s 1" % (coords[0], coords[1]))
+                coos.close()
+                stat = self.fo.assoc_photometry(in_file,
+                    "%s/coors" % (tmp_dir[1]), 15)
+                if stat[0]:
+                    ret = [True, [coords[0], coords[1], stat[1][4]]]
         except Exception as e:
             self.meetc.print_if(e)
 
@@ -421,63 +433,97 @@ class fits_operation():
 
         return ret
 
-    def photometry(self, in_file, coordinates, out_dir, exptime="exptime",
-        subset="subset", cbox="10.0", annulus="25.0", dannulus="5.0",
-        apertur="10,15,20,25,30", zmag="25", airmass="airmass",
-        otime="hjd", gain=""):
-        self.meetc.print_if("%s%s%s" % (
-            "Doing photometry for file(%s) using settings(exptime:%s, " % (
-                in_file, exptime),
-            "subset:%s, cbox:%s, annulus:%s, dannulus:%s, aperture:%s, " % (
-                subset, cbox, annulus, dannulus, apertur),
-            "zmag:%s, airmass:%s, otime:%s, gain:%s)" % (
-                zmag, airmass, otime, gain)))
-
-        ret = False
-        con = True
-        hm = self.mefo.get_home_dir()
+    def assoc_photometry(self, in_file, param_file, aper):
+        ret = [False, None]
+        self.meetc.print_if(
+            "Assoc will work for image(%s) using settings(%s)" % (
+                in_file, param_file))
         try:
-            datapars.setParam("exposur", exptime)
-            datapars.setParam("filter", subset)
-            datapars.setParam("airmass", airmass)
-            datapars.setParam("obstime", otime)
-            datapars.setParam("gain", gain)
+            ana_dir = self.mefo.get_analyzed_dir()
+            if ana_dir[0]:
+                alipy.pysex.run(in_file, keepcat=True,
+                    rerun=True, catdir=ana_dir[1],
+                    params=['VECTOR_ASSOC(1)', 'MAG_BEST', 'FLUX_BEST',
+                        'MAGERR_BEST', 'FLAGS', 'FWHM_IMAGE'],
+                    conf_args={'VERBOSE_TYPE': 'QUIET', 'DETECT_THRESH': 3.0,
+                        'ANALYSIS_THRESH': 3.0, 'BACKPHOTO_TYPE': 'LOCAL',
+                        'BACKPHOTO_THICK': 24, 'ASSOC_RADIUS': aper,
+                        'ASSOC_PARAMS': '1,2', 'ASSOC_DATA': '3',
+                        'ASSOC_NAME': param_file})
 
-            centerpars.setParam("cbox", cbox)
+                pfn = self.mefo.get_base_name(in_file)
+                if pfn[0]:
+                    ext = self.mefo.get_extension(in_file)
+                    if ext[0]:
+                        fl_name = pfn[1][1].replace(ext[1], ".pysexcat")
+                        fil_path = "%s/%s" % (ana_dir[1], fl_name)
+                        vals = open(fil_path, "r")
+                        for val in vals:
+                            line = val.replace("\n", "")
+                            if not line.startswith("#"):
+                                ret_vals = line.split()
+                                ret = [True, ret_vals]
 
-            fitskypars.setParam("annulus", annulus)
-            fitskypars.setParam("dannulus", dannulus)
-
-            photpars.setParam("apertur", apertur)
-            photpars.setParam("zmag", zmag)
         except Exception as e:
             self.meetc.print_if(e)
-            con = False
 
-        if con:
-            try:
-                datapars.saveParList(
-                    filename="%s/uparm/aptdataps.par" % (hm[1]))
-                centerpars.saveParList(
-                    filename="%s/uparm/aptcentes.par" % (hm[1]))
-                fitskypars.saveParList(
-                    filename="%s/uparm/aptfitsks.par" % (hm[1]))
-                photpars.saveParList(
-                    filename="%s/uparm/aptphot.par" % (hm[1]))
-            except Exception as e:
-                self.meetc.print_if(e)
-                con = False
+        return ret
 
-        if hm[0]:
-            if con:
-                tmp = self.mefo.get_tmp_dir()
-                if tmp[0]:
-                    coor_file = "%s/coors" % (tmp[1])
-                    if self.mefo.save_1d_array_to_file(coor_file, coordinates):
-                        try:
-                            pt(in_file, coords=coor_file, output=out_dir,
-                                interac="no", verify="no", Stdout=1)
-                            ret = True
-                        except Exception as e:
-                            self.meetc.print_if(e)
+    def photometry(self, in_file, out_file, coords, ape, ann, dan, cbox,
+            time, exptime, zmag, gain, filtr):
+        ret = [False, None]
+        md = self.mefo.get_myraf_dir()
+        if md[0]:
+            datapars.setParam("exposur", exptime)
+            #datapars.setParam("filter", filtr)
+            #datapars.setParam("airmass", "airmass")
+            datapars.setParam("obstime", time)
+            datapars.setParam("gain", gain)
+            datapars.saveParList(
+                filename="%s/uparm/aptdataps.par" % (md[1]))
+
+            centerpars.setParam("cbox", cbox)
+            centerpars.saveParList(
+                filename="%s/uparm/aptcentes.par" % (md[1]))
+
+            fitskypars.setParam("annulus", ann)
+            fitskypars.setParam("dannulus", dan)
+            fitskypars.saveParList(
+                filename="%s/uparm/aptfitsks.par" % (md[1]))
+
+            photpars.setParam("apertur", ape)
+            photpars.setParam("zmag", zmag)
+            photpars.saveParList(
+                filename="%s/uparm/aptphot.par" % (md[1]))
+
+            ana_dir = self.mefo.get_analyzed_dir()
+            tmp_dir = self.mefo.get_tmp_dir()
+            if ana_dir[0] and tmp_dir[0]:
+                try:
+                    if self.mefo.write_list_to_file(coords, "%s/%s" % (
+                        tmp_dir[1], "coors")):
+                        pfn = self.mefo.get_base_name(in_file)
+                        if pfn[0]:
+                            tx_file = "%s/%s.mag.1" % (ana_dir[1], pfn[1][1])
+                            if self.mefo.is_file(tx_file):
+                                self.mefo.delete_file(tx_file)
+                            pt(in_file, coords="%s/%s" % (tmp_dir[1], "coors"),
+                                output="%s/" % (ana_dir[1]), interac="no",
+                                verify="no", Stdout=1)
+                            td = self.tx_dump(tx_file, out_file)
+                            if td[0]:
+                                ret = [True, td[1]]
+                except Exception as e:
+                    self.meetc.print_if(e)
+
+        return ret
+
+    def tx_dump(self, in_file, out_file, fields="id, mag, merr"):
+        ret = [False, None]
+        try:
+            vals = txdump(in_file, fields, "yes", Stdout=1)
+            ret = [True, vals]
+        except Exception as e:
+            self.meetc.print_if(e)
+
         return ret

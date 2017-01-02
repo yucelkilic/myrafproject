@@ -8,8 +8,8 @@ from myraflib import mySta
 import sys
 import sip
 try:
-    apis = ["QDate", "QDateTime", "QString", "QTextStream", "QTime",
-        "QUrl", "QVariant"]
+    apis = ["QDate", "QDateTime", "QString",
+        "QTextStream", "QTime", "QUrl", "QVariant"]
     for api in apis:
         sip.setapi(api, 2)
 except ValueError:
@@ -113,7 +113,7 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
         self.popMenu_run_sex = QtGui.QMenu(self)
         self.popMenu_run_sex.addAction('Run SEX!', lambda:
             self.auto_source_finder())
-        self.popMenu_run_sex.addAction('Show Stats', lambda:
+        self.popMenu_run_sex.addAction('Get FWHM', lambda:
             self.show_phot_source_stats())
         self.popMenu_run_sex.setEnabled(False)
 
@@ -312,18 +312,11 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
             dann = "5"
             cbox = "10"
             expt = "exptime"
-            subs = "subset"
             aper = "10,15,20,25,30"
             zmag = "25"
             gain = "gain"
-            tobs = "time-obs"
-            dobs = "date-obs"
-            epoc = "epoch"
-            otime = "my_hjd"
-            airmass = "airmass"
-            obse = "observat"
-            timestamp = False
-            epochcal = False
+            tobs = "time-obs",
+            subs = "filter"
 
             set_file_name = self.current_set_file_name()
             if set_file_name[0]:
@@ -349,33 +342,54 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
                 plt_set = self.fset.read_settings_phot_locTime(current_set_file)
                 if plt_set[0]:
                     tobs = plt_set[1]["phot_loti_tmob"]
-                    dobs = plt_set[1]["phot_loti_dtob"]
-                    epoc = plt_set[1]["phot_loti_epoc"]
-                    obse = plt_set[1]["phot_loti_obsv"]
-                    if plt_set[1]["phot_loti_tmsp"] == "t":
-                        timestamp = True
-
-                    if plt_set[1]["phot_loti_epca"] == "t":
-                        epochcal = True
 
         if do_phot:
+            has_header = []
+            no_header = []
             for i in file_list[1]:
-                if epochcal:
-                    ep = self.msetc.get_epoch(
-                        i, tobs, dobs, timestamp=timestamp)
-                    if ep[0]:
-                        self.mfho.add_update_header(i, "myepoch", ep[1])
+                if not self.mfho.does_header_exist(i, expt):
+                    no_header.append("%s Has not %s header" % (i, expt))
                 else:
-                    self.mfho.add_update_header(i, "myepoch", epoc)
+                    if not self.mfho.does_header_exist(i, gain):
+                        no_header.append("%s Has not %s header" % (i, gain))
+                    else:
+                        if not self.mfho.does_header_exist(i, tobs):
+                            no_header.append("%s Has not %s header" % (i, tobs))
+                        else:
+                            if not self.mfho.does_header_exist(i, subs):
+                                no_header.append(
+                                    "%s Has not %s header" % (i, subs))
+                            else:
+                                has_header.append(i)
+            coors = self.ggui.get_all_items_from_list(self.ui.listWidget_4)
+            last_coor = []
+            if coors[0]:
+                for i in coors[1]:
+                    last_coor.append(i.replace(" - ", " "))
 
-                srt = get_sidereal(i, obse, tobs, dobs, timestamp=timestamp)
-                if srt[0]:
-                    self.mfho.add_update_header(i, "mysrt", epoc)
+                out_file = self.ggui.get_file(self, "res.my", "my")
+                file_count = len(has_header)
+                it = 0
+                if out_file[0]:
+                    wtf = open(out_file[1], "w")
+                    for i in has_header:
+                        it = it + 1
+                        mags = self.mffo.photometry(i, out_file[1], last_coor,
+                            aper, annu, dann, cbox, tobs, expt,
+                            zmag, gain, subs)
+                        if mags[0]:
+                            for u in mags[1]:
+                                wtf.write("%s %s\n" % (i, u))
 
-                if self.mfho.does_header_exist(i, "mysrt"):
-                    if self.mfho.does_header_exist(i, "myepoch"):
-                        if not set_airmass(self, in_file, observat="observat", rightascension="ra", declination="dec", equinox="epoch", sidereal_time="st", u_time="ut", dat="date", exposure="exptime"):
-                            do_phot = False
+                        self.ui.progressBar_4.setValue(
+                            self.ggui.calc_percentage(it, file_count))
+
+                    wtf.close()
+
+        if not len(no_header) == 0:
+            self.show_error_form(
+                title="Error", owner="Photometry", disp=no_header)
+        self.ui.progressBar_4.setValue(0)
 
     def show_phot_source_stats(self):
         coors = self.phot_r_click_coor
@@ -390,9 +404,9 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
                     "Do you want me to use FWHM*2.5 as Aperture?")
                 if use_it:
                     self.ui.lineEdit_35.setText("%s,%s,%s" % (
-                        int(abs(-5 + stats[1][2] * 2.5)),
-                        int(abs(stats[1][2] * 2.5)),
-                        int(abs(5 + stats[1][2] * 2.5))))
+                        int(abs(-5 + float(stats[1][2]) * 2.5)),
+                        int(abs(float(stats[1][2]) * 2.5)),
+                        int(abs(5 + float(stats[1][2]) * 2.5))))
             else:
                 self.ggui.show_dialog(self, "critic",
                     "Photometry", "Can not get statistics")

@@ -182,6 +182,14 @@ class file_operation():
 
         return ret
 
+    def get_myraf_dir(self):
+        ret = [False, None]
+        hm = self.get_home_dir()
+        if hm[0]:
+            ret = [True, "%s/MYRaf" % (hm[1])]
+
+        return ret
+
     def get_tmp_dir(self):
         ret = [False, None]
         hm = self.get_home_dir()

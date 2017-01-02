@@ -7,8 +7,14 @@ from myraflib import mySta
 
 import sys
 import sip
-for cl in ('QString', 'QVariant'):
-    sip.setapi(cl, 2)
+try:
+    apis = ["QDate", "QDateTime", "QString", "QTextStream", "QTime",
+        "QUrl", "QVariant"]
+    for api in apis:
+        sip.setapi(api, 2)
+except ValueError:
+    # API has already been set so we can't set it again.
+    pass
 
 from PyQt4 import QtGui
 from PyQt4 import QtCore
@@ -786,7 +792,7 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
                         if b_data_list[0]:
                             if out_dir[0]:
                                 out_file = "%s/%s" % (out_dir[1],
-                                    "zero.fit")
+                                    "zero.fits")
                                 if self.mffo.zerocombine(b_data_list[1],
                                     out_file, combine=b_comb, reject=b_reje,
                                     ccdtype=b_ccdt):
@@ -852,7 +858,7 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
                         if d_data_list[0]:
                             if out_dir[0]:
                                 out_file = "%s/%s" % (out_dir[1],
-                                "dark.fit")
+                                "dark.fits")
                                 if self.mffo.darkcombine(d_data_list[1],
                                     out_file, combine=d_comb, reject=d_reje,
                                     scale=d_scal, ccdtype=d_ccdt):
@@ -972,7 +978,7 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
                             subset = "no"
 
                         if do_bias:
-                            the_bias_file = "%s/%s" % (out_dir[1], "zero.fit")
+                            the_bias_file = "%s/%s" % (out_dir[1], "zero.fits")
                         else:
                             the_bias_file = ""
 
@@ -1217,26 +1223,35 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
                     self.ui.listWidget_14)
                 if file_list[0]:
                     key = self.ui.lineEdit.text()
+
+                    failed_files = []
                     if self.ggui.is_checked(self.ui.checkBox):
                         selected_header_key = self.ggui.get_item_from_combo(
                             self.ui.comboBox)
                         if selected_header_key[0]:
-                            header = str("'(@\"%s\")'" % (
-                                selected_header_key[1].split("=")[0].strip()))
+                            header_source = str(
+                                selected_header_key[1].split("=")[0].strip())
+                            it = 0
+                            for i in file_list[1]:
+                                it = it + 1
+                                val = self.mfho.get_header(i, header_source)
+                                if val[0]:
+                                    self.mfho.add_update_header(i, key, val[1])
+                                else:
+                                    failed_files.append(i)
                         else:
-                            header = ""
-                    else:
-                        header = self.ui.lineEdit_2.text()
-
-                    failed_files = []
-                    it = 0
-                    for i in file_list[1]:
-                        it = it + 1
-                        if not self.mfho.add_update_header(i, key, header):
                             failed_files.append(i)
-                        self.ui.label_16.setText(i)
-                        self.ui.progressBar_5.setValue(
-                            self.ggui.calc_percentage(it, file_count[1]))
+                    else:
+                        val = self.ui.lineEdit_2.text()
+
+                        it = 0
+                        for i in file_list[1]:
+                            it = it + 1
+                            if not self.mfho.add_update_header(i, key, val):
+                                failed_files.append(i)
+                            self.ui.label_16.setText(i)
+                            self.ui.progressBar_5.setValue(
+                                self.ggui.calc_percentage(it, file_count[1]))
 
                     if not len(failed_files) == 0:
                         self.show_error_form(title="Error",

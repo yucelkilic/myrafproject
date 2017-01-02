@@ -386,8 +386,8 @@ class fits_operation():
         return ret
 
     def manual_align(self, in_file, diff_x, diff_y, out_file):
-        self.meetc.print_if("Aligning file(%s) with (%s,%s) coordinates % " % (
-            diff_x, diff_y))
+        self.meetc.print_if("Aligning file(%s) with (%s,%s) coordinates" % (
+            in_file, diff_x, diff_y))
         ret = False
         try:
             imsh(in_file, out_file, int(diff_x), int(diff_y))

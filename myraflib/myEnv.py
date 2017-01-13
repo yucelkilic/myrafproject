@@ -7,6 +7,7 @@ import platform
 from datetime import datetime
 import glob
 from astropy.time import Time
+from shutil import copy as cifir
 
 
 class etc():
@@ -206,6 +207,14 @@ class file_operation():
 
         return ret
 
+    def get_atrack_dir(self):
+        ret = [False, None]
+        hm = self.get_home_dir()
+        if hm[0]:
+            ret = [True, "%s/MYRaf/tmp/atrack" % (hm[1])]
+
+        return ret
+
     def get_home_dir(self):
         ret = [False, None]
         try:
@@ -308,6 +317,15 @@ class file_operation():
 
             values["commands"] = comm.strip().replace("#", "")
             ret = [True, values]
+        except Exception as e:
+            self.fetc.print_if(e)
+
+        return ret
+
+    def cp_file(self, in_file, dest):
+        ret = False
+        try:
+            cifir(in_file, dest)
         except Exception as e:
             self.fetc.print_if(e)
 

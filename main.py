@@ -27,6 +27,10 @@ from uis.main import Ui_MainWindow
 from uis.error import Ui_MainWindowErr
 
 
+#Temporary...
+from os import system as temp_sys
+
+
 class MyForm(QtGui.QMainWindow, Ui_MainWindow):
     def __init__(self, verb=True):
         super(MyForm, self).__init__()
@@ -113,6 +117,8 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
         self.popMenu_run_sex = QtGui.QMenu(self)
         self.popMenu_run_sex.addAction('Run SEX!', lambda:
             self.auto_source_finder())
+        self.popMenu_run_sex.addAction('Find MOs', lambda:
+            self.run_atrack())
         self.popMenu_run_sex.addAction('Get FWHM', lambda:
             self.show_phot_source_stats())
         self.popMenu_run_sex.setEnabled(False)
@@ -278,6 +284,50 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
 
         self.initial()
 
+    def run_atrack(self):
+        ays = True
+        file_count = self.ggui.get_count_of_list(self.ui.listWidget_3)
+        if file_count[0]:
+            if file_count[1] > 0:
+                if file_count[1] > 7:
+                    ays = self.ggui.show_are_you_sure(self,
+                        "We strongly recommend you to use less then 8 files")
+                if ays:
+                    file_list = self.ggui.get_all_items_from_list(
+                        self.ui.listWidget_3)
+                    atrack_dir = self.mefo.get_atrack_dir()
+                    if atrack_dir[0]:
+                        if file_list[0]:
+                            for i in file_list[1]:
+                                self.mefo.cp_file(i, atrack_dir[1])
+                            temp_sys(
+                                "python3 -W'ignore' atrack.py --skip-pngs %s" %
+                                (atrack_dir[1]))
+                            coor_file = open("%s/atrack/results.txt" % (
+                                atrack_dir[1]))
+                            mos_coors = []
+                            for i in coor_file:
+                                mos_coors.append(i.replace("\n", "").split())
+                            mos_to_use = []
+                            for i in mos_coors:
+                                if not i[0] in mos_to_use:
+                                    mos_to_use.append(i[0])
+
+                            if not len(mos_coors) == 0:
+                                self.show_error_form(title="Info",
+                                    owner="Atrack-Moving objects below found.",
+                                    disp=mos_to_use)
+
+                        else:
+                            self.ggui.show_dialog(self,
+                                "critic", "Photometry", "Can not get file list")
+            else:
+                self.ggui.show_dialog(self, "critic",
+                    "Photometry", "Add some files first")
+        else:
+            self.ggui.show_dialog(self, "critic",
+                "Photometry", "Can not get file count")
+
     def ap_photometry(self):
         do_phot = False
         file_count = self.ggui.get_count_of_list(self.ui.listWidget_3)
@@ -372,11 +422,32 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
                 it = 0
                 if out_file[0]:
                     wtf = open(out_file[1], "w")
+                    atrack_dir = self.mefo.get_atrack_dir()
                     for i in has_header:
                         it = it + 1
-                        mags = self.mffo.photometry(i, out_file[1], last_coor,
+                        final_coor = []
+                        for z in last_coor:
+                            if len(z.split(" ")) < 2:
+                                if atrack_dir[0]:
+                                    mos_coors = open(
+                                        "%s/atrack/results.txt" % (
+                                            atrack_dir[1]), "r")
+                                    for u in mos_coors:
+                                        ln = u.replace("\n", "")
+                                        if ln.startswith(z):
+                                            line_splt = ln.split()
+                                            if int(line_splt[1]) == int(it - 1):
+                                                final_coor.append(
+                                                    "%s %s" % (line_splt[3],
+                                                        line_splt[4]))
+                                    mos_coors.close()
+                            else:
+                                final_coor.append(z)
+
+                        mags = self.mffo.photometry(i, out_file[1], final_coor,
                             aper, annu, dann, cbox, tobs, expt,
                             zmag, gain, subs)
+                        final_coor = []
                         if mags[0]:
                             for u in mags[1]:
                                 wtf.write("%s %s\n" % (i, u))
@@ -504,6 +575,41 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
         file_name = self.ggui.get_item_from_list(self.ui.listWidget_3)
         if file_name[0]:
             self.ggui.display(str(file_name[1]), self.phot_disp)
+
+        coor_list = self.ggui.get_all_items_from_list(self.ui.listWidget_4)
+        if coor_list[0]:
+            if coor_list[1] > 0:
+                atrack_dir = self.mefo.get_atrack_dir()
+                width = self.mfho.get_header(str(file_name[1]), "i_naxis1")
+                if width[0]:
+                    radi = int(int(width[1]) / 50)
+                else:
+                        radi = 30
+
+                for i in coor_list[1]:
+                    if len(i.split(" - ")) < 2:
+                        cur_index = self.ggui.get_current_index_from_list(
+                            self.ui.listWidget_3)
+                        if atrack_dir[0]:
+                            mos_coors = open("%s/atrack/results.txt" % (
+                                atrack_dir[1]), "r")
+                            for u in mos_coors:
+                                ln = u.replace("\n", "")
+                                if u.startswith(i):
+                                    ln = u.split()
+                                    if cur_index[0]:
+                                        if int(cur_index[1]) == int(ln[1]):
+                                            self.ggui.draw_a_circle(
+                                                self.ui.disp_phot, ln[3], ln[4],
+                                                        radi, "#FF0000",
+                                                        label="MO%s" % (
+                                                            ln[0]))
+
+                            mos_coors.close()
+                    else:
+                        x, y = i.split(" - ")
+                        self.ggui.draw_a_circle(self.ui.disp_phot,
+                            x, y, radi, "#00FFFF")
 
         self.update_info()
 
@@ -2002,6 +2108,7 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
             cou_flat = flat[1]
 
         pho_file = self.ggui.get_current_item_from_list(self.ui.listWidget_3)
+
         if pho_file[0]:
             self.popMenu_run_sex.setEnabled(True)
         else:
@@ -2102,6 +2209,23 @@ class MyFormErr(QtGui.QMainWindow, Ui_MainWindowErr):
                 'customContextMenuRequested(const QPoint&)'),
                     self.on_context_menu_show_on_phot)
 
+        if who_sent == "Atrack-Moving objects below found.":
+            self.popMenu_add_mos_source = QtGui.QMenu(self)
+            self.popMenu_add_mos_source.addAction(
+                'Add to list', lambda: self.add_mos_to_list(parent))
+
+            self.ui.Err_listWidget.setContextMenuPolicy(
+                QtCore.Qt.CustomContextMenu)
+            self.connect(self.ui.Err_listWidget, QtCore.SIGNAL(
+                'customContextMenuRequested(const QPoint&)'),
+                    self.on_context_menu_add_mos_source)
+
+    def add_mos_to_list(self, parent):
+        coors = self.ggui.get_selected_items_from_list(self.ui.Err_listWidget)
+        if coors[0]:
+            self.ggui.set_values_to_list(
+                parent, parent.ui.listWidget_4, coors[1])
+
     def get_coors(self, parent):
         coors = self.ggui.get_selected_items_from_list(self.ui.Err_listWidget)
         add_coors = []
@@ -2152,6 +2276,10 @@ class MyFormErr(QtGui.QMainWindow, Ui_MainWindowErr):
         if list_of_indexes[0]:
             self.ggui.select_given_range_in_list(remote_list_dev,
                 list_of_indexes[1])
+
+    def on_context_menu_add_mos_source(self, point):
+        self.popMenu_add_mos_source.exec_(
+            self.ui.Err_listWidget.mapToGlobal(point))
 
     def on_context_menu_select_over_bias(self, point):
         self.popMenu_dark_stat_select_over_bias.exec_(

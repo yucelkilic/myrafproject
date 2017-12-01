@@ -518,7 +518,7 @@ class fits_operation():
 
         return ret
 
-    def tx_dump(self, in_file, out_file, fields="id, mag, merr"):
+    def tx_dump(self, in_file, out_file, fields="id, otime, mag, merr"):
         ret = [False, None]
         try:
             vals = txdump(in_file, fields, "yes", Stdout=1)

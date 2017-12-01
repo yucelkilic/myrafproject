@@ -296,12 +296,13 @@ class MyForm(QtGui.QMainWindow, Ui_MainWindow):
                     file_list = self.ggui.get_all_items_from_list(
                         self.ui.listWidget_3)
                     atrack_dir = self.mefo.get_atrack_dir()
+                    myraf_dir = self.mefo.get_myraf_dir()
                     if atrack_dir[0]:
                         if file_list[0]:
                             for i in file_list[1]:
                                 self.mefo.cp_file(i, atrack_dir[1])
                             temp_sys(
-                                "python3 -W'ignore' atrack.py --skip-pngs %s" %
+                                "python3 atrack.py --skip-pngs %s" %
                                 (atrack_dir[1]))
                             coor_file = open("%s/atrack/results.txt" % (
                                 atrack_dir[1]))

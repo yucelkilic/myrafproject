@@ -32,6 +32,14 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         #Load settings
         self.read_settings()
         
+        self.etc.log("Resetting Gui for Log tab.")
+        #set Log tab
+        self.ui.label_19.setProperty("text", "")
+        self.ui.label_19.setProperty("text",
+                                     "Your log is stored: {}".format(
+                                             self.etc.mini_log_file))
+        
+        
         self.etc.log("Resetting Gui for Calibration tab.")
         #set calibration tab
         self.ui.progressBar.setProperty("value", 0)

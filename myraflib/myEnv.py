@@ -12,6 +12,7 @@ from os.path import dirname
 from os.path import basename
 from os.path import realpath
 from os.path import splitext
+from os.path import abspath
 
 from shutil import copy2
 from shutil import move
@@ -32,8 +33,8 @@ from  numpy import savetxt
 class etc():
     def __init__(self, verb=True):
         self.verb = verb
-        self.log_file = "{}/log.my".format(expanduser("~"))
-        self.mini_log_file = "{}/mlog.my".format(expanduser("~"))
+        self.log_file = abspath("{}/log.my".format(expanduser("~")))
+        self.mini_log_file = abspath("{}/mlog.my".format(expanduser("~")))
         
     def time_stamp(self):
         return(str(datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")))

@@ -46,7 +46,8 @@ class fits():
         try:
             hdu = fts.open(src, mode='readonly')
             for i in hdu[0].header:
-                ret.append([i, hdu[0].header[i]])
+                if not i == "":
+                    ret.append([i, hdu[0].header[i]])
                 
             if field == "*":
                 return(ret)
@@ -69,6 +70,15 @@ class fits():
         except Exception as e:
             self.etc.log(e)
     
+    def delete_header(self, src, key):
+        self.etc.log("Updating {}'s Header".format(src))
+        try:
+            hdu = fts.open(src, mode='update')
+            del hdu[0].header[key]
+            return(hdu.close())
+        except Exception as e:
+            self.etc.log(e)
+    
     def update_header(self, src, key, value):
         self.etc.log("Updating {}'s Header".format(src))
         try:
@@ -76,7 +86,7 @@ class fits():
             hdu[0].header[key] = value
             return(hdu.close())
         except Exception as e:
-            print(e)
+            self.etc.log(e)
 
     def fits_stat(self, src):
         self.etc.log("Getting Stats from {}".format(src))
@@ -88,7 +98,7 @@ class fits():
                     'Mean': nmean(image_data),
                     'Stdev': nstd(image_data)})
         except Exception as e:
-            print(e)
+            self.etc.log(e)
 
 class calc():
     def __init__(self, verb=True):

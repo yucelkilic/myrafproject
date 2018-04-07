@@ -5,6 +5,8 @@ Created on Fri Apr  6 14:57:43 2018
 @author: mshem
 """
 
+from math import ceil as mceil
+
 from PyQt5 import QtWidgets
 
 def add_files(self, flist):
@@ -17,6 +19,14 @@ def add_files(self, flist):
         flist.addItem(item)
         item = flist.item(it)
         item.setText(QtWidgets.QApplication.translate("Form", x, None))
+
+def c_add(self, fcomb, the_list):
+    for i in the_list:
+        fcomb.addItem(i)
+
+def c_replace_list_con(self, fcomb, lst):
+    rm_all(self, fcomb)
+    c_add(self, fcomb, lst)
 
 def add(self, flist, the_list):
     it = flist.count() - 1
@@ -37,6 +47,10 @@ def add_line_by_line(self, flist, file_name):
         flist.addItem(item)
         item = flist.item(it)
         item.setText(QtWidgets.QApplication.translate("Form", ln, None))
+
+def replace_list_con(self, flist, lst):
+    rm_all(self, flist)
+    add(self, flist, lst)
 
 def question(self, question):
     answ = QtWidgets.QMessageBox.question(self, "MYRaf", question,
@@ -61,3 +75,6 @@ def list_lenght(self, flist):
     
 def is_list_empty(self, flist):
     return(list_lenght(self, flist) == 0)
+    
+def proc(self, proc_dev, perc):
+    proc_dev.setProperty("value", mceil(100*perc))

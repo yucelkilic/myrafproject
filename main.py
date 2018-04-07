@@ -15,6 +15,7 @@ import gui as g
 
 #Importing myraf's needed modules
 from myraflib import myEnv
+from myraflib import myAst
 
 class MyForm(QtWidgets.QWidget, Ui_Form):
     def __init__(self):
@@ -27,6 +28,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         
         self.etc = myEnv.etc(verb=self.verb)
         self.fop = myEnv.file_op(verb=self.verb)
+        self.fit = myAst.fits(verb=self.verb)
         
         self.etc.log("Loading settings.")
         #Load settings
@@ -36,7 +38,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         #set Log tab
         self.ui.label_19.setProperty("text", "")
         self.ui.label_19.setProperty("text",
-                                     "Your log is stored: {}".format(
+                                     "Log file is stored: {}".format(
                                              self.etc.mini_log_file))
         
         
@@ -181,14 +183,36 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 self.astrometrynet_check()))
         
         
+        self.ui.listWidget_3.clicked.connect(lambda: (self.header_list()))
+        self.ui.listWidget_4.clicked.connect(lambda: (self.get_the_header()))
+        
         #add triggers for Logs
         self.ui.pushButton_28.clicked.connect(lambda: (self.reload_log()))
         self.ui.pushButton_18.clicked.connect(lambda: (self.save_log()))
         self.ui.pushButton_27.clicked.connect(lambda: (self.clear_log()))
-        
-                
         self.reload_log()
     
+    def get_the_header(self):
+        line = self.ui.listWidget_4.currentItem().text()
+        field, value = line.split("=>")
+        self.ui.lineEdit.setProperty("text", field)
+        self.ui.lineEdit_2.setProperty("text", value)
+        
+    def header_list(self):
+        img = self.ui.listWidget_3.currentItem().text()
+        if self.fop.is_file(img):
+            all_header = self.fit.header(img)
+            header_list = []
+            for i in all_header:
+                header_list.append("{}=>{}".format(i[0], i[1]))
+            g.replace_list_con(self, self.ui.listWidget_4, header_list)
+            g.c_replace_list_con(self, self.ui.comboBox_12, header_list)
+            
+        else:
+            QtWidgets.QMessageBox.critical(
+                self, ("MYRaf Error"), ("File not found."))
+    
+        self.reload_log()
     def do_calibration(self):
         if not g.is_list_empty(self, self.ui.listWidget_6):
             do_zc = not g.is_list_empty(self, self.ui.listWidget_7)
@@ -213,6 +237,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             QtWidgets.QMessageBox.critical(self,  ("MYRaf Error"), ("Please add some files.\nUnless you have a sick sense of humour and you really want calibrate no files."))
             
         self.reload_log()
+        
     def calibration_annotation(self):
         img = g.list_lenght(self, self.ui.listWidget_6)
         zer = g.list_lenght(self, self.ui.listWidget_7)
@@ -264,15 +289,33 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         
     def do_hedit(self, update_add=True):
         if not g.is_list_empty(self, self.ui.listWidget_3):
-            
             if not self.ui.lineEdit.text() == "":
-                if update_add:
-                    if self.ui.checkBox_5.isChecked():
-                        print("Use existing value from header")
+                field = self.ui.lineEdit.text()
+                it = 0.
+                for i in range(self.ui.listWidget_3.count()):
+                    it += 1
+                    img = self.ui.listWidget_3.item(i).text()
+                    if self.fop.is_file(img):
+                        if update_add:
+                            if self.ui.checkBox_5.isChecked(): 
+                                combo = self.ui.comboBox_12.currentText()
+                                wanted_filed = combo.split("=>")[0].strip()
+                                value = self.fit.header(img, wanted_filed)[1]
+                            else:
+                                value = self.ui.lineEdit_2.text()
+                            try:
+                                self.fit.update_header(img, field, value)
+                            except Exception as e:
+                                self.etc.log(e)
+                        else:
+                            try:
+                                self.fit.delete_header(img, field)
+                            except Exception as e:
+                                self.etc.log(e)
                     else:
-                        print("Update header")
-                else:
-                    print("Deleting header")
+                        self.etc.log("No such file({})".format(img))
+                        
+                    g.proc(self, self.ui.progressBar_3, it/g.list_lenght(self, self.ui.listWidget_3))
             else:
                 self.etc.log("No field was specified.")
                 QtWidgets.QMessageBox.critical(
@@ -282,13 +325,16 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             QtWidgets.QMessageBox.critical(
                     self, ("MYRaf Error"), ("Please add some files"))
     
+        self.header_list()
         self.reload_log()
     
     def use_existing_header(self):
         if self.ui.checkBox_5.isChecked():
             self.ui.lineEdit_2.setEnabled(False)
+            self.ui.comboBox_12.setEnabled(True)
         else:
             self.ui.lineEdit_2.setEnabled(True)
+            self.ui.comboBox_12.setEnabled(False)
     
         self.reload_log()
     

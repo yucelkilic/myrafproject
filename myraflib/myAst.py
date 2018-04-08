@@ -149,28 +149,37 @@ class calc():
 
     def is_close_phy(self, coor1, coor2, max_dist=15):
         self.etc.log("Calculating proximity(PHY)")
-        dX = coor1[0] - coor2[0]
-        dY = coor1[1] - coor2[1]
-        dist = msqrt(mpow(dX, 2) + mpow(dY, 2))
-        return(dist < max_dist)
+        try:
+            dX = coor1[0] - coor2[0]
+            dY = coor1[1] - coor2[1]
+            dist = msqrt(mpow(dX, 2) + mpow(dY, 2))
+            return(dist < max_dist)
+        except Exception as e:
+            self.etc.log(e)
         
     def jd(self, timestamp):
         self.etc.log("Calculating JD from timestamp")
-        if "T" not in timestamp:
-            timestamp = str(timestamp).replace(" ", "T")
-        
-        t_jd = Time(timestamp, format='isot', scale='utc')
-
-        return(t_jd.jd)
+        try:
+            if "T" not in timestamp:
+                timestamp = str(timestamp).replace(" ", "T")
+            
+            t_jd = Time(timestamp, format='isot', scale='utc')
+    
+            return(t_jd.jd)
+        except Exception as e:
+            self.etc.log(e)
         
     def mjd(self, timestamp):
         self.etc.log("Calculating MJD from timestamp")
-        if "T" not in timestamp:
-            timestamp = str(timestamp).replace(" ", "T")
-        
-        t_jd = Time(timestamp, format='isot', scale='utc')
-
-        return(t_jd.mjd)
+        try:
+            if "T" not in timestamp:
+                timestamp = str(timestamp).replace(" ", "T")
+            
+            t_jd = Time(timestamp, format='isot', scale='utc')
+    
+            return(t_jd.mjd)
+        except Exception as e:
+            self.etc.log(e)
         
 class phot():
     def __init__(self, verb=True):

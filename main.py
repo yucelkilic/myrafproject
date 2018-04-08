@@ -12,6 +12,7 @@ from PyQt5 import QtWidgets
 import sys
 
 import gui as g
+from fPlot import FitsPlot
 
 #Importing myraf's needed modules
 from myraflib import myEnv
@@ -89,6 +90,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.progressBar_2.setProperty("value", 0)
         self.ui.label_2.setProperty("text", "")
         self.align_annotation()
+        self.align_disp = FitsPlot(self.ui.disp_align.canvas)
         
         self.etc.log("Creating triggers for Align tab.")
         #add triggers for align
@@ -100,12 +102,14 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 self.align_annotation()))
         
         self.ui.pushButton_2.clicked.connect(lambda: (self.do_align()))
+        self.ui.listWidget.clicked.connect(lambda: (self.display_align()))
         
         self.etc.log("Resetting Gui for Photometry tab.")
         #set photometry tab
         self.ui.progressBar_4.setProperty("value", 0)
         self.ui.label_8.setProperty("text", "")
         self.phot_annotation()
+        self.phot_disp = FitsPlot(self.ui.disp_photometry.canvas)
         
         self.etc.log("Creating triggers for Photometry tab.")
         #add triggers for photometry
@@ -117,6 +121,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 self.phot_annotation()))
         
         self.ui.pushButton_16.clicked.connect(lambda: (self.do_phot()))
+        self.ui.listWidget_2.clicked.connect(lambda: (self.display_phot()))
         
         self.etc.log("Resetting Gui for Hedit tab.")
         #set header editor tab
@@ -150,6 +155,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.progressBar_5.setProperty("value", 0)
         self.ui.label_11.setProperty("text", "")
         self.cosmicC_annotation()
+        self.cocmicC_disp = FitsPlot(self.ui.disp_cosmicC.canvas)
         
         self.etc.log("Creating triggers for CosmicC tab.")
         #add triggers for Cosmic Cleaner
@@ -161,6 +167,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 self.cosmicC_annotation()))
         
         self.ui.pushButton_23.clicked.connect(lambda: (self.do_cosmicC()))
+        self.ui.listWidget_5.clicked.connect(lambda: (self.display_cosmicC()))
         
         self.etc.log("Resetting Gui for WCS tab.")
         #set WCS Editor tab
@@ -185,20 +192,47 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.pushButton_17.clicked.connect(lambda: (self.save_seetings()))
         self.ui.groupBox_5.clicked.connect(lambda: (
                 self.astrometrynet_check()))
-        
+                
         self.etc.log("Creating triggers for Observatory Editor tab.")
         #add triggers for Observatory Editor
         self.ui.pushButton_30.clicked.connect(lambda: (self.add_obs()))
+        self.ui.pushButton_29.clicked.connect(lambda: (self.rm_obs()))
         self.ui.listWidget_12.clicked.connect(lambda: (self.get_observat_prop()))
         self.load_observat()
         
+        self.etc.log("Creating triggers for Log tab.")
         #add triggers for Logs
         self.ui.pushButton_28.clicked.connect(lambda: (self.reload_log()))
         self.ui.pushButton_18.clicked.connect(lambda: (self.save_log()))
         self.ui.pushButton_27.clicked.connect(lambda: (self.clear_log()))
         self.reload_log()
         
-        self.load_observat()
+    def display_cosmicC(self):
+        img = self.ui.listWidget_5.currentItem().text()
+        if self.fop.is_file(img):
+            self.cocmicC_disp.load(str(img))
+        else:
+            self.et.log("No such file({})".format(img))
+            
+        self.reload_log()
+            
+    def display_align(self):
+        img = self.ui.listWidget.currentItem().text()
+        if self.fop.is_file(img):
+            self.align_disp.load(str(img))
+        else:
+            self.et.log("No such file({})".format(img))
+            
+        self.reload_log()
+        
+    def display_phot(self):
+        img = self.ui.listWidget_2.currentItem().text()
+        if self.fop.is_file(img):
+            self.phot_disp.load(str(img))
+        else:
+            self.et.log("No such file({})".format(img))
+            
+        self.reload_log()
     
     def load_observat(self):
         obs_files = self.fop.list_of_fiels(self.fop.abs_path("./observat"), ext="*")
@@ -206,6 +240,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         for i in obs_files:
             new_list.append(self.fop.get_base_name(i)[1])
         g.replace_list_con(self, self.ui.listWidget_12, new_list)
+        
+        self.reload_log()
         
     def get_observat_prop(self):
         obs_name = self.ui.listWidget_12.currentItem().text()
@@ -245,10 +281,21 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                     
             
             self.ui.plainTextEdit.setPlainText(QtWidgets.QApplication.translate("Form", "\n".join(comm.split('\n')[1:]), None))
-                
                     
-                
-                    
+        else:
+            self.etc.log("No such Observatory({})".format(obs_name))
+        self.reload_log()
+    
+    def rm_obs(self):
+        obs_name = self.ui.listWidget_12.currentItem().text()
+        obs_path = self.fop.abs_path("./observat/{}".format(obs_name))
+        if self.fop.is_file(obs_path):
+            self.fop.rm(obs_path)
+        else:
+            self.etc.log("No such Observatory({})".format(obs_name))
+            
+        self.load_observat()
+        self.reload_log()
     
     def add_obs(self):
         observatory = self.ui.lineEdit_3.text()
@@ -270,6 +317,15 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         f.write("altitude|{}\n".format(altitude))
         f.write("timezone|{}\n".format(timezone))
         f.close()
+        
+        self.ui.lineEdit_3.setText("")
+        self.ui.lineEdit_4.setText("")
+        self.ui.lineEdit_5.setText("")
+        self.ui.lineEdit_6.setText("")
+        self.ui.lineEdit_7.setText("")
+        self.ui.lineEdit_8.setText("")
+        self.ui.plainTextEdit.setPlainText("")
+        
         self.load_observat()
             
     def get_the_header(self):
@@ -277,6 +333,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         field, value = line.split("=>")
         self.ui.lineEdit.setProperty("text", field)
         self.ui.lineEdit_2.setProperty("text", value)
+        
+        self.reload_log()
         
     def header_list(self):
         img = self.ui.listWidget_3.currentItem().text()

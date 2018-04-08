@@ -14,6 +14,8 @@ from os.path import realpath
 from os.path import splitext
 from os.path import abspath
 
+from os import remove
+
 from glob import glob
 
 from shutil import copy2
@@ -160,6 +162,13 @@ class file_op():
         try:
             self.etc.print_if("Copying file {0} to {1}".format(src, dst))
             copy2(src, dst)
+        except Exception as e:
+            self.etc.log(e)
+            
+    def rm(self, src):
+        try:
+            self.etc.print_if("Removing file {0}".format(src))
+            remove(src)
         except Exception as e:
             self.etc.log(e)
             

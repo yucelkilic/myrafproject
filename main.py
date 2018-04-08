@@ -135,11 +135,15 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         
         self.ui.checkBox_5.clicked.connect(lambda: (
                 self.use_existing_header()))
+                
         
         self.ui.pushButton_39.clicked.connect(lambda: (
                 self.do_hedit(update_add=True)))
         self.ui.pushButton_38.clicked.connect(lambda: (
                 self.do_hedit(update_add=False)))
+                
+        self.ui.listWidget_3.clicked.connect(lambda: (self.header_list()))
+        self.ui.listWidget_4.clicked.connect(lambda: (self.get_the_header()))
         
         self.etc.log("Resetting Gui for CosmicC tab.")
         #set Cosmic Cleaner tab
@@ -182,16 +186,92 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.groupBox_5.clicked.connect(lambda: (
                 self.astrometrynet_check()))
         
-        
-        self.ui.listWidget_3.clicked.connect(lambda: (self.header_list()))
-        self.ui.listWidget_4.clicked.connect(lambda: (self.get_the_header()))
+        self.etc.log("Creating triggers for Observatory Editor tab.")
+        #add triggers for Observatory Editor
+        self.ui.pushButton_30.clicked.connect(lambda: (self.add_obs()))
+        self.ui.listWidget_12.clicked.connect(lambda: (self.get_observat_prop()))
+        self.load_observat()
         
         #add triggers for Logs
         self.ui.pushButton_28.clicked.connect(lambda: (self.reload_log()))
         self.ui.pushButton_18.clicked.connect(lambda: (self.save_log()))
         self.ui.pushButton_27.clicked.connect(lambda: (self.clear_log()))
         self.reload_log()
+        
+        self.load_observat()
     
+    def load_observat(self):
+        obs_files = self.fop.list_of_fiels(self.fop.abs_path("./observat"), ext="*")
+        new_list = []
+        for i in obs_files:
+            new_list.append(self.fop.get_base_name(i)[1])
+        g.replace_list_con(self, self.ui.listWidget_12, new_list)
+        
+    def get_observat_prop(self):
+        obs_name = self.ui.listWidget_12.currentItem().text()
+        obs_path = self.fop.abs_path("./observat/{}".format(obs_name))
+        if self.fop.is_file(obs_path):
+            f_obs = open(obs_path, "r")
+            comm = ""
+            for i in f_obs:
+                ln = i.replace("\n", "")
+                
+                if ln.startswith("observatory|"):
+                    val = ln.split("|")[1]
+                    self.ui.lineEdit_3.setText(str(val))
+                    
+                if ln.startswith("name|"):
+                    val = ln.split("|")[1]
+                    self.ui.lineEdit_4.setText(str(val))
+                    
+                if ln.startswith("longitude|"):
+                    val = ln.split("|")[1]
+                    self.ui.lineEdit_5.setText(str(val))
+                    
+                if ln.startswith("latitude|"):
+                    val = ln.split("|")[1]
+                    self.ui.lineEdit_6.setText(str(val))
+                    
+                if ln.startswith("altitude|"):
+                    val = ln.split("|")[1]
+                    self.ui.lineEdit_7.setText(str(val))
+                    
+                if ln.startswith("timezone|"):
+                    val = ln.split("|")[1]
+                    self.ui.lineEdit_8.setText(str(val))
+                    
+                if ln.startswith("#"):
+                    comm = "{}\n{}".format(comm, ln.replace("#", ""))
+                    
+            
+            self.ui.plainTextEdit.setPlainText(QtWidgets.QApplication.translate("Form", "\n".join(comm.split('\n')[1:]), None))
+                
+                    
+                
+                    
+    
+    def add_obs(self):
+        observatory = self.ui.lineEdit_3.text()
+        name = self.ui.lineEdit_4.text()
+        longitude = self.ui.lineEdit_5.text()
+        latitude = self.ui.lineEdit_6.text()
+        altitude = self.ui.lineEdit_7.text()
+        timezone = self.ui.lineEdit_8.text()
+        comm = str(self.ui.plainTextEdit.toPlainText())
+        
+        file_name = self.fop.abs_path("./observat/{}".format(observatory))        
+        
+        f = open(file_name, "w")
+        f.write("#{}\n".format(comm.replace("\n", "\n#")))
+        f.write("observatory|{}\n".format(observatory))
+        f.write("name|{}\n".format(name))
+        f.write("longitude|{}\n".format(longitude))
+        f.write("latitude|{}\n".format(latitude))
+        f.write("altitude|{}\n".format(altitude))
+        f.write("timezone|{}\n".format(timezone))
+        f.close()
+        self.load_observat()
+            
     def get_the_header(self):
         line = self.ui.listWidget_4.currentItem().text()
         field, value = line.split("=>")

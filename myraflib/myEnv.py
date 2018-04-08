@@ -14,6 +14,8 @@ from os.path import realpath
 from os.path import splitext
 from os.path import abspath
 
+from glob import glob
+
 from shutil import copy2
 from shutil import move
 
@@ -91,6 +93,21 @@ class file_op():
         self.verb = verb
         self.etc = etc(verb=verb)
             
+    def abs_path(self, path):
+        try:
+            return(abspath(path))
+        except Exception as e:
+            self.etc.log(e)
+            
+
+    def list_of_fiels(self, path, ext="*"):
+        try:
+            if self.is_dir(path):
+                pt = self.abs_path("{}/{}".format(path, ext))
+                return(sorted(glob(pt)))
+        except Exception as e:
+            self.etc.log(e)  
+            
     def is_file(self, src):
         try:
             self.etc.print_if("Checking if file {0} exist".format(src))
@@ -137,7 +154,7 @@ class file_op():
             name , extension = self.get_extension(name)
             return(path, name, extension)
         except Exception as e:
-            self.fetc.log(e)
+            self.etc.log(e)
             
     def cp(self, src, dst):
         try:

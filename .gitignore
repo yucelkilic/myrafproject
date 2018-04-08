@@ -1,2 +1,5 @@
 
-myraflib/__pycache__/myEnv.cpython-36.pyc
+myraflib/__pycache__/
+myraflib/__pycache__/*
+__pycache__/
+__pycache__/*

@@ -265,7 +265,8 @@ class cosmicsimage:
             # That's it.
             if verbose:
                 #print("Cleaning done")
-                self.etc.log("Cosmic: Cleaning done")
+                #self.etc.log("Cosmic: Cleaning done")
+                pass
             
             # FYI, that's how the LACosmic cleaning looks in iraf :
             """

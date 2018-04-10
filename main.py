@@ -197,7 +197,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         #add triggers for Observatory Editor
         self.ui.pushButton_30.clicked.connect(lambda: (self.add_obs()))
         self.ui.pushButton_29.clicked.connect(lambda: (self.rm_obs()))
-        self.ui.listWidget_12.clicked.connect(lambda: (self.get_observat_prop()))
+        self.ui.listWidget_12.clicked.connect(lambda: (
+                        self.get_observat_prop()))
         self.load_observat()
         
         self.etc.log("Creating triggers for Log tab.")
@@ -234,99 +235,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             
         self.reload_log()
     
-    def load_observat(self):
-        obs_files = self.fop.list_of_fiels(self.fop.abs_path("./observat"), ext="*")
-        new_list = []
-        for i in obs_files:
-            new_list.append(self.fop.get_base_name(i)[1])
-        g.replace_list_con(self, self.ui.listWidget_12, new_list)
-        
-        self.reload_log()
-        
-    def get_observat_prop(self):
-        obs_name = self.ui.listWidget_12.currentItem().text()
-        obs_path = self.fop.abs_path("./observat/{}".format(obs_name))
-        if self.fop.is_file(obs_path):
-            f_obs = open(obs_path, "r")
-            comm = ""
-            for i in f_obs:
-                ln = i.replace("\n", "")
-                
-                if ln.startswith("observatory|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_3.setText(str(val))
-                    
-                if ln.startswith("name|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_4.setText(str(val))
-                    
-                if ln.startswith("longitude|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_5.setText(str(val))
-                    
-                if ln.startswith("latitude|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_6.setText(str(val))
-                    
-                if ln.startswith("altitude|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_7.setText(str(val))
-                    
-                if ln.startswith("timezone|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_8.setText(str(val))
-                    
-                if ln.startswith("#"):
-                    comm = "{}\n{}".format(comm, ln.replace("#", ""))
-                    
-            
-            self.ui.plainTextEdit.setPlainText(QtWidgets.QApplication.translate("Form", "\n".join(comm.split('\n')[1:]), None))
-                    
-        else:
-            self.etc.log("No such Observatory({})".format(obs_name))
-        self.reload_log()
     
-    def rm_obs(self):
-        obs_name = self.ui.listWidget_12.currentItem().text()
-        obs_path = self.fop.abs_path("./observat/{}".format(obs_name))
-        if self.fop.is_file(obs_path):
-            self.fop.rm(obs_path)
-        else:
-            self.etc.log("No such Observatory({})".format(obs_name))
-            
-        self.load_observat()
-        self.reload_log()
-    
-    def add_obs(self):
-        observatory = self.ui.lineEdit_3.text()
-        name = self.ui.lineEdit_4.text()
-        longitude = self.ui.lineEdit_5.text()
-        latitude = self.ui.lineEdit_6.text()
-        altitude = self.ui.lineEdit_7.text()
-        timezone = self.ui.lineEdit_8.text()
-        comm = str(self.ui.plainTextEdit.toPlainText())
-        
-        file_name = self.fop.abs_path("./observat/{}".format(observatory))        
-        
-        f = open(file_name, "w")
-        f.write("#{}\n".format(comm.replace("\n", "\n#")))
-        f.write("observatory|{}\n".format(observatory))
-        f.write("name|{}\n".format(name))
-        f.write("longitude|{}\n".format(longitude))
-        f.write("latitude|{}\n".format(latitude))
-        f.write("altitude|{}\n".format(altitude))
-        f.write("timezone|{}\n".format(timezone))
-        f.close()
-        
-        self.ui.lineEdit_3.setText("")
-        self.ui.lineEdit_4.setText("")
-        self.ui.lineEdit_5.setText("")
-        self.ui.lineEdit_6.setText("")
-        self.ui.lineEdit_7.setText("")
-        self.ui.lineEdit_8.setText("")
-        self.ui.plainTextEdit.setPlainText("")
-        
-        self.load_observat()
             
     def get_the_header(self):
         line = self.ui.listWidget_4.currentItem().text()
@@ -453,7 +362,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                     else:
                         self.etc.log("No such file({})".format(img))
                         
-                    g.proc(self, self.ui.progressBar_3, it/g.list_lenght(self, self.ui.listWidget_3))
+                    g.proc(self, self.ui.progressBar_3, it/g.list_lenght(
+                                                self, self.ui.listWidget_3))
             else:
                 self.etc.log("No field was specified.")
                 QtWidgets.QMessageBox.critical(
@@ -876,6 +786,100 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             
         self.reload_log()
         
+    def load_observat(self):
+        obs_files = self.fop.list_of_fiels(self.fop.abs_path("./observat"), ext="*")
+        new_list = []
+        for i in obs_files:
+            new_list.append(self.fop.get_base_name(i)[1])
+        g.replace_list_con(self, self.ui.listWidget_12, new_list)
+        
+        self.reload_log()
+        
+    def get_observat_prop(self):
+        obs_name = self.ui.listWidget_12.currentItem().text()
+        obs_path = self.fop.abs_path("./observat/{}".format(obs_name))
+        if self.fop.is_file(obs_path):
+            f_obs = open(obs_path, "r")
+            comm = ""
+            for i in f_obs:
+                ln = i.replace("\n", "")
+                
+                if ln.startswith("observatory|"):
+                    val = ln.split("|")[1]
+                    self.ui.lineEdit_3.setText(str(val))
+                    
+                if ln.startswith("name|"):
+                    val = ln.split("|")[1]
+                    self.ui.lineEdit_4.setText(str(val))
+                    
+                if ln.startswith("longitude|"):
+                    val = ln.split("|")[1]
+                    self.ui.lineEdit_5.setText(str(val))
+                    
+                if ln.startswith("latitude|"):
+                    val = ln.split("|")[1]
+                    self.ui.lineEdit_6.setText(str(val))
+                    
+                if ln.startswith("altitude|"):
+                    val = ln.split("|")[1]
+                    self.ui.lineEdit_7.setText(str(val))
+                    
+                if ln.startswith("timezone|"):
+                    val = ln.split("|")[1]
+                    self.ui.lineEdit_8.setText(str(val))
+                    
+                if ln.startswith("#"):
+                    comm = "{}\n{}".format(comm, ln.replace("#", ""))
+                    
+            
+            self.ui.plainTextEdit.setPlainText(QtWidgets.QApplication.translate("Form", "\n".join(comm.split('\n')[1:]), None))
+                    
+        else:
+            self.etc.log("No such Observatory({})".format(obs_name))
+        self.reload_log()
+    
+    def rm_obs(self):
+        obs_name = self.ui.listWidget_12.currentItem().text()
+        obs_path = self.fop.abs_path("./observat/{}".format(obs_name))
+        if self.fop.is_file(obs_path):
+            self.fop.rm(obs_path)
+        else:
+            self.etc.log("No such Observatory({})".format(obs_name))
+            
+        self.load_observat()
+        self.reload_log()
+    
+    def add_obs(self):
+        observatory = self.ui.lineEdit_3.text()
+        name = self.ui.lineEdit_4.text()
+        longitude = self.ui.lineEdit_5.text()
+        latitude = self.ui.lineEdit_6.text()
+        altitude = self.ui.lineEdit_7.text()
+        timezone = self.ui.lineEdit_8.text()
+        comm = str(self.ui.plainTextEdit.toPlainText())
+        
+        file_name = self.fop.abs_path("./observat/{}".format(observatory))        
+        
+        f = open(file_name, "w")
+        f.write("#{}\n".format(comm.replace("\n", "\n#")))
+        f.write("observatory|{}\n".format(observatory))
+        f.write("name|{}\n".format(name))
+        f.write("longitude|{}\n".format(longitude))
+        f.write("latitude|{}\n".format(latitude))
+        f.write("altitude|{}\n".format(altitude))
+        f.write("timezone|{}\n".format(timezone))
+        f.close()
+        
+        self.ui.lineEdit_3.setText("")
+        self.ui.lineEdit_4.setText("")
+        self.ui.lineEdit_5.setText("")
+        self.ui.lineEdit_6.setText("")
+        self.ui.lineEdit_7.setText("")
+        self.ui.lineEdit_8.setText("")
+        self.ui.plainTextEdit.setPlainText("")
+        
+        self.load_observat()        
+        
     def reload_log(self):
         g.rm_all(self, self.ui.listWidget_10)
         g.add_line_by_line(self, self.ui.listWidget_10, self.etc.mini_log_file)
@@ -883,12 +887,13 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
     def save_log(self):
         out_file = g.save_log_file(self)
         self.fop.cp(self.etc.mini_log_file, out_file)
+        self.reload_log()
         
     def clear_log(self):
         answ = g.question(self, "Are you sure you want to clear log?")
         if answ == QtWidgets.QMessageBox.Yes:
             self.etc.dump_mlog()
-            self.reload_log()
+        self.reload_log()
         
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

@@ -40,6 +40,13 @@ class fits():
         self.verb = verb
         self.etc = myEnv.etc(verb=self.verb)
         
+    def pure_header(self, src):
+        try:
+            hdu = fts.open(src, mode='readonly')
+            return(hdu[0].header)
+        except Exception as e:
+            self.etc.log(e)
+        
     def header(self, src, field="*"):
         self.etc.log("Getting Header from {}".format(src))
         ret = []
@@ -97,6 +104,18 @@ class fits():
                     'Max': nmax(image_data),
                     'Mean': nmean(image_data),
                     'Stdev': nstd(image_data)})
+        except Exception as e:
+            self.etc.log(e)
+            
+    def write(self, dest, data):
+        try:
+            fits.writeto(dest, data)
+        except Exception as e:
+            self.etc.log(e)
+            
+    def write_h(self, dest, data, header):
+        try:
+            fits.writeto(dest, data, header)
         except Exception as e:
             self.etc.log(e)
 

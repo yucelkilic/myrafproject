@@ -17,6 +17,7 @@ from fPlot import FitsPlot
 #Importing myraf's needed modules
 from myraflib import myEnv
 from myraflib import myAst
+from myraflib import myCos
 
 class MyForm(QtWidgets.QWidget, Ui_Form):
     def __init__(self):
@@ -395,7 +396,29 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
        
     def do_cosmicC(self):
         if not g.is_list_empty(self, self.ui.listWidget_5):
-            print("Start Cosmic Cleaning")
+            gain = float(self.ui.doubleSpinBox_20.value())
+            readN = float(self.ui.doubleSpinBox_21.value())
+            sigmC = float(self.ui.doubleSpinBox_22.value())
+            sigmF = float(self.ui.doubleSpinBox_23.value())
+            objeL = float(self.ui.doubleSpinBox_24.value())
+            max_it = int(self.ui.spinBox_2.value())
+            odir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory"))
+            for i in range(self.ui.listWidget_5.count()):
+                img = self.ui.listWidget_5.item(i).text()
+                if self.fop.is_file(img):
+                    pth, name = self.fop.get_base_name(img)
+                    ofile = self.fop.abs_path("{}/{}".format(odir, name))
+                    mfile = self.fop.abs_path("{}/mask_{}".format(odir, name))
+                    data, header = myCos.fromfits(img)
+                    c = myCos.cosmicsimage(data, gain=gain, readnoise=readN,
+                                             sigclip=sigmC, sigfrac=sigmF,
+                                             objlim=objeL)
+                    
+                    c.run(maxiter=max_it)
+                    myCos.tofits(ofile, c.cleanarray, header)
+                    myCos.tofits(mfile, c.mask, header)
+                else:
+                    self.et.log("No such file({})".format(img))
         else:
             self.etc.log("Nothing to Cosimc Clean.")
             QtWidgets.QMessageBox.critical(

@@ -52,16 +52,19 @@ Ideas for future improvements :
 
 
 Malte Tewes, January 2010
+
+For this version of cosmic.py as MYRaf team we silenced all prints and added our own logging mechanism.
 """
 
 __version__ = '0.4'
 
 import os
 import numpy as np
-import math
 import scipy.signal as signal
 import scipy.ndimage as ndimage
-import pyfits
+from astropy.io import fits as pyfits
+
+from . import myEnv
 
 
 
@@ -125,6 +128,8 @@ class cosmicsimage:
         
         self.pssl = pssl
         
+        self.etc = myEnv.etc(verb=True)
+        
         self.backgroundlevel = None # only calculated and used if required.
         self.satstars = None # a mask of the saturated stars, only calculated if required
         
@@ -147,7 +152,8 @@ class cosmicsimage:
         if verbose == None:
             verbose = self.verbose
         if verbose:
-            print("Labeling mask pixels ...")
+            #print("Labeling mask pixels ...")
+            self.etc.log("Cosmic: Labeling mask pixels ...")
         # We morphologicaly dilate the mask to generously connect "sparse" cosmics :
         #dilstruct = np.ones((5,5))
         dilmask = ndimage.morphology.binary_dilation(self.mask, structure=dilstruct, iterations=1, mask=None, output=None, border_value=0, origin=0, brute_force=False)
@@ -168,8 +174,9 @@ class cosmicsimage:
         retdictlist = [{"name":"%i" % size, "x":center[0], "y":center[1]} for (size, center) in zip(sizes, centers)]
         
         if verbose:
-            print("Labeling done")
-        
+            #print("Labeling done")
+            self.etc.log("Cosmic: Labeling done")
+            
         return retdictlist
         
         
@@ -183,10 +190,9 @@ class cosmicsimage:
         elif size == 5:
             dilmask = ndimage.morphology.binary_dilation(self.mask, structure=dilstruct, iterations=1, mask=None, output=None, border_value=0, origin=0, brute_force=False)
         else:
-            dismask = self.mask.copy()
+            dilmask = self.mask.copy()
         
         return dilmask
-        
         
     def clean(self, mask = None, verbose = None):
         """
@@ -207,7 +213,8 @@ class cosmicsimage:
             mask = self.mask
         
         if verbose:
-            print("Cleaning cosmic affected pixels ...")
+            #print("Cleaning cosmic affected pixels ...")
+            self.etc.log("Cosmic: Cleaning cosmic affected pixels ...")
         
         # So... mask is a 2D array containing False and True, where True means "here is a cosmic"
         # We want to loop through these cosmics one by one.
@@ -226,7 +233,7 @@ class cosmicsimage:
         
         # The medians will be evaluated in this padarray, skipping the np.Inf.
         # Now in this copy called padarray, we also put the saturated stars to np.Inf, if available :
-        if self.satstars.all() != None:
+        if self.satstars != None:
             padarray[2:w+2,2:h+2][self.satstars] = np.Inf
         # Viva python, I tested this one, it works...
         
@@ -247,7 +254,8 @@ class cosmicsimage:
                 replacementvalue = np.median(goodcutout)
             else :	
             # i.e. no good pixels : Shit, a huge cosmic, we will have to improvise ...
-                print("OH NO, I HAVE A HUUUUUUUGE COSMIC !!!!!")
+                #print("OH NO, I HAVE A HUUUUUUUGE COSMIC !!!!!")
+                self.etc.log("Cosmic: OH NO, I HAVE A HUUUUUUUGE COSMIC !!!!!")
                 replacementvalue = self.guessbackgroundlevel()
             
             # We update the cleanarray,
@@ -256,7 +264,8 @@ class cosmicsimage:
             
             # That's it.
             if verbose:
-                print("Cleaning done")
+                #print("Cleaning done")
+                self.etc.log("Cosmic: Cleaning done")
             
             # FYI, that's how the LACosmic cleaning looks in iraf :
             """
@@ -290,7 +299,8 @@ class cosmicsimage:
         if verbose == None:
             verbose = self.verbose
         if verbose:
-            print("Detecting saturated stars ...")
+            #print("Detecting saturated stars ...")
+            self.etc.log("Cosmic: Detecting saturated stars ...")
             # DETECTION
             
             satpixels = self.rawarray > self.satlevel # the candidate pixels
@@ -303,7 +313,8 @@ class cosmicsimage:
             satstarscenters = np.logical_and(largestruct, satpixels)
             
             if verbose:
-                print("Building mask of saturated stars ...")
+                #print("Building mask of saturated stars ...")
+                self.etc.log("Cosmic: Building mask of saturated stars ...")
             
             # BUILDING THE MASK
             # The subtility is that we want to include all saturated pixels connected to these saturated stars...
@@ -321,7 +332,8 @@ class cosmicsimage:
             #tofits(dilsatlabels, "test.fits")
             
             if verbose:
-                print("We have %i saturated stars." % nsat)
+                #print("We have %i saturated stars." % nsat)
+                self.etc.log("Cosmic: We have {} saturated stars.".format(nsat))
             
             # The ouput, False for now :
             outmask = np.zeros(self.rawarray.shape)
@@ -337,6 +349,7 @@ class cosmicsimage:
                 
                 if verbose:
                     print("Mask of saturated stars done")
+                    self.etc.log("Cosmic: Mask of saturated stars done")
         
     def getsatstars(self, verbose = None):
         """
@@ -401,7 +414,8 @@ class cosmicsimage:
             verbose = self.verbose
         
         if verbose:
-            print("Convolving image with Laplacian kernel ...")
+            #print("Convolving image with Laplacian kernel ...")
+            self.etc.log("Cosmic: Convolving image with Laplacian kernel ...")
         
         # We subsample, convolve, clip negative values, and rebin to original size
         subsam = subsample(self.cleanarray)
@@ -411,7 +425,9 @@ class cosmicsimage:
         lplus = rebin2x2(cliped)
         
         if verbose:
-            print("Creating noise model ...")
+            #print("Creating noise model ...")
+            self.etc.log("Cosmic: Creating noise model ...")
+            
         
         # We build a custom noise map, so to compare the laplacian to
         m5 = ndimage.filters.median_filter(self.cleanarray, size=5, mode='mirror')
@@ -420,7 +436,8 @@ class cosmicsimage:
         noise = (1.0/self.gain) * np.sqrt(self.gain*m5clipped + self.readnoise*self.readnoise)
         
         if verbose:
-            print("Calculating Laplacian signal to noise ratio ...")
+            #print("Calculating Laplacian signal to noise ratio ...")
+            self.etc.log("Cosmic: Calculating Laplacian signal to noise ratio ...")
         
         # Laplacian signal to noise ratio :
         s = lplus / (2.0 * noise) # the 2.0 is from the 2x2 subsampling
@@ -430,28 +447,33 @@ class cosmicsimage:
         sp = s - ndimage.filters.median_filter(s, size=5, mode='mirror')
         
         if verbose:
-            print("Selecting candidate cosmic rays ...")
+            #print("Selecting candidate cosmic rays ...")
+            self.etc.log("Cosmic: Selecting candidate cosmic rays ...")
         
         # Candidate cosmic rays (this will include stars + HII regions)
         candidates = sp > self.sigclip	
         nbcandidates = np.sum(candidates)
         
         if verbose:
-            print("  %5i candidate pixels" % nbcandidates)
+            #print("  %5i candidate pixels" % nbcandidates)
+            self.etc.log("Cosmic:   {} candidate pixels".format(nbcandidates))
         
         # At this stage we use the saturated stars to mask the candidates, if available :
     
-        if self.satstars.all() != None:
+        if self.satstars != None:
             if verbose:
-                print("Masking saturated stars ...")
+                #print("Masking saturated stars ...")
+                self.etc.log("Cosmic: Masking saturated stars ...")
             candidates = np.logical_and(np.logical_not(self.satstars), candidates)
             nbcandidates = np.sum(candidates)
             
             if verbose:
-                print("  %5i candidate pixels not part of saturated stars" % nbcandidates)
+                #print("  %5i candidate pixels not part of saturated stars" % nbcandidates)
+                self.etc.log("Cosmic:   {} candidate pixels not part of saturated stars".format(nbcandidates))
             
         if verbose:
-            print("Building fine structure image ...")
+            #print("Building fine structure image ...")
+            self.etc.log("Cosmic: Building fine structure image ...")
     
         # We build the fine structure image :
         m3 = ndimage.filters.median_filter(self.cleanarray, size=3, mode='mirror')
@@ -465,7 +487,8 @@ class cosmicsimage:
         f = f.clip(min=0.01) # as we will divide by f. like in the iraf version.
         
         if verbose:
-            print("Removing suspected compact bright objects ...")
+            #print("Removing suspected compact bright objects ...")
+            self.etc.log("Cosmic: Removing suspected compact bright objects ...")
         
         # Now we have our better selection of cosmics :
         cosmics = np.logical_and(candidates, sp/f > self.objlim)
@@ -474,12 +497,14 @@ class cosmicsimage:
         nbcosmics = np.sum(cosmics)
         
         if verbose:
-            print("  %5i remaining candidate pixels" % nbcosmics)
+            #print("  %5i remaining candidate pixels" % nbcosmics)
+            self.etc.log("Cosmic:   {} remaining candidate pixels".format(nbcosmics))
         
         # What follows is a special treatment for neighbors, with more relaxed constains.
         
         if verbose:
-            print("Finding neighboring pixels affected by cosmic rays ...")
+            #print("Finding neighboring pixels affected by cosmic rays ...")
+            self.etc.log("Cosmic: Finding neighboring pixels affected by cosmic rays ...")
         
         # We grow these cosmics a first time to determine the immediate neighborhod  :
         growcosmics = np.cast['bool'](signal.convolve2d(np.cast['float32'](cosmics), growkernel, mode="same", boundary="symm"))
@@ -494,15 +519,17 @@ class cosmicsimage:
         finalsel = np.logical_and(sp > self.sigcliplow, finalsel)
         
         # Again, we have to kick out pixels on saturated stars :
-        if self.satstars.all() != None:
+        if self.satstars != None:
             if verbose:
-                print("Masking saturated stars ...")
+                #print("Masking saturated stars ...")
+                self.etc.log("Cosmic: Masking saturated stars ...")
             finalsel = np.logical_and(np.logical_not(self.satstars), finalsel)
             
         nbfinal = np.sum(finalsel)
         
         if verbose:
-            print("  %5i pixels detected as cosmics" % nbfinal)
+            #print("  %5i pixels detected as cosmics" % nbfinal)
+            self.etc.log("Cosmic:   {} pixels detected as cosmics".format(nbfinal))
             
             # Now the replacement of the cosmics...
             # we outsource this to the function clean(), as for some purposes the cleaning might not even be needed.
@@ -510,16 +537,16 @@ class cosmicsimage:
             #self.cleanarray[finalsel] = m5[finalsel]
             
             # We find how many cosmics are not yet known :
-            newmask = np.logical_and(np.logical_not(self.mask), finalsel)
-            nbnew = np.sum(newmask)
-            
-            # We update the mask with the cosmics we have found :
-            self.mask = np.logical_or(self.mask, finalsel)
-            
-            # We return
-            # (used by function lacosmic)
+        newmask = np.logical_and(np.logical_not(self.mask), finalsel)
+        nbnew = np.sum(newmask)
         
-            return {"niter":nbfinal, "nnew":nbnew, "itermask":finalsel, "newmask":newmask}
+        # We update the mask with the cosmics we have found :
+        self.mask = np.logical_or(self.mask, finalsel)
+        
+        # We return
+        # (used by function lacosmic)
+    
+        return {"niter":nbfinal, "nnew":nbnew, "itermask":finalsel, "newmask":newmask}
         
     def findholes(self, verbose = True):
         """
@@ -592,11 +619,14 @@ class cosmicsimage:
             self.findsatstars(verbose=True)
         
         print("Starting %i L.A.Cosmic iterations ..." % maxiter)
+        self.etc.log("Cosmic: Starting {} L.A.Cosmic iterations ...".format(maxiter))
         for i in range(1, maxiter+1):
-            print("Iteration %i" % i)
+            #print("Iteration %i" % i)
+            self.etc.log("Cosmic: Iteration {}".format(i))
             
             iterres = self.lacosmiciteration(verbose=verbose)
-            print("%i cosmic pixels (%i new)" % (iterres["niter"], iterres["nnew"]))
+            #print("%i cosmic pixels (%i new)" % (iterres["niter"], iterres["nnew"]))
+            self.etc.log("Cosmic: {} cosmic pixels ({} new)".format(iterres["niter"], iterres["nnew"]))
             
             #self.clean(mask = iterres["mask"]) # No, we want clean to operate on really clean pixels only !
             # Thus we always apply it on the full mask, as lacosmic does :
@@ -627,6 +657,8 @@ class cosmicsimage:
 
 # FITS import - export
 
+etc = myEnv.etc(verb=True)
+
 def fromfits(infilename, hdu = 0, verbose = True):
     """
     Reads a FITS file and returns a 2D numpy array of the data.
@@ -638,9 +670,12 @@ def fromfits(infilename, hdu = 0, verbose = True):
     
     pixelarrayshape = pixelarray.shape
     if verbose :
-        print("FITS import shape : (%i, %i)" % (pixelarrayshape[0], pixelarrayshape[1]))
-        print("FITS file BITPIX : %s" % (hdr["BITPIX"]))
-        print("Internal array type :", pixelarray.dtype.name)
+        #print("FITS import shape : (%i, %i)" % (pixelarrayshape[0], pixelarrayshape[1]))
+        etc.log("Cosmic: FITS import shape : ({}, {})".format(pixelarrayshape[0], pixelarrayshape[1]))
+        #print("FITS file BITPIX : %s" % (hdr["BITPIX"]))
+        etc.log("Cosmic: FITS file BITPIX : {}".format(hdr["BITPIX"]))
+        #print("Internal array type :", pixelarray.dtype.name)
+        etc.log("Cosmic: Internal array type : {}".format(pixelarray.dtype.name))
     
     return pixelarray, hdr
 
@@ -652,7 +687,8 @@ def tofits(outfilename, pixelarray, hdr = None, verbose = True):
     """
     pixelarrayshape = pixelarray.shape
     if verbose :
-        print("FITS export shape : (%i, %i)" % (pixelarrayshape[0], pixelarrayshape[1]))
+        #print("FITS export shape : (%i, %i)" % (pixelarrayshape[0], pixelarrayshape[1]))
+        etc.log("FITS export shape : ({}, {})".format(pixelarrayshape[0], pixelarrayshape[1]))
     
     if pixelarray.dtype.name == "bool":
         pixelarray = np.cast["uint8"](pixelarray)
@@ -668,7 +704,8 @@ def tofits(outfilename, pixelarray, hdr = None, verbose = True):
     hdu.writeto(outfilename)
     
     if verbose :
-        print("Wrote %s" % outfilename)
+        #print("Wrote %s" % outfilename)
+        etc.log("Cosmic: Wrote {}".format(outfilename))
 
 
 # Array manipulation
@@ -694,7 +731,7 @@ def subsample(a): # this is more a generic function then a method ...
     """
     # much better :
     newshape = (2*a.shape[0], 2*a.shape[1])
-    slices = [slice(0,old, float(old)/new) for old,new in zip(a.shape,newshape) ]
+    slices = [slice(0,old, float(old)/new) for old,new in zip(a.shape,newshape)]
     coordinates = np.mgrid[slices]
     indices = coordinates.astype('i')   #choose the biggest smaller integer index
     return a[tuple(indices)]
@@ -709,13 +746,15 @@ def rebin(a, newshape):
     """
     
     shape = a.shape
+    
     lenShape = len(shape)
     factor = np.asarray(shape)/np.asarray(newshape)
-    #print factor
+    factor = factor.astype(int)
+    newshape = newshape.astype(int)
     evList = ['a.reshape('] + \
-    ['newshape[%d],factor[%d],'%(i,i) for i in xrange(lenShape)] + \
-    [')'] + ['.sum(%d)'%(i+1) for i in xrange(lenShape)] + \
-    ['/factor[%d]'%i for i in xrange(lenShape)]
+    ['newshape[%d],factor[%d],'%(i,i) for i in range(lenShape)] + \
+    [')'] + ['.sum(%d)'%(i+1) for i in range(lenShape)] + \
+    ['/factor[%d]'%i for i in range(lenShape)]
     
     return eval(''.join(evList))
     
@@ -729,3 +768,4 @@ def rebin2x2(a):
         raise(RuntimeError, "I want even image shapes !")
     
     return rebin(a, inshape/2)
+

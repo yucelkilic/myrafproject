@@ -1,7 +1,0 @@
-# Submitted by Pat van Heerden 11/20/06
-observatory = "boyden"
-	name = Boyden Observatory
-	longitude = 332:35:40.0
-	latitude = -29:02:20
-	altitude = 1387
-	timezone = -2

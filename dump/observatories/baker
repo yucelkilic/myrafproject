@@ -1,7 +1,0 @@
-# Submitted from iraf.net 4/12/10
-observatory = "baker" 
-	name = "Baker Observatory" 
-	longitude = 93:02:30.29 
-	latitude = 37:23:55.05 
-	altitude = 418.2 
-	timezone = 6

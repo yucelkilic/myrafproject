@@ -1,7 +1,0 @@
-# Submitted by Mike Yang 8/19/09
-observatory = "lulin"
-	name = "Lulin Observatory"
-	longitude = 240:52.4
-	latitude = 23:28.1
-	altitude = 2862.
-	timezone = -8

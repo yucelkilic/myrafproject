@@ -1,8 +1,0 @@
-# The following additional entries were suppied by Peter Weilbacher
-# weilbach@uni-sw.gwdg.de on 28 Jan 2002 13:12:59 -0700.
-observatory = "eso36m"
-	name = "European Southern Observatory, 3.6m Telescope, La Silla"
-	longitude = 70:43:46.606
-	latitude = -29:15:25.814
-	altitude = 2400
-	timezone = 4

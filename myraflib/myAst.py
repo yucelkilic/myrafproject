@@ -22,6 +22,8 @@ from numpy import mean as nmean
 from numpy import std as nstd
 from numpy import log10 as nlog10
 from numpy import asarray
+from numpy import float64 as nf64
+from numpy import sort as nsort
 
 from math import pow as mpow
 from math import sqrt as msqrt
@@ -72,7 +74,8 @@ class fits():
             if table:                
                 return(TBL(data))
             else:
-                
+                data = data.byteswap().newbyteorder()
+                data = data.astype(nf64)
                 return(data)
         except Exception as e:
             self.etc.log(e)
@@ -265,10 +268,39 @@ class sextractor():
             else:
                 return(all_objects)
         except Exception as e:
-            self.eetc.log(e)
+            self.etc.log(e)
+            
+    def find_limited(self, data, threshold=1.5, table=True,
+                     only_best=True, max_sources=200):
+        try:
+            bkg = Background(data)
+            data_sub = data - bkg
+            all_objects = asarray(extract(data_sub, threshold,
+                                          err=bkg.globalrms))
+            if only_best:
+                all_objects = all_objects[all_objects['flag'] == 0]
+            
+            ord_objects = nsort(all_objects, order=['flux'])
+            
+            if len(ord_objects) <= max_sources:
+                max_sources = len(ord_objects)
+                objects = ord_objects[::-1][:max_sources]
+            if len(ord_objects) > max_sources:
+                objects = ord_objects[::-1][:max_sources]
+            elif not max_sources:
+                objects = ord_objects[::-1]
+                
+            if table:            
+                return(TBL(objects))
+            else:
+                return(objects)
+        except Exception as e:
+            self.etc.log(e)
             
     def extract_xy(self, src):
         try:
             return(TBL([src['x'], src['y']]))
         except Exception as e:
             self.etc.log(e)
+            
+            

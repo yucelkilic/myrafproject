@@ -32,18 +32,18 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.etc = myEnv.etc(verb=self.verb)
         self.fop = myEnv.file_op(verb=self.verb)
         self.fit = myAst.fits(verb=self.verb)
+        self.sex = myAst.sextractor(verb=self.verb)
         
-        self.etc.log("Loading settings.")
+        #self.etc.log("Loading settings.")
         #Load settings
-        self.read_settings()
+        #self.read_settings()
         
         self.etc.log("Resetting Gui for Log tab.")
         #set Log tab
-        self.ui.label_19.setProperty("text", "")
         self.ui.label_19.setProperty("text",
-                                     "Log file is stored: {}".format(
+                                     "Logs are stoed in: {} & {}".format(
+                                             self.etc.log_file,
                                              self.etc.mini_log_file))
-        
         
         self.etc.log("Resetting Gui for Calibration tab.")
         #set calibration tab
@@ -124,9 +124,33 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.pushButton_14.clicked.connect(lambda: (
                 g.rm(self, self.ui.listWidget_2),
                 self.phot_annotation()))
+        self.ui.pushButton_36.clicked.connect(lambda: (
+                g.rm(self, self.ui.listWidget_14),
+                self.phot_annotation()))
         
+        self.ui.pushButton_35.clicked.connect(lambda: (self.display_coors()))
+        
+        self.ui.pushButton_34.clicked.connect(lambda: (self.run_sex()))
         self.ui.pushButton_16.clicked.connect(lambda: (self.do_phot()))
         self.ui.listWidget_2.clicked.connect(lambda: (self.display_phot()))
+        
+        self.etc.log("Resetting Gui for A-Track tab.")
+        #set a-track tab
+        self.ui.progressBar_7.setProperty("value", 0)
+        self.ui.label_27.setProperty("text", "")
+        self.atrack_annotation()
+        self.atrack_disp = FitsPlot(self.ui.disp_atrack.canvas)
+        
+        self.etc.log("Creating triggers for A-Track tab.")
+        #add triggers for atrack
+        self.ui.pushButton_33.clicked.connect(lambda: (
+                g.add_files(self, self.ui.listWidget_13),
+                self.atrack_annotation()))
+        self.ui.pushButton_32.clicked.connect(lambda: (
+                g.rm(self, self.ui.listWidget_13),
+                self.atrack_annotation()))
+        
+        self.ui.listWidget_13.clicked.connect(lambda: (self.display_atrack()))
         
         self.etc.log("Resetting Gui for Hedit tab.")
         #set header editor tab
@@ -308,6 +332,23 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             
         #Reload log file to log view
         self.reload_log()
+        
+    #Display fit file on A-Track Tab
+    def display_atrack(self):
+        #Find the possible file name
+        img = self.ui.listWidget_13.currentItem().text()
+        #Check if file does exist
+        if self.fop.is_file(img):
+            #Display the file
+            self.atrack_disp.load(str(img))
+        else:
+            #Log and display an error about not existing file
+            self.et.log("No such (Disp A-Track)file({})".format(img))
+            QtWidgets.QMessageBox.critical(
+                    self, ("MYRaf Error"), ("Please add some files"))
+            
+        #Reload log file to log view
+        self.reload_log()
     
     #Get a header key and it's value to textEdit fields 
     def get_the_header(self):
@@ -424,6 +465,25 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.label_2.setProperty("text",
                                     "{0} file(s) will be aligned".format(img))
         
+    def run_sex(self):
+        if self.ui.listWidget_2.currentItem() is not None:
+            img = self.ui.listWidget_2.currentItem().text()
+            if self.fop.is_file(img):
+                data = self.fit.data(img, table=False)
+                lim = int(self.ui.spinBox.value())
+                coors = self.sex.find_limited(data, max_sources=lim)
+                sex_coors = []
+                for i in coors:
+                    sex_coors.append("{:0.4f}, {:0.4f}".format(i['x'], i['y']))
+                g.replace_list_con(self, self.ui.listWidget_14, sex_coors)
+            else:
+               self.etc.log("No such (Run Sex)file({}).".format(img))
+               QtWidgets.QMessageBox.critical(
+                       self, ("MYRaf Error"), ("No Such file"))
+        else:
+           self.etc.log("No File was selected(Run Sex)")
+           QtWidgets.QMessageBox.critical(
+                   self, ("MYRaf Error"), ("No file was selected"))
     #Start Photometry
     def do_phot(self):
         #Check if listWidget is empty
@@ -450,6 +510,13 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         img = g.list_lenght(self, self.ui.listWidget_2)
         self.ui.label_8.setProperty(
                 "text", "Photometry will be done for {0} file(s)".format(img))
+        
+    #Change annotation of Photometry Tab
+    def atrack_annotation(self):
+        #Just find how many files were given for photometry
+        img = g.list_lenght(self, self.ui.listWidget_13)
+        self.ui.label_27.setProperty(
+                "text", "A-Track will be done for {0} file(s)".format(img))
         
     #Do Hedit's Operation
     def do_hedit(self, update_add=True):
@@ -637,360 +704,11 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 "text",
                 "Cosmic Cleaning will be applied for {0} files".format(img))
         
-    #Save Settings to File
-    def save_seetings(self):
-        #Photometry settings
-        if self.ui.groupBox_6.isChecked():
-            photometry_ens = "yes"
-        else:
-            photometry_ens = "no"
-            
-        photometry_ens_catalog = self.ui.comboBox.currentIndex()
-        photometry_ens_filter = self.ui.comboBox_11.currentIndex()
-        
-        photometry_sfp_anbulus = self.ui.doubleSpinBox_2.value()
-        photometry_sfp_danbulus = self.ui.doubleSpinBox.value()
-        photometry_sfp_cbox =self.ui.doubleSpinBox_3.value()
-        
-        photometry_dap_exposur = self.ui.lineEdit_13.text()
-        photometry_dap_filter = self.ui.lineEdit_14.text()
-        
-        photometry_php_apertur = self.ui.lineEdit_15.text()
-        photometry_php_zmag = self.ui.doubleSpinBox_8.value()
-        photometry_php_gain = self.ui.lineEdit_26.text()
-        
-        photometry_wcs_ra = self.ui.lineEdit_22.text()
-        photometry_wcs_dec = self.ui.lineEdit_23.text()
-        
-        if self.ui.checkBox_4.isChecked():
-            photometry_lot_autoEpoch = "yes"
-        else:
-            photometry_lot_autoEpoch = "no"
-            
-        photometry_lot_observat = self.ui.lineEdit_18.text()
-        photometry_lot_time = self.ui.lineEdit_17.text()
-        photometry_lot_epoch = self.ui.lineEdit_25.text()
-        
-        photometry_stf_fluxrad = self.ui.doubleSpinBox_4.value()
-        photometry_stf_minfwhm = self.ui.doubleSpinBox_5.value()
-        photometry_stf_maxfwhm = self.ui.doubleSpinBox_6.value()
-        photometry_stf_max2fnd = self.ui.spinBox.value()
-        
-        #Calibration settings
-        calibration_zc_combine = self.ui.comboBox_2.currentIndex()
-        calibration_zc_reject = self.ui.comboBox_3.currentIndex()
-        
-        calibration_zc_combine = self.ui.comboBox_2.currentIndex()
-        calibration_zc_reject = self.ui.comboBox_3.currentIndex()
-        
-        calibration_dc_combine = self.ui.comboBox_4.currentIndex()
-        calibration_dc_reject = self.ui.comboBox_5.currentIndex()
-        calibration_dc_scale = self.ui.comboBox_8.currentIndex()
-        
-        calibration_fc_combine = self.ui.comboBox_6.currentIndex()
-        calibration_fc_reject = self.ui.comboBox_7.currentIndex()
-        calibration_fc_subset = self.ui.comboBox_9.currentIndex()
-        
-        calibration_ca_combine = self.ui.comboBox_10.currentIndex()
-        
-        #Cosmic Cleaner settings
-        cosmicC_all_gain = self.ui.doubleSpinBox_20.value()
-        cosmicC_all_readNoise = self.ui.doubleSpinBox_21.value()
-        cosmicC_all_sigmaClip = self.ui.doubleSpinBox_22.value()
-        cosmicC_all_SigmaFrac = self.ui.doubleSpinBox_23.value()
-        cosmicC_all_objLim = self.ui.doubleSpinBox_24.value()
-        
-        #WCS settings
-        if self.ui.groupBox_5.isChecked():
-            wcs_all_goOnline = "yes"
-        else:
-            wcs_all_goOnline = "no"
-            
-            
-        if self.ui.checkBox_2.isChecked():
-            wcs_all_comp = "yes"
-        else:
-            wcs_all_comp = "no"
-            
-        wcs_all_server = self.ui.lineEdit_27.text()
-        wcs_all_apikey = self.ui.lineEdit_28.text()
-        
-        try:
-            self.etc.log("Settings will be saved in {}".format(
-                    self.srttings_file))
-            f_set = open(self.srttings_file, "w")
-            
-            f_set.write("photometry_ens|{0}\n".format(photometry_ens))
-            f_set.write("photometry_ens_catalog|{0}\n".format(
-                    photometry_ens_catalog))
-            f_set.write("photometry_ens_filter|{0}\n".format(
-                    photometry_ens_filter))
-            
-            f_set.write("photometry_sfp_anbulus|{0}\n".format(
-                    photometry_sfp_anbulus))
-            f_set.write("photometry_sfp_danbulus|{0}\n".format(
-                    photometry_sfp_danbulus))
-            f_set.write("photometry_sfp_cbox|{0}\n".format(
-                    photometry_sfp_cbox))
-            
-            f_set.write("photometry_dap_exposur|{0}\n".format(
-                    photometry_dap_exposur))
-            f_set.write("photometry_dap_filter|{0}\n".format(
-                    photometry_dap_filter))
-            
-            f_set.write("photometry_php_apertur|{0}\n".format(
-                    photometry_php_apertur))
-            f_set.write("photometry_php_zmag|{0}\n".format(
-                    photometry_php_zmag))
-            f_set.write("photometry_php_gain|{0}\n".format(
-                    photometry_php_gain))
-            
-            f_set.write("photometry_wcs_ra|{0}\n".format(photometry_wcs_ra ))
-            f_set.write("photometry_wcs_dec|{0}\n".format(photometry_wcs_dec))
-            
-            f_set.write("photometry_lot_autoEpoch|{0}\n".format(
-                    photometry_lot_autoEpoch))
-            f_set.write("photometry_lot_observat|{0}\n".format(
-                    photometry_lot_observat))
-            f_set.write("photometry_lot_time|{0}\n".format(
-                    photometry_lot_time))
-            f_set.write("photometry_lot_epoch|{0}\n".format(
-                    photometry_lot_epoch))
-            
-            f_set.write("photometry_stf_fluxrad|{0}\n".format(
-                    photometry_stf_fluxrad))
-            f_set.write("photometry_stf_minfwhm|{0}\n".format(
-                    photometry_stf_minfwhm))
-            f_set.write("photometry_stf_maxfwhm|{0}\n".format(
-                    photometry_stf_maxfwhm))
-            f_set.write("photometry_stf_max2fnd|{0}\n".format(
-                    photometry_stf_max2fnd))
-            
-            f_set.write("calibration_zc_combine|{0}\n".format(
-                    calibration_zc_combine))
-            f_set.write("calibration_zc_reject|{0}\n".format(
-                    calibration_zc_reject))
-    
-            f_set.write("calibration_dc_combine|{0}\n".format(
-                    calibration_dc_combine))
-            f_set.write("calibration_dc_reject|{0}\n".format(
-                    calibration_dc_reject))
-            f_set.write("calibration_dc_scale|{0}\n".format(
-                    calibration_dc_scale))
-            
-            f_set.write("calibration_fc_combine|{0}\n".format(
-                    calibration_fc_combine))
-            f_set.write("calibration_fc_reject|{0}\n".format(
-                    calibration_fc_reject))
-            f_set.write("calibration_fc_subset|{0}\n".format(
-                    calibration_fc_subset))
-            
-            
-            
-            f_set.write("calibration_ca_combine|{0}\n".format(
-                    calibration_ca_combine))
-            
-            
-            f_set.write("cosmicC_all_gain|{0}\n".format(cosmicC_all_gain))
-            f_set.write("cosmicC_all_readNoise|{0}\n".format(
-                    cosmicC_all_readNoise))
-            f_set.write("cosmicC_all_sigmaClip|{0}\n".format(
-                    cosmicC_all_sigmaClip))
-            f_set.write("cosmicC_all_SigmaFrac|{0}\n".format(
-                    cosmicC_all_SigmaFrac))
-            f_set.write("cosmicC_all_objLim|{0}\n".format(cosmicC_all_objLim))
-            
-            
-            f_set.write("wcs_all_goOnline|{0}\n".format(wcs_all_goOnline))
-            f_set.write("wcs_all_comp|{0}\n".format(wcs_all_comp))
-            f_set.write("wcs_all_server|{0}\n".format(wcs_all_server))
-            f_set.write("wcs_all_apikey|{0}\n".format(wcs_all_apikey))
-            
-            f_set.close()
-        except Exception as e:
-            self.etc.log(e)
-        
-        self.reload_log()
-        
-    #Read and apply settings From File
-    def read_settings(self):
-        try:
-            self.etc.log("Settings will be applied from {}".format(
-                    self.srttings_file))
-            f_set = open(self.srttings_file, "r")
-            for i in f_set:
-                ln = i.replace("\n", "")
-                if ln.startswith("photometry_ens|"):
-                    val = ln.split("|")[1]
-                    if val == "yes":
-                        self.ui.groupBox_6.setChecked(True)
-                    else:
-                        self.ui.groupBox_6.setChecked(False)
-                        
-                if ln.startswith("photometry_ens_catalog|"):
-                    val = ln.split("|")[1]
-                    self.ui.comboBox.setCurrentIndex(int(val))
-                    
-                if ln.startswith("photometry_sfp_anbulus|"):
-                    val = ln.split("|")[1]
-                    self.ui.doubleSpinBox_2.setValue(float(val))
-                    
-                if ln.startswith("photometry_sfp_danbulus|"):
-                    val = ln.split("|")[1]
-                    self.ui.doubleSpinBox.setValue(float(val))
-                    
-                if ln.startswith("photometry_sfp_cbox|"):
-                    val = ln.split("|")[1]
-                    self.ui.doubleSpinBox_3.setValue(float(val))
-                    
-                if ln.startswith("photometry_dap_exposur|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_13.setText(str(val))
-                    
-                if ln.startswith("photometry_dap_filter|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_14.setText(str(val))
-                    
-                if ln.startswith("photometry_php_apertur|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_15.setText(str(val))
-                    
-                if ln.startswith("photometry_php_zmag|"):
-                    val = ln.split("|")[1]
-                    self.ui.doubleSpinBox_8.setValue(float(val))
-                    
-                if ln.startswith("photometry_php_gain|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_26.setText(str(val))
-                    
-                if ln.startswith("photometry_wcs_ra|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_22.setText(str(val))
-                    
-                if ln.startswith("photometry_wcs_dec|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_23.setText(str(val))
-                    
-                if ln.startswith("photometry_lot_autoEpoch|"):
-                    val = ln.split("|")[1]
-                    if val == "yes":
-                        self.ui.checkBox_4.setChecked(True)
-                    else:
-                        self.ui.checkBox_4.setChecked(False)
-                        
-                if ln.startswith("photometry_lot_observat|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_18.setText(str(val))
-                    
-                if ln.startswith("photometry_lot_time|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_17.setText(str(val))
-                    
-                if ln.startswith("photometry_lot_epoch|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_25.setText(str(val))
-                    
-                if ln.startswith("photometry_stf_fluxrad|"):
-                    val = ln.split("|")[1]
-                    self.ui.doubleSpinBox_4.setValue(float(val))
-                    
-                if ln.startswith("photometry_stf_minfwhm|"):
-                    val = ln.split("|")[1]
-                    self.ui.doubleSpinBox_5.setValue(float(val))
-                    
-                if ln.startswith("photometry_stf_maxfwhm|"):
-                    val = ln.split("|")[1]
-                    self.ui.doubleSpinBox_6.setValue(float(val))
-                    
-                if ln.startswith("photometry_stf_max2fnd|"):
-                    val = ln.split("|")[1]
-                    self.ui.spinBox.setValue(int(val))
-                    
-                if ln.startswith("calibration_zc_combine|"):
-                    val = ln.split("|")[1]
-                    self.ui.comboBox_2.setCurrentIndex(int(val))
-                    
-                if ln.startswith("calibration_zc_reject|"):
-                    val = ln.split("|")[1]
-                    self.ui.comboBox_3.setCurrentIndex(int(val))
-                    
-                if ln.startswith("calibration_dc_combine|"):
-                    val = ln.split("|")[1]
-                    self.ui.comboBox_4.setCurrentIndex(int(val))
-                    
-                if ln.startswith("calibration_dc_reject|"):
-                    val = ln.split("|")[1]
-                    self.ui.comboBox_5.setCurrentIndex(int(val))
-                    
-                if ln.startswith("calibration_dc_scale|"):
-                    val = ln.split("|")[1]
-                    self.ui.comboBox_8.setCurrentIndex(int(val))
-                    
-                if ln.startswith("calibration_fc_combine|"):
-                    val = ln.split("|")[1]
-                    self.ui.comboBox_6.setCurrentIndex(int(val))
-                    
-                if ln.startswith("calibration_fc_reject|"):
-                    val = ln.split("|")[1]
-                    self.ui.comboBox_7.setCurrentIndex(int(val))
-                    
-                if ln.startswith("calibration_fc_subset|"):
-                    val = ln.split("|")[1]
-                    self.ui.comboBox_9.setCurrentIndex(int(val))
-                    
-                if ln.startswith("calibration_ca_combine|"):
-                    val = ln.split("|")[1]
-                    self.ui.comboBox_10.setCurrentIndex(int(val))
-                    
-                if ln.startswith("cosmicC_all_gain|"):
-                    val = ln.split("|")[1]
-                    self.ui.doubleSpinBox_20.setValue(float(val))
-                    
-                if ln.startswith("cosmicC_all_readNoise|"):
-                    val = ln.split("|")[1]
-                    self.ui.doubleSpinBox_21.setValue(float(val))
-                    
-                if ln.startswith("cosmicC_all_sigmaClip|"):
-                    val = ln.split("|")[1]
-                    self.ui.doubleSpinBox_22.setValue(float(val))
-                    
-                if ln.startswith("cosmicC_all_SigmaFrac|"):
-                    val = ln.split("|")[1]
-                    self.ui.doubleSpinBox_23.setValue(float(val))
-                    
-                if ln.startswith("cosmicC_all_objLim|"):
-                    val = ln.split("|")[1]
-                    self.ui.doubleSpinBox_24.setValue(float(val))
-                    
-                if ln.startswith("wcs_all_goOnline|"):
-                    val = ln.split("|")[1]
-                    if val == "yes":
-                        self.ui.groupBox_5.setChecked(True)
-                    else:
-                        self.ui.groupBox_5.setChecked(False)
-                        
-                if ln.startswith("wcs_all_comp|"):
-                    val = ln.split("|")[1]
-                    if val == "yes":
-                        self.ui.checkBox_2.setChecked(True)
-                    else:
-                        self.ui.checkBox_2.setChecked(False)
-                        
-                if ln.startswith("wcs_all_server|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_27.setText(str(val))
-                    
-                if ln.startswith("wcs_all_apikey|"):
-                    val = ln.split("|")[1]
-                    self.ui.lineEdit_28.setText(str(val))
-        except Exception as e:
-            self.etc.log(e)
-                
-        self.reload_log()
-        
     def astrometrynet_check(self):
         if osname == 'nt':
-            QtWidgets.QMessageBox.critical(self, ("MYRaf Error"), ("The Astrometry.net does not support your os.\nYou HAVE to use online version."))
+            QtWidgets.QMessageBox.critical(self, ("MYRaf Error"),
+                                ("The Astrometry.net does not support your os.\
+                                 You HAVE to use online version."))
             self.ui.groupBox_5.setChecked(True)
             self.etc.log("No Astrometry.new for Windows.")
         else:
@@ -1044,23 +762,31 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                     comm = "{}\n{}".format(comm, ln.replace("#", ""))
                     
             
-            self.ui.plainTextEdit.setPlainText(QtWidgets.QApplication.translate("Form", "\n".join(comm.split('\n')[1:]), None))
+            self.ui.plainTextEdit.setPlainText(
+                    QtWidgets.QApplication.translate(
+                            "Form", "\n".join(comm.split('\n')[1:]), None))
                     
         else:
             self.etc.log("No such Observatory({})".format(obs_name))
         self.reload_log()
     
     def rm_obs(self):
-        obs_name = self.ui.listWidget_12.currentItem().text()
-        obs_path = self.fop.abs_path("./observat/{}".format(obs_name))
-        if self.fop.is_file(obs_path):
-            self.fop.rm(obs_path)
+        if self.ui.listWidget_12.currentItem() is not None:
+            obs_name = self.ui.listWidget_12.currentItem().text()
+            obs_path = self.fop.abs_path("./observat/{}".format(obs_name))
+            if self.fop.is_file(obs_path):
+                self.fop.rm(obs_path)
+            else:
+                #Log and display an error about about not existing observatory name
+                self.etc.log("No such Observatory({})".format(obs_name))
+                QtWidgets.QMessageBox.critical(
+                        self, ("MYRaf Error"),
+                        ("Couldn't find the observatory"))
         else:
             #Log and display an error about about not existing observatory name
-            self.etc.log("No such Observatory({})".format(obs_name))
-            QtWidgets.QMessageBox.critical(
-                    self, ("MYRaf Error"), ("No observatory was specified"))
-            
+                self.etc.log("No Observatory was choosen")
+                QtWidgets.QMessageBox.critical(self, ("MYRaf Error"),
+                                               ("No Observatory was choosen"))
         self.load_observat()
         self.reload_log()
     
@@ -1103,6 +829,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
     def reload_log(self):
         g.rm_all(self, self.ui.listWidget_10)
         g.add_line_by_line(self, self.ui.listWidget_10, self.etc.mini_log_file)
+        self.ui.listWidget_10.scrollToBottom()
         
     def save_log(self):
         out_file = g.save_log_file(self)

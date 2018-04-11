@@ -18,7 +18,7 @@ photometry_lot_epoch|
 photometry_stf_fluxrad|2.0
 photometry_stf_minfwhm|4.0
 photometry_stf_maxfwhm|9.0
-photometry_stf_max2fnd|0
+photometry_stf_max2fnd|2
 calibration_zc_combine|0
 calibration_zc_reject|0
 calibration_dc_combine|0

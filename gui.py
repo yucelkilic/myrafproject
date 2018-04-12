@@ -36,17 +36,20 @@ def add(self, flist, the_list):
         flist.addItem(item)
         item = flist.item(it)
         item.setText(QtWidgets.QApplication.translate("Form", x, None))
-        
+
 def add_line_by_line(self, flist, file_name):
     the_f = open(file_name, "r")
     it = flist.count() - 1
+    line_numbre = 0
     for x in the_f:
+        line_numbre += 1
         ln = x.replace("\n", "")
         it = it+1
         item = QtWidgets.QListWidgetItem()
         flist.addItem(item)
         item = flist.item(it)
-        item.setText(QtWidgets.QApplication.translate("Form", ln, None))
+        item.setText(QtWidgets.QApplication.translate("Form", "({:06d})  {}".format(
+                line_numbre, ln), None))
 
 def replace_list_con(self, flist, lst):
     rm_all(self, flist)

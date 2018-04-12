@@ -7,6 +7,8 @@ Created on Fri Apr  6 14:54:39 2018
 
 from os import name as osname
 
+from matplotlib.patches import Circle
+
 from myraf import Ui_Form
 from PyQt5 import QtWidgets
 import sys
@@ -128,7 +130,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 g.rm(self, self.ui.listWidget_14),
                 self.phot_annotation()))
         
-        self.ui.pushButton_35.clicked.connect(lambda: (self.display_coors()))
+        self.ui.pushButton_35.clicked.connect(lambda: (self.display_coors_phot()))
         
         self.ui.pushButton_34.clicked.connect(lambda: (self.run_sex()))
         self.ui.pushButton_16.clicked.connect(lambda: (self.do_phot()))
@@ -465,6 +467,116 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.label_2.setProperty("text",
                                     "{0} file(s) will be aligned".format(img))
         
+    def display_coors_phot(self):
+        #Refresh display
+        self.display_phot()
+        #Check if any specific coordinate was selected
+        if len(self.ui.listWidget_14.selectedItems()) != 0:
+            #User selected some coordinates to display
+            self.etc.log("Displaying selected coordinates")
+            #Start an iteration for label
+            it = 0
+            #Loop in selected coordinates
+            for coo in self.ui.listWidget_14.selectedItems():
+                #Increase iteration
+                it += 1
+                try:
+                    #Convfert coodinate line to string dtype
+                    the_coo = str(coo.text())
+                    #Split x, y coordinates by ", "
+                    x, y = the_coo.split(", ")
+                    #Convert x coordinate to float dtype
+                    x = float(x)
+                    #Convert y coordinate to float dtype
+                    y = float(y)
+                    #Get the aperture value
+                    ap = float(self.ui.doubleSpinBox_2.value())
+                except Exception as e:
+                    #Log error if any occurs
+                    self.etc.log(e)
+                try:
+                    #Make a circle with x, y coordinates and ap aperture value
+                    circ = Circle((x, y), ap * 1.3, edgecolor="#00FFFF",
+                                  facecolor="none")
+                    #Add circle to canvas
+                    self.ui.disp_photometry.canvas.fig.gca().add_artist(circ)
+                    #Make the circle's center x, y
+                    circ.center = x, y
+                    #Add iteration value as label
+                    self.ui.disp_photometry.canvas.fig.gca().annotate(
+                            it, xy = (x, y), xytext=(int(ap)/3,int(ap)/3),
+                            textcoords='offset points', color = "red",
+                            fontsize = 10)
+                except Exception as e:
+                    #Log error if any occurs
+                    self.etc.log(e)
+            try:
+                self.etc.log("Drawing coordinates")
+                #Draw all coordinates
+                self.ui.disp_photometry.canvas.draw()
+            except Exception as e:
+                #Log error if any occurs
+                self.etc.log(e)
+        else:
+            #User did not select any coordinates to display. Drawing all
+            self.etc.log("Displaying all coordinates")
+            #Check if coordinates list is empty
+            if not g.is_list_empty(self, self.ui.listWidget_14):
+                #List is not empty
+                #Start an iteration for label
+                it = 0
+                #Loop in all coordinates
+                for i in range(self.ui.listWidget_14.count()):
+                    #Loop in all items in list
+                    it += 1
+                    #Get coordinate from the item
+                    coo = self.ui.listWidget_14.item(i).text()
+                    try:
+                        the_coo = str(coo)
+                        #Split x, y coordinates by ", "
+                        x, y = the_coo.split(", ")
+                        #Convert x coordinate to float dtype
+                        x = float(x)
+                        #Convert y coordinate to float dtype
+                        y = float(y)
+                        #Get the aperture value
+                        ap = float(self.ui.doubleSpinBox_2.value())
+                    except Exception as e:
+                        #Log error if any occurs
+                        self.etc.log(e)
+                    
+                    try:
+                        #Make a circle with x, y coordinates and ap
+                        #                               aperture value
+                        circ = Circle((x, y), ap * 1.3, edgecolor="#00FFFF",
+                                      facecolor="none")
+                        #Add circle to canvas
+                        self.ui.disp_photometry.canvas.fig.gca().add_artist(
+                                circ)
+                        #Make the circle's center x, y
+                        circ.center = x, y
+                        #Add iteration value as label
+                        self.ui.disp_photometry.canvas.fig.gca().annotate(
+                                it, xy = (x, y), xytext=(int(ap)/3,int(ap)/3),
+                                textcoords='offset points', color = "red",
+                                fontsize = 10)
+                    except Exception as e:
+                        #Log any error if any occurs
+                        self.etc.log(e)
+                try:
+                    self.etc.log("Drawing coordinates")
+                    #Draw all coordinates
+                    self.ui.disp_photometry.canvas.draw()
+                except Exception as e:
+                    #Log any error if any occurs
+                    self.etc.log(e)
+            else:
+                self.etc.log("No coordinate was given")
+                QtWidgets.QMessageBox.critical(
+                        self, ("MYRaf Error"), ("No coordinate was given"))
+                
+        self.reload_log()
+        
     def run_sex(self):
         if self.ui.listWidget_2.currentItem() is not None:
             img = self.ui.listWidget_2.currentItem().text()
@@ -484,6 +596,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
            self.etc.log("No File was selected(Run Sex)")
            QtWidgets.QMessageBox.critical(
                    self, ("MYRaf Error"), ("No file was selected"))
+           
+        self.reload_log()
     #Start Photometry
     def do_phot(self):
         #Check if listWidget is empty

@@ -16,8 +16,9 @@ from ginga.misc import log
 
 
 class FitsPlot(object):
-    def __init__(self, chartDev):
-        self.etc = myEnv.etc(verb=True)
+    def __init__(self, chartDev, verb=True):
+        self.verb = verb
+        self.etc = myEnv.etc(verb=self.verb)
         self.chartDev = chartDev
         use_logger = False
         self.etc.log("fplot is doning something.")

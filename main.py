@@ -11,7 +11,7 @@ from matplotlib.patches import Circle
 
 from myraf import Ui_Form
 from PyQt5 import QtWidgets
-import sys
+from sys import argv
 
 #Importing myraf's GUI
 import gui as g
@@ -23,12 +23,12 @@ from myraflib import myAst
 from myraflib import myCos
 
 class MyForm(QtWidgets.QWidget, Ui_Form):
-    def __init__(self):
+    def __init__(self, verb=True):
         super(MyForm, self).__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         
-        self.verb = True
+        self.verb = verb
         self.srttings_file = "./set.myc"
         
         self.etc = myEnv.etc(verb=self.verb)
@@ -97,7 +97,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.progressBar_2.setProperty("value", 0)
         self.ui.label_2.setProperty("text", "")
         self.align_annotation()
-        self.align_disp = FitsPlot(self.ui.disp_align.canvas)
+        self.align_disp = FitsPlot(self.ui.disp_align.canvas, verb=self.verb)
         
         self.etc.log("Creating triggers for Align tab.")
         #add triggers for align
@@ -116,7 +116,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.progressBar_4.setProperty("value", 0)
         self.ui.label_8.setProperty("text", "")
         self.phot_annotation()
-        self.phot_disp = FitsPlot(self.ui.disp_photometry.canvas)
+        self.phot_disp = FitsPlot(self.ui.disp_photometry.canvas, verb=self.verb)
         
         self.etc.log("Creating triggers for Photometry tab.")
         #add triggers for photometry
@@ -141,7 +141,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.progressBar_7.setProperty("value", 0)
         self.ui.label_27.setProperty("text", "")
         self.atrack_annotation()
-        self.atrack_disp = FitsPlot(self.ui.disp_atrack.canvas)
+        self.atrack_disp = FitsPlot(self.ui.disp_atrack.canvas, verb=self.verb)
         
         self.etc.log("Creating triggers for A-Track tab.")
         #add triggers for atrack
@@ -153,6 +153,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 self.atrack_annotation()))
         
         self.ui.listWidget_13.clicked.connect(lambda: (self.display_atrack()))
+        self.ui.pushButton_42.clicked.connect(lambda: (self.a_track()))
         
         self.etc.log("Resetting Gui for Hedit tab.")
         #set header editor tab
@@ -186,7 +187,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.progressBar_5.setProperty("value", 0)
         self.ui.label_11.setProperty("text", "")
         self.cosmicC_annotation()
-        self.cocmicC_disp = FitsPlot(self.ui.disp_cosmicC.canvas)
+        self.cocmicC_disp = FitsPlot(self.ui.disp_cosmicC.canvas, verb=self.verb)
         
         self.etc.log("Creating triggers for CosmicC tab.")
         #add triggers for Cosmic Cleaner
@@ -239,6 +240,19 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.pushButton_27.clicked.connect(lambda: (self.clear_log()))
         self.reload_log()
         
+        self.etc.log("Resetting Gui for Graph tab.")
+        #set WCS Editor tab
+        self.ui.label_31.setProperty("text", "")
+        
+        self.etc.log("Creating triggers for Graph tab.")
+        
+        self.ui.pushButton_44.clicked.connect(lambda: (self.get_graph_file_path()))
+        
+        
+    def get_graph_file_path(self):
+        pth = self.fop.abs_path(g.get_graph_file_path(self))
+        self.ui.label_31.setProperty("text", pth)
+    
     #Zero Combine Method
     def zero_combine(self):
         #Check if listWidget is empty
@@ -274,7 +288,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         #Check if listWidget is empty
         if not g.is_list_empty(self, self.ui.listWidget_9):
             #Start Flat Combine
-            print("Do dark combine")
+            print("Do flat combine")
         else:
             #Log and display an error about empty listWidget
             self.etc.log("Nothing to (f)combine.")
@@ -290,8 +304,12 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         img = self.ui.listWidget_5.currentItem().text()
         #Find the possible file name
         if self.fop.is_file(img):
-            #Display the file
-            self.cocmicC_disp.load(str(img))
+            try:
+                #Display the file
+                self.cocmicC_disp.load(str(img))
+            except Exception as e:
+                #Log error if any occurs
+                self.etc.log(e)
         else:
             #Log and display an error about not existing file
             self.et.log("No such (Disp cosmicC)file({})".format(img))
@@ -307,8 +325,12 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         img = self.ui.listWidget.currentItem().text()
         #Check if file does exist
         if self.fop.is_file(img):
-            #Display the file
-            self.align_disp.load(str(img))
+            try:
+                #Display the file
+                self.align_disp.load(str(img))
+            except Exception as e:
+                #Log error if any occurs
+                self.etc.log(e)
         else:
             #Log and display an error about not existing file
             self.et.log("No such (Disp Align)file({})".format(img))
@@ -324,8 +346,12 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         img = self.ui.listWidget_2.currentItem().text()
         #Check if file does exist
         if self.fop.is_file(img):
-            #Display the file
-            self.phot_disp.load(str(img))
+            try:
+                #Display the file
+                self.phot_disp.load(str(img))
+            except Exception as e:
+                #Log error if any occurs
+                self.etc.log(e)
         else:
             #Log and display an error about not existing file
             self.et.log("No such (Disp Photometry)file({})".format(img))
@@ -341,8 +367,12 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         img = self.ui.listWidget_13.currentItem().text()
         #Check if file does exist
         if self.fop.is_file(img):
-            #Display the file
-            self.atrack_disp.load(str(img))
+            try:
+                #Display the file
+                self.atrack_disp.load(str(img))
+            except Exception as e:
+                #Log error if any occurs
+                self.etc.log(e)
         else:
             #Log and display an error about not existing file
             self.et.log("No such (Disp A-Track)file({})".format(img))
@@ -354,14 +384,20 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
     
     #Get a header key and it's value to textEdit fields 
     def get_the_header(self):
-        #Get the header's line
-        line = self.ui.listWidget_4.currentItem().text()
-        #Split the line by "=>" so the field and value is obtaned
-        field, value = line.split("=>")
-        #Set (value)text of field textEdit
-        self.ui.lineEdit.setProperty("text", field)
-        #Set (value)text of value textEdit
-        self.ui.lineEdit_2.setProperty("text", value)
+        if self.ui.listWidget_4.currentItem() is not None:
+            #Get the header's line
+            line = self.ui.listWidget_4.currentItem().text()
+            #Split the line by "=>" so the field and value is obtaned
+            field, value = line.split("=>")
+            #Set (value)text of field textEdit
+            self.ui.lineEdit.setProperty("text", field)
+            #Set (value)text of value textEdit
+            self.ui.lineEdit_2.setProperty("text", value)
+        else:
+            #Log and display an error about not existing file
+            self.et.log("No such (Get the header)header({})".format(img))
+            QtWidgets.QMessageBox.critical(
+                self, ("MYRaf Error"), ("I don't know how you managed that.\nBut No header was selected."))
         
         #Reload log file to log view
         self.reload_log()
@@ -372,18 +408,21 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         img = self.ui.listWidget_3.currentItem().text()
         #Check if file does exist
         if self.fop.is_file(img):
-            #Get all headers of give file
-            all_header = self.fit.header(img)
-            #convert [key, value] to "key=>value" format in an array
-            header_list = []
-            for i in all_header:
-                header_list.append("{}=>{}".format(i[0], i[1]))
-            
-            #Replace whole list with header list
-            g.replace_list_con(self, self.ui.listWidget_4, header_list)
-            #Replace whole combo with header list
-            g.c_replace_list_con(self, self.ui.comboBox_12, header_list)
-            
+            try:
+                #Get all headers of give file
+                all_header = self.fit.header(img)
+                #convert [key, value] to "key=>value" format in an array
+                header_list = []
+                for i in all_header:
+                    header_list.append("{}=>{}".format(i[0], i[1]))
+                
+                #Replace whole list with header list
+                g.replace_list_con(self, self.ui.listWidget_4, header_list)
+                #Replace whole combo with header list
+                g.c_replace_list_con(self, self.ui.comboBox_12, header_list)
+            except Exception as e:
+                #Log error if any occurs
+                self.etc.log(e)
         else:
             #Log and display an error about not existing file
             self.et.log("No such (Header List)file({})".format(img))
@@ -466,6 +505,19 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         img = g.list_lenght(self, self.ui.listWidget)
         self.ui.label_2.setProperty("text",
                                     "{0} file(s) will be aligned".format(img))
+    
+    def a_track(self):
+        if not g.is_list_empty(self, self.ui.listWidget_13):
+            for i in range(self.ui.listWidget_14.count()):
+                img = self.ui.listWidget_13.item(i).text()
+                if self.fop.is_file(img):
+                    print(img)
+                else:
+                    self.et.log("No such (a-track)file({})".format(img))
+        else:
+            self.etc.log("Nothing to track.")
+            QtWidgets.QMessageBox.critical(
+                    self,  ("MYRaf Error"), ("Please add some files"))
         
     def display_coors_phot(self):
         #Refresh display
@@ -474,12 +526,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         if len(self.ui.listWidget_14.selectedItems()) != 0:
             #User selected some coordinates to display
             self.etc.log("Displaying selected coordinates")
-            #Start an iteration for label
-            it = 0
-            #Loop in selected coordinates
-            for coo in self.ui.listWidget_14.selectedItems():
-                #Increase iteration
-                it += 1
+            #Loop in all coordinates
+            for it, coo in enumerate(self.ui.listWidget_14.selectedItems()):
                 try:
                     #Convfert coodinate line to string dtype
                     the_coo = str(coo.text())
@@ -491,10 +539,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                     y = float(y)
                     #Get the aperture value
                     ap = float(self.ui.doubleSpinBox_2.value())
-                except Exception as e:
-                    #Log error if any occurs
-                    self.etc.log(e)
-                try:
+
                     #Make a circle with x, y coordinates and ap aperture value
                     circ = Circle((x, y), ap * 1.3, edgecolor="#00FFFF",
                                   facecolor="none")
@@ -523,12 +568,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             #Check if coordinates list is empty
             if not g.is_list_empty(self, self.ui.listWidget_14):
                 #List is not empty
-                #Start an iteration for label
-                it = 0
                 #Loop in all coordinates
-                for i in range(self.ui.listWidget_14.count()):
-                    #Loop in all items in list
-                    it += 1
+                for it, i in enumerate(range(self.ui.listWidget_14.count())):
                     #Get coordinate from the item
                     coo = self.ui.listWidget_14.item(i).text()
                     try:
@@ -541,11 +582,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                         y = float(y)
                         #Get the aperture value
                         ap = float(self.ui.doubleSpinBox_2.value())
-                    except Exception as e:
-                        #Log error if any occurs
-                        self.etc.log(e)
-                    
-                    try:
+
                         #Make a circle with x, y coordinates and ap
                         #                               aperture value
                         circ = Circle((x, y), ap * 1.3, edgecolor="#00FFFF",
@@ -578,21 +615,38 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.reload_log()
         
     def run_sex(self):
+        #Check if any image file was selected
         if self.ui.listWidget_2.currentItem() is not None:
+            #File was selected
+            #Get file's name
             img = self.ui.listWidget_2.currentItem().text()
+            #Check if file exist
             if self.fop.is_file(img):
-                data = self.fit.data(img, table=False)
-                lim = int(self.ui.spinBox.value())
-                coors = self.sex.find_limited(data, max_sources=lim)
-                sex_coors = []
-                for i in coors:
-                    sex_coors.append("{:0.4f}, {:0.4f}".format(i['x'], i['y']))
-                g.replace_list_con(self, self.ui.listWidget_14, sex_coors)
+                try:
+                    #Get data from file
+                    data = self.fit.data(img, table=False)
+                    #Get maximum object count to find
+                    lim = int(self.ui.spinBox.value())
+                    #Get coordinates from the img file
+                    coors = self.sex.find_limited(data, max_sources=lim)
+                    #Declare a list variable
+                    sex_coors = []
+                    for i in coors:
+                        #Add all coordinates to list as string with "X, Y" format
+                        sex_coors.append("{:0.4f}, {:0.4f}".format(
+                                                            i['x'], i['y']))
+                    #Add coordinate list to listwidget
+                    g.replace_list_con(self, self.ui.listWidget_14, sex_coors)
+                except Exception as e:
+                    #Log error if any occurs
+                    self.etc.log(e)
             else:
-               self.etc.log("No such (Run Sex)file({}).".format(img))
-               QtWidgets.QMessageBox.critical(
-                       self, ("MYRaf Error"), ("No Such file"))
+                #Log and display an error about not existing file
+                self.etc.log("No such (Run Sex)file({}).".format(img))
+                QtWidgets.QMessageBox.critical(
+                        self, ("MYRaf Error"), ("No Such file"))
         else:
+            #Log and display an error about empty listWidget
            self.etc.log("No File was selected(Run Sex)")
            QtWidgets.QMessageBox.critical(
                    self, ("MYRaf Error"), ("No file was selected"))
@@ -641,11 +695,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 #Get field value
                 field = self.ui.lineEdit.text()
                 #Start an iteration for prgressBar
-                it = 0.
-                #Start a loop for each file name
                 for i in range(self.ui.listWidget_3.count()):
-                    #Increase iteration
-                    it += 1
                     #Find the possible file name
                     img = self.ui.listWidget_3.item(i).text()
                     #Check if file exist
@@ -653,25 +703,28 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                         #Check if header must be updated/added or removed
                         if update_add:
                             #Header must be updated/added
-                            #Check if using an existion value
-                            if self.ui.checkBox_5.isChecked():
-                                #Using an existing value
-                                #Get the "key=>value" for existing value
-                                combo = self.ui.comboBox_12.currentText()
-                                #Find wanted key by spliting it by "=>"
-                                wanted_filed = combo.split("=>")[0].strip()
-                                #Get the value of wanted key in header
-                                value = self.fit.header(img, wanted_filed)[1]
-                            else:
-                                #Using a static value
-                                #Getting the value value
-                                value = self.ui.lineEdit_2.text()
                             try:
+                                #Check if using an existion value
+                                if self.ui.checkBox_5.isChecked():
+                                    #Using an existing value
+                                    #Get the "key=>value" for existing value
+                                    combo = self.ui.comboBox_12.currentText()
+                                    #Find wanted key by spliting it by "=>"
+                                    wanted_filed = combo.split("=>")[0].strip()
+                                    #Get the value of wanted key in header
+                                    value = self.fit.header(
+                                            img, wanted_filed)[1]
+                                else:
+                                    #Using a static value
+                                    #Getting the value value
+                                    value = self.ui.lineEdit_2.text()
+    
                                 #Updating the header
                                 self.fit.update_header(img, field, value)
                             except Exception as e:
-                                #Log the exception if it happened
+                                #Log error if any occurs
                                 self.etc.log(e)
+
                         else:
                             #Header must be removed
                             try:
@@ -681,11 +734,11 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                 #Log the exception if it happened
                                 self.etc.log(e)
                     else:
-                        #Log an error about empty not existing file
+                        #Log and display an error about not existing file
                         self.etc.log("No such (Hedit)file({})".format(img))
                         
                     #Advance ProgressBar
-                    g.proc(self, self.ui.progressBar_3, it/g.list_lenght(
+                    g.proc(self, self.ui.progressBar_3, (i + 1)/g.list_lenght(
                                                 self, self.ui.listWidget_3))
                 #Reload header list in hedit view
                 self.header_list()
@@ -746,41 +799,42 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             #Get the output directory path from user
             odir = str(QtWidgets.QFileDialog.getExistingDirectory(
                         self, "Select Directory"))
-            #Start an iteration for prgressBar
-            it = 0.
             #Start a loop for each file name
             for i in range(self.ui.listWidget_5.count()):
-                #Increase iteration
-                it += 1
                 #Find the possible file name
                 img = self.ui.listWidget_5.item(i).text()
                 #Check if file exist
                 if self.fop.is_file(img):
-                    #Split file name and the path
-                    pth, name = self.fop.get_base_name(img)
-                    #User file name and path given to create new file path
-                    ofile = self.fop.abs_path("{}/{}".format(odir, name))
-                    #User file name and path given to create mask file path
-                    mfile = self.fop.abs_path("{}/mask_{}".format(odir, name))
-                    #Start cosmic clean
-                    data, header = myCos.fromfits(img)
-                    c = myCos.cosmicsimage(data, gain=gain, readnoise=readN,
-                                             sigclip=sigmC, sigfrac=sigmF,
-                                             objlim=objeL)
-                    
-                    c.run(maxiter=max_it)
-                    if not self.fop.is_file(ofile):
-                        myCos.tofits(ofile, c.cleanarray, header)
-                    if self.ui.checkBox_3.isChecked():
-                        if not self.fop.is_file(mfile):
-                            myCos.tofits(mfile, c.mask, header)
-                    #Cosmic clean done
+                    try:
+                        #Split file name and the path
+                        pth, name = self.fop.get_base_name(img)
+                        #User file name and path given to create new file path
+                        ofile = self.fop.abs_path("{}/{}".format(odir, name))
+                        #User file name and path given to create mask file path
+                        mfile = self.fop.abs_path("{}/mask_{}".format(
+                                                            odir, name))
+                        #Start cosmic clean
+                        data, header = myCos.fromfits(img)
+                        c = myCos.cosmicsimage(data, gain=gain, readnoise=readN,
+                                                 sigclip=sigmC, sigfrac=sigmF,
+                                                 objlim=objeL)
+                        
+                        c.run(maxiter=max_it)
+                        if not self.fop.is_file(ofile):
+                            myCos.tofits(ofile, c.cleanarray, header)
+                        if self.ui.checkBox_3.isChecked():
+                            if not self.fop.is_file(mfile):
+                                myCos.tofits(mfile, c.mask, header)
+                        #Cosmic clean done
+                    except Exception as e:
+                        #Log error if any occurs
+                        self.etc.log(e)
                 else:
-                    #Log an error about empty not existing file
+                    #Log and display an error about not existing file
                     self.et.log("No such (Cosmic Clean)file({})".format(img))
                 
                 #Advance ProgressBar
-                g.proc(self, self.ui.progressBar_5, it/g.list_lenght(
+                g.proc(self, self.ui.progressBar_5, (i + 1)/g.list_lenght(
                                                 self, self.ui.listWidget_5))
         else:
             #Log and display an error about empty listWidget
@@ -831,7 +885,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.reload_log()
         
     def load_observat(self):
-        obs_files = self.fop.list_of_fiels(self.fop.abs_path("./observat"), ext="*")
+        obs_files = self.fop.list_of_fiels(self.fop.abs_path(
+                            "./observat"), ext="*")
         new_list = []
         for i in obs_files:
             new_list.append(self.fop.get_base_name(i)[1])
@@ -957,7 +1012,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.reload_log()
         
 if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    f = MyForm()
+    app = QtWidgets.QApplication(argv)        
+    f = MyForm(verb=True)
     f.show()
     app.exec_()

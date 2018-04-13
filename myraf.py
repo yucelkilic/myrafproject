@@ -656,6 +656,68 @@ class Ui_Form(object):
         self.tabWidget_3.addTab(self.tab_14, "")
         self.tab_15 = QtWidgets.QWidget()
         self.tab_15.setObjectName("tab_15")
+        self.gridLayout_73 = QtWidgets.QGridLayout(self.tab_15)
+        self.gridLayout_73.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_73.setObjectName("gridLayout_73")
+        self.groupBox_27 = QtWidgets.QGroupBox(self.tab_15)
+        self.groupBox_27.setObjectName("groupBox_27")
+        self.gridLayout_67 = QtWidgets.QGridLayout(self.groupBox_27)
+        self.gridLayout_67.setObjectName("gridLayout_67")
+        self.disp_photometry_2 = gingaWidget(self.groupBox_27)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.disp_photometry_2.sizePolicy().hasHeightForWidth())
+        self.disp_photometry_2.setSizePolicy(sizePolicy)
+        self.disp_photometry_2.setObjectName("disp_photometry_2")
+        self.gridLayout_67.addWidget(self.disp_photometry_2, 0, 0, 1, 1)
+        self.gridLayout_73.addWidget(self.groupBox_27, 0, 0, 1, 2)
+        self.label_31 = QtWidgets.QLabel(self.tab_15)
+        self.label_31.setObjectName("label_31")
+        self.gridLayout_73.addWidget(self.label_31, 1, 0, 1, 1)
+        self.pushButton_44 = QtWidgets.QPushButton(self.tab_15)
+        self.pushButton_44.setMinimumSize(QtCore.QSize(72, 0))
+        self.pushButton_44.setMaximumSize(QtCore.QSize(72, 16777215))
+        self.pushButton_44.setObjectName("pushButton_44")
+        self.gridLayout_73.addWidget(self.pushButton_44, 1, 1, 1, 1)
+        self.groupBox_28 = QtWidgets.QGroupBox(self.tab_15)
+        self.groupBox_28.setObjectName("groupBox_28")
+        self.gridLayout_72 = QtWidgets.QGridLayout(self.groupBox_28)
+        self.gridLayout_72.setObjectName("gridLayout_72")
+        self.label_34 = QtWidgets.QLabel(self.groupBox_28)
+        self.label_34.setObjectName("label_34")
+        self.gridLayout_72.addWidget(self.label_34, 0, 0, 1, 1)
+        self.comboBox_13 = QtWidgets.QComboBox(self.groupBox_28)
+        self.comboBox_13.setObjectName("comboBox_13")
+        self.gridLayout_72.addWidget(self.comboBox_13, 0, 1, 1, 1)
+        self.groupBox_29 = QtWidgets.QGroupBox(self.groupBox_28)
+        self.groupBox_29.setCheckable(True)
+        self.groupBox_29.setChecked(False)
+        self.groupBox_29.setObjectName("groupBox_29")
+        self.gridLayout_70 = QtWidgets.QGridLayout(self.groupBox_29)
+        self.gridLayout_70.setObjectName("gridLayout_70")
+        self.comboBox_15 = QtWidgets.QComboBox(self.groupBox_29)
+        self.comboBox_15.setObjectName("comboBox_15")
+        self.gridLayout_70.addWidget(self.comboBox_15, 0, 0, 1, 1)
+        self.checkBox_7 = QtWidgets.QCheckBox(self.groupBox_29)
+        self.checkBox_7.setObjectName("checkBox_7")
+        self.gridLayout_70.addWidget(self.checkBox_7, 1, 0, 1, 1)
+        self.gridLayout_72.addWidget(self.groupBox_29, 0, 2, 2, 1)
+        self.label_41 = QtWidgets.QLabel(self.groupBox_28)
+        self.label_41.setObjectName("label_41")
+        self.gridLayout_72.addWidget(self.label_41, 1, 0, 1, 1)
+        self.comboBox_14 = QtWidgets.QComboBox(self.groupBox_28)
+        self.comboBox_14.setObjectName("comboBox_14")
+        self.gridLayout_72.addWidget(self.comboBox_14, 1, 1, 1, 1)
+        self.gridLayout_73.addWidget(self.groupBox_28, 2, 0, 1, 2)
+        self.label_43 = QtWidgets.QLabel(self.tab_15)
+        self.label_43.setObjectName("label_43")
+        self.gridLayout_73.addWidget(self.label_43, 3, 0, 1, 1)
+        self.pushButton_45 = QtWidgets.QPushButton(self.tab_15)
+        self.pushButton_45.setMinimumSize(QtCore.QSize(72, 0))
+        self.pushButton_45.setMaximumSize(QtCore.QSize(72, 16777215))
+        self.pushButton_45.setObjectName("pushButton_45")
+        self.gridLayout_73.addWidget(self.pushButton_45, 3, 1, 1, 1)
         self.tabWidget_3.addTab(self.tab_15, "")
         self.gridLayout_15.addWidget(self.tabWidget_3, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab_4, "")
@@ -1165,6 +1227,33 @@ class Ui_Form(object):
         self.textBrowser_4.setObjectName("textBrowser_4")
         self.gridLayout_45.addWidget(self.textBrowser_4, 0, 0, 1, 1)
         self.tabWidget_5.addTab(self.tab_32, "")
+        self.tab_27 = QtWidgets.QWidget()
+        self.tab_27.setObjectName("tab_27")
+        self.gridLayout_64 = QtWidgets.QGridLayout(self.tab_27)
+        self.gridLayout_64.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_64.setObjectName("gridLayout_64")
+        self.textBrowser_5 = QtWidgets.QTextBrowser(self.tab_27)
+        self.textBrowser_5.setObjectName("textBrowser_5")
+        self.gridLayout_64.addWidget(self.textBrowser_5, 0, 0, 1, 1)
+        self.tabWidget_5.addTab(self.tab_27, "")
+        self.tab_28 = QtWidgets.QWidget()
+        self.tab_28.setObjectName("tab_28")
+        self.gridLayout_65 = QtWidgets.QGridLayout(self.tab_28)
+        self.gridLayout_65.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_65.setObjectName("gridLayout_65")
+        self.textBrowser_6 = QtWidgets.QTextBrowser(self.tab_28)
+        self.textBrowser_6.setObjectName("textBrowser_6")
+        self.gridLayout_65.addWidget(self.textBrowser_6, 0, 0, 1, 1)
+        self.tabWidget_5.addTab(self.tab_28, "")
+        self.tab_29 = QtWidgets.QWidget()
+        self.tab_29.setObjectName("tab_29")
+        self.gridLayout_66 = QtWidgets.QGridLayout(self.tab_29)
+        self.gridLayout_66.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_66.setObjectName("gridLayout_66")
+        self.textBrowser_7 = QtWidgets.QTextBrowser(self.tab_29)
+        self.textBrowser_7.setObjectName("textBrowser_7")
+        self.gridLayout_66.addWidget(self.textBrowser_7, 0, 0, 1, 1)
+        self.tabWidget_5.addTab(self.tab_29, "")
         self.tab_22 = QtWidgets.QWidget()
         self.tab_22.setObjectName("tab_22")
         self.gridLayout_42 = QtWidgets.QGridLayout(self.tab_22)
@@ -1317,6 +1406,16 @@ class Ui_Form(object):
         self.label_14.setText(_translate("Form", "TextLabel"))
         self.pushButton_26.setText(_translate("Form", ":go"))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_14), _translate("Form", "WCS"))
+        self.groupBox_27.setTitle(_translate("Form", "Graph"))
+        self.label_31.setText(_translate("Form", "TextLabel"))
+        self.pushButton_44.setText(_translate("Form", "Add"))
+        self.groupBox_28.setTitle(_translate("Form", "Settings"))
+        self.label_34.setText(_translate("Form", "X Axis"))
+        self.groupBox_29.setTitle(_translate("Form", "Y2 Axis"))
+        self.checkBox_7.setText(_translate("Form", "3D Ploting"))
+        self.label_41.setText(_translate("Form", "Y Axis"))
+        self.label_43.setText(_translate("Form", "TextLabel"))
+        self.pushButton_45.setText(_translate("Form", "Plot"))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_15), _translate("Form", "Graph"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("Form", "Editor"))
         self.pushButton_17.setText(_translate("Form", "Save"))
@@ -1712,6 +1811,45 @@ class Ui_Form(object):
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:11pt;\"><br /></span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:11pt;\">Ref = http://ginga.readthedocs.org/en/latest/quickref.html</span></p></body></html>"))
         self.tabWidget_5.setTabText(self.tabWidget_5.indexOf(self.tab_32), _translate("Form", "Ginga (Display)"))
+        self.textBrowser_5.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349; background-color:#ffffff;\">This is a python package to quickly, automatically, and robustly identify geometrical transforms between optical astronomical images, using only field stars. The images can have different pixel sizes, orientations, pointings and filters.</span></p>\n"
+"<p style=\" margin-top:10px; margin-bottom:5px; margin-left:0px; margin-right:10px; -qt-block-indent:0; text-indent:0px; background-color:#eeeeee;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; font-weight:600; color:#3e4349;\">Note</span><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\"> </span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\">alipy is personal code, and work in progress... The package is already very useful for me, and I hope it will be for you, but don’t expect </span><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; font-style:italic; color:#3e4349;\">too</span><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\"> much neither. Any feedback and wishlists are highly welcome !</span></p>\n"
+"<p style=\" margin-top:8px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\">Summary of what alipy does for you :</span></p>\n"
+"<ul style=\"margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;\"><li style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\" style=\" margin-top:3px; margin-bottom:0px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Run SExtractor (see Installation) on the images to get individual source catalogs.</li>\n"
+"<li style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\" style=\" margin-top:0px; margin-bottom:0px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Identify corresponding asterisms, roughly following Lang et al. (2010) aka astrometry.net.</li>\n"
+"<li style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\" style=\" margin-top:0px; margin-bottom:10px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Use this identification to match catalogs, align the images (either directly with scipy, or pyraf geomap/gregister), ...</li></ul>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349; background-color:#ffffff;\">Next stop : a quick look at the</span><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\"> </span><span style=\" font-size:12pt;\">Tutorial.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349; background-color:#ffffff;\">Last build of this documentation : April 09, 2013.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349; background-color:#ffffff;\">https://obswww.unige.ch/~tewes/alipy/</span></p></body></html>"))
+        self.tabWidget_5.setTabText(self.tabWidget_5.indexOf(self.tab_27), _translate("Form", "Alipy"))
+        self.textBrowser_6.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt; font-weight:600;\">COSMICS.PY</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">L.A.Cosmic in python</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">This is a small and simple python module to detect and clean cosmic ray hits on images (numpy arrays or FITS files), using scipy, and based on Pieter van Dokkum\'s L.A.Cosmic algorithm.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">Description, requirements, and reference manual (epydoc generated documentation)</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">Still work in progress, but already well useable.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">Download :</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">cosmics.py_0.4.tgz (2.2 MB, includes demo scripts and images)</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">https://obswww.unige.ch/~tewes/cosmics_dot_py/</span></p></body></html>"))
+        self.tabWidget_5.setTabText(self.tabWidget_5.indexOf(self.tab_28), _translate("Form", "LA. Cosmic Cleaner"))
+        self.textBrowser_7.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'verdana,arial,Bitstream Vera Sans,helvetica,sans-serif\'; font-size:12pt; color:#000000;\">If you have astronomical imaging of the sky with celestial coordinates you do not know—or do not trust—then </span><span style=\" font-family:\'verdana,arial,Bitstream Vera Sans,helvetica,sans-serif\'; font-size:12pt; font-style:italic; color:#000000;\">Astrometry.net</span><span style=\" font-family:\'verdana,arial,Bitstream Vera Sans,helvetica,sans-serif\'; font-size:12pt; color:#000000;\"> is for you. Input an image and we\'ll give you back astrometric calibration meta-data, plus lists of known objects falling inside the field of view.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'verdana,arial,Bitstream Vera Sans,helvetica,sans-serif\'; font-size:12pt; color:#000000;\">We have built this astrometric calibration service to create correct, standards-compliant astrometric meta-data for every useful astronomical image ever taken, past and future, in any state of archival disarray. We hope this will help organize, annotate and make searchable all the world\'s astronomical information.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'verdana,arial,Bitstream Vera Sans,helvetica,sans-serif\'; font-size:12pt; color:#000000;\">http://astrometry.net/</span></p></body></html>"))
+        self.tabWidget_5.setTabText(self.tabWidget_5.indexOf(self.tab_29), _translate("Form", "Astrometry.net"))
         self.textBrowser_3.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

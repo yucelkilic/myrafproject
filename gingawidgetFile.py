@@ -20,8 +20,9 @@ import matplotlib.pyplot as plt
 
 class MplCanvas(FigureCanvas):
 
-    def __init__(self):
-        self.etc = myEnv.etc(verb=True)
+    def __init__(self, verb=True):
+        self.verb = verb
+        self.etc = myEnv.etc(verb=self.verb)
         # create a regular matplotlib figure
         self.etc.log("gingawidgetFile is doing something(MplCanvas).")
         try:
@@ -36,8 +37,9 @@ class MplCanvas(FigureCanvas):
 
 class gingaWidget(QtWidgets.QWidget):
 
-    def __init__(self, parent=None):
-        self.etc = myEnv.etc(verb=True)
+    def __init__(self, parent=None, verb=True):
+        self.verb = verb
+        self.etc = myEnv.etc(verb=self.verb)
         self.etc.log("gingawidgetFile is doing something(gingaWidget).")
         try:
             QtWidgets.QWidget.__init__(self, parent)

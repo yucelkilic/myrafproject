@@ -9,6 +9,11 @@ from math import ceil as mceil
 
 from PyQt5 import QtWidgets
 
+def get_graph_file_path(self):
+    filename = QtWidgets.QFileDialog.getOpenFileName(
+            self ,"Graph file","",("MY file (*.my);;"))[0]
+    return(filename)
+
 def add_files(self, flist):
     filename = QtWidgets.QFileDialog.getOpenFileNames(
             self ,"Images...","",("Fit or Fits (*.fits *.fit)"))[0]

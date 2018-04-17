@@ -14,6 +14,7 @@ from os.path import realpath
 from os.path import splitext
 from os.path import abspath
 
+from os import name as osname
 from os import remove
 
 from glob import glob
@@ -26,6 +27,7 @@ from datetime import datetime
 from getpass import getuser
 
 from platform import uname
+from platform import system
 
 from inspect import currentframe
 from inspect import getouterframes
@@ -89,6 +91,18 @@ class etc():
     def dump_log(self):
         log_file = open(self.log_file, "w")
         log_file.close()
+        
+    def is_it_windows(self):
+        return(system() == 'Windows')
+        
+    def is_it_linux(self):
+        return(system() == 'Linux')
+        
+    def is_it_other(self):
+        return(not (self.is_it_linux() or self.is_it_windows()))
+        
+    def beep(self):
+        print("\a")
     
 class file_op():
     def __init__(self, verb=True):

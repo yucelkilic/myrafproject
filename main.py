@@ -5,8 +5,6 @@ Created on Fri Apr  6 14:54:39 2018
 @author: mshem
 """
 
-from os import name as osname
-
 from matplotlib.patches import Circle
 
 from myraf import Ui_Form
@@ -247,8 +245,30 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.etc.log("Creating triggers for Graph tab.")
         
         self.ui.pushButton_44.clicked.connect(lambda: (self.get_graph_file_path()))
-        
-        
+        self.ui.disp_align.canvas.fig.canvas.mpl_connect(
+                'button_press_event',self.mouseClick)
+
+    def mouseClick(self, event):
+        if self.ui.tabWidget.currentIndex() == 1:
+            if event.ydata != None and event.xdata != None:
+                rows = self.ui.listWidget.count()
+                row = self.ui.listWidget.currentRow()
+                img = self.ui.listWidget.currentItem()
+                if img is not None:
+                    img = img.text()
+                    x = event.xdata
+                    y = event.ydata
+                    self.fit.update_header(img, "mymancoo", "{}, {}".format(
+                                                                    x, y))
+                    
+                    if row < rows-1:
+                        self.ui.listWidget.setCurrentRow(row+1)
+                    else:
+                        self.etc.beep()
+                        self.ui.listWidget.setCurrentRow(0)
+                        
+            self.display_align()
+
     def get_graph_file_path(self):
         pth = self.fop.abs_path(g.get_graph_file_path(self))
         self.ui.label_31.setProperty("text", pth)
@@ -319,6 +339,44 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         #Reload log file to log view
         self.reload_log()
        
+    def get_man_coo(self):
+        #Find the possible file name
+        img = self.ui.listWidget.currentItem().text()
+        #Check if file does exist
+        if self.fop.is_file(img):
+            the_coo = self.fit.header(img, field="mymancoo")[1]
+            if the_coo is not None:
+                try:
+                    #Split x, y coordinates by ", "
+                    x, y = the_coo.split(", ")
+                    #Convert x coordinate to float dtype
+                    x = float(x)
+                    #Convert y coordinate to float dtype
+                    y = float(y)
+                    #Get the aperture value
+                    ap = float(self.ui.doubleSpinBox_2.value())
+                    #Make a circle with x, y coordinates and ap aperture value
+                    circ = Circle((x, y), ap * 1.3, edgecolor="#00FFFF", facecolor="none")
+                    #Add circle to canvas
+                    self.ui.disp_align.canvas.fig.gca().add_artist(circ)
+                    #Make the circle's center x, y
+                    circ.center = x, y
+                    
+                    #Add iteration value as label
+                    self.ui.disp_align.canvas.fig.gca().annotate(
+                            "Ref", xy = (x, y), xytext=(int(ap)/3,int(ap)/3),
+                            textcoords='offset points', color = "red",
+                            fontsize = 10) 
+                    self.ui.disp_align.canvas.draw()
+                except Exception as e:
+                    self.etc.log(e)
+            else:
+                self.etc.log("No Manual Align coordinate found")
+        else:
+            #Log an error about not existing file
+            self.et.log("No such (Disp Align Coor)file({})".format(img))
+            
+        
     #Display fit file on Align Tab
     def display_align(self):
         #Find the possible file name
@@ -328,6 +386,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             try:
                 #Display the file
                 self.align_disp.load(str(img))
+                self.get_man_coo()
             except Exception as e:
                 #Log error if any occurs
                 self.etc.log(e)
@@ -395,7 +454,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             self.ui.lineEdit_2.setProperty("text", value)
         else:
             #Log and display an error about not existing file
-            self.et.log("No such (Get the header)header({})".format(img))
+            self.et.log("No such (Get the header)header (-_-)")
             QtWidgets.QMessageBox.critical(
                 self, ("MYRaf Error"), ("I don't know how you managed that.\nBut No header was selected."))
         
@@ -489,7 +548,48 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 print("Do auto align")
             else:
                 #Do Manual Align
-                print("Do manual align")
+                if self.ui.listWidget.currentItem() is not None:
+                    ref = self.ui.listWidget.currentItem().text()
+                    print(ref)
+                    if self.fop.is_file(ref):
+                        ref_coors = self.fit.header(ref, "mymancoo")
+                        if ref_coors is not None:
+                            ref_coors = ref_coors[1]
+                            odir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory"))
+                            for i in range(self.ui.listWidget.count()):
+                                img = self.ui.listWidget.item(i).text()
+                                if self.fop.is_file(img):
+                                    coors = self.fit.header(img, "mymancoo")
+                                    if coors is not None:
+                                        coors = coors[1]
+                                        fp, fn = self.fop.get_base_name(img)
+                                        new_path = self.fop.abs_path("{}/{}".format(odir, fn))
+                                        ry = float(ref_coors.split(", ")[0])
+                                        rx = float(ref_coors.split(", ")[1])
+                                        ty = float(coors.split(", ")[0])
+                                        tx = float(coors.split(", ")[1])
+                                        x = rx - tx
+                                        y = ry - ty
+                                        self.fit.shift(new_path, img, x, y)
+                                        
+                                    else:
+                                        #Log and display an error about Not existing coor
+                                        self.etc.log("No coordinate was selected for file({})".format(img))
+                                else:
+                                    #Log and display an error about Not existing file
+                                    self.etc.log("No image found({})".format(img))
+                        else:
+                            #Log and display an error about Not existing ref coors
+                            self.etc.log("Referance image has no coordinates.")
+                            QtWidgets.QMessageBox.critical(self,  ("MYRaf Error"), ("Please select coordinates on Referance image."))
+                    else:
+                        #Log and display an error about Not existing ref image
+                        self.etc.log("No Referance image() found".format(ref))
+                        QtWidgets.QMessageBox.critical(self,  ("MYRaf Error"), ("No reference image found."))
+                else:
+                    #Log and display an error about not selected ref image
+                    self.etc.log("No Reference image was selected.")
+                    QtWidgets.QMessageBox.critical(self,  ("MYRaf Error"), ("No reference image selected."))
         else:
             #Log and display an error about empty listWidget
             self.etc.log("Nothing to align.")
@@ -873,12 +973,11 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 "Cosmic Cleaning will be applied for {0} files".format(img))
         
     def astrometrynet_check(self):
-        if osname == 'nt':
-            QtWidgets.QMessageBox.critical(self, ("MYRaf Error"),
-                                ("The Astrometry.net does not support your os.\
-                                 You HAVE to use online version."))
-            self.ui.groupBox_5.setChecked(True)
+        if self.etc.is_it_windows:
             self.etc.log("No Astrometry.new for Windows.")
+            QtWidgets.QMessageBox.critical(self, ("MYRaf Error"),
+                                ("The Astrometry.net does not support your os.\nYou HAVE to use online version."))
+            self.ui.groupBox_5.setChecked(True)
         else:
             print("other")
             

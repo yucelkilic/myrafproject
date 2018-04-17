@@ -16,6 +16,8 @@ from astropy.io import fits as fts
 
 from astropy.table import Table as TBL
 
+from scipy.ndimage.interpolation import shift
+
 from numpy import min as nmin
 from numpy import max as nmax
 from numpy import mean as nmean
@@ -110,15 +112,33 @@ class fits():
         except Exception as e:
             self.etc.log(e)
             
+    def shift(self, dest, src, x, y):
+        self.etc.log("Shifting Image {}".format(src))
+        try:
+            data = self.data(src, table=False)
+            header = self.pure_header(src)
+            new_data = self.shift_ar(data, x, y)
+            self.write_h(dest, new_data, header)
+        except Exception as e:
+            self.etc.log(e)
+            
+    def shift_ar(self, data, x, y):
+        self.etc.log("Shifting array x={}, y={}".format(x, y))
+        try:
+            return(shift(data, [x, y]))
+        except Exception as e:
+            self.etc.log(e)
+        
+            
     def write(self, dest, data):
         try:
-            fits.writeto(dest, data)
+            fts.writeto(dest, data)
         except Exception as e:
             self.etc.log(e)
             
     def write_h(self, dest, data, header):
         try:
-            fits.writeto(dest, data, header)
+            fts.writeto(dest, data, header)
         except Exception as e:
             self.etc.log(e)
 

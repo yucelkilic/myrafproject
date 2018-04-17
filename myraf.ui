@@ -532,7 +532,7 @@
          </property>
          <widget class="QWidget" name="tab_25">
           <attribute name="title">
-           <string>Classic</string>
+           <string>Static</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_60">
            <item row="0" column="0" rowspan="2">

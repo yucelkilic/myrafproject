@@ -1355,7 +1355,7 @@ class Ui_Form(object):
         self.pushButton_35.setText(_translate("Form", "Display"))
         self.label_8.setText(_translate("Form", "TextLabel"))
         self.pushButton_16.setText(_translate("Form", ":go"))
-        self.tabWidget_6.setTabText(self.tabWidget_6.indexOf(self.tab_25), _translate("Form", "Classic"))
+        self.tabWidget_6.setTabText(self.tabWidget_6.indexOf(self.tab_25), _translate("Form", "Static"))
         self.groupBox_16.setTitle(_translate("Form", "Image"))
         self.groupBox_18.setTitle(_translate("Form", "File List"))
         self.pushButton_32.setText(_translate("Form", "Remove"))

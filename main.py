@@ -114,7 +114,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.progressBar_4.setProperty("value", 0)
         self.ui.label_8.setProperty("text", "")
         self.phot_annotation()
-        self.phot_disp = FitsPlot(self.ui.disp_photometry.canvas, verb=self.verb)
+        self.phot_disp = FitsPlot(
+                self.ui.disp_photometry.canvas, verb=self.verb)
         
         self.etc.log("Creating triggers for Photometry tab.")
         #add triggers for photometry
@@ -128,7 +129,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 g.rm(self, self.ui.listWidget_14),
                 self.phot_annotation()))
         
-        self.ui.pushButton_35.clicked.connect(lambda: (self.display_coors_phot()))
+        self.ui.pushButton_35.clicked.connect(lambda: (
+                self.display_coors_phot()))
         
         self.ui.pushButton_34.clicked.connect(lambda: (self.run_sex()))
         self.ui.pushButton_16.clicked.connect(lambda: (self.do_phot()))
@@ -185,7 +187,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.progressBar_5.setProperty("value", 0)
         self.ui.label_11.setProperty("text", "")
         self.cosmicC_annotation()
-        self.cocmicC_disp = FitsPlot(self.ui.disp_cosmicC.canvas, verb=self.verb)
+        self.cocmicC_disp = FitsPlot(
+                self.ui.disp_cosmicC.canvas, verb=self.verb)
         
         self.etc.log("Creating triggers for CosmicC tab.")
         #add triggers for Cosmic Cleaner
@@ -244,11 +247,13 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         
         self.etc.log("Creating triggers for Graph tab.")
         
-        self.ui.pushButton_44.clicked.connect(lambda: (self.get_graph_file_path()))
+        self.ui.pushButton_44.clicked.connect(lambda: (
+                self.get_graph_file_path()))
         self.ui.disp_align.canvas.fig.canvas.mpl_connect(
                 'button_press_event',self.mouseClick)
 
     def mouseClick(self, event):
+        print(event)
         if self.ui.tabWidget.currentIndex() == 1:
             if event.ydata != None and event.xdata != None:
                 rows = self.ui.listWidget.count()
@@ -260,7 +265,6 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                     y = event.ydata
                     self.fit.update_header(img, "mymancoo", "{}, {}".format(
                                                                     x, y))
-                    
                     if row < rows-1:
                         self.ui.listWidget.setCurrentRow(row+1)
                     else:
@@ -356,7 +360,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                     #Get the aperture value
                     ap = float(self.ui.doubleSpinBox_2.value())
                     #Make a circle with x, y coordinates and ap aperture value
-                    circ = Circle((x, y), ap * 1.3, edgecolor="#00FFFF", facecolor="none")
+                    circ = Circle((x, y), ap * 1.3,
+                                  edgecolor="#00FFFF", facecolor="none")
                     #Add circle to canvas
                     self.ui.disp_align.canvas.fig.gca().add_artist(circ)
                     #Make the circle's center x, y
@@ -455,8 +460,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         else:
             #Log and display an error about not existing file
             self.et.log("No such (Get the header)header (-_-)")
-            QtWidgets.QMessageBox.critical(
-                self, ("MYRaf Error"), ("I don't know how you managed that.\nBut No header was selected."))
+            QtWidgets.QMessageBox.critical(self, ("MYRaf Error"), ("I don't know how you managed that.\nBut No header was selected."))
         
         #Reload log file to log view
         self.reload_log()
@@ -555,7 +559,9 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                         ref_coors = self.fit.header(ref, "mymancoo")
                         if ref_coors is not None:
                             ref_coors = ref_coors[1]
-                            odir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory"))
+                            odir = str(
+                                    QtWidgets.QFileDialog.getExistingDirectory(
+                                            self, "Select Directory"))
                             for i in range(self.ui.listWidget.count()):
                                 img = self.ui.listWidget.item(i).text()
                                 if self.fop.is_file(img):
@@ -563,7 +569,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                     if coors is not None:
                                         coors = coors[1]
                                         fp, fn = self.fop.get_base_name(img)
-                                        new_path = self.fop.abs_path("{}/{}".format(odir, fn))
+                                        new_path = self.fop.abs_path(
+                                                "{}/{}".format(odir, fn))
                                         ry = float(ref_coors.split(", ")[0])
                                         rx = float(ref_coors.split(", ")[1])
                                         ty = float(coors.split(", ")[0])
@@ -573,23 +580,31 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                         self.fit.shift(new_path, img, x, y)
                                         
                                     else:
-                                        #Log and display an error about Not existing coor
+                                        #Log and display an error about Not
+                                        #existing coor
                                         self.etc.log("No coordinate was selected for file({})".format(img))
                                 else:
                                     #Log and display an error about Not existing file
-                                    self.etc.log("No image found({})".format(img))
+                                    self.etc.log(
+                                            "No image found({})".format(img))
                         else:
                             #Log and display an error about Not existing ref coors
                             self.etc.log("Referance image has no coordinates.")
-                            QtWidgets.QMessageBox.critical(self,  ("MYRaf Error"), ("Please select coordinates on Referance image."))
+                            QtWidgets.QMessageBox.critical(
+                                    self,  ("MYRaf Error"),
+                                    ("Please select Coor on Ref image."))
                     else:
                         #Log and display an error about Not existing ref image
                         self.etc.log("No Referance image() found".format(ref))
-                        QtWidgets.QMessageBox.critical(self,  ("MYRaf Error"), ("No reference image found."))
+                        QtWidgets.QMessageBox.critical(
+                                self,  ("MYRaf Error"),
+                                ("No reference image found."))
                 else:
                     #Log and display an error about not selected ref image
                     self.etc.log("No Reference image was selected.")
-                    QtWidgets.QMessageBox.critical(self,  ("MYRaf Error"), ("No reference image selected."))
+                    QtWidgets.QMessageBox.critical(
+                            self,  ("MYRaf Error"),
+                            ("No reference image selected."))
         else:
             #Log and display an error about empty listWidget
             self.etc.log("Nothing to align.")
@@ -732,7 +747,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                     #Declare a list variable
                     sex_coors = []
                     for i in coors:
-                        #Add all coordinates to list as string with "X, Y" format
+                        #Add all coordinates to list as string
+                        #with "X, Y" format
                         sex_coors.append("{:0.4f}, {:0.4f}".format(
                                                             i['x'], i['y']))
                     #Add coordinate list to listwidget
@@ -975,8 +991,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
     def astrometrynet_check(self):
         if self.etc.is_it_windows:
             self.etc.log("No Astrometry.new for Windows.")
-            QtWidgets.QMessageBox.critical(self, ("MYRaf Error"),
-                                ("The Astrometry.net does not support your os.\nYou HAVE to use online version."))
+            QtWidgets.QMessageBox.critical(self, ("MYRaf Error"), ("The Astrometry.net does not support your os.\nYou HAVE to use online version."))
             self.ui.groupBox_5.setChecked(True)
         else:
             print("other")
@@ -1045,7 +1060,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             if self.fop.is_file(obs_path):
                 self.fop.rm(obs_path)
             else:
-                #Log and display an error about about not existing observatory name
+                #Log and display an error about about not existing
+                #observatory name
                 self.etc.log("No such Observatory({})".format(obs_name))
                 QtWidgets.QMessageBox.critical(
                         self, ("MYRaf Error"),

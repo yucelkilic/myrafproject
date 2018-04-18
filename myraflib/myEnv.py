@@ -14,7 +14,6 @@ from os.path import realpath
 from os.path import splitext
 from os.path import abspath
 
-from os import name as osname
 from os import remove
 
 from glob import glob
@@ -34,6 +33,7 @@ from inspect import getouterframes
 
 from  numpy import genfromtxt
 from  numpy import savetxt
+from  numpy import asarray
 
 
 class etc():
@@ -203,6 +203,7 @@ class file_op():
     def write_array(self, src, arr, dm=" ", h=""):
         try:
             self.etc.print_if("Writing to {0}".format(src))
+            arr = asarray(arr)
             savetxt(src, arr, delimiter=dm, newline='\n', header=h)
         except Exception as e:
             self.etc.log(e)

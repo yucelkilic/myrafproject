@@ -1488,7 +1488,7 @@ class Ui_Form(object):
         self.label_42.setText(_translate("Form", "Dannulus"))
         self.label_46.setText(_translate("Form", "CBox"))
         self.groupBox_17.setTitle(_translate("Form", "Location and Time"))
-        self.lineEdit_17.setText(_translate("Form", "time-obs"))
+        self.lineEdit_17.setText(_translate("Form", "JD"))
         self.label_47.setText(_translate("Form", "Observatory"))
         self.checkBox_4.setText(_translate("Form", "Epoch"))
         self.label_48.setToolTip(_translate("Form", "If not give DATE-OBS"))

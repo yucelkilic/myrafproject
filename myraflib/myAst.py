@@ -147,10 +147,11 @@ class calc():
         self.verb = verb
         self.etc = myEnv.etc(verb=self.verb)
         
-    def flux2magmerr(self, flux, fluxerr, exptime):
+    def flux2magmerr(self, flux, fluxerr):
         self.etc.log("Calculating Mag and Merr")
         try:
-            mag, magerr = -2.5 * nlog10(flux), 2.5/nlog10(10.0)*fluxerr/flux
+            mag = -2.5 * nlog10(flux)
+            magerr = 2.5 / nlog10(10.0) * fluxerr / flux
             return(mag, magerr)
         except Exception as e:
             self.etc.log(e)
@@ -228,6 +229,7 @@ class phot():
         self.verb = verb
         self.etc = myEnv.etc(verb=self.verb)
         self.fop = myEnv.file_op(verb=self.verb)
+        self.calc = calc(verb=self.verb)
         
     def do(self, data, x_coor, y_coor, aper_radius=10.0, gain=1.21):
         self.etc.log("Starting Photometry")
@@ -240,6 +242,15 @@ class phot():
             return(flux, fluxerr, flag)
         except Exception as e:
             self.eetc.log(e)
+        
+    def do_mag(self, data, x_coor, y_coor, aper_radius=10.0, gain=1.21):
+        self.etc.log("Starting (MAG) Photometry")
+        try:
+            flux, fluxerr, flag = self.do(data, x_coor,
+                                          y_coor, aper_radius=10.0, gain=1.21)
+            return(calc.flux2magmerr(self, flux, fluxerr))
+        except Exception as e:
+            self.etc.log(e)
             
 class time():
     def __init__(self, verb=True):

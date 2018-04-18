@@ -33,6 +33,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.fop = myEnv.file_op(verb=self.verb)
         self.fit = myAst.fits(verb=self.verb)
         self.sex = myAst.sextractor(verb=self.verb)
+        self.pht = myAst.phot(verb=self.verb)
         
         #self.etc.log("Loading settings.")
         #Load settings
@@ -554,7 +555,6 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 #Do Manual Align
                 if self.ui.listWidget.currentItem() is not None:
                     ref = self.ui.listWidget.currentItem().text()
-                    print(ref)
                     if self.fop.is_file(ref):
                         ref_coors = self.fit.header(ref, "mymancoo")
                         if ref_coors is not None:
@@ -562,31 +562,35 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                             odir = str(
                                     QtWidgets.QFileDialog.getExistingDirectory(
                                             self, "Select Directory"))
-                            for i in range(self.ui.listWidget.count()):
-                                img = self.ui.listWidget.item(i).text()
-                                if self.fop.is_file(img):
-                                    coors = self.fit.header(img, "mymancoo")
-                                    if coors is not None:
-                                        coors = coors[1]
-                                        fp, fn = self.fop.get_base_name(img)
-                                        new_path = self.fop.abs_path(
-                                                "{}/{}".format(odir, fn))
-                                        ry = float(ref_coors.split(", ")[0])
-                                        rx = float(ref_coors.split(", ")[1])
-                                        ty = float(coors.split(", ")[0])
-                                        tx = float(coors.split(", ")[1])
-                                        x = rx - tx
-                                        y = ry - ty
-                                        self.fit.shift(new_path, img, x, y)
-                                        
+                            if self.fop.is_dir(odir):
+                                for i in range(self.ui.listWidget.count()):
+                                    img = self.ui.listWidget.item(i).text()
+                                    if self.fop.is_file(img):
+                                        coors = self.fit.header(img, "mymancoo")
+                                        if coors is not None:
+                                            coors = coors[1]
+                                            fp, fn = self.fop.get_base_name(img)
+                                            new_path = self.fop.abs_path("{}/{}".format(odir, fn))
+                                            ry = float(ref_coors.split(", ")[0])
+                                            rx = float(ref_coors.split(", ")[1])
+                                            ty = float(coors.split(", ")[0])
+                                            tx = float(coors.split(", ")[1])
+                                            x = rx - tx
+                                            y = ry - ty
+                                            self.fit.shift(new_path, img, x, y)
+                                            
+                                        else:
+                                            #Log an error about Not
+                                            #existing coor
+                                            self.etc.log("No coordinate was selected for file({})".format(img))
                                     else:
-                                        #Log and display an error about Not
-                                        #existing coor
-                                        self.etc.log("No coordinate was selected for file({})".format(img))
-                                else:
-                                    #Log and display an error about Not existing file
-                                    self.etc.log(
-                                            "No image found({})".format(img))
+                                        #Log an error about Not existing file
+                                        self.etc.log("No image found({})".format(img))
+                                        
+                                    g.proc(self, self.ui.progressBar_2, (i + 1)/g.list_lenght(self, self.ui.listWidget))
+                            else:
+                                #Log an error about Not existing out dir
+                                self.etc.log("No out dir found({})".format(odir))
                         else:
                             #Log and display an error about Not existing ref coors
                             self.etc.log("Referance image has no coordinates.")
@@ -778,7 +782,76 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 print("Ensemble Photometry")
             else:
                 #Do Photometry
-                print("Pure Photometry")
+                if not g.is_list_empty(self, self.ui.listWidget_14):
+                    odir = str(QtWidgets.QFileDialog.getExistingDirectory(
+                                    self, "Select Directory"))
+                    if self.fop.is_dir(odir):
+                        for i in range(self.ui.listWidget_2.count()):
+                            img = self.ui.listWidget_2.item(i).text()
+                            if self.fop.is_file(img):
+                                
+                                data = self.fit.data(img, table=False)
+                                aper = float(self.ui.doubleSpinBox_5.value())
+                                gain = self.ui.lineEdit_26.text()
+                                jd = self.ui.lineEdit_17.text()
+                                
+                                h_gain = self.fit.header(img, field=gain)
+                                
+                                if h_gain is not None:
+                                    try:
+                                        the_gain = float(h_gain[1])
+                                    except Exception as e:
+                                        self.etc.log("Bad GAIN value ({})".format(e))
+                                        continue
+                                else:
+                                    self.etc.log("No Gain value found in header({})".format(img))
+                                    continue
+                                
+                                h_jd = self.fit.header(img, field=jd)
+                                
+                                if h_jd is not None:
+                                    try:
+                                        the_jd = float(h_jd[1])
+                                    except Exception as e:
+                                        self.etc.log("Bad JD value ({})".format(e))
+                                        continue
+                                else:
+                                    self.etc.log("No JD value found in header({})".format(img))
+                                    continue
+                                
+                                a_file = []
+                                for u in range(self.ui.listWidget_14.count()):
+                                    coo = self.ui.listWidget_14.item(u).text()
+                                    x = float(coo.split(", ")[0])
+                                    y = float(coo.split(", ")[1])
+                                    
+                                    try:
+                                        mag, merr = self.pht.do_mag(data, x, y, aper, the_gain)
+                                        a_file.append([the_jd, x, y, mag, merr])
+                                    except Exception as e:
+                                        self.etc.log(e)
+                                    
+                                try:
+                                    pn, fn = self.fop.get_base_name(img)
+                                    of = self.fop.abs_path("{}/{}.mmm".format(odir, fn))
+                                    self.fop.write_array(of, a_file, dm=" ", h="jd x y mag merr")
+                                except Exception as e:
+                                    self.etc.log(e)
+                            else:
+                                #Log an error about not existing file
+                                self.etc.log("No such (Phot)file({})".format(img))
+                                
+                            g.proc(self, self.ui.progressBar_4, (i + 1)/g.list_lenght(self, self.ui.listWidget_2))
+                            
+                    else:
+                        #Log an error about Not existing out dir
+                        self.etc.log("No out dir found({})".format(odir))
+                else:
+                    #Log and display an error about empty listWidget
+                    self.etc.log("No coordinate was given to do photometry.")
+                    QtWidgets.QMessageBox.critical(
+                            self,  ("MYRaf Error"),
+                            ("Please add some coordinates"))
         else:
             #Log and display an error about empty listWidget
             self.etc.log("No file was given to do photometry.")
@@ -915,43 +988,43 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             #Get the output directory path from user
             odir = str(QtWidgets.QFileDialog.getExistingDirectory(
                         self, "Select Directory"))
-            #Start a loop for each file name
-            for i in range(self.ui.listWidget_5.count()):
-                #Find the possible file name
-                img = self.ui.listWidget_5.item(i).text()
-                #Check if file exist
-                if self.fop.is_file(img):
-                    try:
-                        #Split file name and the path
-                        pth, name = self.fop.get_base_name(img)
-                        #User file name and path given to create new file path
-                        ofile = self.fop.abs_path("{}/{}".format(odir, name))
-                        #User file name and path given to create mask file path
-                        mfile = self.fop.abs_path("{}/mask_{}".format(
-                                                            odir, name))
-                        #Start cosmic clean
-                        data, header = myCos.fromfits(img)
-                        c = myCos.cosmicsimage(data, gain=gain, readnoise=readN,
-                                                 sigclip=sigmC, sigfrac=sigmF,
-                                                 objlim=objeL)
-                        
-                        c.run(maxiter=max_it)
-                        if not self.fop.is_file(ofile):
-                            myCos.tofits(ofile, c.cleanarray, header)
-                        if self.ui.checkBox_3.isChecked():
-                            if not self.fop.is_file(mfile):
-                                myCos.tofits(mfile, c.mask, header)
-                        #Cosmic clean done
-                    except Exception as e:
-                        #Log error if any occurs
-                        self.etc.log(e)
-                else:
-                    #Log and display an error about not existing file
-                    self.et.log("No such (Cosmic Clean)file({})".format(img))
-                
-                #Advance ProgressBar
-                g.proc(self, self.ui.progressBar_5, (i + 1)/g.list_lenght(
-                                                self, self.ui.listWidget_5))
+            if self.fop.is_dir(odir):
+                #Start a loop for each file name
+                for i in range(self.ui.listWidget_5.count()):
+                    #Find the possible file name
+                    img = self.ui.listWidget_5.item(i).text()
+                    #Check if file exist
+                    if self.fop.is_file(img):
+                        try:
+                            #Split file name and the path
+                            pth, name = self.fop.get_base_name(img)
+                            #User file name and path given to create new file path
+                            ofile = self.fop.abs_path("{}/{}".format(odir, name))
+                            #User file name and path given to create mask file path
+                            mfile = self.fop.abs_path("{}/mask_{}".format(odir, name))
+                            #Start cosmic clean
+                            data, header = myCos.fromfits(img)
+                            c = myCos.cosmicsimage(data, gain=gain, readnoise=readN, sigclip=sigmC, sigfrac=sigmF, objlim=objeL)
+                            
+                            c.run(maxiter=max_it)
+                            if not self.fop.is_file(ofile):
+                                myCos.tofits(ofile, c.cleanarray, header)
+                            if self.ui.checkBox_3.isChecked():
+                                if not self.fop.is_file(mfile):
+                                    myCos.tofits(mfile, c.mask, header)
+                            #Cosmic clean done
+                        except Exception as e:
+                            #Log error if any occurs
+                            self.etc.log(e)
+                    else:
+                        #Log and display an error about not existing file
+                        self.et.log("No such (Cosmic Clean)file({})".format(img))
+                    
+                    #Advance ProgressBar
+                    g.proc(self, self.ui.progressBar_5, (i + 1)/g.list_lenght(self, self.ui.listWidget_5))
+            else:
+                #Log an error about empty listWidget
+                self.etc.log("No out dir found({})".format(odir))
         else:
             #Log and display an error about empty listWidget
             self.etc.log("Nothing to Cosimc Clean.")

@@ -349,7 +349,7 @@ class cosmicsimage:
                 self.satstars = np.cast['bool'](outmask)
                 
                 if verbose:
-                    print("Mask of saturated stars done")
+                    #print("Mask of saturated stars done")
                     self.etc.log("Cosmic: Mask of saturated stars done")
         
     def getsatstars(self, verbose = None):
@@ -619,7 +619,7 @@ class cosmicsimage:
         if self.satlevel > 0 and self.satstars == None:
             self.findsatstars(verbose=True)
         
-        print("Starting %i L.A.Cosmic iterations ..." % maxiter)
+        #print("Starting %i L.A.Cosmic iterations ..." % maxiter)
         self.etc.log("Cosmic: Starting {} L.A.Cosmic iterations ...".format(maxiter))
         for i in range(1, maxiter+1):
             #print("Iteration %i" % i)

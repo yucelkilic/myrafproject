@@ -201,7 +201,7 @@ class calc():
             self.etc.log(e)
         
     def jd(self, timestamp):
-        self.etc.log("Calculating JD from timestamp")
+        self.etc.log("Calculating JD from timestamp({})".format(timestamp))
         try:
             if "T" not in timestamp:
                 timestamp = str(timestamp).replace(" ", "T")
@@ -213,7 +213,7 @@ class calc():
             self.etc.log(e)
         
     def mjd(self, timestamp):
-        self.etc.log("Calculating MJD from timestamp")
+        self.etc.log("Calculating MJD from timestamp({})".format(timestamp))
         try:
             if "T" not in timestamp:
                 timestamp = str(timestamp).replace(" ", "T")

@@ -34,6 +34,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.fit = myAst.fits(verb=self.verb)
         self.sex = myAst.sextractor(verb=self.verb)
         self.pht = myAst.phot(verb=self.verb)
+        self.clc = myAst.calc(verb=self.verb)
         
         #self.etc.log("Loading settings.")
         #Load settings
@@ -210,6 +211,33 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.label_14.setProperty("text", "")
         self.wcs_annotation()
         
+        
+        self.etc.log("Resetting Gui for Calculator tab.")
+        #set Caloculator tab
+        self.ui.progressBar_9.setProperty("value", 0)
+        self.ui.label_49.setProperty("text", "")
+        self.calculator_annotation()
+        
+        self.etc.log("Creating triggers for Calculator.")
+        #add triggers for Calculator
+        self.ui.groupBox_33.clicked.connect(lambda: (
+                self.calculator_annotation()))
+        self.ui.groupBox_34.clicked.connect(lambda: (
+                self.calculator_annotation()))
+        self.ui.groupBox_35.clicked.connect(lambda: (
+                self.calculator_annotation()))
+        
+        self.ui.pushButton_47.clicked.connect(lambda: (
+                g.add_files(self, self.ui.listWidget_16),
+                self.calculator_annotation()))
+        self.ui.pushButton_46.clicked.connect(lambda: (
+                g.rm(self, self.ui.listWidget_16),
+                self.calculator_annotation()))
+        
+        self.ui.pushButton_48.clicked.connect(lambda: (self.do_calculator()))
+        self.ui.listWidget_16.clicked.connect(lambda: (self.header_list_calculator()))
+        
+        
         self.etc.log("Creating triggers for WCS tab.")
         #add triggers for WCS Editor
         self.ui.pushButton_24.clicked.connect(lambda: (
@@ -252,6 +280,113 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 self.get_graph_file_path()))
         self.ui.disp_align.canvas.fig.canvas.mpl_connect(
                 'button_press_event',self.mouseClick)
+
+    def header_list_calculator(self):
+        #Get file's name
+        img = self.ui.listWidget_16.currentItem().text()
+        #Check if file does exist
+        if self.fop.is_file(img):
+            try:
+                #Get all headers of give file
+                all_header = self.fit.header(img)
+                #convert [key, value] to "key=>value" format in an array
+                header_list = []
+                for i in all_header:
+                    header_list.append("{}=>{}".format(i[0], i[1]))
+                
+                #Replace whole combo with header list
+                g.c_replace_list_con(self, self.ui.comboBox_16, header_list)
+                g.c_replace_list_con(self, self.ui.comboBox_18, header_list)
+            except Exception as e:
+                #Log error if any occurs
+                self.etc.log(e)
+        else:
+            #Log and display an error about not existing file
+            self.et.log("No such (Header List)file({})".format(img))
+            QtWidgets.QMessageBox.critical(
+                self, ("MYRaf Error"), ("File not found."))
+    
+        #Reload log file to log view
+        self.reload_log()
+    
+    
+    def do_calculator(self):
+        #Check if listWidget is empty
+        if not g.is_list_empty(self, self.ui.listWidget_16):
+            #Start Calculator
+            do_jd = self.ui.groupBox_33.isChecked()
+            do_airmass = self.ui.groupBox_34.isChecked()
+            do_imexam = self.ui.groupBox_35.isChecked()
+            if do_jd or do_airmass or do_imexam:
+                pref = self.ui.lineEdit_9.text()
+                for i in range(self.ui.listWidget_16.count()):
+                    img = self.ui.listWidget_16.item(i).text()
+                    if self.fop.is_file(img):
+                        if do_jd:
+                            try:
+                                #Get the "key=>value" for existing value
+                                combo_time_jd = self.ui.comboBox_16.currentText()
+                                #Find wanted key by spliting it by "=>"
+                                field_time_jd = combo_time_jd.split("=>")[0].strip()
+                                time_jd = self.fit.header(img, field_time_jd)
+                            except Exception as e:
+                                self.etc.log(e)
+                                continue
+                            
+                            if time_jd is not None:
+                                try:
+                                    the_time = time_jd[1]
+                                    the_jd = self.clc.jd(the_time)
+                                    the_mjd = self.clc.mjd(the_time)
+                                except Exception as e:
+                                    self.etc.log(e)
+                                    continue
+                                try:
+                                    if type(the_jd) == float:
+                                        val_jd = the_jd
+                                        self.fit.update_header(img, "{}JD".format(pref), val_jd)
+                                        
+                                    if type(the_mjd) == float:
+                                        val_mjd = the_mjd
+                                        self.fit.update_header(img, "{}MJD".format(pref), val_mjd)
+                                    
+                                except Exception as e:
+                                    self.etc.log(e)
+                                    continue
+                            
+                    else:
+                        #Log an error about not existing file
+                        self.etc.log("No such (Calc)file({})".format(img))
+            else:
+                #Log and display an error about no operation
+                self.etc.log("Nothing to do.")
+                QtWidgets.QMessageBox.critical(
+                        self, ("MYRaf Error"), ("Please select operation(s)"))
+                
+        else:
+            #Log and display an error about empty listWidget
+            self.etc.log("Nothing to Calculator.")
+            QtWidgets.QMessageBox.critical(
+                    self, ("MYRaf Error"), ("Please add some files"))
+
+    #Change annotation of Calculator Tab
+    def calculator_annotation(self):
+        #Just find how many files were given for align
+        img = g.list_lenght(self, self.ui.listWidget_16)
+        proc = ""
+        if self.ui.groupBox_33.isChecked():
+            proc = "JD, {}".format(proc)
+        
+        if self.ui.groupBox_34.isChecked():
+            proc = "Airmass, {}".format(proc)
+            
+        if self.ui.groupBox_35.isChecked():
+            proc = "Imexamine, {}".format(proc)
+            
+        if len(proc) == 0:
+            proc = "Nothing, "
+        self.ui.label_49.setProperty("text",
+                                    "{0} will be done to {1} files".format(proc[:-2], img))
 
     def mouseClick(self, event):
         print(event)
@@ -1078,6 +1213,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         for i in obs_files:
             new_list.append(self.fop.get_base_name(i)[1])
         g.replace_list_con(self, self.ui.listWidget_12, new_list)
+        
+        g.c_replace_list_con(self, self.ui.comboBox_22, new_list)
         
         self.reload_log()
         

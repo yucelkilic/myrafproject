@@ -21,6 +21,7 @@ from scipy.ndimage.interpolation import shift
 from numpy import min as nmin
 from numpy import max as nmax
 from numpy import mean as nmean
+from numpy import median as nmead
 from numpy import std as nstd
 from numpy import log10 as nlog10
 from numpy import asarray
@@ -146,6 +147,7 @@ class calc():
     def __init__(self, verb=True):
         self.verb = verb
         self.etc = myEnv.etc(verb=self.verb)
+        self.fit = fits(verb=self.verb)
         
     def flux2magmerr(self, flux, fluxerr):
         self.etc.log("Calculating Mag and Merr")
@@ -223,6 +225,19 @@ class calc():
             return(t_jd.mjd)
         except Exception as e:
             self.etc.log(e)
+            
+    def imexamine(self, src):
+        try:
+            data = self.fit.data(src, table=False)
+            the_min = nmin(data)
+            the_max = nmax(data)
+            the_mea = nmean(data)
+            the_std = nstd(data)
+            the_med = nmead(data)
+            return([the_mea, the_med, the_std, the_min, the_max])
+        except Exception as e:
+            self.etc.log(e)
+            
         
 class phot():
     def __init__(self, verb=True):

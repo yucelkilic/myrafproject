@@ -297,6 +297,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 #Replace whole combo with header list
                 g.c_replace_list_con(self, self.ui.comboBox_16, header_list)
                 g.c_replace_list_con(self, self.ui.comboBox_18, header_list)
+                g.c_replace_list_con(self, self.ui.comboBox_17, header_list)
+                g.c_replace_list_con(self, self.ui.comboBox_19, header_list)
             except Exception as e:
                 #Log error if any occurs
                 self.etc.log(e)
@@ -353,6 +355,33 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                 except Exception as e:
                                     self.etc.log(e)
                                     continue
+                            else:
+                                #Log an error about not existing header
+                                self.etc.log("No such (Calc)header({})".format(field_time_jd))
+                                continue
+                                
+                        if do_imexam:
+                            try:
+                                imex = self.clc.imexamine(img)
+                            except Exception as e:
+                                self.etc.log(e)
+                                continue
+                            
+                            if imex is not None:
+                                try:
+                                    if self.ui.checkBox_8.isChecked():
+                                        self.fit.update_header(img, "{}mean".format(pref), imex[0])
+                                    if self.ui.checkBox_9.isChecked():
+                                        self.fit.update_header(img, "{}medi".format(pref), imex[1])
+                                    if self.ui.checkBox_10.isChecked():
+                                        self.fit.update_header(img, "{}stdv".format(pref), imex[2])
+                                    if self.ui.checkBox_11.isChecked():
+                                        self.fit.update_header(img, "{}min".format(pref), imex[3])
+                                    if self.ui.checkBox_12.isChecked():
+                                        self.fit.update_header(img, "{}max".format(pref), imex[4])
+                                except Exception as e:
+                                    self.etc.log(e)
+                                    continue   
                             
                     else:
                         #Log an error about not existing file
@@ -368,6 +397,9 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             self.etc.log("Nothing to Calculator.")
             QtWidgets.QMessageBox.critical(
                     self, ("MYRaf Error"), ("Please add some files"))
+
+        #Reload log file to log view
+        self.reload_log()
 
     #Change annotation of Calculator Tab
     def calculator_annotation(self):
@@ -387,6 +419,9 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             proc = "Nothing, "
         self.ui.label_49.setProperty("text",
                                     "{0} will be done to {1} files".format(proc[:-2], img))
+
+        #Reload log file to log view
+        self.reload_log()
 
     def mouseClick(self, event):
         print(event)
@@ -408,10 +443,16 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                         self.ui.listWidget.setCurrentRow(0)
                         
             self.display_align()
+            
+        #Reload log file to log view
+        self.reload_log()
 
     def get_graph_file_path(self):
         pth = self.fop.abs_path(g.get_graph_file_path(self))
         self.ui.label_31.setProperty("text", pth)
+        
+        #Reload log file to log view
+        self.reload_log()
     
     #Zero Combine Method
     def zero_combine(self):
@@ -517,6 +558,9 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             #Log an error about not existing file
             self.et.log("No such (Disp Align Coor)file({})".format(img))
             
+        
+        #Reload log file to log view
+        self.reload_log()
         
     #Display fit file on Align Tab
     def display_align(self):
@@ -772,6 +816,9 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             self.etc.log("Nothing to track.")
             QtWidgets.QMessageBox.critical(
                     self,  ("MYRaf Error"), ("Please add some files"))
+            
+        #Reload log file to log view
+        self.reload_log()
         
     def display_coors_phot(self):
         #Refresh display
@@ -866,6 +913,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 QtWidgets.QMessageBox.critical(
                         self, ("MYRaf Error"), ("No coordinate was given"))
                 
+        #Reload log file to log view
         self.reload_log()
         
     def run_sex(self):
@@ -906,7 +954,9 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
            QtWidgets.QMessageBox.critical(
                    self, ("MYRaf Error"), ("No file was selected"))
            
+        #Reload log file to log view
         self.reload_log()
+        
     #Start Photometry
     def do_phot(self):
         #Check if listWidget is empty
@@ -1187,6 +1237,9 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             self.etc.log("No file was given to WCS Editor.")
             QtWidgets.QMessageBox.critical(
                     self, ("MYRaf Error"), ("Please add some files"))
+            
+        #Reload log file to log view
+        self.reload_log()
         
     #Change annotation of WCS Tab
     def wcs_annotation(self):
@@ -1204,6 +1257,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         else:
             print("other")
             
+        #Reload log file to log view
         self.reload_log()
         
     def load_observat(self):
@@ -1216,6 +1270,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         
         g.c_replace_list_con(self, self.ui.comboBox_22, new_list)
         
+        #Reload log file to log view
         self.reload_log()
         
     def get_observat_prop(self):
@@ -1261,6 +1316,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                     
         else:
             self.etc.log("No such Observatory({})".format(obs_name))
+        
+        #Reload log file to log view
         self.reload_log()
     
     def rm_obs(self):
@@ -1282,6 +1339,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 QtWidgets.QMessageBox.critical(self, ("MYRaf Error"),
                                                ("No Observatory was choosen"))
         self.load_observat()
+        #Reload log file to log view
         self.reload_log()
     
     def add_obs(self):
@@ -1319,6 +1377,9 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
             self.etc.log("No observatory was specified.")
             QtWidgets.QMessageBox.critical(
                     self, ("MYRaf Error"), ("No observatory was specified"))
+            
+        #Reload log file to log view
+        self.reload_log()
         
     def reload_log(self):
         g.rm_all(self, self.ui.listWidget_10)

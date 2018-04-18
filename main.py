@@ -115,6 +115,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         #set photometry tab
         self.ui.progressBar_4.setProperty("value", 0)
         self.ui.label_8.setProperty("text", "")
+        self.ui.label_54.setProperty("text", "")
         self.phot_annotation()
         self.phot_disp = FitsPlot(
                 self.ui.disp_photometry.canvas, verb=self.verb)
@@ -133,6 +134,9 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         
         self.ui.pushButton_35.clicked.connect(lambda: (
                 self.display_coors_phot()))
+        
+        self.ui.disp_photometry.canvas.fig.canvas.mpl_connect(
+                'button_press_event',self.mouseClick)
         
         self.ui.pushButton_34.clicked.connect(lambda: (self.run_sex()))
         self.ui.pushButton_16.clicked.connect(lambda: (self.do_phot()))
@@ -275,7 +279,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.label_31.setProperty("text", "")
         
         self.etc.log("Creating triggers for Graph tab.")
-        
+        #set triggers WCS Editor tab
         self.ui.pushButton_44.clicked.connect(lambda: (
                 self.get_graph_file_path()))
         self.ui.disp_align.canvas.fig.canvas.mpl_connect(
@@ -424,7 +428,6 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.reload_log()
 
     def mouseClick(self, event):
-        print(event)
         if self.ui.tabWidget.currentIndex() == 1:
             if event.ydata != None and event.xdata != None:
                 rows = self.ui.listWidget.count()
@@ -432,17 +435,67 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 img = self.ui.listWidget.currentItem()
                 if img is not None:
                     img = img.text()
-                    x = event.xdata
-                    y = event.ydata
-                    self.fit.update_header(img, "mymancoo", "{}, {}".format(
-                                                                    x, y))
-                    if row < rows-1:
-                        self.ui.listWidget.setCurrentRow(row+1)
+                    if self.fop.is_file(img):
+                        x = event.xdata
+                        y = event.ydata
+                        self.fit.update_header(img, "mymancoo", "{}, {}".format(x, y))
+                        if row < rows-1:
+                            self.ui.listWidget.setCurrentRow(row+1)
+                        else:
+                            self.etc.beep()
+                            self.ui.listWidget.setCurrentRow(0)
                     else:
-                        self.etc.beep()
-                        self.ui.listWidget.setCurrentRow(0)
+                        #Log and display an error about empty listWidget
+                        self.etc.log("No such (Disp Align Coor)file({})".format(img))
+                        QtWidgets.QMessageBox.critical(
+                                self, ("MYRaf Error"), ("Please select a file"))
                         
             self.display_align()
+            
+        elif self.ui.tabWidget.currentIndex() == 2:
+            if event.ydata != None and event.xdata != None:
+                img = self.ui.listWidget_2.currentItem()
+                if img is not None:
+                    img = img.text()
+                    if self.fop.is_file(img):
+                        data = self.fit.data(img, table=False)
+                        
+                        offset = 25
+                        x = event.xdata
+                        y = event.ydata
+                        
+                        w, h = data.shape
+                        
+                        the_low_x = int(y - offset)
+                        the_high_x = int(y + offset)
+                        the_low_y = int(x - offset)
+                        the_high_y = int(x + offset)
+                        
+                        if the_low_x <0:
+                            the_low_x = 0
+                            
+                        if the_low_y <0:
+                            the_low_y = 0
+                            
+                        if the_high_x > h-1:
+                            the_high_x = h-1
+                            
+                        if the_high_y > w-1:
+                            the_high_y = w-1
+                            
+                            
+                        sub_data = data[the_low_x:the_high_x,the_low_y:the_high_y]
+                            
+                        print(sub_data)
+                        self.fit.write("./deneme.fit", sub_data)
+                        self.ui.label_54.setProperty("text", "x{}, y{}".format(x, y))
+                        print(int(x-5), 10, int(y-5), 10)
+                    else:
+                        #Log and display an error about empty listWidget
+                        self.etc.log("No such (Photometry Stats)file({})".format(img))
+                        QtWidgets.QMessageBox.critical(
+                                self, ("MYRaf Error"), ("Please select a file"))
+    
             
         #Reload log file to log view
         self.reload_log()
@@ -525,11 +578,11 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         img = self.ui.listWidget.currentItem().text()
         #Check if file does exist
         if self.fop.is_file(img):
-            the_coo = self.fit.header(img, field="mymancoo")[1]
+            the_coo = self.fit.header(img, field="mymancoo")
             if the_coo is not None:
                 try:
                     #Split x, y coordinates by ", "
-                    x, y = the_coo.split(", ")
+                    x, y = the_coo[1].split(", ")
                     #Convert x coordinate to float dtype
                     x = float(x)
                     #Convert y coordinate to float dtype
@@ -565,21 +618,22 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
     #Display fit file on Align Tab
     def display_align(self):
         #Find the possible file name
-        img = self.ui.listWidget.currentItem().text()
-        #Check if file does exist
-        if self.fop.is_file(img):
-            try:
-                #Display the file
-                self.align_disp.load(str(img))
-                self.get_man_coo()
-            except Exception as e:
-                #Log error if any occurs
-                self.etc.log(e)
-        else:
-            #Log and display an error about not existing file
-            self.et.log("No such (Disp Align)file({})".format(img))
-            QtWidgets.QMessageBox.critical(
-                    self, ("MYRaf Error"), ("Please add some files"))
+        if self.ui.listWidget.currentItem() is not None:
+            img = self.ui.listWidget.currentItem().text()
+            #Check if file does exist
+            if self.fop.is_file(img):
+                try:
+                    #Display the file
+                    self.align_disp.load(str(img))
+                    self.get_man_coo()
+                except Exception as e:
+                    #Log error if any occurs
+                    self.etc.log(e)
+            else:
+                #Log and display an error about not existing file
+                self.et.log("No such (Disp Align)file({})".format(img))
+                QtWidgets.QMessageBox.critical(
+                        self, ("MYRaf Error"), ("Please add some files"))
             
         #Reload log file to log view
         self.reload_log()

@@ -132,12 +132,14 @@ class fits():
         
             
     def write(self, dest, data):
+        self.etc.log("Writeing data to file({})".format(dest))
         try:
             fts.writeto(dest, data)
         except Exception as e:
             self.etc.log(e)
             
     def write_h(self, dest, data, header):
+        self.etc.log("WriteingH data to file({})".format(dest))
         try:
             fts.writeto(dest, data, header)
         except Exception as e:

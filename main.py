@@ -332,7 +332,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                         if do_jd:
                             try:
                                 #Get the "key=>value" for existing value
-                                combo_time_jd = self.ui.comboBox_16.currentText()
+                                combo_time_jd = self.ui.\
+                                comboBox_16.currentText()
                                 #Find wanted key by spliting it by "=>"
                                 field_time_jd = combo_time_jd.split(
                                         "=>")[0].strip()
@@ -353,12 +354,14 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                     if type(the_jd) == float:
                                         val_jd = the_jd
                                         self.fit.update_header(
-                                                img, "{}JD".format(pref), val_jd)
+                                                img, "{}JD".format(pref),
+                                                val_jd)
                                         
                                     if type(the_mjd) == float:
                                         val_mjd = the_mjd
                                         self.fit.update_header(
-                                                img, "{}MJD".format(pref), val_mjd)
+                                                img, "{}MJD".format(pref),
+                                                val_mjd)
                                     
                                 except Exception as e:
                                     self.etc.log(e)
@@ -808,11 +811,14 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                                 img, "mymancoo")
                                         if coors is not None:
                                             coors = coors[1]
-                                            fp, fn = self.fop.get_base_name(img)
+                                            fp, fn = self.fop.get_base_name(
+                                                    img)
                                             new_path = self.fop.abs_path(
                                                     "{}/{}".format(odir, fn))
-                                            ry = float(ref_coors.split(", ")[0])
-                                            rx = float(ref_coors.split(", ")[1])
+                                            ry = float(
+                                                    ref_coors.split(", ")[0])
+                                            rx = float(
+                                                    ref_coors.split(", ")[1])
                                             ty = float(coors.split(", ")[0])
                                             tx = float(coors.split(", ")[1])
                                             x = rx - tx
@@ -828,7 +834,9 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                                             pre, img))
                                     else:
                                         #Log an error about Not existing file
-                                        self.etc.log("No image found({})".format(img))
+                                        self.etc.log(
+                                                "No image found({})".format(
+                                                        img))
                                         
                                     g.proc(self,
                                            self.ui.progressBar_2,
@@ -839,7 +847,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                 self.etc.log("No out dir found({})".format(
                                         odir))
                         else:
-                            #Log and display an error about Not existing ref coors
+                            #Log and display an error about
+                            #Not existing ref coors
                             self.etc.log("Referance image has no coordinates.")
                             QtWidgets.QMessageBox.critical(
                                     self,  ("MYRaf Error"),
@@ -1101,7 +1110,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                     self.etc.log(e)
                             else:
                                 #Log an error about not existing file
-                                self.etc.log("No such (Phot)file({})".format(img))
+                                self.etc.log("No such (Phot)file({})".format(
+                                        img))
                                 
                             g.proc(self, self.ui.progressBar_4,
                                    (i + 1)/g.list_lenght(

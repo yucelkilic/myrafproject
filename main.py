@@ -450,52 +450,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                         QtWidgets.QMessageBox.critical(
                                 self, ("MYRaf Error"), ("Please select a file"))
                         
-            self.display_align()
-            
-        elif self.ui.tabWidget.currentIndex() == 2:
-            if event.ydata != None and event.xdata != None:
-                img = self.ui.listWidget_2.currentItem()
-                if img is not None:
-                    img = img.text()
-                    if self.fop.is_file(img):
-                        data = self.fit.data(img, table=False)
-                        
-                        offset = 25
-                        x = event.xdata
-                        y = event.ydata
-                        
-                        w, h = data.shape
-                        
-                        the_low_x = int(y - offset)
-                        the_high_x = int(y + offset)
-                        the_low_y = int(x - offset)
-                        the_high_y = int(x + offset)
-                        
-                        if the_low_x <0:
-                            the_low_x = 0
-                            
-                        if the_low_y <0:
-                            the_low_y = 0
-                            
-                        if the_high_x > h-1:
-                            the_high_x = h-1
-                            
-                        if the_high_y > w-1:
-                            the_high_y = w-1
-                            
-                            
-                        sub_data = data[the_low_x:the_high_x,the_low_y:the_high_y]
-                            
-                        print(sub_data)
-                        self.fit.write("./deneme.fit", sub_data)
-                        self.ui.label_54.setProperty("text", "x{}, y{}".format(x, y))
-                        print(int(x-5), 10, int(y-5), 10)
-                    else:
-                        #Log and display an error about empty listWidget
-                        self.etc.log("No such (Photometry Stats)file({})".format(img))
-                        QtWidgets.QMessageBox.critical(
-                                self, ("MYRaf Error"), ("Please select a file"))
-    
+            self.display_align()    
             
         #Reload log file to log view
         self.reload_log()

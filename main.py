@@ -239,7 +239,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                 self.calculator_annotation()))
         
         self.ui.pushButton_48.clicked.connect(lambda: (self.do_calculator()))
-        self.ui.listWidget_16.clicked.connect(lambda: (self.header_list_calculator()))
+        self.ui.listWidget_16.clicked.connect(lambda: (
+                self.header_list_calculator()))
         
         
         self.etc.log("Creating triggers for WCS tab.")
@@ -333,7 +334,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                 #Get the "key=>value" for existing value
                                 combo_time_jd = self.ui.comboBox_16.currentText()
                                 #Find wanted key by spliting it by "=>"
-                                field_time_jd = combo_time_jd.split("=>")[0].strip()
+                                field_time_jd = combo_time_jd.split(
+                                        "=>")[0].strip()
                                 time_jd = self.fit.header(img, field_time_jd)
                             except Exception as e:
                                 self.etc.log(e)
@@ -350,18 +352,22 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                 try:
                                     if type(the_jd) == float:
                                         val_jd = the_jd
-                                        self.fit.update_header(img, "{}JD".format(pref), val_jd)
+                                        self.fit.update_header(
+                                                img, "{}JD".format(pref), val_jd)
                                         
                                     if type(the_mjd) == float:
                                         val_mjd = the_mjd
-                                        self.fit.update_header(img, "{}MJD".format(pref), val_mjd)
+                                        self.fit.update_header(
+                                                img, "{}MJD".format(pref), val_mjd)
                                     
                                 except Exception as e:
                                     self.etc.log(e)
                                     continue
                             else:
                                 #Log an error about not existing header
-                                self.etc.log("No such (Calc)header({})".format(field_time_jd))
+                                self.etc.log(
+                                        "No such (Calc)header({})".format(
+                                                field_time_jd))
                                 continue
                                 
                         if do_imexam:
@@ -374,15 +380,25 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                             if imex is not None:
                                 try:
                                     if self.ui.checkBox_8.isChecked():
-                                        self.fit.update_header(img, "{}mean".format(pref), imex[0])
+                                        self.fit.update_header(
+                                                img, "{}mean".format(
+                                                        pref), imex[0])
                                     if self.ui.checkBox_9.isChecked():
-                                        self.fit.update_header(img, "{}medi".format(pref), imex[1])
+                                        self.fit.update_header(
+                                                img, "{}medi".format(
+                                                        pref), imex[1])
                                     if self.ui.checkBox_10.isChecked():
-                                        self.fit.update_header(img, "{}stdv".format(pref), imex[2])
+                                        self.fit.update_header(
+                                                img, "{}stdv".format(
+                                                        pref), imex[2])
                                     if self.ui.checkBox_11.isChecked():
-                                        self.fit.update_header(img, "{}min".format(pref), imex[3])
+                                        self.fit.update_header(
+                                                img, "{}min".format(
+                                                        pref), imex[3])
                                     if self.ui.checkBox_12.isChecked():
-                                        self.fit.update_header(img, "{}max".format(pref), imex[4])
+                                        self.fit.update_header(
+                                                img, "{}max".format(
+                                                        pref), imex[4])
                                 except Exception as e:
                                     self.etc.log(e)
                                     continue   
@@ -422,35 +438,61 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         if len(proc) == 0:
             proc = "Nothing, "
         self.ui.label_49.setProperty("text",
-                                    "{0} will be done to {1} files".format(proc[:-2], img))
+                                    "{0} will be done to {1} files".format(
+                                            proc[:-2], img))
 
         #Reload log file to log view
         self.reload_log()
 
     def mouseClick(self, event):
-        if self.ui.tabWidget.currentIndex() == 1:
-            if event.ydata != None and event.xdata != None:
-                rows = self.ui.listWidget.count()
-                row = self.ui.listWidget.currentRow()
-                img = self.ui.listWidget.currentItem()
-                if img is not None:
-                    img = img.text()
-                    if self.fop.is_file(img):
-                        x = event.xdata
-                        y = event.ydata
-                        self.fit.update_header(img, "mymancoo", "{}, {}".format(x, y))
-                        if row < rows-1:
-                            self.ui.listWidget.setCurrentRow(row+1)
+        if event.button == 1:
+            if self.ui.tabWidget.currentIndex() == 1:
+                if event.ydata != None and event.xdata != None:
+                    rows = self.ui.listWidget.count()
+                    row = self.ui.listWidget.currentRow()
+                    img = self.ui.listWidget.currentItem()
+                    if img is not None:
+                        img = img.text()
+                        if self.fop.is_file(img):
+                            x = event.xdata
+                            y = event.ydata
+                            self.fit.update_header(
+                                    img, "mymancoo", "{}, {}".format(x, y))
+                            if row < rows-1:
+                                self.ui.listWidget.setCurrentRow(row+1)
+                            else:
+                                self.etc.beep()
+                                self.ui.listWidget.setCurrentRow(0)
                         else:
-                            self.etc.beep()
-                            self.ui.listWidget.setCurrentRow(0)
-                    else:
-                        #Log and display an error about empty listWidget
-                        self.etc.log("No such (Disp Align Coor)file({})".format(img))
-                        QtWidgets.QMessageBox.critical(
-                                self, ("MYRaf Error"), ("Please select a file"))
-                        
-            self.display_align()    
+                            #Log and display an error about empty listWidget
+                            self.etc.log(
+                                    "No such (Disp Align Coor)file({})".format(
+                                            img))
+                            QtWidgets.QMessageBox.critical(
+                                    self, ("MYRaf Error"),
+                                    ("Please select a file"))
+                            
+                self.display_align()
+                
+            elif self.ui.tabWidget.currentIndex() == 2:
+                if event.ydata != None and event.xdata != None:
+                    img = self.ui.listWidget_2.currentItem()
+                    if img is not None:
+                        img = img.text()
+                        if self.fop.is_file(img):
+                            x = event.xdata
+                            y = event.ydata
+                            g.c_add(self, self.ui.listWidget_14,
+                                    ["{:0.4f}, {:0.4f}".format(x, y)])
+                        else:
+                            #Log and display an error about empty listWidget
+                            self.etc.log(
+                                    "No such (Photometry Add Source)file({})"\
+                                    .format(img))
+                            QtWidgets.QMessageBox.critical(
+                                    self, ("MYRaf Error"),
+                                    ("Please select a file"))
+    
             
         #Reload log file to log view
         self.reload_log()
@@ -649,7 +691,10 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         else:
             #Log and display an error about not existing file
             self.et.log("No such (Get the header)header (-_-)")
-            QtWidgets.QMessageBox.critical(self, ("MYRaf Error"), ("I don't know how you managed that.\nBut No header was selected."))
+            QtWidgets.QMessageBox.critical(
+                    self, ("MYRaf Error"),
+                    ("I don't know how you managed that.\
+                     But No header was selected."))
         
         #Reload log file to log view
         self.reload_log()
@@ -717,7 +762,8 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         else:
             #Log and display an error about empty listWidget
             self.etc.log("Nothing to calibrate.")
-            QtWidgets.QMessageBox.critical(self,  ("MYRaf Error"), ("Please add some files.\nUnless you have a sick sense of humour and you really want calibrate no files."))
+            QtWidgets.QMessageBox.critical(
+                    self,  ("MYRaf Error"), ("Please add some files."))
             
         #Reload log file to log view
         self.reload_log()
@@ -729,7 +775,11 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         zer = g.list_lenght(self, self.ui.listWidget_7)
         dar = g.list_lenght(self, self.ui.listWidget_8)
         fla = g.list_lenght(self, self.ui.listWidget_9)
-        self.ui.label.setProperty("text", "{0} File(s) will be calibrated using {1} Bias(es), {2} Dark(s) and {3} Flat(s)".format(img, zer, dar, fla))
+        pre = "File(s) will be calibrated using"
+        self.ui.label.setProperty(
+                "text",
+                "{0} {1} {2} Bias(es), {3} Dark(s) and {4} Flat(s)".format(
+                        img, pre, zer, dar, fla))
     
     #Start Alignment
     def do_align(self):
@@ -754,11 +804,13 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                 for i in range(self.ui.listWidget.count()):
                                     img = self.ui.listWidget.item(i).text()
                                     if self.fop.is_file(img):
-                                        coors = self.fit.header(img, "mymancoo")
+                                        coors = self.fit.header(
+                                                img, "mymancoo")
                                         if coors is not None:
                                             coors = coors[1]
                                             fp, fn = self.fop.get_base_name(img)
-                                            new_path = self.fop.abs_path("{}/{}".format(odir, fn))
+                                            new_path = self.fop.abs_path(
+                                                    "{}/{}".format(odir, fn))
                                             ry = float(ref_coors.split(", ")[0])
                                             rx = float(ref_coors.split(", ")[1])
                                             ty = float(coors.split(", ")[0])
@@ -770,15 +822,22 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                         else:
                                             #Log an error about Not
                                             #existing coor
-                                            self.etc.log("No coordinate was selected for file({})".format(img))
+                                            pre = "No coordinate was selected"
+                                            self.etc.log(
+                                                    "{} for file({})".format(
+                                                            pre, img))
                                     else:
                                         #Log an error about Not existing file
                                         self.etc.log("No image found({})".format(img))
                                         
-                                    g.proc(self, self.ui.progressBar_2, (i + 1)/g.list_lenght(self, self.ui.listWidget))
+                                    g.proc(self,
+                                           self.ui.progressBar_2,
+                                           (i + 1)/g.list_lenght(
+                                                   self, self.ui.listWidget))
                             else:
                                 #Log an error about Not existing out dir
-                                self.etc.log("No out dir found({})".format(odir))
+                                self.etc.log("No out dir found({})".format(
+                                        odir))
                         else:
                             #Log and display an error about Not existing ref coors
                             self.etc.log("Referance image has no coordinates.")
@@ -995,10 +1054,13 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                     try:
                                         the_gain = float(h_gain[1])
                                     except Exception as e:
-                                        self.etc.log("Bad GAIN value ({})".format(e))
+                                        self.etc.log(
+                                                "Bad GAIN value ({})".format(
+                                                        e))
                                         continue
                                 else:
-                                    self.etc.log("No Gain value found in header({})".format(img))
+                                    per = "No Gain value found in header"
+                                    self.etc.log("{} ({})".format(per, img))
                                     continue
                                 
                                 h_jd = self.fit.header(img, field=jd)
@@ -1007,10 +1069,12 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                     try:
                                         the_jd = float(h_jd[1])
                                     except Exception as e:
-                                        self.etc.log("Bad JD value ({})".format(e))
+                                        pre = "Bad JD value"
+                                        self.etc.log("{} ({})".format(pre, e))
                                         continue
                                 else:
-                                    self.etc.log("No JD value found in header({})".format(img))
+                                    pre = "No JD value found in header"
+                                    self.etc.log("{} ({})".format(pre, img))
                                     continue
                                 
                                 a_file = []
@@ -1020,22 +1084,28 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                     y = float(coo.split(", ")[1])
                                     
                                     try:
-                                        mag, merr = self.pht.do_mag(data, x, y, aper, the_gain)
-                                        a_file.append([the_jd, x, y, mag, merr])
+                                        mag, merr = self.pht.do_mag(
+                                                data, x, y, aper, the_gain)
+                                        a_file.append([the_jd, x, y,
+                                                       mag, merr])
                                     except Exception as e:
                                         self.etc.log(e)
                                     
                                 try:
                                     pn, fn = self.fop.get_base_name(img)
-                                    of = self.fop.abs_path("{}/{}.mmm".format(odir, fn))
-                                    self.fop.write_array(of, a_file, dm=" ", h="jd x y mag merr")
+                                    of = self.fop.abs_path("{}/{}.mmm".format(
+                                            odir, fn))
+                                    self.fop.write_array(of, a_file, dm=" ",
+                                                         h="jd x y mag merr")
                                 except Exception as e:
                                     self.etc.log(e)
                             else:
                                 #Log an error about not existing file
                                 self.etc.log("No such (Phot)file({})".format(img))
                                 
-                            g.proc(self, self.ui.progressBar_4, (i + 1)/g.list_lenght(self, self.ui.listWidget_2))
+                            g.proc(self, self.ui.progressBar_4,
+                                   (i + 1)/g.list_lenght(
+                                           self, self.ui.listWidget_2))
                             
                     else:
                         #Log an error about Not existing out dir
@@ -1192,13 +1262,21 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                         try:
                             #Split file name and the path
                             pth, name = self.fop.get_base_name(img)
-                            #User file name and path given to create new file path
-                            ofile = self.fop.abs_path("{}/{}".format(odir, name))
-                            #User file name and path given to create mask file path
-                            mfile = self.fop.abs_path("{}/mask_{}".format(odir, name))
+                            #User file name and path given
+                            #to create new file path
+                            ofile = self.fop.abs_path("{}/{}".format(
+                                    odir, name))
+                            #User file name and path given to
+                            #create mask file path
+                            mfile = self.fop.abs_path("{}/mask_{}".format(
+                                    odir, name))
                             #Start cosmic clean
                             data, header = myCos.fromfits(img)
-                            c = myCos.cosmicsimage(data, gain=gain, readnoise=readN, sigclip=sigmC, sigfrac=sigmF, objlim=objeL)
+                            c = myCos.cosmicsimage(data, gain=gain,
+                                                   readnoise=readN,
+                                                   sigclip=sigmC,
+                                                   sigfrac=sigmF,
+                                                   objlim=objeL)
                             
                             c.run(maxiter=max_it)
                             if not self.fop.is_file(ofile):
@@ -1212,10 +1290,12 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                             self.etc.log(e)
                     else:
                         #Log and display an error about not existing file
-                        self.et.log("No such (Cosmic Clean)file({})".format(img))
+                        self.et.log("No such (Cosmic Clean)file({})".format(
+                                img))
                     
                     #Advance ProgressBar
-                    g.proc(self, self.ui.progressBar_5, (i + 1)/g.list_lenght(self, self.ui.listWidget_5))
+                    g.proc(self, self.ui.progressBar_5, (i + 1)/g.list_lenght(
+                            self, self.ui.listWidget_5))
             else:
                 #Log an error about empty listWidget
                 self.etc.log("No out dir found({})".format(odir))
@@ -1261,7 +1341,11 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
     def astrometrynet_check(self):
         if self.etc.is_it_windows:
             self.etc.log("No Astrometry.new for Windows.")
-            QtWidgets.QMessageBox.critical(self, ("MYRaf Error"), ("The Astrometry.net does not support your os.\nYou HAVE to use online version."))
+            pre = "The Astrometry.net does not support your os."
+            pre2 = "You HAVE to use online version"
+            QtWidgets.QMessageBox.critical(
+                    self, ("MYRaf Error"),
+                    ("{}\n.{}".format(pre, pre2)))
             self.ui.groupBox_5.setChecked(True)
         else:
             print("other")

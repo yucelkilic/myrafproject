@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>801</width>
-    <height>800</height>
+    <width>750</width>
+    <height>700</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>800</width>
-    <height>800</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>MYRaf V3</string>
@@ -2154,31 +2148,6 @@
                     <string>minmax</string>
                    </property>
                   </item>
-                  <item>
-                   <property name="text">
-                    <string>ccdclip</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>crreject</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>sigclip</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>avsigclip</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>pclip</string>
-                   </property>
-                  </item>
                  </widget>
                 </item>
                </layout>
@@ -2270,31 +2239,6 @@
                     <string>minmax</string>
                    </property>
                   </item>
-                  <item>
-                   <property name="text">
-                    <string>ccdclip</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>crreject</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>sigclip</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>avsigclip</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>pclip</string>
-                   </property>
-                  </item>
                  </widget>
                 </item>
                </layout>
@@ -2348,31 +2292,6 @@
                   <item>
                    <property name="text">
                     <string>minmax</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>ccdclip</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>crreject</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>sigclip</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>avsigclip</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>pclip</string>
                    </property>
                   </item>
                  </widget>
@@ -2484,6 +2403,11 @@
                <widget class="QComboBox" name="comboBox">
                 <item>
                  <property name="text">
+                  <string>All</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
                   <string>NOMAD</string>
                  </property>
                 </item>
@@ -2502,27 +2426,18 @@
               <item row="1" column="0">
                <widget class="QLabel" name="label_9">
                 <property name="text">
-                 <string>Filter</string>
+                 <string>Radius</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="1">
-               <widget class="QComboBox" name="comboBox_11">
-                <item>
-                 <property name="text">
-                  <string>R</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>B</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>V</string>
-                 </property>
-                </item>
+               <widget class="QSpinBox" name="spinBox_3">
+                <property name="minimum">
+                 <number>10</number>
+                </property>
+                <property name="maximum">
+                 <number>300</number>
+                </property>
                </widget>
               </item>
              </layout>
@@ -3827,16 +3742,6 @@ p, li { white-space: pre-wrap; }
            <string>Log Viewer</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_25">
-           <item row="0" column="0" colspan="4">
-            <widget class="QListWidget" name="listWidget_10"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_19">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="1">
             <widget class="QPushButton" name="pushButton_28">
              <property name="minimumSize">
@@ -3853,6 +3758,16 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="text">
               <string>Reload</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="4">
+            <widget class="QListWidget" name="listWidget_10"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_19">
+             <property name="text">
+              <string>TextLabel</string>
              </property>
             </widget>
            </item>

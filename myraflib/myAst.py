@@ -8,6 +8,7 @@ Created on Sat Apr  7 19:48:32 2018
 from astropy import units as U
 from astropy import coordinates
 
+
 from astropy.time import Time
 
 from astropy.wcs import WCS
@@ -35,7 +36,10 @@ from sep import Background
 from sep import sum_circle
 from sep import extract
 
+from astroquery.vizier import Vizier
+
 from datetime import datetime
+
 
 #Importing myraf's needed modules
 from . import myEnv
@@ -49,6 +53,12 @@ class fits():
         try:
             hdu = fts.open(src, mode='readonly')
             return(hdu[0].header)
+        except Exception as e:
+            self.etc.log(e)
+        
+    def get_header(self, src):
+        try:
+            return(fts.getheader(src))
         except Exception as e:
             self.etc.log(e)
         
@@ -144,6 +154,7 @@ class fits():
             fts.writeto(dest, data, header)
         except Exception as e:
             self.etc.log(e)
+        
 
 class calc():
     def __init__(self, verb=True):
@@ -172,14 +183,12 @@ class calc():
     def xy2sky(self, file_name, x, y, sep=" "):
         self.etc.log("Converting physical coordinates to WCS")
         try:
-            header = fits.getheader(file_name)
+            header = fts.getheader(file_name)
             w = WCS(header)
             astcoords_deg = w.wcs_pix2world([[x, y]], 0)
             c = coordinates.SkyCoord(astcoords_deg * U.deg, frame='icrs')
-            alpha = c.to_string(style='hmsdms', sep=sep, precision=2)[0]
-            delta = c.to_string(style='hmsdms', sep=sep, precision=1)[0]
-
-            return("{0} {1}".format(alpha.split(" ")[0], delta.split(" ")[1]))
+            #the_coo = c.to_string(style='hmsdms', sep=sep, precision=4)[0]
+            return(c.ra.deg[0], c.dec.deg[0])
         except Exception as e:
             self.etc.log(e)
             
@@ -350,5 +359,64 @@ class sextractor():
             return(TBL([src['x'], src['y']]))
         except Exception as e:
             self.etc.log(e)
+              
+class cat():
+    def __init__(self, verb=True):
+        self.verb = verb
+        self.etc = myEnv.etc(verb=self.verb)
+        
+    def gaia(self, ra, dec, radius=0.0027, max_mag=20,
+                   max_coo_err=1, max_sources=1):
+        self.etc.log("Getting data from Gaia for ra({}), dec({}) and radius({})".format(ra, dec, radius))
+        try:
+            field = coordinates.SkyCoord(ra=ra,dec=dec,
+                                               unit=(U.deg, U.deg),
+                                               frame='icrs')
             
+            vquery = Vizier(columns=['Source', 'RA_ICRS', 'DE_ICRS',
+                                     'e_RA_ICRS','e_DE_ICRS',
+                                     'phot_g_mean_mag', 'pmRA', 'pmDE',
+                                     'e_pmRA', 'e_pmDE', 'Epoch', 'Plx'],
+                row_limit=max_sources)
             
+            return(vquery.query_region(field, width="{:f}d".format(radius),
+                                       catalog="I/337/gaia")[0])
+        except Exception as e:
+            self.etc.log(e)
+            
+    def nomad(self, ra, dec, radius=0.0027, min_mag=10,
+              max_mag=20, max_sources=1):
+        self.etc.log("Getting data from Nomad for ra({}), dec({}) and radius({})".format(ra, dec, radius))
+        try:
+            c = coordinates.SkyCoord(ra, dec,
+                                           unit=(U.deg, U.deg),
+                                           frame='icrs')
+            r = radius * U.deg
+
+            vquery = Vizier(columns=['NOMAD1', 'RAJ2000', 'DEJ2000', 'Bmag',
+                                     'Vmag', 'Rmag'], row_limit=max_sources)
+
+            result = vquery.query_region(c, radius=r, catalog="NOMAD")[0]
+
+            return(result)
+        except Exception as e:
+            self.etc.log(e)
+            
+    def usno(self, ra, dec, radius=0.0027, min_mag=10,
+              max_mag=20, max_sources=1):
+        self.etc.log("Getting data from Usno for ra({}), dec({}) and radius({})".format(ra, dec, radius))
+        try:
+            c = coordinates.SkyCoord(ra, dec,
+                                           unit=(U.deg, U.deg),
+                                           frame='icrs')
+            r = radius * U.deg
+
+            vquery = Vizier(columns=['USNO', 'RAJ2000', 'DEJ2000', 'Bmag',
+                                     'Rmag'], row_limit=max_sources)
+
+            result = vquery.query_region(c, radius=r, catalog="USNO-A2.0")[0]
+
+            return(result)
+        except Exception as e:
+            self.etc.log(e)
+

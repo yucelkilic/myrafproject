@@ -13,8 +13,10 @@ from os.path import basename
 from os.path import realpath
 from os.path import splitext
 from os.path import abspath
+from os.path import getsize
 
 from os import remove
+from os import mkdir
 
 from glob import glob
 
@@ -39,11 +41,18 @@ from  numpy import asarray
 class etc():
     def __init__(self, verb=True):
         self.verb = verb
-        self.log_file = abspath("{}/log.my".format(expanduser("~")))
-        self.mini_log_file = abspath("{}/mlog.my".format(expanduser("~")))
+        self.log_dir = abspath("{}/mylog/".format(expanduser("~")))
+        self.log_file = abspath("{}/log.my".format(self.log_dir))
+        self.mini_log_file = abspath("{}/mlog.my".format(self.log_dir))
+        
+        if not((not isfile(self.log_dir)) and exists(self.log_dir)):
+            mkdir(self.log_dir)
         
     def time_stamp(self):
         return(str(datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")))
+        
+    def time_stamp_(self):
+        return(str(datetime.utcnow().strftime("%Y-%m-%dT%H-%M-%S")))
     
     def user_name(self):
         return(str(getuser()))
@@ -109,6 +118,13 @@ class file_op():
         self.verb = verb
         self.etc = etc(verb=verb)
             
+    def get_size(self, path):
+        try:
+            if self.is_file(path):
+                return(getsize(path))
+        except Exception as e:
+            self.etc.log(e)
+        
     def abs_path(self, path):
         try:
             return(abspath(path))
@@ -125,31 +141,31 @@ class file_op():
             self.etc.log(e)  
             
     def is_file(self, src):
+        self.etc.log("Checking if file {0} exist".format(src))
         try:
-            self.etc.print_if("Checking if file {0} exist".format(src))
             return(isfile(src))
         except Exception as e:
             self.etc.log(e)
             return(False)
         
     def is_dir(self, src):
+        self.etc.log("Checking if directory {0} exist".format(src))
         try:
-            self.etc.print_if("Checking if directory {0} exist".format(src))
             return((not self.is_file(src)) and exists(src))
         except Exception as e:
             self.etc.log(e)
             return(False)
     
     def get_home_dir(self):
+        self.etc.log("Getting Home dir path")
         try:
-            self.etc.print_if("Getting Home dir path")
             return(expanduser("~"))
         except Exception as e:
             self.etc.log(e)
     
     def get_base_name(self, src):
+        self.etc.log("Finding path and file name for {0}".format(src))
         try:
-            self.etc.print_if("Finding path and file name for {0}".format(src))
             pn = dirname(realpath(src))
             fn = basename(realpath(src))
             return(pn, fn)
@@ -157,15 +173,15 @@ class file_op():
             self.etc.log(e)
     
     def get_extension(self, src):
+        self.etc.log("Finding extension for {0}".format(src))
         try:
-            self.etc.print_if("Finding extension for {0}".format(src))
             return(splitext(src)[1])
         except Exception as e:
             self.etc.log(e)
             
     def split_file_name(self, src):
+        self.etc.log("Chopping path {0}".format(src))
         try:
-            self.etc.print_if("Chopping path {0}".format(src))
             path, name = self.get_base_name(src)
             name , extension = self.get_extension(name)
             return(path, name, extension)
@@ -173,38 +189,57 @@ class file_op():
             self.etc.log(e)
             
     def cp(self, src, dst):
+        self.etc.log("Copying file {0} to {1}".format(src, dst))
         try:
-            self.etc.print_if("Copying file {0} to {1}".format(src, dst))
             copy2(src, dst)
         except Exception as e:
             self.etc.log(e)
             
     def rm(self, src):
+        self.etc.log("Removing file {0}".format(src))
         try:
-            self.etc.print_if("Removing file {0}".format(src))
             remove(src)
         except Exception as e:
             self.etc.log(e)
             
     def mv(self, src, dst):
+        self.etc.log("Moving file {0} to {1}".format(src, dst))
         try:
-            self.etc.print_if("Moving file {0} to {1}".format(src, dst))
             move(src, dst)
         except Exception as e:
             self.etc.log(e)
             
-    def read_array(self, src, dm=" ", dtype=float):
+    def mkdir(self, path):
         try:
-            self.etc.print_if("Reading {0}".format(src))
+            if not self.is_dir:
+                mkdir(path)
+        except Exception as e:
+            self.etc.log(e)
+            
+    def read_array(self, src, dm=" ", dtype=float):
+        self.etc.log("Reading {0}".format(src))
+        try:
             return(genfromtxt(src, comments='#', delimiter=dm, dtype=dtype))
         except Exception as e:
             self.etc.log(e)
             
     def write_array(self, src, arr, dm=" ", h=""):
+        self.etc.log("Writing to {0}".format(src))
         try:
-            self.etc.print_if("Writing to {0}".format(src))
             arr = asarray(arr)
             savetxt(src, arr, delimiter=dm, newline='\n', header=h)
         except Exception as e:
             self.etc.log(e)
             
+
+class converter():
+    def __init__(self, verb=True):
+        self.verb = verb
+        self.etc = etc(verb=self.verb)
+        
+    def list2npar(self, lst):
+        self.etc.log("Converting List to Numpy Array")
+        try:
+            return(asarray(lst))
+        except Exception as e:
+            self.etc.log(e)

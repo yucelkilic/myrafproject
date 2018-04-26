@@ -23,6 +23,11 @@ class MplCanvas(FigureCanvas):
     def __init__(self, verb=True):
         self.verb = verb
         self.etc = myEnv.etc(verb=self.verb)
+        self.fop = myEnv.file_op(verb=self.verb)
+        
+        if not self.fop.is_dir(self.etc.log_dir):
+            self.fop.mkdir(self.etc.log_dir)
+        
         # create a regular matplotlib figure
         self.etc.log("gingawidgetFile is doing something(MplCanvas).")
         try:
@@ -40,6 +45,11 @@ class gingaWidget(QtWidgets.QWidget):
     def __init__(self, parent=None, verb=True):
         self.verb = verb
         self.etc = myEnv.etc(verb=self.verb)
+        self.fop = myEnv.file_op(verb=self.verb)
+        
+        if not self.fop.is_dir(self.etc.log_dir):
+            self.fop.mkdir(self.etc.log_dir)
+        
         self.etc.log("gingawidgetFile is doing something(gingaWidget).")
         try:
             QtWidgets.QWidget.__init__(self, parent)

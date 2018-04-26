@@ -16,7 +16,7 @@ def get_graph_file_path(self):
 
 def add_files(self, flist):
     filename = QtWidgets.QFileDialog.getOpenFileNames(
-            self ,"Images...","",("Fit or Fits (*.fits *.fit)"))[0]
+            self ,"Images...","",("Fit or Fits (*.fits *.fit); New File (*.new)"))[0]
     it = flist.count() - 1
     for x in filename:
         it = it+1

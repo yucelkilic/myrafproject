@@ -9,6 +9,7 @@ from matplotlib.patches import Circle
 
 from myraf import Ui_Form
 from PyQt5 import QtWidgets
+
 from sys import argv
 
 #Importing myraf's GUI
@@ -27,18 +28,24 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         self.ui.setupUi(self)
         
         self.verb = verb
-        self.srttings_file = "./set.myc"
         
         self.etc = myEnv.etc(verb=self.verb)
+        self.cnv = myEnv.converter(verb=self.verb)
         self.fop = myEnv.file_op(verb=self.verb)
         self.fit = myAst.fits(verb=self.verb)
         self.sex = myAst.sextractor(verb=self.verb)
         self.pht = myAst.phot(verb=self.verb)
         self.clc = myAst.calc(verb=self.verb)
+        self.cat = myAst.cat(verb=self.verb)
         
-        #self.etc.log("Loading settings.")
-        #Load settings
-        #self.read_settings()
+        lfs = self.fop.get_size(self.etc.log_file) / 1048576
+        mlfs = self.fop.get_size(self.etc.mini_log_file) / 1048576
+        
+        if lfs > 5 or mlfs > 5:
+            answ = g.question(self, "Log files are getting Huge. It'll effect the performance. Would you like to clear them?")
+            if answ == QtWidgets.QMessageBox.Yes:
+                self.clear_log()
+                
         
         self.etc.log("Resetting Gui for Log tab.")
         #set Log tab
@@ -140,7 +147,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         
         self.ui.pushButton_34.clicked.connect(lambda: (self.run_sex()))
         self.ui.pushButton_16.clicked.connect(lambda: (self.do_phot()))
-        self.ui.listWidget_2.clicked.connect(lambda: (self.display_phot()))
+        self.ui.listWidget_2.clicked.connect(lambda: (self.display_phot()))        
         
         self.etc.log("Resetting Gui for A-Track tab.")
         #set a-track tab
@@ -404,7 +411,10 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                                         pref), imex[4])
                                 except Exception as e:
                                     self.etc.log(e)
-                                    continue   
+                                    continue
+                                
+                        if do_airmass:
+                            print("Do the harlem shake")
                             
                     else:
                         #Log an error about not existing file
@@ -451,12 +461,12 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         if event.button == 1:
             if self.ui.tabWidget.currentIndex() == 1:
                 if event.ydata != None and event.xdata != None:
-                    rows = self.ui.listWidget.count()
-                    row = self.ui.listWidget.currentRow()
                     img = self.ui.listWidget.currentItem()
                     if img is not None:
                         img = img.text()
                         if self.fop.is_file(img):
+                            rows = self.ui.listWidget.count()
+                            row = self.ui.listWidget.currentRow()
                             x = event.xdata
                             y = event.ydata
                             self.fit.update_header(
@@ -475,7 +485,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                                     self, ("MYRaf Error"),
                                     ("Please select a file"))
                             
-                self.display_align()
+                        self.display_align()
                 
             elif self.ui.tabWidget.currentIndex() == 2:
                 if event.ydata != None and event.xdata != None:
@@ -487,6 +497,10 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                             y = event.ydata
                             g.c_add(self, self.ui.listWidget_14,
                                     ["{:0.4f}, {:0.4f}".format(x, y)])
+                            
+                            data = self.fit.data(img)
+                            self.clc.xy2sky(data, x, y)
+                            
                         else:
                             #Log and display an error about empty listWidget
                             self.etc.log(
@@ -495,10 +509,9 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                             QtWidgets.QMessageBox.critical(
                                     self, ("MYRaf Error"),
                                     ("Please select a file"))
-    
             
-        #Reload log file to log view
-        self.reload_log()
+            #Reload log file to log view
+            self.reload_log()
 
     def get_graph_file_path(self):
         pth = self.fop.abs_path(g.get_graph_file_path(self))
@@ -1032,7 +1045,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                    self, ("MYRaf Error"), ("No file was selected"))
            
         #Reload log file to log view
-        self.reload_log()
+        self.reload_log()    
         
     #Start Photometry
     def do_phot(self):
@@ -1040,8 +1053,16 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         if not g.is_list_empty(self, self.ui.listWidget_2):
             #Check if Ensemble Photometry is selected
             if self.ui.groupBox_6.isChecked():
+                rad = float(self.ui.spinBox_3.value())
+                the_rad = rad * 0.000277778
+                odir = str(QtWidgets.QFileDialog.getExistingDirectory(
+                                    self, "Select Directory"))
+                if self.fop.is_dir(odir):
                 #Do Ensemble Photometry
-                print("Ensemble Photometry")
+                    for i in range(self.ui.listWidget_2.count()):
+                        img = self.ui.listWidget_2.item(i).text()
+                        if self.fop.is_file(img):
+                            print("Do Ensemble")
             else:
                 #Do Photometry
                 if not g.is_list_empty(self, self.ui.listWidget_14):
@@ -1488,6 +1509,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
         g.rm_all(self, self.ui.listWidget_10)
         g.add_line_by_line(self, self.ui.listWidget_10, self.etc.mini_log_file)
         self.ui.listWidget_10.scrollToBottom()
+        print("reload")
         
     def save_log(self):
         out_file = g.save_log_file(self)
@@ -1497,7 +1519,10 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
     def clear_log(self):
         answ = g.question(self, "Are you sure you want to clear log?")
         if answ == QtWidgets.QMessageBox.Yes:
+            self.fop.cp(self.etc.log_file, "{}_{}".format(self.etc.log_file, self.etc.time_stamp_()))
             self.etc.dump_mlog()
+            self.fop.cp(self.etc.mini_log_file, "{}_{}".format(self.etc.mini_log_file, self.etc.time_stamp_()))
+            self.etc.dump_log()
         self.reload_log()
         
 if __name__ == "__main__":

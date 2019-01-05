@@ -11,12 +11,25 @@
 #        Mohammad Niaei Shameoni (mshemuni@myrafproject.org).
 # This is open-source software licensed under a GPLv3 license.
 
-from myraflib import myEnv
-
-from PyQt5 import QtWidgets
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-import matplotlib.pyplot as plt
-
+try:
+    from PyQt5 import QtWidgets
+except Exception as e:
+    print("{}. PyQt5 is not installed?".format(e))
+    exit(0)
+    
+try:
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+    import matplotlib.pyplot as plt
+except Exception as e:
+    print("{}. Mtplotlib is not installed?".format(e))
+    exit(0)
+    
+try:
+    from myraflib import myEnv
+except Exception as e:
+    print("{}. Cannot find myraflib".format(e))
+    exit(0)
+    
 
 class MplCanvas(FigureCanvas):
 

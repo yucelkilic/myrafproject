@@ -59,13 +59,30 @@ For this version of cosmic.py as MYRaf team we silenced all prints and added our
 __version__ = '0.4'
 
 import os
-import numpy as np
-import scipy.signal as signal
-import scipy.ndimage as ndimage
-from astropy.io import fits as pyfits
+try:
+    import numpy as np
+except Exception as e:
+    print("{}. Numpy is not installed?".format(e))
+    exit(0)
 
-from . import myEnv
+try:
+    import scipy.signal as signal
+    import scipy.ndimage as ndimage
+except Exception as e:
+    print("{}. Scipy is not installed?".format(e))
+    exit(0)
 
+try:
+    from astropy.io import fits as pyfits
+except Exception as e:
+    print("{}. Astropy is not installed?".format(e))
+
+    exit(0)
+try:
+    from . import myEnv
+except Exception as e:
+    print("{}. Cannot find myEnv.py".format(e))
+    exit(0)
 
 
 # We define the laplacian kernel to be used

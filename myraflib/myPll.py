@@ -8,7 +8,12 @@ Created on Mon Apr  9 00:49:07 2018
 from math import ceil
 import threading
 
-from . import myEnv
+try:
+    from . import myEnv
+except Exception as e:
+    print("{}. Cannot find myEnv.py".format(e))
+    exit(0)
+
 
 class proc():
     def __init__(self, verb=True):

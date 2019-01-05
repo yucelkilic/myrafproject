@@ -6,17 +6,41 @@ Created on Fri Apr  6 14:57:43 2018
 """
 
 from math import ceil as mceil
+try:
+    from PyQt5 import QtWidgets
+except Exception as e:
+    print("{}. PyQt5 is not installed?".format(e))
+    exit(0)
 
-from PyQt5 import QtWidgets
+def save_directory(self):
+    dir = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select directory')
+    return(dir)
+
+def save_file(self):
+    filename = QtWidgets.QFileDialog.getSaveFileName(self,
+            "Output file", "", ("FITS file (*.Fit);;"))[0]
+    
+    return(filename)
+    
+def save_file_other(self):
+    filename = QtWidgets.QFileDialog.getSaveFileName(self,
+            "Output file", "", ("All files (*.*);;"))[0]
+    
+    return(filename)
 
 def get_graph_file_path(self):
     filename = QtWidgets.QFileDialog.getOpenFileName(
             self ,"Graph file","",("MY file (*.my);;"))[0]
     return(filename)
+    
+def get_file_path(self):
+    filename = QtWidgets.QFileDialog.getOpenFileName(
+            self ,"Graph file","",("All files (*);;"))[0]
+    return(filename)
 
 def add_files(self, flist):
     filename = QtWidgets.QFileDialog.getOpenFileNames(
-            self ,"Images...","",("Fit or Fits (*.fits *.fit); New File (*.new)"))[0]
+            self ,"Images...","",("Fit or Fits (*.fits *.fit)"))[0]
     it = flist.count() - 1
     for x in filename:
         it = it+1
@@ -53,8 +77,8 @@ def add_line_by_line(self, flist, file_name):
         item = QtWidgets.QListWidgetItem()
         flist.addItem(item)
         item = flist.item(it)
-        item.setText(QtWidgets.QApplication.translate("Form", "({:06d})  {}".format(
-                line_numbre, ln), None))
+        item.setText(QtWidgets.QApplication.translate(
+                "Form", "({:06d})  {}".format(line_numbre, ln), None))
 
 def replace_list_con(self, flist, lst):
     rm_all(self, flist)
@@ -84,5 +108,25 @@ def list_lenght(self, flist):
 def is_list_empty(self, flist):
     return(list_lenght(self, flist) == 0)
     
+def list_of_list(self, flist):
+    ret = []
+    for x in range(flist.count()):
+        ret.append(flist.item(x).text())
+        
+    return(ret)
+
+def list_of_selected(self, flist):
+    ret = []
+    for x in flist.selectedItems():
+        ret.append(x.text())
+    return(ret)
+    
 def proc(self, proc_dev, perc):
     proc_dev.setProperty("value", mceil(100*perc))
+    
+def is_checked_t(self, dev):
+    if dev.isChecked():
+        return("YES")
+    else:
+        return("NO")
+        

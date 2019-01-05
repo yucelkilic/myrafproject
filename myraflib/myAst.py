@@ -5,49 +5,112 @@ Created on Sat Apr  7 19:48:32 2018
 @author: mshem
 """
 #Importing needed functions
-from astropy import units as U
-from astropy import coordinates
+try:
+    from astropy import units as U
+    from astropy import coordinates
+    from astropy.time import Time
+    from astropy.wcs import WCS
+    from astropy.io import fits as fts
+    from astropy.table import Table as TBL
+    from astropy.coordinates import SkyCoord
+    from astropy.coordinates import EarthLocation
+    from astropy.coordinates import AltAz
+except Exception as e:
+    print("{}. Astropy is not installed?".format(e))
+    exit(0)
 
+try:
+    from astroquery.vizier import Vizier
+except Exception as e:
+    print("{}. Astroquery is not installed?".format(e))
+    exit(0)
 
-from astropy.time import Time
+try:
+    from scipy.ndimage.interpolation import shift
+except Exception as e:
+    print("{}. Scipy is not installed?".format(e))
+    exit(0)
 
-from astropy.wcs import WCS
-
-from astropy.io import fits as fts
-
-from astropy.table import Table as TBL
-
-from scipy.ndimage.interpolation import shift
-
-from numpy import min as nmin
-from numpy import max as nmax
-from numpy import mean as nmean
-from numpy import median as nmead
-from numpy import std as nstd
-from numpy import log10 as nlog10
-from numpy import asarray
-from numpy import float64 as nf64
-from numpy import sort as nsort
-
+try:
+    import alipy
+except Exception as e:
+    print("{}. Alipy is not installed?".format(e))
+#    exit(0)
+    
+try:
+    from numpy import min as nmin
+    from numpy import max as nmax
+    from numpy import mean as nmea
+    from numpy import median as nmed
+    from numpy import std as nstd
+    from numpy import log10 as nlog10
+    from numpy import asarray
+    from numpy import float64 as nf64
+    from numpy import sort as nsort
+    from numpy import power
+    from numpy import argmin
+except Exception as e:
+    print("{}. Numpy is not installed?".format(e))
+    exit(0)
+    
 from math import pow as mpow
 from math import sqrt as msqrt
 
-from sep import Background
-from sep import sum_circle
-from sep import extract
-
-from astroquery.vizier import Vizier
+try:
+    from sep import Background
+    from sep import sum_circle
+    from sep import extract
+except Exception as e:
+    print("{}. SEP is not installed?".format(e))
+    exit(0)
 
 from datetime import datetime
+from datetime import timedelta
+
+from glob import glob
+
+#from pyraf import iraf
+#Note: ccdtype parameter in zero, dark, flatcombine and ccdproc cannot be 
+# edited from code. I must be edited using IRAF
+try:
+    from pyraf.iraf import noao
+    from pyraf.iraf import imred
+    from pyraf.iraf import ccdred
+    from pyraf.iraf import zerocombine
+    from pyraf.iraf import darkcombine
+    from pyraf.iraf import flatcombine
+    from pyraf.iraf import ccdproc
+except Exception as e:
+    print("{}. Pyraf is not installed?".format(e))
+    exit(0)
+
 
 
 #Importing myraf's needed modules
-from . import myEnv
+try:
+    from . import myEnv
+except Exception as e:
+    print("{}. Cannot find myEnv.py".format(e))
+    exit(0)
 
 class fits():
     def __init__(self, verb=True):
         self.verb = verb
         self.etc = myEnv.etc(verb=self.verb)
+        self.fop = myEnv.file_op(verb=self.verb)
+        
+    def is_fit(self, src):
+        self.etc.log("Check if {} is a fits file".format(src))
+        try:
+            ret = False
+            if self.fop.is_file(src):
+                hdu = fts.open(src, mode='readonly')
+                hdu.close()
+                ret = True
+            
+            return(ret)
+        except Exception as e:
+            self.etc.log(e)
         
     def pure_header(self, src):
         try:
@@ -92,7 +155,7 @@ class fits():
                 return(data)
         except Exception as e:
             self.etc.log(e)
-    
+            
     def delete_header(self, src, key):
         self.etc.log("Updating {}'s Header".format(src))
         try:
@@ -103,7 +166,7 @@ class fits():
             self.etc.log(e)
     
     def update_header(self, src, key, value):
-        self.etc.log("Updating {}'s Header".format(src))
+        self.etc.log("Updating {}'s Header, {}={}".format(src, key, value))
         try:
             hdu = fts.open(src, mode='update')
             hdu[0].header[key] = value
@@ -114,11 +177,11 @@ class fits():
     def fits_stat(self, src):
         self.etc.log("Getting Stats from {}".format(src))
         try:
-            hdu = fits.open(src)
+            hdu = fts.open(src)
             image_data = hdu[0].data
             return({'Min': nmin(image_data),
                     'Max': nmax(image_data),
-                    'Mean': nmean(image_data),
+                    'Mean': nmea(image_data),
                     'Stdev': nstd(image_data)})
         except Exception as e:
             self.etc.log(e)
@@ -129,7 +192,7 @@ class fits():
             data = self.data(src, table=False)
             header = self.pure_header(src)
             new_data = self.shift_ar(data, x, y)
-            self.write_h(dest, new_data, header)
+            self.write(dest, new_data, header)
         except Exception as e:
             self.etc.log(e)
             
@@ -140,27 +203,101 @@ class fits():
         except Exception as e:
             self.etc.log(e)
         
+    def autolign(self, in_file, ref_file, out_file):
+        self.etc.log("Aligning {} using {} as reference".format(in_file, ref_file))
+
+        images_to_align = sorted(glob(in_file))
+        ref_image = ref_file
+        
+        ids = alipy.ident.run(ref_image, images_to_align, visu=True)
+        print("============================")
+        print(ids)
+        outputshape = alipy.align.shape(ref_image)
+        for the_id in ids:
+            if the_id.ok:
+                self.etc.log("{} : {} flux ratio {}".format(
+                        the_id.ukn.name, the_id.trans,
+                        the_id.medfluxratio))
+                alipy.align.affineremap(the_id.ukn.filepath,
+                                        the_id.trans, shape=outputshape,
+                                        makepng=False)
+            else:
+                self.etc.log("{} : no transformation found !".format(
+                        the_id.ukn.name))
+                
+
             
-    def write(self, dest, data):
+    def write(self, dest, data, header=None, ow=True):
         self.etc.log("Writeing data to file({})".format(dest))
         try:
-            fts.writeto(dest, data)
+            if ow and self.fop.is_file(dest):
+                self.etc.log("Over Write is Enabled for {}".format(dest))
+            fts.writeto(dest, data, header=header, overwrite=ow)
         except Exception as e:
             self.etc.log(e)
-            
-    def write_h(self, dest, data, header):
-        self.etc.log("WriteingH data to file({})".format(dest))
-        try:
-            fts.writeto(dest, data, header)
-        except Exception as e:
-            self.etc.log(e)
-        
 
 class calc():
     def __init__(self, verb=True):
         self.verb = verb
         self.etc = myEnv.etc(verb=self.verb)
         self.fit = fits(verb=self.verb)
+        
+    def sex2deg(self, deg, hour=False, sep=":"):
+        try:
+            degree, minute, second = deg.split(sep)
+            if degree.startswith("-"):
+                ret = float(degree) - float(minute) / 60 - float(second) / 3600
+            else:
+                ret = float(degree) + float(minute) / 60 + float(second) / 3600
+                
+            if hour:
+                ret = ret / 15
+                
+            return(ret)
+                
+        except Exception as e:
+            self.etc.log(e)
+        
+    def get_closest_index(self, xs, ys, searched):
+        try:
+            x_diff = abs(xs - searched[0])
+            y_diff = abs(ys - searched[1])
+            
+            dists = power(power(x_diff, 2) + power(y_diff, 2), 0.5)
+            
+            for it, i in enumerate(dists):
+                print(it, i)
+                
+            print(argmin(dists))
+            
+            return(argmin(dists))
+            
+        except Exception as e:
+            self.etc.log(e)
+        
+    def distence(self, coor1, coor2):
+        try:
+            dist = power(power(abs(coor1[0] - coor2[0]), 2
+                               ) + power(abs(coor1[1] - coor2[1]), 2), 0.5)
+            
+            return(dist)
+        except Exception as e:
+            self.etc.log(e)
+        
+        
+    def airmass(self, ra, dec, lat, lon, alt, time, utc_offset):
+        self.etc.log("Calculating airmass for ra({}), dec({}), lat({}), log({}), alt({}), time({}), utc offset({})".format(ra, dec, lat, lon, alt, time, utc_offset))
+        try:
+            object_wcs = SkyCoord(ra * U.deg, dec * U.deg, frame='icrs')
+            observatory = EarthLocation(lat=lat*U.deg,
+                                        lon=lon*U.deg, height=alt*U.m)
+            utcoffset = utc_offset * U.hour
+            utc = Time(time) - utcoffset
+            date_loc = AltAz(obstime=utc, location=observatory)
+            object_date_loc = object_wcs.transform_to(date_loc)
+            return(object_date_loc.secz)
+        except Exception as e:
+            self.etc.log(e)
         
     def flux2magmerr(self, flux, fluxerr):
         self.etc.log("Calculating Mag and Merr")
@@ -174,13 +311,13 @@ class calc():
     def radec2wcs(self, ra, dec):
         self.etc.log("Converting coordinates to WCS")
         try:
-            c = coordinates.SkyCoord('{0} {1}'.format(ra, dec),
-                                     unit=(U.hourangle, U.deg), frame='icrs')
+            c = SkyCoord('{0} {1}'.format(ra, dec), unit=(U.hourangle, U.deg),
+                         frame='icrs')
             return(c)
         except Exception as e:
             self.etc.log(e)
             
-    def xy2sky(self, file_name, x, y, sep=" "):
+    def xy2sky(self, file_name, x, y):
         self.etc.log("Converting physical coordinates to WCS")
         try:
             header = fts.getheader(file_name)
@@ -242,9 +379,9 @@ class calc():
             data = self.fit.data(src, table=False)
             the_min = nmin(data)
             the_max = nmax(data)
-            the_mea = nmean(data)
+            the_mea = nmea(data)
             the_std = nstd(data)
-            the_med = nmead(data)
+            the_med = nmed(data)
             return([the_mea, the_med, the_std, the_min, the_max])
         except Exception as e:
             self.etc.log(e)
@@ -258,7 +395,7 @@ class phot():
         self.calc = calc(verb=self.verb)
         
     def do(self, data, x_coor, y_coor, aper_radius=10.0, gain=1.21):
-        self.etc.log("Starting Photometry")
+        self.etc.log("Starting Photometry for x({}), y({}) with aperture({}) and gain({})".format(x_coor, y_coor, aper_radius, gain))
         try:
             bkg = Background(data)
             data_sub = data - bkg
@@ -293,6 +430,34 @@ class time():
                 return(str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S")))
         except Exception as e:
             self.eetc.log(e)
+            
+    def time_offset(self, time, offset, diff_type="seconds"):
+        self.etc.log("Time offset calculation for {} with {} {}".format(
+                time, offset, diff_type))
+        the_time = None
+        try:
+            the_time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%S")
+        except Exception as e:
+            self.etc.log("{}: 2dn Try".format(e))
+            try:
+                the_time = datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
+            except Exception as e:
+                self.etc.log(e)
+        try:
+            ret = None
+            if the_time is not None:
+                if diff_type == "seconds":
+                    ret = the_time + timedelta(seconds=offset)
+                elif diff_type == "minutes":
+                    ret = the_time + timedelta(minutes=offset)
+                elif diff_type == "hours":
+                    ret = the_time + timedelta(hours=offset)
+                    
+            return(ret)
+        except Exception as e:
+            self.etc.log(e)
+        
+        
     
     def jd(self, utc=False):
         try:
@@ -365,13 +530,11 @@ class cat():
         self.verb = verb
         self.etc = myEnv.etc(verb=self.verb)
         
-    def gaia(self, ra, dec, radius=0.0027, max_mag=20,
-                   max_coo_err=1, max_sources=1):
+    def gaia(self, ra, dec, radius=0.0027, max_sources=1):
         self.etc.log("Getting data from Gaia for ra({}), dec({}) and radius({})".format(ra, dec, radius))
         try:
-            field = coordinates.SkyCoord(ra=ra,dec=dec,
-                                               unit=(U.deg, U.deg),
-                                               frame='icrs')
+            field = coordinates.SkyCoord(ra=ra,dec=dec, unit=(U.deg, U.deg),
+                                         frame='icrs')
             
             vquery = Vizier(columns=['Source', 'RA_ICRS', 'DE_ICRS',
                                      'e_RA_ICRS','e_DE_ICRS',
@@ -384,13 +547,11 @@ class cat():
         except Exception as e:
             self.etc.log(e)
             
-    def nomad(self, ra, dec, radius=0.0027, min_mag=10,
-              max_mag=20, max_sources=1):
+    def nomad(self, ra, dec, radius=0.0027, max_sources=1):
         self.etc.log("Getting data from Nomad for ra({}), dec({}) and radius({})".format(ra, dec, radius))
         try:
-            c = coordinates.SkyCoord(ra, dec,
-                                           unit=(U.deg, U.deg),
-                                           frame='icrs')
+            c = coordinates.SkyCoord(ra, dec, unit=(U.deg, U.deg),
+                                     frame='icrs')
             r = radius * U.deg
 
             vquery = Vizier(columns=['NOMAD1', 'RAJ2000', 'DEJ2000', 'Bmag',
@@ -402,8 +563,7 @@ class cat():
         except Exception as e:
             self.etc.log(e)
             
-    def usno(self, ra, dec, radius=0.0027, min_mag=10,
-              max_mag=20, max_sources=1):
+    def usno(self, ra, dec, radius=0.0027, max_sources=1):
         self.etc.log("Getting data from Usno for ra({}), dec({}) and radius({})".format(ra, dec, radius))
         try:
             c = coordinates.SkyCoord(ra, dec,
@@ -419,4 +579,185 @@ class cat():
             return(result)
         except Exception as e:
             self.etc.log(e)
+            
+class calibration():
+    def __init__(self, verb=True):
+        self.verb = verb
+        self.fit = fits(verb=self.verb)
+        self.etc = myEnv.etc(verb=self.verb)
+        self.fop = myEnv.file_op(verb=self.verb)
+        
+    def the_zerocombine(self, in_file_list, out_file, method="median",
+                        rejection="minmax"):
+        self.etc.log("Zerocombine started for {} files using combine({}) and rejection({})".format(len(in_file_list), method, rejection))
+        try:
+            if self.fop.is_file(out_file):
+                self.fop.rm(out_file)
+                
+            files = []
+            for file in in_file_list:
+                if self.fit.is_fit(file):
+                    files.append(file)
+            
+            if not len(files) == 0:
+                self.fop.write_list("/tmp/myraf_blist", files)
+                    
+                zc = zerocombine
+                zc.input = "@\/tmp\/myraf_blist"
+                zc.output = out_file
+                zc.combine = method
+                zc.reject = rejection
+                zc.ccdtype = ""
+                zc.process = "no"
+                
+                zc._runCode()
+            else:
+                self.etc.log("No files to combine")
+            
+        except Exception as e:
+            self.etc.log(e)
+            
+    def the_darkcombine(self, in_file_list, out_file, zero=None,
+                        method="Median", rejection="minmax", scale="exposure"):
+        self.etc.log("Darkcombine started for {} files using combine({}), rejection({}) and scale({}) and zero({})".format(len(in_file_list), method, rejection, scale, zero))
+        try:
+            if self.fop.is_file(out_file):
+                self.fop.rm(out_file)
+                
+            files = []
+            for file in in_file_list:
+                if self.fit.is_fit(file):
+                    files.append(file)
+            
+            if not len(files) == 0:
+                self.fop.write_list("/tmp/myraf_dlist", files)
 
+                dc = darkcombine
+                dc.input = "@\/tmp\/myraf_dlist"
+                dc.output = out_file
+                dc.combine = method
+                dc.reject = rejection
+                dc.ccdtype = ""
+                dc.scale = scale
+                
+                if zero is not None and self.fop.is_file(zero):
+                    cp = ccdproc
+                    cp.ccdtype = ""
+                    
+                    cp.fixpix = "no"
+                    cp.overscan = "no"
+                    cp.trim = "no"
+                    cp.zerocor = "yes"
+                    cp.darkcor = "no"
+                    cp.flatcor = "no"
+                    cp.zero = zero
+                    
+                    
+                    dc.process = "yes"
+                else:
+                    dc.process = "no"
+                
+
+                dc._runCode()
+                
+            else:
+                self.etc.log("No files to combine")
+        except Exception as e:
+            self.etc.log(e)
+
+    def the_flatcombine(self, in_file_list, out_file, dark=None, zero=None,
+                        method="Median", rejection="minmax", subset="yes"):
+        self.etc.log("Flatcombine started for {} files using combine({}), rejection({}) and subset=({}) and zero({}) and dark({})".format(len(in_file_list), method, rejection, subset, zero, dark))
+        try:
+            if self.fop.is_file("{}*".format(out_file)):
+                self.fop.rm("{}*".format(out_file))
+                
+            files = []
+            for file in in_file_list:
+                if self.fit.is_fit(file):
+                    files.append(file)
+            
+            if not len(files) == 0:
+                self.fop.write_list("/tmp/myraf_flist", files)
+                
+                fc = flatcombine
+                fc.input = "@\/tmp\/myraf_flist"
+                fc.output = out_file
+                fc.combine = method
+                fc.reject = rejection
+                fc.ccdtype = ""
+                fc.subsets = subset
+                if dark is not None or zero is not None:
+                    fc.process = "yes"
+                    cp = ccdproc
+                    cp.ccdtype = ""
+                    
+                    cp.fixpix = "no"
+                    cp.overscan = "no"
+                    cp.trim = "no"
+                    cp.flatcor = "no"
+                    cp.zerocor = "no"
+                    cp.darkcor = "no"
+                    
+                    if zero is not None and self.fop.is_file(zero):
+                        cp.zerocor = "yes"
+                        cp.zero = zero
+                    
+                    if dark is not None and self.fop.is_file(dark):
+                        cp.darkcor = "yes"
+                        cp.dark = dark
+                        
+                else:
+                    fc.process = "no"
+                    
+                fc._runCode()
+            
+        except Exception as e:
+            self.etc.log(e)
+            
+        
+    def the_calibration(self, in_file, out_file, zero=None, dark=None,
+                        flat=None, subset="yes"):
+        self.etc.log("Calibration started for {} with zero({}), dark({}) and flat({}) and subset({})".format(in_file, zero, dark, flat, subset))
+        try:
+            cp = ccdproc
+            cp.images = in_file
+            
+            cp.output = out_file
+            cp.ccdtype = ""
+            cp.fixpix = "no"
+            cp.overscan = "no"
+            cp.trim = "no"
+            cp.zerocor = "no"
+            cp.darkcor = "no"
+            cp.flatcor = "no"
+            
+            if zero is not None:
+                cp.zerocor = "yes"
+                cp.zero = zero
+                
+            if dark is not None:
+                cp.darkcor = "yes"
+                cp.dark = dark
+                
+            if flat is not None:
+                cp.flatcor = "yes"
+                cp.flat = flat
+                
+            if subset == "no" and flat is not None:
+                tmp_subset = self.fit.header(in_file, "SUBSET")
+                if tmp_subset is not None:
+                    self.fit.update_header(in_file, "MYSEUBS", tmp_subset)
+                self.fit.delete_header(in_file, "SUBSET")
+            
+            cp(images = str(in_file))
+            
+            if subset == "no" and flat is not None:
+                tmp_subset = self.fit.header(in_file, "MYSEUBS")
+                if tmp_subset is not None:
+                    self.fit.update_header(in_file, "SUBSET", tmp_subset)
+                self.fit.delete_header(in_file, "MYSEUBS")
+                
+            
+        except Exception as e:
+            self.etc.log(e)

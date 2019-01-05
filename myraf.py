@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\myraf.ui'
+# Form implementation generated from reading ui file 'myraf.ui'
 #
-# Created by: PyQt5 UI code generator 5.6
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(750, 700)
+        Form.resize(750, 731)
         self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName("gridLayout")
         self.tabWidget = QtWidgets.QTabWidget(Form)
@@ -19,14 +19,27 @@ class Ui_Form(object):
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.tab)
-        self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_3.setObjectName("gridLayout_3")
+        self.gridLayout_2 = QtWidgets.QGridLayout()
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.label = QtWidgets.QLabel(self.tab)
+        self.label.setObjectName("label")
+        self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
+        self.progressBar = QtWidgets.QProgressBar(self.tab)
+        self.progressBar.setProperty("value", 24)
+        self.progressBar.setObjectName("progressBar")
+        self.gridLayout_2.addWidget(self.progressBar, 1, 0, 1, 1)
+        self.pushButton = QtWidgets.QPushButton(self.tab)
+        self.pushButton.setMinimumSize(QtCore.QSize(50, 50))
+        self.pushButton.setMaximumSize(QtCore.QSize(50, 50))
+        self.pushButton.setObjectName("pushButton")
+        self.gridLayout_2.addWidget(self.pushButton, 0, 1, 2, 1)
+        self.gridLayout_3.addLayout(self.gridLayout_2, 1, 0, 1, 1)
         self.tabWidget_2 = QtWidgets.QTabWidget(self.tab)
         self.tabWidget_2.setObjectName("tabWidget_2")
         self.tab_7 = QtWidgets.QWidget()
         self.tab_7.setObjectName("tab_7")
         self.gridLayout_7 = QtWidgets.QGridLayout(self.tab_7)
-        self.gridLayout_7.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_7.setObjectName("gridLayout_7")
         self.listWidget_6 = QtWidgets.QListWidget(self.tab_7)
         self.listWidget_6.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
@@ -49,108 +62,89 @@ class Ui_Form(object):
         self.tab_8 = QtWidgets.QWidget()
         self.tab_8.setObjectName("tab_8")
         self.gridLayout_8 = QtWidgets.QGridLayout(self.tab_8)
-        self.gridLayout_8.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_8.setObjectName("gridLayout_8")
         self.listWidget_7 = QtWidgets.QListWidget(self.tab_8)
         self.listWidget_7.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.listWidget_7.setObjectName("listWidget_7")
         self.gridLayout_8.addWidget(self.listWidget_7, 0, 0, 1, 4)
-        self.label_4 = QtWidgets.QLabel(self.tab_8)
-        self.label_4.setObjectName("label_4")
-        self.gridLayout_8.addWidget(self.label_4, 1, 0, 1, 1)
         self.pushButton_37 = QtWidgets.QPushButton(self.tab_8)
         self.pushButton_37.setMinimumSize(QtCore.QSize(72, 0))
         self.pushButton_37.setMaximumSize(QtCore.QSize(72, 16777215))
         self.pushButton_37.setObjectName("pushButton_37")
         self.gridLayout_8.addWidget(self.pushButton_37, 1, 1, 1, 1)
-        self.pushButton_7 = QtWidgets.QPushButton(self.tab_8)
-        self.pushButton_7.setMinimumSize(QtCore.QSize(72, 0))
-        self.pushButton_7.setMaximumSize(QtCore.QSize(72, 16777215))
-        self.pushButton_7.setObjectName("pushButton_7")
-        self.gridLayout_8.addWidget(self.pushButton_7, 1, 2, 1, 1)
         self.pushButton_8 = QtWidgets.QPushButton(self.tab_8)
         self.pushButton_8.setMinimumSize(QtCore.QSize(72, 0))
         self.pushButton_8.setMaximumSize(QtCore.QSize(72, 16777215))
         self.pushButton_8.setObjectName("pushButton_8")
         self.gridLayout_8.addWidget(self.pushButton_8, 1, 3, 1, 1)
+        self.label_4 = QtWidgets.QLabel(self.tab_8)
+        self.label_4.setObjectName("label_4")
+        self.gridLayout_8.addWidget(self.label_4, 1, 0, 1, 1)
+        self.pushButton_7 = QtWidgets.QPushButton(self.tab_8)
+        self.pushButton_7.setMinimumSize(QtCore.QSize(72, 0))
+        self.pushButton_7.setMaximumSize(QtCore.QSize(72, 16777215))
+        self.pushButton_7.setObjectName("pushButton_7")
+        self.gridLayout_8.addWidget(self.pushButton_7, 1, 2, 1, 1)
         self.tabWidget_2.addTab(self.tab_8, "")
         self.tab_9 = QtWidgets.QWidget()
         self.tab_9.setObjectName("tab_9")
         self.gridLayout_9 = QtWidgets.QGridLayout(self.tab_9)
-        self.gridLayout_9.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_9.setObjectName("gridLayout_9")
         self.listWidget_8 = QtWidgets.QListWidget(self.tab_9)
         self.listWidget_8.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.listWidget_8.setObjectName("listWidget_8")
         self.gridLayout_9.addWidget(self.listWidget_8, 0, 0, 1, 4)
-        self.label_5 = QtWidgets.QLabel(self.tab_9)
-        self.label_5.setObjectName("label_5")
-        self.gridLayout_9.addWidget(self.label_5, 1, 0, 1, 1)
-        self.pushButton_40 = QtWidgets.QPushButton(self.tab_9)
-        self.pushButton_40.setMinimumSize(QtCore.QSize(72, 0))
-        self.pushButton_40.setMaximumSize(QtCore.QSize(72, 16777215))
-        self.pushButton_40.setObjectName("pushButton_40")
-        self.gridLayout_9.addWidget(self.pushButton_40, 1, 1, 1, 1)
-        self.pushButton_9 = QtWidgets.QPushButton(self.tab_9)
-        self.pushButton_9.setMinimumSize(QtCore.QSize(72, 0))
-        self.pushButton_9.setMaximumSize(QtCore.QSize(72, 16777215))
-        self.pushButton_9.setObjectName("pushButton_9")
-        self.gridLayout_9.addWidget(self.pushButton_9, 1, 2, 1, 1)
         self.pushButton_10 = QtWidgets.QPushButton(self.tab_9)
         self.pushButton_10.setMinimumSize(QtCore.QSize(72, 0))
         self.pushButton_10.setMaximumSize(QtCore.QSize(72, 16777215))
         self.pushButton_10.setObjectName("pushButton_10")
         self.gridLayout_9.addWidget(self.pushButton_10, 1, 3, 1, 1)
+        self.label_5 = QtWidgets.QLabel(self.tab_9)
+        self.label_5.setObjectName("label_5")
+        self.gridLayout_9.addWidget(self.label_5, 1, 0, 1, 1)
+        self.pushButton_9 = QtWidgets.QPushButton(self.tab_9)
+        self.pushButton_9.setMinimumSize(QtCore.QSize(72, 0))
+        self.pushButton_9.setMaximumSize(QtCore.QSize(72, 16777215))
+        self.pushButton_9.setObjectName("pushButton_9")
+        self.gridLayout_9.addWidget(self.pushButton_9, 1, 2, 1, 1)
+        self.pushButton_40 = QtWidgets.QPushButton(self.tab_9)
+        self.pushButton_40.setMinimumSize(QtCore.QSize(72, 0))
+        self.pushButton_40.setMaximumSize(QtCore.QSize(72, 16777215))
+        self.pushButton_40.setObjectName("pushButton_40")
+        self.gridLayout_9.addWidget(self.pushButton_40, 1, 1, 1, 1)
         self.tabWidget_2.addTab(self.tab_9, "")
         self.tab_10 = QtWidgets.QWidget()
         self.tab_10.setObjectName("tab_10")
         self.gridLayout_10 = QtWidgets.QGridLayout(self.tab_10)
-        self.gridLayout_10.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_10.setObjectName("gridLayout_10")
-        self.listWidget_9 = QtWidgets.QListWidget(self.tab_10)
-        self.listWidget_9.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-        self.listWidget_9.setObjectName("listWidget_9")
-        self.gridLayout_10.addWidget(self.listWidget_9, 0, 0, 1, 4)
-        self.label_6 = QtWidgets.QLabel(self.tab_10)
-        self.label_6.setObjectName("label_6")
-        self.gridLayout_10.addWidget(self.label_6, 1, 0, 1, 1)
-        self.pushButton_41 = QtWidgets.QPushButton(self.tab_10)
-        self.pushButton_41.setMinimumSize(QtCore.QSize(72, 0))
-        self.pushButton_41.setMaximumSize(QtCore.QSize(72, 16777215))
-        self.pushButton_41.setObjectName("pushButton_41")
-        self.gridLayout_10.addWidget(self.pushButton_41, 1, 1, 1, 1)
-        self.pushButton_11 = QtWidgets.QPushButton(self.tab_10)
-        self.pushButton_11.setMinimumSize(QtCore.QSize(72, 0))
-        self.pushButton_11.setMaximumSize(QtCore.QSize(72, 16777215))
-        self.pushButton_11.setObjectName("pushButton_11")
-        self.gridLayout_10.addWidget(self.pushButton_11, 1, 2, 1, 1)
         self.pushButton_12 = QtWidgets.QPushButton(self.tab_10)
         self.pushButton_12.setMinimumSize(QtCore.QSize(72, 0))
         self.pushButton_12.setMaximumSize(QtCore.QSize(72, 16777215))
         self.pushButton_12.setObjectName("pushButton_12")
         self.gridLayout_10.addWidget(self.pushButton_12, 1, 3, 1, 1)
+        self.pushButton_41 = QtWidgets.QPushButton(self.tab_10)
+        self.pushButton_41.setMinimumSize(QtCore.QSize(72, 0))
+        self.pushButton_41.setMaximumSize(QtCore.QSize(72, 16777215))
+        self.pushButton_41.setObjectName("pushButton_41")
+        self.gridLayout_10.addWidget(self.pushButton_41, 1, 1, 1, 1)
+        self.label_6 = QtWidgets.QLabel(self.tab_10)
+        self.label_6.setObjectName("label_6")
+        self.gridLayout_10.addWidget(self.label_6, 1, 0, 1, 1)
+        self.listWidget_9 = QtWidgets.QListWidget(self.tab_10)
+        self.listWidget_9.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.listWidget_9.setObjectName("listWidget_9")
+        self.gridLayout_10.addWidget(self.listWidget_9, 0, 0, 1, 4)
+        self.pushButton_11 = QtWidgets.QPushButton(self.tab_10)
+        self.pushButton_11.setMinimumSize(QtCore.QSize(72, 0))
+        self.pushButton_11.setMaximumSize(QtCore.QSize(72, 16777215))
+        self.pushButton_11.setObjectName("pushButton_11")
+        self.gridLayout_10.addWidget(self.pushButton_11, 1, 2, 1, 1)
         self.tabWidget_2.addTab(self.tab_10, "")
         self.gridLayout_3.addWidget(self.tabWidget_2, 0, 0, 1, 1)
-        self.gridLayout_2 = QtWidgets.QGridLayout()
-        self.gridLayout_2.setObjectName("gridLayout_2")
-        self.label = QtWidgets.QLabel(self.tab)
-        self.label.setObjectName("label")
-        self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
-        self.pushButton = QtWidgets.QPushButton(self.tab)
-        self.pushButton.setMinimumSize(QtCore.QSize(50, 50))
-        self.pushButton.setMaximumSize(QtCore.QSize(50, 50))
-        self.pushButton.setObjectName("pushButton")
-        self.gridLayout_2.addWidget(self.pushButton, 0, 1, 2, 1)
-        self.progressBar = QtWidgets.QProgressBar(self.tab)
-        self.progressBar.setProperty("value", 24)
-        self.progressBar.setObjectName("progressBar")
-        self.gridLayout_2.addWidget(self.progressBar, 1, 0, 1, 1)
-        self.gridLayout_3.addLayout(self.gridLayout_2, 1, 0, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.gridLayout_6 = QtWidgets.QGridLayout(self.tab_2)
-        self.gridLayout_6.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_6.setObjectName("gridLayout_6")
         self.groupBox = QtWidgets.QGroupBox(self.tab_2)
         self.groupBox.setObjectName("groupBox")
@@ -211,14 +205,12 @@ class Ui_Form(object):
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
         self.gridLayout_14 = QtWidgets.QGridLayout(self.tab_3)
-        self.gridLayout_14.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_14.setObjectName("gridLayout_14")
         self.tabWidget_6 = QtWidgets.QTabWidget(self.tab_3)
         self.tabWidget_6.setObjectName("tabWidget_6")
         self.tab_25 = QtWidgets.QWidget()
         self.tab_25.setObjectName("tab_25")
         self.gridLayout_60 = QtWidgets.QGridLayout(self.tab_25)
-        self.gridLayout_60.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_60.setObjectName("gridLayout_60")
         self.groupBox_3 = QtWidgets.QGroupBox(self.tab_25)
         self.groupBox_3.setObjectName("groupBox_3")
@@ -302,7 +294,6 @@ class Ui_Form(object):
         self.tab_26 = QtWidgets.QWidget()
         self.tab_26.setObjectName("tab_26")
         self.gridLayout_63 = QtWidgets.QGridLayout(self.tab_26)
-        self.gridLayout_63.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_63.setObjectName("gridLayout_63")
         self.groupBox_16 = QtWidgets.QGroupBox(self.tab_26)
         self.groupBox_16.setObjectName("groupBox_16")
@@ -384,14 +375,12 @@ class Ui_Form(object):
         self.tab_4 = QtWidgets.QWidget()
         self.tab_4.setObjectName("tab_4")
         self.gridLayout_15 = QtWidgets.QGridLayout(self.tab_4)
-        self.gridLayout_15.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_15.setObjectName("gridLayout_15")
         self.tabWidget_3 = QtWidgets.QTabWidget(self.tab_4)
         self.tabWidget_3.setObjectName("tabWidget_3")
         self.tab_11 = QtWidgets.QWidget()
         self.tab_11.setObjectName("tab_11")
         self.gridLayout_30 = QtWidgets.QGridLayout(self.tab_11)
-        self.gridLayout_30.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_30.setObjectName("gridLayout_30")
         self.groupBox_8 = QtWidgets.QGroupBox(self.tab_11)
         self.groupBox_8.setObjectName("groupBox_8")
@@ -456,7 +445,7 @@ class Ui_Form(object):
         self.pushButton_38.setMinimumSize(QtCore.QSize(100, 25))
         self.pushButton_38.setMaximumSize(QtCore.QSize(100, 25))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../.designer/.designer/backup/img/rem.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../../../../../../../.designer/.designer/.designer/backup/img/rem.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_38.setIcon(icon)
         self.pushButton_38.setObjectName("pushButton_38")
         self.gridLayout_29.addWidget(self.pushButton_38, 2, 2, 1, 1)
@@ -464,7 +453,7 @@ class Ui_Form(object):
         self.pushButton_39.setMinimumSize(QtCore.QSize(130, 25))
         self.pushButton_39.setMaximumSize(QtCore.QSize(130, 25))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("../.designer/.designer/backup/img/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("../../../../../../../.designer/.designer/.designer/backup/img/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_39.setIcon(icon1)
         self.pushButton_39.setObjectName("pushButton_39")
         self.gridLayout_29.addWidget(self.pushButton_39, 2, 3, 1, 1)
@@ -483,7 +472,6 @@ class Ui_Form(object):
         self.tab_12 = QtWidgets.QWidget()
         self.tab_12.setObjectName("tab_12")
         self.gridLayout_47 = QtWidgets.QGridLayout(self.tab_12)
-        self.gridLayout_47.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_47.setObjectName("gridLayout_47")
         self.groupBox_12 = QtWidgets.QGroupBox(self.tab_12)
         self.groupBox_12.setObjectName("groupBox_12")
@@ -564,7 +552,6 @@ class Ui_Form(object):
         self.tab_13 = QtWidgets.QWidget()
         self.tab_13.setObjectName("tab_13")
         self.gridLayout_33 = QtWidgets.QGridLayout(self.tab_13)
-        self.gridLayout_33.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_33.setObjectName("gridLayout_33")
         self.groupBox_32 = QtWidgets.QGroupBox(self.tab_13)
         self.groupBox_32.setObjectName("groupBox_32")
@@ -621,7 +608,6 @@ class Ui_Form(object):
         self.tab_14 = QtWidgets.QWidget()
         self.tab_14.setObjectName("tab_14")
         self.gridLayout_34 = QtWidgets.QGridLayout(self.tab_14)
-        self.gridLayout_34.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_34.setObjectName("gridLayout_34")
         self.listWidget_11 = QtWidgets.QListWidget(self.tab_14)
         self.listWidget_11.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
@@ -658,17 +644,9 @@ class Ui_Form(object):
         self.tabWidget_3.addTab(self.tab_14, "")
         self.tab_30 = QtWidgets.QWidget()
         self.tab_30.setObjectName("tab_30")
-        self.gridLayout_74 = QtWidgets.QGridLayout(self.tab_30)
-        self.gridLayout_74.setContentsMargins(0, 0, 0, 0)
-        self.gridLayout_74.setObjectName("gridLayout_74")
-        self.tabWidget_7 = QtWidgets.QTabWidget(self.tab_30)
-        self.tabWidget_7.setObjectName("tabWidget_7")
-        self.tab_31 = QtWidgets.QWidget()
-        self.tab_31.setObjectName("tab_31")
-        self.gridLayout_80 = QtWidgets.QGridLayout(self.tab_31)
-        self.gridLayout_80.setContentsMargins(0, 0, 0, 0)
-        self.gridLayout_80.setObjectName("gridLayout_80")
-        self.groupBox_33 = QtWidgets.QGroupBox(self.tab_31)
+        self.gridLayout_62 = QtWidgets.QGridLayout(self.tab_30)
+        self.gridLayout_62.setObjectName("gridLayout_62")
+        self.groupBox_33 = QtWidgets.QGroupBox(self.tab_30)
         self.groupBox_33.setCheckable(True)
         self.groupBox_33.setObjectName("groupBox_33")
         self.gridLayout_77 = QtWidgets.QGridLayout(self.groupBox_33)
@@ -679,8 +657,8 @@ class Ui_Form(object):
         self.comboBox_16 = QtWidgets.QComboBox(self.groupBox_33)
         self.comboBox_16.setObjectName("comboBox_16")
         self.gridLayout_77.addWidget(self.comboBox_16, 0, 1, 1, 1)
-        self.gridLayout_80.addWidget(self.groupBox_33, 0, 0, 1, 2)
-        self.groupBox_30 = QtWidgets.QGroupBox(self.tab_31)
+        self.gridLayout_62.addWidget(self.groupBox_33, 0, 0, 1, 3)
+        self.groupBox_30 = QtWidgets.QGroupBox(self.tab_30)
         self.groupBox_30.setMinimumSize(QtCore.QSize(170, 0))
         self.groupBox_30.setMaximumSize(QtCore.QSize(170, 16777215))
         self.groupBox_30.setObjectName("groupBox_30")
@@ -702,8 +680,8 @@ class Ui_Form(object):
         self.pushButton_46.setMaximumSize(QtCore.QSize(72, 16777215))
         self.pushButton_46.setObjectName("pushButton_46")
         self.gridLayout_75.addWidget(self.pushButton_46, 1, 0, 1, 1)
-        self.gridLayout_80.addWidget(self.groupBox_30, 0, 2, 5, 1)
-        self.groupBox_34 = QtWidgets.QGroupBox(self.tab_31)
+        self.gridLayout_62.addWidget(self.groupBox_30, 0, 3, 6, 1)
+        self.groupBox_34 = QtWidgets.QGroupBox(self.tab_30)
         self.groupBox_34.setCheckable(True)
         self.groupBox_34.setObjectName("groupBox_34")
         self.gridLayout_78 = QtWidgets.QGridLayout(self.groupBox_34)
@@ -732,72 +710,104 @@ class Ui_Form(object):
         self.comboBox_22 = QtWidgets.QComboBox(self.groupBox_34)
         self.comboBox_22.setObjectName("comboBox_22")
         self.gridLayout_78.addWidget(self.comboBox_22, 3, 1, 1, 1)
-        self.gridLayout_80.addWidget(self.groupBox_34, 1, 0, 1, 2)
-        self.groupBox_35 = QtWidgets.QGroupBox(self.tab_31)
+        self.gridLayout_62.addWidget(self.groupBox_34, 1, 0, 1, 3)
+        self.groupBox_35 = QtWidgets.QGroupBox(self.tab_30)
         self.groupBox_35.setCheckable(True)
         self.groupBox_35.setObjectName("groupBox_35")
-        self.gridLayout_79 = QtWidgets.QGridLayout(self.groupBox_35)
-        self.gridLayout_79.setObjectName("gridLayout_79")
+        self.gridLayout_51 = QtWidgets.QGridLayout(self.groupBox_35)
+        self.gridLayout_51.setObjectName("gridLayout_51")
         self.checkBox_8 = QtWidgets.QCheckBox(self.groupBox_35)
         self.checkBox_8.setChecked(True)
         self.checkBox_8.setObjectName("checkBox_8")
-        self.gridLayout_79.addWidget(self.checkBox_8, 0, 0, 1, 1)
+        self.gridLayout_51.addWidget(self.checkBox_8, 0, 0, 1, 1)
         self.checkBox_9 = QtWidgets.QCheckBox(self.groupBox_35)
         self.checkBox_9.setChecked(True)
         self.checkBox_9.setObjectName("checkBox_9")
-        self.gridLayout_79.addWidget(self.checkBox_9, 1, 0, 1, 1)
+        self.gridLayout_51.addWidget(self.checkBox_9, 0, 1, 1, 1)
         self.checkBox_10 = QtWidgets.QCheckBox(self.groupBox_35)
         self.checkBox_10.setChecked(True)
         self.checkBox_10.setObjectName("checkBox_10")
-        self.gridLayout_79.addWidget(self.checkBox_10, 2, 0, 1, 1)
+        self.gridLayout_51.addWidget(self.checkBox_10, 0, 2, 1, 1)
         self.checkBox_11 = QtWidgets.QCheckBox(self.groupBox_35)
         self.checkBox_11.setChecked(True)
         self.checkBox_11.setObjectName("checkBox_11")
-        self.gridLayout_79.addWidget(self.checkBox_11, 3, 0, 1, 1)
+        self.gridLayout_51.addWidget(self.checkBox_11, 0, 3, 1, 1)
         self.checkBox_12 = QtWidgets.QCheckBox(self.groupBox_35)
         self.checkBox_12.setChecked(True)
         self.checkBox_12.setObjectName("checkBox_12")
-        self.gridLayout_79.addWidget(self.checkBox_12, 4, 0, 1, 1)
-        self.gridLayout_80.addWidget(self.groupBox_35, 2, 0, 1, 2)
-        self.label_50 = QtWidgets.QLabel(self.tab_31)
+        self.gridLayout_51.addWidget(self.checkBox_12, 0, 4, 1, 1)
+        self.gridLayout_62.addWidget(self.groupBox_35, 2, 0, 1, 3)
+        self.groupBox_14 = QtWidgets.QGroupBox(self.tab_30)
+        self.groupBox_14.setCheckable(True)
+        self.groupBox_14.setObjectName("groupBox_14")
+        self.gridLayout_59 = QtWidgets.QGridLayout(self.groupBox_14)
+        self.gridLayout_59.setObjectName("gridLayout_59")
+        self.label_61 = QtWidgets.QLabel(self.groupBox_14)
+        self.label_61.setObjectName("label_61")
+        self.gridLayout_59.addWidget(self.label_61, 0, 0, 1, 2)
+        self.comboBox_20 = QtWidgets.QComboBox(self.groupBox_14)
+        self.comboBox_20.setObjectName("comboBox_20")
+        self.gridLayout_59.addWidget(self.comboBox_20, 0, 2, 1, 2)
+        self.label_7 = QtWidgets.QLabel(self.groupBox_14)
+        self.label_7.setObjectName("label_7")
+        self.gridLayout_59.addWidget(self.label_7, 1, 0, 1, 1)
+        self.doubleSpinBox_2 = QtWidgets.QDoubleSpinBox(self.groupBox_14)
+        self.doubleSpinBox_2.setMinimum(-31536000.0)
+        self.doubleSpinBox_2.setMaximum(31536000.0)
+        self.doubleSpinBox_2.setProperty("value", 10800.0)
+        self.doubleSpinBox_2.setObjectName("doubleSpinBox_2")
+        self.gridLayout_59.addWidget(self.doubleSpinBox_2, 1, 1, 1, 2)
+        self.comboBox = QtWidgets.QComboBox(self.groupBox_14)
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.gridLayout_59.addWidget(self.comboBox, 1, 3, 1, 1)
+        self.gridLayout_62.addWidget(self.groupBox_14, 3, 0, 1, 3)
+        self.label_50 = QtWidgets.QLabel(self.tab_30)
         self.label_50.setObjectName("label_50")
-        self.gridLayout_80.addWidget(self.label_50, 3, 0, 1, 1)
-        self.lineEdit_9 = QtWidgets.QLineEdit(self.tab_31)
+        self.gridLayout_62.addWidget(self.label_50, 4, 0, 1, 1)
+        self.lineEdit_9 = QtWidgets.QLineEdit(self.tab_30)
         self.lineEdit_9.setObjectName("lineEdit_9")
-        self.gridLayout_80.addWidget(self.lineEdit_9, 3, 1, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 219, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_80.addItem(spacerItem2, 4, 1, 1, 1)
+        self.gridLayout_62.addWidget(self.lineEdit_9, 4, 1, 1, 1)
+        spacerItem2 = QtWidgets.QSpacerItem(238, 17, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_62.addItem(spacerItem2, 4, 2, 1, 1)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 63, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_62.addItem(spacerItem3, 5, 0, 1, 1)
+        spacerItem4 = QtWidgets.QSpacerItem(20, 63, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_62.addItem(spacerItem4, 5, 1, 1, 1)
+        spacerItem5 = QtWidgets.QSpacerItem(20, 63, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_62.addItem(spacerItem5, 5, 2, 1, 1)
         self.gridLayout_76 = QtWidgets.QGridLayout()
         self.gridLayout_76.setObjectName("gridLayout_76")
-        self.label_49 = QtWidgets.QLabel(self.tab_31)
+        self.label_49 = QtWidgets.QLabel(self.tab_30)
         self.label_49.setObjectName("label_49")
         self.gridLayout_76.addWidget(self.label_49, 0, 0, 1, 1)
-        self.pushButton_48 = QtWidgets.QPushButton(self.tab_31)
+        self.pushButton_48 = QtWidgets.QPushButton(self.tab_30)
         self.pushButton_48.setMinimumSize(QtCore.QSize(50, 50))
         self.pushButton_48.setMaximumSize(QtCore.QSize(50, 50))
         self.pushButton_48.setObjectName("pushButton_48")
         self.gridLayout_76.addWidget(self.pushButton_48, 0, 1, 2, 1)
-        self.progressBar_9 = QtWidgets.QProgressBar(self.tab_31)
+        self.progressBar_9 = QtWidgets.QProgressBar(self.tab_30)
         self.progressBar_9.setProperty("value", 24)
         self.progressBar_9.setObjectName("progressBar_9")
         self.gridLayout_76.addWidget(self.progressBar_9, 1, 0, 1, 1)
-        self.gridLayout_80.addLayout(self.gridLayout_76, 5, 0, 1, 3)
-        self.tabWidget_7.addTab(self.tab_31, "")
-        self.tab_35 = QtWidgets.QWidget()
-        self.tab_35.setObjectName("tab_35")
-        self.tabWidget_7.addTab(self.tab_35, "")
-        self.gridLayout_74.addWidget(self.tabWidget_7, 0, 0, 1, 1)
+        self.gridLayout_62.addLayout(self.gridLayout_76, 6, 0, 1, 4)
         self.tabWidget_3.addTab(self.tab_30, "")
         self.tab_15 = QtWidgets.QWidget()
         self.tab_15.setObjectName("tab_15")
         self.gridLayout_73 = QtWidgets.QGridLayout(self.tab_15)
-        self.gridLayout_73.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_73.setObjectName("gridLayout_73")
+        self.pushButton_45 = QtWidgets.QPushButton(self.tab_15)
+        self.pushButton_45.setMinimumSize(QtCore.QSize(72, 0))
+        self.pushButton_45.setMaximumSize(QtCore.QSize(72, 16777215))
+        self.pushButton_45.setObjectName("pushButton_45")
+        self.gridLayout_73.addWidget(self.pushButton_45, 3, 1, 1, 1)
         self.groupBox_27 = QtWidgets.QGroupBox(self.tab_15)
         self.groupBox_27.setObjectName("groupBox_27")
         self.gridLayout_67 = QtWidgets.QGridLayout(self.groupBox_27)
         self.gridLayout_67.setObjectName("gridLayout_67")
-        self.disp_photometry_2 = gingaWidget(self.groupBox_27)
+        self.disp_photometry_2 = matplotlibWidget(self.groupBox_27)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -809,11 +819,6 @@ class Ui_Form(object):
         self.label_31 = QtWidgets.QLabel(self.tab_15)
         self.label_31.setObjectName("label_31")
         self.gridLayout_73.addWidget(self.label_31, 1, 0, 1, 1)
-        self.pushButton_44 = QtWidgets.QPushButton(self.tab_15)
-        self.pushButton_44.setMinimumSize(QtCore.QSize(72, 0))
-        self.pushButton_44.setMaximumSize(QtCore.QSize(72, 16777215))
-        self.pushButton_44.setObjectName("pushButton_44")
-        self.gridLayout_73.addWidget(self.pushButton_44, 1, 1, 1, 1)
         self.groupBox_28 = QtWidgets.QGroupBox(self.tab_15)
         self.groupBox_28.setObjectName("groupBox_28")
         self.gridLayout_72 = QtWidgets.QGridLayout(self.groupBox_28)
@@ -844,36 +849,86 @@ class Ui_Form(object):
         self.comboBox_14.setObjectName("comboBox_14")
         self.gridLayout_72.addWidget(self.comboBox_14, 1, 1, 1, 1)
         self.gridLayout_73.addWidget(self.groupBox_28, 2, 0, 1, 2)
+        self.pushButton_44 = QtWidgets.QPushButton(self.tab_15)
+        self.pushButton_44.setMinimumSize(QtCore.QSize(72, 0))
+        self.pushButton_44.setMaximumSize(QtCore.QSize(72, 16777215))
+        self.pushButton_44.setObjectName("pushButton_44")
+        self.gridLayout_73.addWidget(self.pushButton_44, 1, 1, 1, 1)
         self.label_43 = QtWidgets.QLabel(self.tab_15)
         self.label_43.setObjectName("label_43")
         self.gridLayout_73.addWidget(self.label_43, 3, 0, 1, 1)
-        self.pushButton_45 = QtWidgets.QPushButton(self.tab_15)
-        self.pushButton_45.setMinimumSize(QtCore.QSize(72, 0))
-        self.pushButton_45.setMaximumSize(QtCore.QSize(72, 16777215))
-        self.pushButton_45.setObjectName("pushButton_45")
-        self.gridLayout_73.addWidget(self.pushButton_45, 3, 1, 1, 1)
         self.tabWidget_3.addTab(self.tab_15, "")
+        self.tab_33 = QtWidgets.QWidget()
+        self.tab_33.setObjectName("tab_33")
+        self.gridLayout_82 = QtWidgets.QGridLayout(self.tab_33)
+        self.gridLayout_82.setObjectName("gridLayout_82")
+        self.groupBox_24 = QtWidgets.QGroupBox(self.tab_33)
+        self.groupBox_24.setObjectName("groupBox_24")
+        self.gridLayout_79 = QtWidgets.QGridLayout(self.groupBox_24)
+        self.gridLayout_79.setObjectName("gridLayout_79")
+        self.listWidget_17 = QtWidgets.QListWidget(self.groupBox_24)
+        self.listWidget_17.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.listWidget_17.setObjectName("listWidget_17")
+        self.gridLayout_79.addWidget(self.listWidget_17, 0, 0, 1, 1)
+        self.gridLayout_82.addWidget(self.groupBox_24, 0, 0, 1, 1)
+        self.groupBox_36 = QtWidgets.QGroupBox(self.tab_33)
+        self.groupBox_36.setMinimumSize(QtCore.QSize(170, 0))
+        self.groupBox_36.setMaximumSize(QtCore.QSize(170, 16777215))
+        self.groupBox_36.setObjectName("groupBox_36")
+        self.gridLayout_80 = QtWidgets.QGridLayout(self.groupBox_36)
+        self.gridLayout_80.setObjectName("gridLayout_80")
+        self.listWidget_18 = QtWidgets.QListWidget(self.groupBox_36)
+        self.listWidget_18.setMinimumSize(QtCore.QSize(150, 0))
+        self.listWidget_18.setMaximumSize(QtCore.QSize(150, 16777215))
+        self.listWidget_18.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.listWidget_18.setObjectName("listWidget_18")
+        self.gridLayout_80.addWidget(self.listWidget_18, 0, 0, 1, 2)
+        self.pushButton_56 = QtWidgets.QPushButton(self.groupBox_36)
+        self.pushButton_56.setMinimumSize(QtCore.QSize(72, 0))
+        self.pushButton_56.setMaximumSize(QtCore.QSize(72, 16777215))
+        self.pushButton_56.setObjectName("pushButton_56")
+        self.gridLayout_80.addWidget(self.pushButton_56, 1, 0, 1, 1)
+        self.pushButton_57 = QtWidgets.QPushButton(self.groupBox_36)
+        self.pushButton_57.setMinimumSize(QtCore.QSize(72, 0))
+        self.pushButton_57.setMaximumSize(QtCore.QSize(72, 16777215))
+        self.pushButton_57.setObjectName("pushButton_57")
+        self.gridLayout_80.addWidget(self.pushButton_57, 1, 1, 1, 1)
+        self.gridLayout_82.addWidget(self.groupBox_36, 0, 1, 1, 1)
+        self.gridLayout_81 = QtWidgets.QGridLayout()
+        self.gridLayout_81.setObjectName("gridLayout_81")
+        self.label_28 = QtWidgets.QLabel(self.tab_33)
+        self.label_28.setObjectName("label_28")
+        self.gridLayout_81.addWidget(self.label_28, 0, 0, 1, 1)
+        self.pushButton_58 = QtWidgets.QPushButton(self.tab_33)
+        self.pushButton_58.setMinimumSize(QtCore.QSize(50, 50))
+        self.pushButton_58.setMaximumSize(QtCore.QSize(50, 50))
+        self.pushButton_58.setObjectName("pushButton_58")
+        self.gridLayout_81.addWidget(self.pushButton_58, 0, 1, 2, 1)
+        self.progressBar_10 = QtWidgets.QProgressBar(self.tab_33)
+        self.progressBar_10.setProperty("value", 24)
+        self.progressBar_10.setObjectName("progressBar_10")
+        self.gridLayout_81.addWidget(self.progressBar_10, 1, 0, 1, 1)
+        self.gridLayout_82.addLayout(self.gridLayout_81, 1, 0, 1, 2)
+        self.tabWidget_3.addTab(self.tab_33, "")
         self.gridLayout_15.addWidget(self.tabWidget_3, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab_4, "")
         self.tab_5 = QtWidgets.QWidget()
         self.tab_5.setObjectName("tab_5")
         self.gridLayout_16 = QtWidgets.QGridLayout(self.tab_5)
-        self.gridLayout_16.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_16.setObjectName("gridLayout_16")
-        spacerItem3 = QtWidgets.QSpacerItem(677, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout_16.addItem(spacerItem3, 2, 0, 1, 1)
+        spacerItem6 = QtWidgets.QSpacerItem(677, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_16.addItem(spacerItem6, 1, 0, 1, 1)
         self.pushButton_17 = QtWidgets.QPushButton(self.tab_5)
         self.pushButton_17.setMinimumSize(QtCore.QSize(72, 0))
         self.pushButton_17.setMaximumSize(QtCore.QSize(72, 16777215))
         self.pushButton_17.setObjectName("pushButton_17")
-        self.gridLayout_16.addWidget(self.pushButton_17, 2, 1, 1, 1)
+        self.gridLayout_16.addWidget(self.pushButton_17, 1, 1, 1, 1)
         self.tabWidget_4 = QtWidgets.QTabWidget(self.tab_5)
         self.tabWidget_4.setObjectName("tabWidget_4")
         self.tab_17 = QtWidgets.QWidget()
         self.tab_17.setObjectName("tab_17")
-        self.gridLayout_62 = QtWidgets.QGridLayout(self.tab_17)
-        self.gridLayout_62.setContentsMargins(0, 0, 0, 0)
-        self.gridLayout_62.setObjectName("gridLayout_62")
+        self.gridLayout_18 = QtWidgets.QGridLayout(self.tab_17)
+        self.gridLayout_18.setObjectName("gridLayout_18")
         self.groupBox_21 = QtWidgets.QGroupBox(self.tab_17)
         self.groupBox_21.setObjectName("groupBox_21")
         self.gridLayout_37 = QtWidgets.QGridLayout(self.groupBox_21)
@@ -895,9 +950,14 @@ class Ui_Form(object):
         self.comboBox_3.setObjectName("comboBox_3")
         self.comboBox_3.addItem("")
         self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
         self.gridLayout_54.addWidget(self.comboBox_3, 1, 1, 1, 1)
         self.gridLayout_37.addLayout(self.gridLayout_54, 0, 0, 1, 1)
-        self.gridLayout_62.addWidget(self.groupBox_21, 0, 0, 1, 1)
+        self.gridLayout_18.addWidget(self.groupBox_21, 0, 0, 1, 1)
         self.groupBox_22 = QtWidgets.QGroupBox(self.tab_17)
         self.groupBox_22.setObjectName("groupBox_22")
         self.gridLayout_38 = QtWidgets.QGridLayout(self.groupBox_22)
@@ -930,9 +990,14 @@ class Ui_Form(object):
         self.comboBox_5.setObjectName("comboBox_5")
         self.comboBox_5.addItem("")
         self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
         self.gridLayout_56.addWidget(self.comboBox_5, 1, 1, 1, 1)
         self.gridLayout_38.addLayout(self.gridLayout_56, 0, 0, 1, 1)
-        self.gridLayout_62.addWidget(self.groupBox_22, 0, 1, 2, 1)
+        self.gridLayout_18.addWidget(self.groupBox_22, 1, 0, 1, 1)
         self.groupBox_23 = QtWidgets.QGroupBox(self.tab_17)
         self.groupBox_23.setObjectName("groupBox_23")
         self.gridLayout_50 = QtWidgets.QGridLayout(self.groupBox_23)
@@ -954,6 +1019,11 @@ class Ui_Form(object):
         self.comboBox_7.setObjectName("comboBox_7")
         self.comboBox_7.addItem("")
         self.comboBox_7.addItem("")
+        self.comboBox_7.addItem("")
+        self.comboBox_7.addItem("")
+        self.comboBox_7.addItem("")
+        self.comboBox_7.addItem("")
+        self.comboBox_7.addItem("")
         self.gridLayout_57.addWidget(self.comboBox_7, 1, 1, 1, 1)
         self.label_33 = QtWidgets.QLabel(self.groupBox_23)
         self.label_33.setObjectName("label_33")
@@ -964,183 +1034,14 @@ class Ui_Form(object):
         self.comboBox_9.addItem("")
         self.gridLayout_57.addWidget(self.comboBox_9, 2, 1, 1, 1)
         self.gridLayout_50.addLayout(self.gridLayout_57, 0, 0, 1, 1)
-        self.gridLayout_62.addWidget(self.groupBox_23, 1, 0, 2, 1)
-        self.groupBox_24 = QtWidgets.QGroupBox(self.tab_17)
-        self.groupBox_24.setObjectName("groupBox_24")
-        self.gridLayout_51 = QtWidgets.QGridLayout(self.groupBox_24)
-        self.gridLayout_51.setObjectName("gridLayout_51")
-        self.gridLayout_18 = QtWidgets.QGridLayout()
-        self.gridLayout_18.setObjectName("gridLayout_18")
-        self.label_37 = QtWidgets.QLabel(self.groupBox_24)
-        self.label_37.setObjectName("label_37")
-        self.gridLayout_18.addWidget(self.label_37, 0, 0, 1, 1)
-        self.comboBox_10 = QtWidgets.QComboBox(self.groupBox_24)
-        self.comboBox_10.setObjectName("comboBox_10")
-        self.comboBox_10.addItem("")
-        self.comboBox_10.addItem("")
-        self.gridLayout_18.addWidget(self.comboBox_10, 0, 1, 1, 1)
-        self.label_28 = QtWidgets.QLabel(self.groupBox_24)
-        self.label_28.setText("")
-        self.label_28.setObjectName("label_28")
-        self.gridLayout_18.addWidget(self.label_28, 1, 0, 1, 2)
-        self.gridLayout_51.addLayout(self.gridLayout_18, 0, 0, 1, 1)
-        self.gridLayout_62.addWidget(self.groupBox_24, 2, 1, 1, 1)
-        spacerItem4 = QtWidgets.QSpacerItem(20, 184, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_62.addItem(spacerItem4, 3, 0, 1, 1)
+        self.gridLayout_18.addWidget(self.groupBox_23, 2, 0, 1, 1)
+        spacerItem7 = QtWidgets.QSpacerItem(20, 178, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_18.addItem(spacerItem7, 3, 0, 1, 1)
         self.tabWidget_4.addTab(self.tab_17, "")
         self.tab_16 = QtWidgets.QWidget()
         self.tab_16.setObjectName("tab_16")
         self.gridLayout_17 = QtWidgets.QGridLayout(self.tab_16)
-        self.gridLayout_17.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_17.setObjectName("gridLayout_17")
-        self.groupBox_6 = QtWidgets.QGroupBox(self.tab_16)
-        self.groupBox_6.setCheckable(True)
-        self.groupBox_6.setObjectName("groupBox_6")
-        self.gridLayout_11 = QtWidgets.QGridLayout(self.groupBox_6)
-        self.gridLayout_11.setObjectName("gridLayout_11")
-        self.label_7 = QtWidgets.QLabel(self.groupBox_6)
-        self.label_7.setObjectName("label_7")
-        self.gridLayout_11.addWidget(self.label_7, 0, 0, 1, 1)
-        self.comboBox = QtWidgets.QComboBox(self.groupBox_6)
-        self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.gridLayout_11.addWidget(self.comboBox, 0, 1, 1, 1)
-        self.label_9 = QtWidgets.QLabel(self.groupBox_6)
-        self.label_9.setObjectName("label_9")
-        self.gridLayout_11.addWidget(self.label_9, 1, 0, 1, 1)
-        self.spinBox_3 = QtWidgets.QSpinBox(self.groupBox_6)
-        self.spinBox_3.setMinimum(10)
-        self.spinBox_3.setMaximum(300)
-        self.spinBox_3.setObjectName("spinBox_3")
-        self.gridLayout_11.addWidget(self.spinBox_3, 1, 1, 1, 1)
-        self.gridLayout_17.addWidget(self.groupBox_6, 0, 0, 1, 1)
-        self.groupBox_20 = QtWidgets.QGroupBox(self.tab_16)
-        self.groupBox_20.setObjectName("groupBox_20")
-        self.gridLayout_71 = QtWidgets.QGridLayout(self.groupBox_20)
-        self.gridLayout_71.setObjectName("gridLayout_71")
-        self.label_65 = QtWidgets.QLabel(self.groupBox_20)
-        self.label_65.setObjectName("label_65")
-        self.gridLayout_71.addWidget(self.label_65, 0, 0, 1, 1)
-        self.lineEdit_22 = QtWidgets.QLineEdit(self.groupBox_20)
-        self.lineEdit_22.setObjectName("lineEdit_22")
-        self.gridLayout_71.addWidget(self.lineEdit_22, 0, 1, 1, 1)
-        self.label_66 = QtWidgets.QLabel(self.groupBox_20)
-        self.label_66.setObjectName("label_66")
-        self.gridLayout_71.addWidget(self.label_66, 1, 0, 1, 1)
-        self.lineEdit_23 = QtWidgets.QLineEdit(self.groupBox_20)
-        self.lineEdit_23.setObjectName("lineEdit_23")
-        self.gridLayout_71.addWidget(self.lineEdit_23, 1, 1, 1, 1)
-        self.gridLayout_17.addWidget(self.groupBox_20, 0, 1, 1, 1)
-        self.groupBox_14 = QtWidgets.QGroupBox(self.tab_16)
-        self.groupBox_14.setMinimumSize(QtCore.QSize(300, 0))
-        self.groupBox_14.setObjectName("groupBox_14")
-        self.gridLayout_59 = QtWidgets.QGridLayout(self.groupBox_14)
-        self.gridLayout_59.setObjectName("gridLayout_59")
-        self.label_40 = QtWidgets.QLabel(self.groupBox_14)
-        self.label_40.setMaximumSize(QtCore.QSize(65, 16777215))
-        self.label_40.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_40.setObjectName("label_40")
-        self.gridLayout_59.addWidget(self.label_40, 0, 0, 1, 1)
-        self.doubleSpinBox_2 = QtWidgets.QDoubleSpinBox(self.groupBox_14)
-        self.doubleSpinBox_2.setDecimals(2)
-        self.doubleSpinBox_2.setMinimum(2.0)
-        self.doubleSpinBox_2.setMaximum(100.0)
-        self.doubleSpinBox_2.setProperty("value", 12.0)
-        self.doubleSpinBox_2.setObjectName("doubleSpinBox_2")
-        self.gridLayout_59.addWidget(self.doubleSpinBox_2, 0, 1, 1, 1)
-        self.label_42 = QtWidgets.QLabel(self.groupBox_14)
-        self.label_42.setMaximumSize(QtCore.QSize(65, 16777215))
-        self.label_42.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_42.setObjectName("label_42")
-        self.gridLayout_59.addWidget(self.label_42, 1, 0, 1, 1)
-        self.doubleSpinBox = QtWidgets.QDoubleSpinBox(self.groupBox_14)
-        self.doubleSpinBox.setDecimals(2)
-        self.doubleSpinBox.setMaximum(100.0)
-        self.doubleSpinBox.setProperty("value", 5.0)
-        self.doubleSpinBox.setObjectName("doubleSpinBox")
-        self.gridLayout_59.addWidget(self.doubleSpinBox, 1, 1, 1, 1)
-        self.label_46 = QtWidgets.QLabel(self.groupBox_14)
-        self.label_46.setMaximumSize(QtCore.QSize(65, 16777215))
-        self.label_46.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_46.setObjectName("label_46")
-        self.gridLayout_59.addWidget(self.label_46, 2, 0, 1, 1)
-        self.doubleSpinBox_3 = QtWidgets.QDoubleSpinBox(self.groupBox_14)
-        self.doubleSpinBox_3.setDecimals(2)
-        self.doubleSpinBox_3.setMaximum(100.0)
-        self.doubleSpinBox_3.setProperty("value", 5.0)
-        self.doubleSpinBox_3.setObjectName("doubleSpinBox_3")
-        self.gridLayout_59.addWidget(self.doubleSpinBox_3, 2, 1, 1, 1)
-        self.gridLayout_17.addWidget(self.groupBox_14, 1, 0, 1, 1)
-        self.groupBox_17 = QtWidgets.QGroupBox(self.tab_16)
-        self.groupBox_17.setObjectName("groupBox_17")
-        self.gridLayout_69 = QtWidgets.QGridLayout(self.groupBox_17)
-        self.gridLayout_69.setObjectName("gridLayout_69")
-        self.lineEdit_17 = QtWidgets.QLineEdit(self.groupBox_17)
-        self.lineEdit_17.setObjectName("lineEdit_17")
-        self.gridLayout_69.addWidget(self.lineEdit_17, 1, 1, 1, 1)
-        self.lineEdit_25 = QtWidgets.QLineEdit(self.groupBox_17)
-        self.lineEdit_25.setObjectName("lineEdit_25")
-        self.gridLayout_69.addWidget(self.lineEdit_25, 4, 1, 1, 1)
-        self.label_47 = QtWidgets.QLabel(self.groupBox_17)
-        self.label_47.setObjectName("label_47")
-        self.gridLayout_69.addWidget(self.label_47, 0, 0, 1, 1)
-        self.checkBox_4 = QtWidgets.QCheckBox(self.groupBox_17)
-        self.checkBox_4.setObjectName("checkBox_4")
-        self.gridLayout_69.addWidget(self.checkBox_4, 4, 0, 1, 1)
-        self.label_48 = QtWidgets.QLabel(self.groupBox_17)
-        self.label_48.setObjectName("label_48")
-        self.gridLayout_69.addWidget(self.label_48, 1, 0, 1, 1)
-        self.lineEdit_18 = QtWidgets.QLineEdit(self.groupBox_17)
-        self.lineEdit_18.setObjectName("lineEdit_18")
-        self.gridLayout_69.addWidget(self.lineEdit_18, 0, 1, 1, 1)
-        self.gridLayout_17.addWidget(self.groupBox_17, 1, 1, 1, 1)
-        self.groupBox_13 = QtWidgets.QGroupBox(self.tab_16)
-        self.groupBox_13.setObjectName("groupBox_13")
-        self.gridLayout_53 = QtWidgets.QGridLayout(self.groupBox_13)
-        self.gridLayout_53.setObjectName("gridLayout_53")
-        self.label_39 = QtWidgets.QLabel(self.groupBox_13)
-        self.label_39.setObjectName("label_39")
-        self.gridLayout_53.addWidget(self.label_39, 1, 0, 1, 1)
-        self.lineEdit_13 = QtWidgets.QLineEdit(self.groupBox_13)
-        self.lineEdit_13.setObjectName("lineEdit_13")
-        self.gridLayout_53.addWidget(self.lineEdit_13, 0, 1, 1, 1)
-        self.label_38 = QtWidgets.QLabel(self.groupBox_13)
-        self.label_38.setObjectName("label_38")
-        self.gridLayout_53.addWidget(self.label_38, 0, 0, 1, 1)
-        self.lineEdit_14 = QtWidgets.QLineEdit(self.groupBox_13)
-        self.lineEdit_14.setMaxLength(8)
-        self.lineEdit_14.setObjectName("lineEdit_14")
-        self.gridLayout_53.addWidget(self.lineEdit_14, 1, 1, 1, 1)
-        self.gridLayout_17.addWidget(self.groupBox_13, 2, 0, 1, 1)
-        self.groupBox_19 = QtWidgets.QGroupBox(self.tab_16)
-        self.groupBox_19.setObjectName("groupBox_19")
-        self.gridLayout_41 = QtWidgets.QGridLayout(self.groupBox_19)
-        self.gridLayout_41.setObjectName("gridLayout_41")
-        self.doubleSpinBox_4 = QtWidgets.QDoubleSpinBox(self.groupBox_19)
-        self.doubleSpinBox_4.setDecimals(0)
-        self.doubleSpinBox_4.setMinimum(2.0)
-        self.doubleSpinBox_4.setMaximum(100.0)
-        self.doubleSpinBox_4.setProperty("value", 2.0)
-        self.doubleSpinBox_4.setObjectName("doubleSpinBox_4")
-        self.gridLayout_41.addWidget(self.doubleSpinBox_4, 0, 1, 1, 1)
-        self.label_64 = QtWidgets.QLabel(self.groupBox_19)
-        self.label_64.setMaximumSize(QtCore.QSize(80, 16777215))
-        self.label_64.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_64.setObjectName("label_64")
-        self.gridLayout_41.addWidget(self.label_64, 0, 0, 1, 1)
-        self.label_70 = QtWidgets.QLabel(self.groupBox_19)
-        self.label_70.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_70.setObjectName("label_70")
-        self.gridLayout_41.addWidget(self.label_70, 2, 0, 1, 1)
-        self.spinBox = QtWidgets.QSpinBox(self.groupBox_19)
-        self.spinBox.setMaximum(20000)
-        self.spinBox.setProperty("value", 500)
-        self.spinBox.setObjectName("spinBox")
-        self.gridLayout_41.addWidget(self.spinBox, 2, 1, 1, 1)
-        self.gridLayout_17.addWidget(self.groupBox_19, 2, 1, 1, 1)
         self.groupBox_15 = QtWidgets.QGroupBox(self.tab_16)
         self.groupBox_15.setObjectName("groupBox_15")
         self.gridLayout_20 = QtWidgets.QGridLayout(self.groupBox_15)
@@ -1168,38 +1069,145 @@ class Ui_Form(object):
         self.lineEdit_26 = QtWidgets.QLineEdit(self.groupBox_15)
         self.lineEdit_26.setObjectName("lineEdit_26")
         self.gridLayout_20.addWidget(self.lineEdit_26, 2, 1, 1, 1)
-        self.gridLayout_17.addWidget(self.groupBox_15, 3, 0, 1, 1)
+        self.gridLayout_17.addWidget(self.groupBox_15, 1, 0, 1, 1)
+        self.groupBox_20 = QtWidgets.QGroupBox(self.tab_16)
+        self.groupBox_20.setObjectName("groupBox_20")
+        self.gridLayout_71 = QtWidgets.QGridLayout(self.groupBox_20)
+        self.gridLayout_71.setObjectName("gridLayout_71")
+        self.label_65 = QtWidgets.QLabel(self.groupBox_20)
+        self.label_65.setObjectName("label_65")
+        self.gridLayout_71.addWidget(self.label_65, 0, 0, 1, 1)
+        self.lineEdit_22 = QtWidgets.QLineEdit(self.groupBox_20)
+        self.lineEdit_22.setObjectName("lineEdit_22")
+        self.gridLayout_71.addWidget(self.lineEdit_22, 0, 1, 1, 1)
+        self.label_66 = QtWidgets.QLabel(self.groupBox_20)
+        self.label_66.setObjectName("label_66")
+        self.gridLayout_71.addWidget(self.label_66, 1, 0, 1, 1)
+        self.lineEdit_23 = QtWidgets.QLineEdit(self.groupBox_20)
+        self.lineEdit_23.setObjectName("lineEdit_23")
+        self.gridLayout_71.addWidget(self.lineEdit_23, 1, 1, 1, 1)
+        self.gridLayout_17.addWidget(self.groupBox_20, 0, 1, 1, 1)
+        self.groupBox_17 = QtWidgets.QGroupBox(self.tab_16)
+        self.groupBox_17.setObjectName("groupBox_17")
+        self.gridLayout_69 = QtWidgets.QGridLayout(self.groupBox_17)
+        self.gridLayout_69.setObjectName("gridLayout_69")
+        self.lineEdit_17 = QtWidgets.QLineEdit(self.groupBox_17)
+        self.lineEdit_17.setObjectName("lineEdit_17")
+        self.gridLayout_69.addWidget(self.lineEdit_17, 1, 1, 1, 1)
+        self.lineEdit_25 = QtWidgets.QLineEdit(self.groupBox_17)
+        self.lineEdit_25.setObjectName("lineEdit_25")
+        self.gridLayout_69.addWidget(self.lineEdit_25, 4, 1, 1, 1)
+        self.label_47 = QtWidgets.QLabel(self.groupBox_17)
+        self.label_47.setObjectName("label_47")
+        self.gridLayout_69.addWidget(self.label_47, 0, 0, 1, 1)
+        self.checkBox_4 = QtWidgets.QCheckBox(self.groupBox_17)
+        self.checkBox_4.setObjectName("checkBox_4")
+        self.gridLayout_69.addWidget(self.checkBox_4, 4, 0, 1, 1)
+        self.label_48 = QtWidgets.QLabel(self.groupBox_17)
+        self.label_48.setObjectName("label_48")
+        self.gridLayout_69.addWidget(self.label_48, 1, 0, 1, 1)
+        self.lineEdit_18 = QtWidgets.QLineEdit(self.groupBox_17)
+        self.lineEdit_18.setObjectName("lineEdit_18")
+        self.gridLayout_69.addWidget(self.lineEdit_18, 0, 1, 1, 1)
+        self.gridLayout_17.addWidget(self.groupBox_17, 1, 1, 1, 1)
+        self.groupBox_19 = QtWidgets.QGroupBox(self.tab_16)
+        self.groupBox_19.setObjectName("groupBox_19")
+        self.gridLayout_41 = QtWidgets.QGridLayout(self.groupBox_19)
+        self.gridLayout_41.setObjectName("gridLayout_41")
+        self.doubleSpinBox_4 = QtWidgets.QDoubleSpinBox(self.groupBox_19)
+        self.doubleSpinBox_4.setDecimals(0)
+        self.doubleSpinBox_4.setMinimum(2.0)
+        self.doubleSpinBox_4.setMaximum(100.0)
+        self.doubleSpinBox_4.setProperty("value", 2.0)
+        self.doubleSpinBox_4.setObjectName("doubleSpinBox_4")
+        self.gridLayout_41.addWidget(self.doubleSpinBox_4, 0, 1, 1, 1)
+        self.label_64 = QtWidgets.QLabel(self.groupBox_19)
+        self.label_64.setMaximumSize(QtCore.QSize(80, 16777215))
+        self.label_64.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_64.setObjectName("label_64")
+        self.gridLayout_41.addWidget(self.label_64, 0, 0, 1, 1)
+        self.label_70 = QtWidgets.QLabel(self.groupBox_19)
+        self.label_70.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_70.setObjectName("label_70")
+        self.gridLayout_41.addWidget(self.label_70, 2, 0, 1, 1)
+        self.spinBox = QtWidgets.QSpinBox(self.groupBox_19)
+        self.spinBox.setMaximum(20000)
+        self.spinBox.setProperty("value", 500)
+        self.spinBox.setObjectName("spinBox")
+        self.gridLayout_41.addWidget(self.spinBox, 2, 1, 1, 1)
+        self.gridLayout_17.addWidget(self.groupBox_19, 2, 1, 1, 1)
+        self.groupBox_13 = QtWidgets.QGroupBox(self.tab_16)
+        self.groupBox_13.setObjectName("groupBox_13")
+        self.gridLayout_53 = QtWidgets.QGridLayout(self.groupBox_13)
+        self.gridLayout_53.setObjectName("gridLayout_53")
+        self.label_39 = QtWidgets.QLabel(self.groupBox_13)
+        self.label_39.setObjectName("label_39")
+        self.gridLayout_53.addWidget(self.label_39, 1, 0, 1, 1)
+        self.lineEdit_13 = QtWidgets.QLineEdit(self.groupBox_13)
+        self.lineEdit_13.setObjectName("lineEdit_13")
+        self.gridLayout_53.addWidget(self.lineEdit_13, 0, 1, 1, 1)
+        self.label_38 = QtWidgets.QLabel(self.groupBox_13)
+        self.label_38.setObjectName("label_38")
+        self.gridLayout_53.addWidget(self.label_38, 0, 0, 1, 1)
+        self.lineEdit_14 = QtWidgets.QLineEdit(self.groupBox_13)
+        self.lineEdit_14.setMaxLength(8)
+        self.lineEdit_14.setObjectName("lineEdit_14")
+        self.gridLayout_53.addWidget(self.lineEdit_14, 1, 1, 1, 1)
+        self.gridLayout_17.addWidget(self.groupBox_13, 2, 0, 1, 1)
+        self.groupBox_6 = QtWidgets.QGroupBox(self.tab_16)
+        self.groupBox_6.setCheckable(True)
+        self.groupBox_6.setObjectName("groupBox_6")
+        self.gridLayout_11 = QtWidgets.QGridLayout(self.groupBox_6)
+        self.gridLayout_11.setObjectName("gridLayout_11")
+        self.checkBox_15 = QtWidgets.QCheckBox(self.groupBox_6)
+        self.checkBox_15.setChecked(True)
+        self.checkBox_15.setObjectName("checkBox_15")
+        self.gridLayout_11.addWidget(self.checkBox_15, 1, 2, 1, 1)
+        self.checkBox_13 = QtWidgets.QCheckBox(self.groupBox_6)
+        self.checkBox_13.setChecked(True)
+        self.checkBox_13.setObjectName("checkBox_13")
+        self.gridLayout_11.addWidget(self.checkBox_13, 1, 0, 1, 1)
+        self.label_9 = QtWidgets.QLabel(self.groupBox_6)
+        self.label_9.setObjectName("label_9")
+        self.gridLayout_11.addWidget(self.label_9, 2, 0, 1, 1)
+        self.checkBox_14 = QtWidgets.QCheckBox(self.groupBox_6)
+        self.checkBox_14.setChecked(True)
+        self.checkBox_14.setObjectName("checkBox_14")
+        self.gridLayout_11.addWidget(self.checkBox_14, 1, 1, 1, 1)
+        self.doubleSpinBox = QtWidgets.QDoubleSpinBox(self.groupBox_6)
+        self.doubleSpinBox.setMinimum(1.0)
+        self.doubleSpinBox.setMaximum(300.0)
+        self.doubleSpinBox.setSingleStep(0.5)
+        self.doubleSpinBox.setProperty("value", 10.0)
+        self.doubleSpinBox.setObjectName("doubleSpinBox")
+        self.gridLayout_11.addWidget(self.doubleSpinBox, 2, 1, 1, 2)
+        self.gridLayout_17.addWidget(self.groupBox_6, 0, 0, 1, 1)
         self.groupBox_31 = QtWidgets.QGroupBox(self.tab_16)
         self.groupBox_31.setObjectName("groupBox_31")
         self.gridLayout_68 = QtWidgets.QGridLayout(self.groupBox_31)
         self.gridLayout_68.setObjectName("gridLayout_68")
-        self.pushButton_50 = QtWidgets.QPushButton(self.groupBox_31)
-        self.pushButton_50.setObjectName("pushButton_50")
-        self.gridLayout_68.addWidget(self.pushButton_50, 1, 1, 1, 1)
-        self.listWidget_20 = QtWidgets.QListWidget(self.groupBox_31)
-        self.listWidget_20.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-        self.listWidget_20.setObjectName("listWidget_20")
-        self.gridLayout_68.addWidget(self.listWidget_20, 0, 2, 3, 1)
-        self.pushButton_49 = QtWidgets.QPushButton(self.groupBox_31)
-        self.pushButton_49.setObjectName("pushButton_49")
-        self.gridLayout_68.addWidget(self.pushButton_49, 0, 1, 1, 1)
-        self.pushButton_51 = QtWidgets.QPushButton(self.groupBox_31)
-        self.pushButton_51.setObjectName("pushButton_51")
-        self.gridLayout_68.addWidget(self.pushButton_51, 2, 1, 1, 1)
         self.listWidget_19 = QtWidgets.QListWidget(self.groupBox_31)
         self.listWidget_19.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.listWidget_19.setObjectName("listWidget_19")
         self.gridLayout_68.addWidget(self.listWidget_19, 0, 0, 3, 1)
-        self.gridLayout_17.addWidget(self.groupBox_31, 3, 1, 1, 1)
-        spacerItem5 = QtWidgets.QSpacerItem(20, 247, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_17.addItem(spacerItem5, 4, 0, 1, 1)
-        spacerItem6 = QtWidgets.QSpacerItem(20, 241, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_17.addItem(spacerItem6, 4, 1, 1, 1)
+        self.pushButton_50 = QtWidgets.QPushButton(self.groupBox_31)
+        self.pushButton_50.setObjectName("pushButton_50")
+        self.gridLayout_68.addWidget(self.pushButton_50, 1, 1, 1, 1)
+        self.pushButton_51 = QtWidgets.QPushButton(self.groupBox_31)
+        self.pushButton_51.setObjectName("pushButton_51")
+        self.gridLayout_68.addWidget(self.pushButton_51, 2, 1, 1, 1)
+        self.pushButton_49 = QtWidgets.QPushButton(self.groupBox_31)
+        self.pushButton_49.setObjectName("pushButton_49")
+        self.gridLayout_68.addWidget(self.pushButton_49, 0, 1, 1, 1)
+        self.listWidget_20 = QtWidgets.QListWidget(self.groupBox_31)
+        self.listWidget_20.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.listWidget_20.setObjectName("listWidget_20")
+        self.gridLayout_68.addWidget(self.listWidget_20, 0, 2, 3, 1)
+        self.gridLayout_17.addWidget(self.groupBox_31, 3, 0, 1, 2)
         self.tabWidget_4.addTab(self.tab_16, "")
         self.tab_18 = QtWidgets.QWidget()
         self.tab_18.setObjectName("tab_18")
         self.gridLayout_19 = QtWidgets.QGridLayout(self.tab_18)
-        self.gridLayout_19.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_19.setObjectName("gridLayout_19")
         self.label_84 = QtWidgets.QLabel(self.tab_18)
         self.label_84.setMaximumSize(QtCore.QSize(80, 16777215))
@@ -1268,13 +1276,12 @@ class Ui_Form(object):
         self.checkBox_3 = QtWidgets.QCheckBox(self.tab_18)
         self.checkBox_3.setObjectName("checkBox_3")
         self.gridLayout_19.addWidget(self.checkBox_3, 6, 0, 1, 2)
-        spacerItem7 = QtWidgets.QSpacerItem(20, 530, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_19.addItem(spacerItem7, 7, 0, 1, 2)
+        spacerItem8 = QtWidgets.QSpacerItem(20, 530, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_19.addItem(spacerItem8, 7, 0, 1, 2)
         self.tabWidget_4.addTab(self.tab_18, "")
         self.tab_19 = QtWidgets.QWidget()
         self.tab_19.setObjectName("tab_19")
         self.gridLayout_22 = QtWidgets.QGridLayout(self.tab_19)
-        self.gridLayout_22.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_22.setObjectName("gridLayout_22")
         self.groupBox_5 = QtWidgets.QGroupBox(self.tab_19)
         self.groupBox_5.setCheckable(True)
@@ -1297,22 +1304,20 @@ class Ui_Form(object):
         self.checkBox_2.setObjectName("checkBox_2")
         self.gridLayout_21.addWidget(self.checkBox_2, 2, 0, 1, 2)
         self.gridLayout_22.addWidget(self.groupBox_5, 0, 0, 1, 1)
-        spacerItem8 = QtWidgets.QSpacerItem(20, 452, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_22.addItem(spacerItem8, 1, 0, 1, 1)
+        spacerItem9 = QtWidgets.QSpacerItem(20, 452, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_22.addItem(spacerItem9, 1, 0, 1, 1)
         self.tabWidget_4.addTab(self.tab_19, "")
-        self.gridLayout_16.addWidget(self.tabWidget_4, 1, 0, 1, 1)
+        self.gridLayout_16.addWidget(self.tabWidget_4, 0, 0, 1, 2)
         self.tabWidget.addTab(self.tab_5, "")
         self.tab_6 = QtWidgets.QWidget()
         self.tab_6.setObjectName("tab_6")
         self.gridLayout_24 = QtWidgets.QGridLayout(self.tab_6)
-        self.gridLayout_24.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_24.setObjectName("gridLayout_24")
         self.tabWidget_5 = QtWidgets.QTabWidget(self.tab_6)
         self.tabWidget_5.setObjectName("tabWidget_5")
         self.tab_20 = QtWidgets.QWidget()
         self.tab_20.setObjectName("tab_20")
         self.gridLayout_40 = QtWidgets.QGridLayout(self.tab_20)
-        self.gridLayout_40.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_40.setObjectName("gridLayout_40")
         self.textBrowser = QtWidgets.QTextBrowser(self.tab_20)
         self.textBrowser.setObjectName("textBrowser")
@@ -1321,14 +1326,11 @@ class Ui_Form(object):
         self.tab_21 = QtWidgets.QWidget()
         self.tab_21.setObjectName("tab_21")
         self.gridLayout_23 = QtWidgets.QGridLayout(self.tab_21)
-        self.gridLayout_23.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_23.setObjectName("gridLayout_23")
-        spacerItem9 = QtWidgets.QSpacerItem(20, 481, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_23.addItem(spacerItem9, 0, 0, 1, 1)
         self.label_12 = QtWidgets.QLabel(self.tab_21)
         self.label_12.setText("")
         self.label_12.setObjectName("label_12")
-        self.gridLayout_23.addWidget(self.label_12, 1, 0, 1, 2)
+        self.gridLayout_23.addWidget(self.label_12, 1, 0, 1, 1)
         self.progressBar_8 = QtWidgets.QProgressBar(self.tab_21)
         self.progressBar_8.setProperty("value", 0)
         self.progressBar_8.setObjectName("progressBar_8")
@@ -1336,11 +1338,59 @@ class Ui_Form(object):
         self.pushButton_52 = QtWidgets.QPushButton(self.tab_21)
         self.pushButton_52.setObjectName("pushButton_52")
         self.gridLayout_23.addWidget(self.pushButton_52, 2, 1, 1, 1)
+        self.tabWidget_7 = QtWidgets.QTabWidget(self.tab_21)
+        self.tabWidget_7.setEnabled(True)
+        self.tabWidget_7.setObjectName("tabWidget_7")
+        self.tab_37 = QtWidgets.QWidget()
+        self.tab_37.setObjectName("tab_37")
+        self.gridLayout_74 = QtWidgets.QGridLayout(self.tab_37)
+        self.gridLayout_74.setObjectName("gridLayout_74")
+        self.textEdit = QtWidgets.QTextEdit(self.tab_37)
+        self.textEdit.setEnabled(True)
+        self.textEdit.setReadOnly(True)
+        self.textEdit.setObjectName("textEdit")
+        self.gridLayout_74.addWidget(self.textEdit, 0, 0, 1, 1)
+        self.tabWidget_7.addTab(self.tab_37, "")
+        self.tab_31 = QtWidgets.QWidget()
+        self.tab_31.setObjectName("tab_31")
+        self.gridLayout_83 = QtWidgets.QGridLayout(self.tab_31)
+        self.gridLayout_83.setObjectName("gridLayout_83")
+        self.textEdit_2 = QtWidgets.QTextEdit(self.tab_31)
+        self.textEdit_2.setEnabled(True)
+        self.textEdit_2.setReadOnly(True)
+        self.textEdit_2.setObjectName("textEdit_2")
+        self.gridLayout_83.addWidget(self.textEdit_2, 0, 0, 1, 1)
+        self.tabWidget_7.addTab(self.tab_31, "")
+        self.tab_34 = QtWidgets.QWidget()
+        self.tab_34.setObjectName("tab_34")
+        self.gridLayout_84 = QtWidgets.QGridLayout(self.tab_34)
+        self.gridLayout_84.setObjectName("gridLayout_84")
+        self.textEdit_3 = QtWidgets.QTextEdit(self.tab_34)
+        self.textEdit_3.setReadOnly(True)
+        self.textEdit_3.setObjectName("textEdit_3")
+        self.gridLayout_84.addWidget(self.textEdit_3, 0, 0, 1, 1)
+        self.tabWidget_7.addTab(self.tab_34, "")
+        self.tab_35 = QtWidgets.QWidget()
+        self.tab_35.setObjectName("tab_35")
+        self.gridLayout_85 = QtWidgets.QGridLayout(self.tab_35)
+        self.gridLayout_85.setObjectName("gridLayout_85")
+        self.textEdit_4 = QtWidgets.QTextEdit(self.tab_35)
+        self.textEdit_4.setObjectName("textEdit_4")
+        self.gridLayout_85.addWidget(self.textEdit_4, 0, 0, 1, 1)
+        self.tabWidget_7.addTab(self.tab_35, "")
+        self.tab_36 = QtWidgets.QWidget()
+        self.tab_36.setObjectName("tab_36")
+        self.gridLayout_86 = QtWidgets.QGridLayout(self.tab_36)
+        self.gridLayout_86.setObjectName("gridLayout_86")
+        self.textEdit_5 = QtWidgets.QTextEdit(self.tab_36)
+        self.textEdit_5.setObjectName("textEdit_5")
+        self.gridLayout_86.addWidget(self.textEdit_5, 0, 0, 1, 1)
+        self.tabWidget_7.addTab(self.tab_36, "")
+        self.gridLayout_23.addWidget(self.tabWidget_7, 0, 0, 1, 2)
         self.tabWidget_5.addTab(self.tab_21, "")
         self.tab_32 = QtWidgets.QWidget()
         self.tab_32.setObjectName("tab_32")
         self.gridLayout_45 = QtWidgets.QGridLayout(self.tab_32)
-        self.gridLayout_45.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_45.setObjectName("gridLayout_45")
         self.textBrowser_4 = QtWidgets.QTextBrowser(self.tab_32)
         self.textBrowser_4.setObjectName("textBrowser_4")
@@ -1349,7 +1399,6 @@ class Ui_Form(object):
         self.tab_27 = QtWidgets.QWidget()
         self.tab_27.setObjectName("tab_27")
         self.gridLayout_64 = QtWidgets.QGridLayout(self.tab_27)
-        self.gridLayout_64.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_64.setObjectName("gridLayout_64")
         self.textBrowser_5 = QtWidgets.QTextBrowser(self.tab_27)
         self.textBrowser_5.setObjectName("textBrowser_5")
@@ -1358,7 +1407,6 @@ class Ui_Form(object):
         self.tab_28 = QtWidgets.QWidget()
         self.tab_28.setObjectName("tab_28")
         self.gridLayout_65 = QtWidgets.QGridLayout(self.tab_28)
-        self.gridLayout_65.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_65.setObjectName("gridLayout_65")
         self.textBrowser_6 = QtWidgets.QTextBrowser(self.tab_28)
         self.textBrowser_6.setObjectName("textBrowser_6")
@@ -1367,7 +1415,6 @@ class Ui_Form(object):
         self.tab_29 = QtWidgets.QWidget()
         self.tab_29.setObjectName("tab_29")
         self.gridLayout_66 = QtWidgets.QGridLayout(self.tab_29)
-        self.gridLayout_66.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_66.setObjectName("gridLayout_66")
         self.textBrowser_7 = QtWidgets.QTextBrowser(self.tab_29)
         self.textBrowser_7.setObjectName("textBrowser_7")
@@ -1376,7 +1423,6 @@ class Ui_Form(object):
         self.tab_22 = QtWidgets.QWidget()
         self.tab_22.setObjectName("tab_22")
         self.gridLayout_42 = QtWidgets.QGridLayout(self.tab_22)
-        self.gridLayout_42.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_42.setObjectName("gridLayout_42")
         self.textBrowser_3 = QtWidgets.QTextBrowser(self.tab_22)
         self.textBrowser_3.setObjectName("textBrowser_3")
@@ -1385,7 +1431,6 @@ class Ui_Form(object):
         self.tab_23 = QtWidgets.QWidget()
         self.tab_23.setObjectName("tab_23")
         self.gridLayout_43 = QtWidgets.QGridLayout(self.tab_23)
-        self.gridLayout_43.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_43.setObjectName("gridLayout_43")
         self.textBrowser_2 = QtWidgets.QTextBrowser(self.tab_23)
         self.textBrowser_2.setObjectName("textBrowser_2")
@@ -1394,7 +1439,6 @@ class Ui_Form(object):
         self.tab_24 = QtWidgets.QWidget()
         self.tab_24.setObjectName("tab_24")
         self.gridLayout_25 = QtWidgets.QGridLayout(self.tab_24)
-        self.gridLayout_25.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_25.setObjectName("gridLayout_25")
         self.pushButton_28 = QtWidgets.QPushButton(self.tab_24)
         self.pushButton_28.setMinimumSize(QtCore.QSize(72, 0))
@@ -1402,6 +1446,7 @@ class Ui_Form(object):
         self.pushButton_28.setObjectName("pushButton_28")
         self.gridLayout_25.addWidget(self.pushButton_28, 1, 1, 1, 1)
         self.listWidget_10 = QtWidgets.QListWidget(self.tab_24)
+        self.listWidget_10.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
         self.listWidget_10.setObjectName("listWidget_10")
         self.gridLayout_25.addWidget(self.listWidget_10, 0, 0, 1, 4)
         self.label_19 = QtWidgets.QLabel(self.tab_24)
@@ -1427,35 +1472,39 @@ class Ui_Form(object):
         self.tabWidget_2.setCurrentIndex(0)
         self.tabWidget_6.setCurrentIndex(0)
         self.tabWidget_3.setCurrentIndex(0)
-        self.tabWidget_7.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(0)
+        self.comboBox_3.setCurrentIndex(1)
+        self.comboBox_8.setCurrentIndex(1)
+        self.comboBox_5.setCurrentIndex(1)
+        self.comboBox_7.setCurrentIndex(1)
         self.tabWidget_5.setCurrentIndex(0)
+        self.tabWidget_7.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "MYRaf V3"))
+        self.label.setText(_translate("Form", "TextLabel"))
+        self.pushButton.setText(_translate("Form", ":go"))
         self.label_3.setText(_translate("Form", "TextLabel"))
         self.pushButton_5.setText(_translate("Form", "Remove"))
         self.pushButton_6.setText(_translate("Form", "Add"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_7), _translate("Form", "Images"))
-        self.label_4.setText(_translate("Form", "TextLabel"))
         self.pushButton_37.setText(_translate("Form", "Save"))
-        self.pushButton_7.setText(_translate("Form", "Remove"))
         self.pushButton_8.setText(_translate("Form", "Add"))
+        self.label_4.setText(_translate("Form", "TextLabel"))
+        self.pushButton_7.setText(_translate("Form", "Remove"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_8), _translate("Form", "Bias"))
-        self.label_5.setText(_translate("Form", "TextLabel"))
-        self.pushButton_40.setText(_translate("Form", "Save"))
-        self.pushButton_9.setText(_translate("Form", "Remove"))
         self.pushButton_10.setText(_translate("Form", "Add"))
+        self.label_5.setText(_translate("Form", "TextLabel"))
+        self.pushButton_9.setText(_translate("Form", "Remove"))
+        self.pushButton_40.setText(_translate("Form", "Save"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_9), _translate("Form", "Dark"))
-        self.label_6.setText(_translate("Form", "TextLabel"))
-        self.pushButton_41.setText(_translate("Form", "Save"))
-        self.pushButton_11.setText(_translate("Form", "Remove"))
         self.pushButton_12.setText(_translate("Form", "Add"))
+        self.pushButton_41.setText(_translate("Form", "Save"))
+        self.label_6.setText(_translate("Form", "TextLabel"))
+        self.pushButton_11.setText(_translate("Form", "Remove"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_10), _translate("Form", "Flat"))
-        self.label.setText(_translate("Form", "TextLabel"))
-        self.pushButton.setText(_translate("Form", ":go"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("Form", "Calibration"))
         self.groupBox.setTitle(_translate("Form", "Image"))
         self.groupBox_2.setTitle(_translate("Form", "File List"))
@@ -1543,24 +1592,35 @@ class Ui_Form(object):
         self.checkBox_10.setText(_translate("Form", "STDV"))
         self.checkBox_11.setText(_translate("Form", "Min"))
         self.checkBox_12.setText(_translate("Form", "Max"))
+        self.groupBox_14.setTitle(_translate("Form", "Time Calculator"))
+        self.label_61.setText(_translate("Form", "Time In Header"))
+        self.label_7.setText(_translate("Form", "Time Offset (Seconds)"))
+        self.comboBox.setItemText(0, _translate("Form", "Hours"))
+        self.comboBox.setItemText(1, _translate("Form", "Minutes"))
+        self.comboBox.setItemText(2, _translate("Form", "Seconds"))
         self.label_50.setText(_translate("Form", "Prefix"))
         self.lineEdit_9.setText(_translate("Form", "my"))
         self.label_49.setText(_translate("Form", "TextLabel"))
         self.pushButton_48.setText(_translate("Form", ":go"))
-        self.tabWidget_7.setTabText(self.tabWidget_7.indexOf(self.tab_31), _translate("Form", "imexamine"))
-        self.tabWidget_7.setTabText(self.tabWidget_7.indexOf(self.tab_35), _translate("Form", "SEXemine"))
-        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_30), _translate("Form", "Calculator"))
+        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_30), _translate("Form", "Header Calculator"))
+        self.pushButton_45.setText(_translate("Form", "Plot"))
         self.groupBox_27.setTitle(_translate("Form", "Graph"))
         self.label_31.setText(_translate("Form", "TextLabel"))
-        self.pushButton_44.setText(_translate("Form", "Add"))
         self.groupBox_28.setTitle(_translate("Form", "Settings"))
         self.label_34.setText(_translate("Form", "X Axis"))
         self.groupBox_29.setTitle(_translate("Form", "Y2 Axis"))
         self.checkBox_7.setText(_translate("Form", "3D Ploting"))
         self.label_41.setText(_translate("Form", "Y Axis"))
+        self.pushButton_44.setText(_translate("Form", "Add"))
         self.label_43.setText(_translate("Form", "TextLabel"))
-        self.pushButton_45.setText(_translate("Form", "Plot"))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_15), _translate("Form", "Graph"))
+        self.groupBox_24.setTitle(_translate("Form", "Header"))
+        self.groupBox_36.setTitle(_translate("Form", "File List"))
+        self.pushButton_56.setText(_translate("Form", "Remove"))
+        self.pushButton_57.setText(_translate("Form", "Add"))
+        self.label_28.setText(_translate("Form", "TextLabel"))
+        self.pushButton_58.setText(_translate("Form", ":go"))
+        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_33), _translate("Form", "HExtractor"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("Form", "Editor"))
         self.pushButton_17.setText(_translate("Form", "Save"))
         self.groupBox_21.setTitle(_translate("Form", "Zero Combine Setting"))
@@ -1570,10 +1630,15 @@ class Ui_Form(object):
         self.label_13.setText(_translate("Form", "Combine"))
         self.comboBox_3.setItemText(0, _translate("Form", "none"))
         self.comboBox_3.setItemText(1, _translate("Form", "minmax"))
+        self.comboBox_3.setItemText(2, _translate("Form", "ccdclip"))
+        self.comboBox_3.setItemText(3, _translate("Form", "crreject"))
+        self.comboBox_3.setItemText(4, _translate("Form", "sigclip"))
+        self.comboBox_3.setItemText(5, _translate("Form", "acsigclip"))
+        self.comboBox_3.setItemText(6, _translate("Form", "pclip"))
         self.groupBox_22.setTitle(_translate("Form", "Dark Combine Setting"))
         self.label_35.setText(_translate("Form", "Scale"))
-        self.comboBox_8.setItemText(0, _translate("Form", "exposure"))
-        self.comboBox_8.setItemText(1, _translate("Form", "none"))
+        self.comboBox_8.setItemText(0, _translate("Form", "none"))
+        self.comboBox_8.setItemText(1, _translate("Form", "exposure"))
         self.comboBox_8.setItemText(2, _translate("Form", "mode"))
         self.comboBox_8.setItemText(3, _translate("Form", "median"))
         self.comboBox_8.setItemText(4, _translate("Form", "mean"))
@@ -1583,6 +1648,11 @@ class Ui_Form(object):
         self.label_30.setText(_translate("Form", "Reject"))
         self.comboBox_5.setItemText(0, _translate("Form", "none"))
         self.comboBox_5.setItemText(1, _translate("Form", "minmax"))
+        self.comboBox_5.setItemText(2, _translate("Form", "ccdclip"))
+        self.comboBox_5.setItemText(3, _translate("Form", "crreject"))
+        self.comboBox_5.setItemText(4, _translate("Form", "sigclip"))
+        self.comboBox_5.setItemText(5, _translate("Form", "avsigclip"))
+        self.comboBox_5.setItemText(6, _translate("Form", "pclip"))
         self.groupBox_23.setTitle(_translate("Form", "Flat Combine Setting"))
         self.label_36.setText(_translate("Form", "Subset"))
         self.label_32.setText(_translate("Form", "Combine"))
@@ -1590,30 +1660,25 @@ class Ui_Form(object):
         self.comboBox_6.setItemText(1, _translate("Form", "average"))
         self.comboBox_7.setItemText(0, _translate("Form", "none"))
         self.comboBox_7.setItemText(1, _translate("Form", "minmax"))
+        self.comboBox_7.setItemText(2, _translate("Form", "ccdclip"))
+        self.comboBox_7.setItemText(3, _translate("Form", "crreject"))
+        self.comboBox_7.setItemText(4, _translate("Form", "sigclip"))
+        self.comboBox_7.setItemText(5, _translate("Form", "avsigclip"))
+        self.comboBox_7.setItemText(6, _translate("Form", "pclip"))
         self.label_33.setText(_translate("Form", "Reject"))
         self.comboBox_9.setItemText(0, _translate("Form", "yes"))
         self.comboBox_9.setItemText(1, _translate("Form", "no"))
-        self.groupBox_24.setTitle(_translate("Form", "Calibration Ssetting"))
-        self.label_37.setText(_translate("Form", "Subset"))
-        self.comboBox_10.setItemText(0, _translate("Form", "yes"))
-        self.comboBox_10.setItemText(1, _translate("Form", "no"))
         self.tabWidget_4.setTabText(self.tabWidget_4.indexOf(self.tab_17), _translate("Form", "Calibration"))
-        self.groupBox_6.setTitle(_translate("Form", "Ensemble Photometry"))
-        self.label_7.setText(_translate("Form", "Catalog"))
-        self.comboBox.setItemText(0, _translate("Form", "All"))
-        self.comboBox.setItemText(1, _translate("Form", "NOMAD"))
-        self.comboBox.setItemText(2, _translate("Form", "USNO"))
-        self.comboBox.setItemText(3, _translate("Form", "Gaia"))
-        self.label_9.setText(_translate("Form", "Radius"))
+        self.groupBox_15.setTitle(_translate("Form", "PhotPars"))
+        self.label_44.setText(_translate("Form", "Aperture"))
+        self.label_45.setText(_translate("Form", "ZMag"))
+        self.label_57.setText(_translate("Form", "Gain"))
+        self.lineEdit_26.setText(_translate("Form", "gain"))
         self.groupBox_20.setTitle(_translate("Form", "WCS"))
         self.label_65.setText(_translate("Form", "Right ascension"))
         self.lineEdit_22.setText(_translate("Form", "ra"))
         self.label_66.setText(_translate("Form", "Declination"))
         self.lineEdit_23.setText(_translate("Form", "dec"))
-        self.groupBox_14.setTitle(_translate("Form", "FitSkyPars"))
-        self.label_40.setText(_translate("Form", "Annulus"))
-        self.label_42.setText(_translate("Form", "Dannulus"))
-        self.label_46.setText(_translate("Form", "CBox"))
         self.groupBox_17.setTitle(_translate("Form", "Location and Time"))
         self.lineEdit_17.setText(_translate("Form", "JD"))
         self.label_47.setText(_translate("Form", "Observatory"))
@@ -1621,23 +1686,23 @@ class Ui_Form(object):
         self.label_48.setToolTip(_translate("Form", "If not give DATE-OBS"))
         self.label_48.setText(_translate("Form", "TIME-OBS"))
         self.lineEdit_18.setText(_translate("Form", "observat"))
+        self.groupBox_19.setTitle(_translate("Form", "Star finder"))
+        self.label_64.setText(_translate("Form", "Threshold"))
+        self.label_70.setText(_translate("Form", "Maximum Stars To find"))
         self.groupBox_13.setTitle(_translate("Form", "DataPars"))
         self.label_39.setText(_translate("Form", "Filter"))
         self.lineEdit_13.setText(_translate("Form", "exptime"))
         self.label_38.setText(_translate("Form", "Exposur"))
         self.lineEdit_14.setText(_translate("Form", "subset"))
-        self.groupBox_19.setTitle(_translate("Form", "Star finder"))
-        self.label_64.setText(_translate("Form", "Threshold"))
-        self.label_70.setText(_translate("Form", "Maximum Stars To find"))
-        self.groupBox_15.setTitle(_translate("Form", "PhotPars"))
-        self.label_44.setText(_translate("Form", "Apertur"))
-        self.label_45.setText(_translate("Form", "ZMag"))
-        self.label_57.setText(_translate("Form", "Gain"))
-        self.lineEdit_26.setText(_translate("Form", "gain"))
+        self.groupBox_6.setTitle(_translate("Form", "Standard Magnitudes"))
+        self.checkBox_15.setText(_translate("Form", "GAIA"))
+        self.checkBox_13.setText(_translate("Form", "NOMAD"))
+        self.label_9.setText(_translate("Form", "Radius"))
+        self.checkBox_14.setText(_translate("Form", "USNO"))
         self.groupBox_31.setTitle(_translate("Form", "Extract From Header"))
         self.pushButton_50.setText(_translate("Form", "<<"))
-        self.pushButton_49.setText(_translate("Form", ">>"))
         self.pushButton_51.setText(_translate("Form", "Update List"))
+        self.pushButton_49.setText(_translate("Form", ">>"))
         self.tabWidget_4.setTabText(self.tabWidget_4.indexOf(self.tab_16), _translate("Form", "Photometry"))
         self.label_84.setText(_translate("Form", "Gain"))
         self.label_85.setText(_translate("Form", "Read Noise"))
@@ -1657,24 +1722,184 @@ class Ui_Form(object):
         self.textBrowser.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:12pt; font-weight:600; font-style:italic;\">The MYRaf is a practicable astronomical image reduction and photometry software and interface for IRAF. For this purpose, MYRaf uses iraf, PyRAF and alipy via great programming language Python and Qt framework. Also MYRaf is a absolutely free software and distributed with GPLv3 license. You can use it without restrictive licenses, make copies for your friends, school or business.</span></p>\n"
-"<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:5px; margin-bottom:5px; margin-left:5px; margin-right:5px; -qt-block-indent:0; text-indent:0px; font-family:\'Ubuntu\'; font-size:12pt; font-weight:600; font-style:italic;\"><br /></p>\n"
-"<p align=\"justify\" style=\" margin-top:5px; margin-bottom:5px; margin-left:5px; margin-right:5px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:12pt; font-weight:600; font-style:italic;\">For more information and help:</span></p>\n"
-"<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:5px; margin-bottom:5px; margin-left:5px; margin-right:5px; -qt-block-indent:0; text-indent:0px; font-family:\'Ubuntu\'; font-size:12pt; font-weight:600; font-style:italic;\"><br /></p>\n"
-"<p align=\"justify\" style=\" margin-top:5px; margin-bottom:5px; margin-left:5px; margin-right:5px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:12pt; font-weight:600; font-style:italic; color:#000000;\">    Myraf Project Home Page</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:5px; margin-bottom:5px; margin-left:5px; margin-right:5px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:12pt; font-weight:600; font-style:italic; color:#000000;\">        </span><span style=\" font-family:\'Ubuntu\'; font-size:9pt; font-weight:600; font-style:italic;\">http://myrafproject.org/</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:5px; margin-bottom:5px; margin-left:5px; margin-right:5px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:12pt; font-weight:600; font-style:italic; color:#000000;\">    Myraf Project Wiki</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:5px; margin-bottom:5px; margin-left:5px; margin-right:5px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:12pt; font-weight:600; font-style:italic; color:#000000;\">        </span><span style=\" font-family:\'Ubuntu\'; font-size:9pt; font-weight:600; font-style:italic;\">http://wiki.myrafproject.org/</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:5px; margin-bottom:5px; margin-left:5px; margin-right:5px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:12pt; font-weight:600; font-style:italic; color:#000000;\">    Myraf Project Blog</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:5px; margin-bottom:5px; margin-left:5px; margin-right:5px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:12pt; font-weight:600; font-style:italic; color:#000000;\">        </span><span style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:600; font-style:italic;\">http://myrafproject.org/blog/</span></p></body></html>"))
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:12pt; font-weight:600; font-style:italic;\">The MYRaf is a practicable astronomical image reduction and photometry software and interface for IRAF. For this purpose, MYRaf uses iraf, PyRAF and alipy via great programming language Python and Qt framework. Also MYRaf is a absolutely free software and distributed with GPLv3 license. You can use it without restrictive licenses, make copies for your friends, school or business.</span></p></body></html>"))
         self.tabWidget_5.setTabText(self.tabWidget_5.indexOf(self.tab_20), _translate("Form", "MYRaf"))
         self.pushButton_52.setText(_translate("Form", "Update MYRaf"))
+        self.textEdit.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF\'s design kept simple and easy due to lack knowledge of our developers in Graphical Design field.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF\'s design created with a photometric data analysis steps kept in mind.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF aims to serve as a fast tool and easy to use tool for amator astronomers or professionals whom want a fast yet reliable result.</p></body></html>"))
+        self.tabWidget_7.setTabText(self.tabWidget_7.indexOf(self.tab_37), _translate("Form", "Main"))
+        self.textEdit_2.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Calibration, is a step that must be done to  any raw data taken via a CCD camera.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Calibration must be done using 3 types of files:</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">1- Bias (zero), Taken By observer.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">2- Dark, Taken By observer.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">3- Flat, Taken By observer.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">and basic mathematical expression of calibration is:</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                             (DATA - Bias) - (Dark - Bias)</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Calibrated_data = --------------------------------------</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                               (Flat - Bias) - (Dark - Bias)</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">However before proceed you need to know an observer will obtain multiple Biases, Darks and Flats (Calibration files) and to obtain more accurate calibration file analyser must do zero, dark and flat combines.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">IRAF serves multiple choises for combining and the basic ones are: zerocombine, darkcombine and flatcombines. As the names suggest we\'ll use zerocombine (same for dark and flat) to combine bias(zero) files and create a master_zero file to be used in calibration process.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">IRAF offers zerocombine, darkcombine and flatcombine as shown:</p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/iraf/help/calib/small/iraf_zero.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">IRAF\'s zerocombine settings</p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/iraf/help/calib/small/iraf_dark.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">IRAF\'s darkcombine settings</p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/iraf/help/calib/small/iraf_flat.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">IRAF\'s flatcombine settings</p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF simplifies all of needed settings as shown:</p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/calib/small/cali_sett.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF\'s calibration settings</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Please keep in mind some times due to a variety of reasons some of calibration data (Biases, darks or flats) might have high uncertainties. We need to exclude these kind of files. For this we can use IRAF\'s imstat task. Imstat returns some informations about the fits file and one of them is \'Standard Deviation\' of the file. the lower Standard Deviation, the better is the file.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">For that purpose MyRAF offers \'Get Stat\' and can extract statistics for selected data:</p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/calib/small/cali_get_stat.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF \'Get Stats\'</p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/calib/small/cali_get_stat.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The results of calibration stats</p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Some times an analyser would want to do calibration to larg count of files and these files might be in defferent paths in file system. MyRaf can detect dublicate data in lits, based on only file name and not the whole path, and remove them from list:</p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/calib/small/cali_dubli.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF\'s duplication cheker</p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF has all talents IRAF has, such as subset for flatcombine and exptime scaling for darkcombine. And doing calibration is as easy as adding files and clicking some buttons.</p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/calib/small/cali_image.png\" /><img src=\":/myraf/help/calib/small/cali_bias.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Scientific and Bias data given to MyRAF</p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/calib/small/cali_Dark.png\" /><img src=\":/myraf/help/calib/small/cali_Flat.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Dark and Flat data given to MyRAF</p></body></html>"))
+        self.tabWidget_7.setTabText(self.tabWidget_7.indexOf(self.tab_31), _translate("Form", "Calibration"))
+        self.textEdit_3.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF has two options to align astronomical images.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Auto Align:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF\'s auto align method uses Alipy v2(https://obswww.unige.ch/~tewes/alipy/)\'s Python3 adaptation created by Yücel KILIÇ (https://github.com/yucelkilic/alipy). Auto Align method can auto detect the shift state and oriantaion between two images. Auto align is easy. The only thing the user has to do is selecting the reference image. This method is highly recommanded.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/align/small/auto_align.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF\'s auto align</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Manual align:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This method expect the user to select a reference point on all images available and will ONLY SHIFT (Cannot deal with rotaions yet) the reference point on image to the exact same postion as reference point on referance image.</p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/align/small/man_align.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF\'s manual align</p></body></html>"))
+        self.tabWidget_7.setTabText(self.tabWidget_7.indexOf(self.tab_34), _translate("Form", "Align"))
+        self.textEdit_4.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Static Photometry:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF can do photometry of given coordinate(s) over all give images. The output of the photometry is depending of the settings of the MyRAF. But the standard output will contain:</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">X: The X value of given coordinates</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Y: The Y value of given coordinates</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">RA: The Right ascension of given (X, Y) coordinates if Standard Magnitudes is checked in settings tab.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">DEC: The Declination of given (X, Y) coordinates if Standard Magnitudes is checked in settings tab.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">FLUX: Flux of photometry</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">FLUX_UNC: Flux Error of photometry</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">FLAG: Flag value given by SEP</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MAG: Magnitude calculated from Flux</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MERR: Magnitude Error calculated from Flux Error</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">NOMAD(ra): The Right ascension value returned from simbad is NOMAD standard magnitude is checked in settings tab</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">NOMAD(dec): The Declination value returned from simbad is NOMAD standard magnitude is checked in settings tab</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">NOMAD(B): The B Magnitude value returned from simbad is NOMAD standard magnitude is checked in settings tab</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">NOMAD(V): The V Magnitude value returned from simbad is NOMAD standard magnitude is checked in settings tab</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">NOMAD(R): The R Magnitude value returned from simbad is NOMAD standard magnitude is checked in settings tab</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">USNO(RA): The Right ascension value returned from simbad is USNO standard magnitude is checked in settings tab</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">USNO(DEC): The Declination value returned from simbad is USNO standard magnitude is checked in settings tab</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">USNO(B): The B Magnitude value returned from simbad is USNO standard magnitude is checked in settings tab</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">USNO(V): The V Magnitude value returned from simbad is USNO standard magnitude is checked in settings tab</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">USNO(RA): The Right ascension value returned from simbad is GAIA standard magnitude is checked in settings tab</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">USNO(DEC): The Declination value returned from simbad is GAIA standard magnitude is checked in settings tab</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">USNO(G): The G Magnitude value returned from simbad is GAIA standard magnitude is checked in settings tab</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Other: Other header(s) selected in settings tab</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Analyser can select coordinates to do photometry by clicking on each coordinates or can do a &quot;Run Sex!&quot; which runs sextractor to create object list and adds it to coordinates list.</p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/photometry/small/photo.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF\'s photometry</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF can extract any given header value to photometry output. By this MyRaf will not do any time calculation during photometry and expects that if analyser wants the time information for photometry, they must to select a header which contains the information (For example JD) and when photometry done the value would be added to each line of photomatric data.</p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/photometry/small/photo_settings.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF\'s photometry settings</p></body></html>"))
+        self.tabWidget_7.setTabText(self.tabWidget_7.indexOf(self.tab_35), _translate("Form", "Photometry"))
+        self.textEdit_5.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF Editor:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The editor might be the most important part of the MyRAF.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Here analsers can do, Header Edit, Observatory Edit, Cosimic Cleaner, WCS Editing, Header Calculating, Graph Plotting, Header Extracting operations which of each are really important.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Header Editor:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Header editor can update, add and remove header(s) in any given fits image(s). It can copy any value from a header key to another or a new one too.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/editor/small/headit.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF header editor</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Observatory Editor:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Geographical parameters needed for some calculations such as airmass. So MyRAF must have access to such values. Observatory editor can get this informations and save them to be used later.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/editor/small/obs_edit.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF observatory editor</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Cosmic Cleaner:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Cosmic cleaner is a python2 code created by https://obswww.unige.ch/~tewes/cosmics_dot_py/ and can clean the fits files from cosmic ray effects. Python3 adaptation created by Mohammad SHAMEONI NIAEI (https://github.com/mshemuni/COSMICS.PY3)</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Calculator:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Here analyser can do JD, Airmass, Imexamine and time calculations.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">JD calculator:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Requires time input as UTC. After calculation JD and MJD values would be added to each files header with given prefix and &quot;JD&quot; and &quot;MJD&quot; key values.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Airmass calculator:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">It calculates sec(z) value for each fits file using given values</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Imexamine:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This is basicaly the IRAF\'s imexamine task. It would calculate asked values and add them to files header.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Time Calculator:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This one can calculate time differences and add them to a new header.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/editor/small/hcalculator.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF header calculator</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Graph:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">It basically can plot graphs.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">HExtractor:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Extracts header values for each given file and save them as ascii data</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/myraf/help/editor/small/hextractor.png\" /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">MyRAF Hextractor</p></body></html>"))
+        self.tabWidget_7.setTabText(self.tabWidget_7.indexOf(self.tab_36), _translate("Form", "Editor"))
         self.tabWidget_5.setTabText(self.tabWidget_5.indexOf(self.tab_21), _translate("Form", "Help"))
         self.textBrowser_4.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif\'; font-size:11pt; font-weight:696; color:#404040; background-color:#fcfcfc;\">Ginga Quick Reference</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"main-image-window\"></a><span style=\" font-family:\'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif\'; font-size:11pt; font-weight:696; color:#404040;\">M</span><span style=\" font-family:\'Roboto Slab,ff-tisa-web-pro,Georgia,Arial,sans-serif\'; font-size:11pt; font-weight:696; color:#404040;\">ain image window</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Lato,proxima-nova,Helvetica Neue,Arial,sans-serif\'; font-size:11pt; color:#404040;\">These keyboard and mouse operations are available when the main image window has the focus.</span></p>\n"
@@ -1941,7 +2166,7 @@ class Ui_Form(object):
         self.textBrowser_5.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349; background-color:#ffffff;\">This is a python package to quickly, automatically, and robustly identify geometrical transforms between optical astronomical images, using only field stars. The images can have different pixel sizes, orientations, pointings and filters.</span></p>\n"
 "<p style=\" margin-top:10px; margin-bottom:5px; margin-left:0px; margin-right:10px; -qt-block-indent:0; text-indent:0px; background-color:#eeeeee;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; font-weight:600; color:#3e4349;\">Note</span><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\"> </span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\">alipy is personal code, and work in progress... The package is already very useful for me, and I hope it will be for you, but don’t expect </span><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; font-style:italic; color:#3e4349;\">too</span><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\"> much neither. Any feedback and wishlists are highly welcome !</span></p>\n"
@@ -1949,30 +2174,30 @@ class Ui_Form(object):
 "<ul style=\"margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;\"><li style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\" style=\" margin-top:3px; margin-bottom:0px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Run SExtractor (see Installation) on the images to get individual source catalogs.</li>\n"
 "<li style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\" style=\" margin-top:0px; margin-bottom:0px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Identify corresponding asterisms, roughly following Lang et al. (2010) aka astrometry.net.</li>\n"
 "<li style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\" style=\" margin-top:0px; margin-bottom:10px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Use this identification to match catalogs, align the images (either directly with scipy, or pyraf geomap/gregister), ...</li></ul>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349; background-color:#ffffff;\">Next stop : a quick look at the</span><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\"> </span><span style=\" font-size:12pt;\">Tutorial.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349; background-color:#ffffff;\">Next stop : a quick look at the</span><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349;\"> </span><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt;\">Tutorial.</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349; background-color:#ffffff;\">Last build of this documentation : April 09, 2013.</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" font-family:\'Arial,sans-serif\'; font-size:12pt; color:#3e4349; background-color:#ffffff;\">https://obswww.unige.ch/~tewes/alipy/</span></p></body></html>"))
         self.tabWidget_5.setTabText(self.tabWidget_5.indexOf(self.tab_27), _translate("Form", "Alipy"))
         self.textBrowser_6.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt; font-weight:600;\">COSMICS.PY</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">L.A.Cosmic in python</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">This is a small and simple python module to detect and clean cosmic ray hits on images (numpy arrays or FITS files), using scipy, and based on Pieter van Dokkum\'s L.A.Cosmic algorithm.</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">Description, requirements, and reference manual (epydoc generated documentation)</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">Still work in progress, but already well useable.</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">Download :</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">cosmics.py_0.4.tgz (2.2 MB, includes demo scripts and images)</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">https://obswww.unige.ch/~tewes/cosmics_dot_py/</span></p></body></html>"))
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:18pt; font-weight:600;\">COSMICS.PY</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt;\">L.A.Cosmic in python</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt;\">This is a small and simple python module to detect and clean cosmic ray hits on images (numpy arrays or FITS files), using scipy, and based on Pieter van Dokkum\'s L.A.Cosmic algorithm.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:12pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt;\">Description, requirements, and reference manual (epydoc generated documentation)</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:12pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt;\">Still work in progress, but already well useable.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt;\">Download :</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt;\">cosmics.py_0.4.tgz (2.2 MB, includes demo scripts and images)</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:12pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt;\">https://obswww.unige.ch/~tewes/cosmics_dot_py/</span></p></body></html>"))
         self.tabWidget_5.setTabText(self.tabWidget_5.indexOf(self.tab_28), _translate("Form", "LA. Cosmic Cleaner"))
         self.textBrowser_7.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'verdana,arial,Bitstream Vera Sans,helvetica,sans-serif\'; font-size:12pt; color:#000000;\">If you have astronomical imaging of the sky with celestial coordinates you do not know—or do not trust—then </span><span style=\" font-family:\'verdana,arial,Bitstream Vera Sans,helvetica,sans-serif\'; font-size:12pt; font-style:italic; color:#000000;\">Astrometry.net</span><span style=\" font-family:\'verdana,arial,Bitstream Vera Sans,helvetica,sans-serif\'; font-size:12pt; color:#000000;\"> is for you. Input an image and we\'ll give you back astrometric calibration meta-data, plus lists of known objects falling inside the field of view.</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'verdana,arial,Bitstream Vera Sans,helvetica,sans-serif\'; font-size:12pt; color:#000000;\">We have built this astrometric calibration service to create correct, standards-compliant astrometric meta-data for every useful astronomical image ever taken, past and future, in any state of archival disarray. We hope this will help organize, annotate and make searchable all the world\'s astronomical information.</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'verdana,arial,Bitstream Vera Sans,helvetica,sans-serif\'; font-size:12pt; color:#000000;\">http://astrometry.net/</span></p></body></html>"))
@@ -1980,12 +2205,12 @@ class Ui_Form(object):
         self.textBrowser_3.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"justify\" style=\" margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">GNU GENERAL PUBLIC LICENSE</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Version 3, 29 June 2007</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Copyright © 2007 Free Software Foundation, Inc. &lt;</span><span style=\" font-size:12pt;\">https://fsf.org/</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">&gt;</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Copyright © 2007 Free Software Foundation, Inc. &lt;</span><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt;\">https://fsf.org/</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">&gt;</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"preamble\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">P</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">reamble</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"preamble\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">P</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">reamble</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">The GNU General Public License is a free, copyleft license for software and other kinds of works.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">The licenses for most software and other practical works are designed to take away your freedom to share and change the works. By contrast, the GNU General Public License is intended to guarantee your freedom to share and change all versions of a program--to make sure it remains free software for all its users. We, the Free Software Foundation, use the GNU General Public License for most of our software; it applies also to any other work released this way by its authors. You can apply it to your programs, too.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">When we speak of free software, we are referring to freedom, not price. Our General Public Licenses are designed to make sure that you have the freedom to distribute copies of free software (and charge for them if you wish), that you receive source code or can get it if you want it, that you can change the software or use pieces of it in new free programs, and that you know you can do these things.</span></p>\n"
@@ -1996,8 +2221,8 @@ class Ui_Form(object):
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Some devices are designed to deny users access to install or run modified versions of the software inside them, although the manufacturer can do so. This is fundamentally incompatible with the aim of protecting users\' freedom to change the software. The systematic pattern of such abuse occurs in the area of products for individuals to use, which is precisely where it is most unacceptable. Therefore, we have designed this version of the GPL to prohibit the practice for those products. If such problems arise substantially in other domains, we stand ready to extend this provision to those domains in future versions of the GPL, as needed to protect the freedom of users.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Finally, every program is threatened constantly by software patents. States should not allow patents to restrict development and use of software on general-purpose computers, but in those that do, we wish to avoid the special danger that patents applied to a free program could make it effectively proprietary. To prevent this, the GPL assures that patents cannot be used to render the program non-free.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">The precise terms and conditions for copying, distribution and modification follow.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"terms\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">T</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">ERMS AND CONDITIONS</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section0\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">0</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Definitions.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"terms\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">T</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">ERMS AND CONDITIONS</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section0\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">0</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Definitions.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">“This License” refers to version 3 of the GNU General Public License.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">“Copyright” also means copyright-like laws that apply to other kinds of works, such as semiconductor masks.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">“The Program” refers to any copyrightable work licensed under this License. Each licensee is addressed as “you”. “Licensees” and “recipients” may be individuals or organizations.</span></p>\n"
@@ -2006,31 +2231,31 @@ class Ui_Form(object):
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">To “propagate” a work means to do anything with it that, without permission, would make you directly or secondarily liable for infringement under applicable copyright law, except executing it on a computer or modifying a private copy. Propagation includes copying, distribution (with or without modification), making available to the public, and in some countries other activities as well.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">To “convey” a work means any kind of propagation that enables other parties to make or receive copies. Mere interaction with a user through a computer network, with no transfer of a copy, is not conveying.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">An interactive user interface displays “Appropriate Legal Notices” to the extent that it includes a convenient and prominently visible feature that (1) displays an appropriate copyright notice, and (2) tells the user that there is no warranty for the work (except to the extent that warranties are provided), that licensees may convey the work under this License, and how to view a copy of this License. If the interface presents a list of user commands or options, such as a menu, a prominent item in the list meets this criterion.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section1\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Source Code.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section1\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Source Code.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">The “source code” for a work means the preferred form of the work for making modifications to it. “Object code” means any non-source form of a work.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">A “Standard Interface” means an interface that either is an official standard defined by a recognized standards body, or, in the case of interfaces specified for a particular programming language, one that is widely used among developers working in that language.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">The “System Libraries” of an executable work include anything, other than the work as a whole, that (a) is included in the normal form of packaging a Major Component, but which is not part of that Major Component, and (b) serves only to enable use of the work with that Major Component, or to implement a Standard Interface for which an implementation is available to the public in source code form. A “Major Component”, in this context, means a major essential component (kernel, window system, and so on) of the specific operating system (if any) on which the executable work runs, or a compiler used to produce the work, or an object code interpreter used to run it.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">The “Corresponding Source” for a work in object code form means all the source code needed to generate, install, and (for an executable work) run the object code and to modify the work, including scripts to control those activities. However, it does not include the work\'s System Libraries, or general-purpose tools or generally available free programs which are used unmodified in performing those activities but which are not part of the work. For example, Corresponding Source includes interface definition files associated with source files for the work, and the source code for shared libraries and dynamically linked subprograms that the work is specifically designed to require, such as by intimate data communication or control flow between those subprograms and other parts of the work.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">The Corresponding Source need not include anything that users can regenerate automatically from other parts of the Corresponding Source.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">The Corresponding Source for a work in source code form is that same work.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section2\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">2</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Basic Permissions.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section2\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">2</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Basic Permissions.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">All rights granted under this License are granted for the term of copyright on the Program, and are irrevocable provided the stated conditions are met. This License explicitly affirms your unlimited permission to run the unmodified Program. The output from running a covered work is covered by this License only if the output, given its content, constitutes a covered work. This License acknowledges your rights of fair use or other equivalent, as provided by copyright law.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">You may make, run and propagate covered works that you do not convey, without conditions so long as your license otherwise remains in force. You may convey covered works to others for the sole purpose of having them make modifications exclusively for you, or provide you with facilities for running those works, provided that you comply with the terms of this License in conveying all material for which you do not control copyright. Those thus making or running the covered works for you must do so exclusively on your behalf, under your direction and control, on terms that prohibit them from making any copies of your copyrighted material outside their relationship with you.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Conveying under any other circumstances is permitted solely under the conditions stated below. Sublicensing is not allowed; section 10 makes it unnecessary.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section3\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">3</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Protecting Users\' Legal Rights From Anti-Circumvention Law.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section3\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">3</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Protecting Users\' Legal Rights From Anti-Circumvention Law.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">No covered work shall be deemed part of an effective technological measure under any applicable law fulfilling obligations under article 11 of the WIPO copyright treaty adopted on 20 December 1996, or similar laws prohibiting or restricting circumvention of such measures.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">When you convey a covered work, you waive any legal power to forbid circumvention of technological measures to the extent such circumvention is effected by exercising rights under this License with respect to the covered work, and you disclaim any intention to limit operation or modification of the work as a means of enforcing, against the work\'s users, your or third parties\' legal rights to forbid circumvention of technological measures.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section4\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">4</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Conveying Verbatim Copies.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section4\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">4</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Conveying Verbatim Copies.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">You may convey verbatim copies of the Program\'s source code as you receive it, in any medium, provided that you conspicuously and appropriately publish on each copy an appropriate copyright notice; keep intact all notices stating that this License and any non-permissive terms added in accord with section 7 apply to the code; keep intact all notices of the absence of any warranty; and give all recipients a copy of this License along with the Program.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">You may charge any price or no price for each copy that you convey, and you may offer support or warranty protection for a fee.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section5\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">5</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Conveying Modified Source Versions.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section5\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">5</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Conveying Modified Source Versions.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">You may convey a work based on the Program, or the modifications to produce it from the Program, in the form of source code under the terms of section 4, provided that you also meet all of these conditions:</span></p>\n"
 "<ul style=\"margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;\"><li style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\" align=\"justify\" style=\" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:medium;\">a) The work must carry prominent notices stating that you modified it, and giving a relevant date.</span></li>\n"
 "<li style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\" align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:medium;\">b) The work must carry prominent notices stating that it is released under this License and any conditions added under section 7. This requirement modifies the requirement in section 4 to “keep intact all notices”.</span></li>\n"
 "<li style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\" align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:medium;\">c) You must license the entire work, as a whole, under this License to anyone who comes into possession of a copy. This License will therefore apply, along with any applicable section 7 additional terms, to the whole of the work, and all its parts, regardless of how they are packaged. This License gives no permission to license the work in any other way, but it does not invalidate such permission if you have separately received it.</span></li>\n"
 "<li style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\" align=\"justify\" style=\" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:medium;\">d) If the work has interactive user interfaces, each must display Appropriate Legal Notices; however, if the Program has interactive interfaces that do not display Appropriate Legal Notices, your work need not make them do so.</span></li></ul>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">A compilation of a covered work with other separate and independent works, which are not by their nature extensions of the covered work, and which are not combined with it such as to form a larger program, in or on a volume of a storage or distribution medium, is called an “aggregate” if the compilation and its resulting copyright are not used to limit the access or legal rights of the compilation\'s users beyond what the individual works permit. Inclusion of a covered work in an aggregate does not cause this License to apply to the other parts of the aggregate.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section6\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">6</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Conveying Non-Source Forms.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section6\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">6</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Conveying Non-Source Forms.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">You may convey a covered work in object code form under the terms of sections 4 and 5, provided that you also convey the machine-readable Corresponding Source under the terms of this License, in one of these ways:</span></p>\n"
 "<ul style=\"margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;\"><li style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\" align=\"justify\" style=\" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:medium;\">a) Convey the object code in, or embodied in, a physical product (including a physical distribution medium), accompanied by the Corresponding Source fixed on a durable physical medium customarily used for software interchange.</span></li>\n"
 "<li style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\" align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:medium;\">b) Convey the object code in, or embodied in, a physical product (including a physical distribution medium), accompanied by a written offer, valid for at least three years and valid for as long as you offer spare parts or customer support for that product model, to give anyone who possesses the object code either (1) a copy of the Corresponding Source for all the software in the product that is covered by this License, on a durable physical medium customarily used for software interchange, for a price no more than your reasonable cost of physically performing this conveying of source, or (2) access to copy the Corresponding Source from a network server at no charge.</span></li>\n"
@@ -2043,7 +2268,7 @@ class Ui_Form(object):
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">If you convey an object code work under this section in, or with, or specifically for use in, a User Product, and the conveying occurs as part of a transaction in which the right of possession and use of the User Product is transferred to the recipient in perpetuity or for a fixed term (regardless of how the transaction is characterized), the Corresponding Source conveyed under this section must be accompanied by the Installation Information. But this requirement does not apply if neither you nor any third party retains the ability to install modified object code on the User Product (for example, the work has been installed in ROM).</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">The requirement to provide Installation Information does not include a requirement to continue to provide support service, warranty, or updates for a work that has been modified or installed by the recipient, or for the User Product in which it has been modified or installed. Access to a network may be denied when the modification itself materially and adversely affects the operation of the network or violates the rules and protocols for communication across the network.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Corresponding Source conveyed, and Installation Information provided, in accord with this section must be in a format that is publicly documented (and with an implementation available to the public in source code form), and must require no special password or key for unpacking, reading or copying.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section7\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">7</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Additional Terms.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section7\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">7</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Additional Terms.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">“Additional permissions” are terms that supplement the terms of this License by making exceptions from one or more of its conditions. Additional permissions that are applicable to the entire Program shall be treated as though they were included in this License, to the extent that they are valid under applicable law. If additional permissions apply only to part of the Program, that part may be used separately under those permissions, but the entire Program remains governed by this License without regard to the additional permissions.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">When you convey a copy of a covered work, you may at your option remove any additional permissions from that copy, or from any part of it. (Additional permissions may be written to require their own removal in certain cases when you modify the work.) You may place additional permissions on material, added by you to a covered work, for which you have or can give appropriate copyright permission.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Notwithstanding any other provision of this License, for material you add to a covered work, you may (if authorized by the copyright holders of that material) supplement the terms of this License with terms:</span></p>\n"
@@ -2056,18 +2281,18 @@ class Ui_Form(object):
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">All other non-permissive additional terms are considered “further restrictions” within the meaning of section 10. If the Program as you received it, or any part of it, contains a notice stating that it is governed by this License along with a term that is a further restriction, you may remove that term. If a license document contains a further restriction but permits relicensing or conveying under this License, you may add to a covered work material governed by the terms of that license document, provided that the further restriction does not survive such relicensing or conveying.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">If you add terms to a covered work in accord with this section, you must place, in the relevant source files, a statement of the additional terms that apply to those files, or a notice indicating where to find the applicable terms.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Additional terms, permissive or non-permissive, may be stated in the form of a separately written license, or stated as exceptions; the above requirements apply either way.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section8\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">8</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Termination.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section8\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">8</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Termination.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">You may not propagate or modify a covered work except as expressly provided under this License. Any attempt otherwise to propagate or modify it is void, and will automatically terminate your rights under this License (including any patent licenses granted under the third paragraph of section 11).</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">However, if you cease all violation of this License, then your license from a particular copyright holder is reinstated (a) provisionally, unless and until the copyright holder explicitly and finally terminates your license, and (b) permanently, if the copyright holder fails to notify you of the violation by some reasonable means prior to 60 days after the cessation.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Moreover, your license from a particular copyright holder is reinstated permanently if the copyright holder notifies you of the violation by some reasonable means, this is the first time you have received notice of violation of this License (for any work) from that copyright holder, and you cure the violation prior to 30 days after your receipt of the notice.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Termination of your rights under this section does not terminate the licenses of parties who have received copies or rights from you under this License. If your rights have been terminated and not permanently reinstated, you do not qualify to receive new licenses for the same material under section 10.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section9\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">9</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Acceptance Not Required for Having Copies.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section9\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">9</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">. Acceptance Not Required for Having Copies.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">You are not required to accept this License in order to receive or run a copy of the Program. Ancillary propagation of a covered work occurring solely as a consequence of using peer-to-peer transmission to receive a copy likewise does not require acceptance. However, nothing other than this License grants you permission to propagate or modify any covered work. These actions infringe copyright if you do not accept this License. Therefore, by modifying or propagating a covered work, you indicate your acceptance of this License to do so.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section10\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">0. Automatic Licensing of Downstream Recipients.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section10\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">0. Automatic Licensing of Downstream Recipients.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Each time you convey a covered work, the recipient automatically receives a license from the original licensors, to run, modify and propagate that work, subject to this License. You are not responsible for enforcing compliance by third parties with this License.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">An “entity transaction” is a transaction transferring control of an organization, or substantially all assets of one, or subdividing an organization, or merging organizations. If propagation of a covered work results from an entity transaction, each party to that transaction who receives a copy of the work also receives whatever licenses to the work the party\'s predecessor in interest had or could give under the previous paragraph, plus a right to possession of the Corresponding Source of the work from the predecessor in interest, if the predecessor has it or can get it with reasonable efforts.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">You may not impose any further restrictions on the exercise of the rights granted or affirmed under this License. For example, you may not impose a license fee, royalty, or other charge for exercise of rights granted under this License, and you may not initiate litigation (including a cross-claim or counterclaim in a lawsuit) alleging that any patent claim is infringed by making, using, selling, offering for sale, or importing the Program or any portion of it.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section11\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1. Patents.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section11\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1. Patents.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">A “contributor” is a copyright holder who authorizes use under this License of the Program or a work on which the Program is based. The work thus licensed is called the contributor\'s “contributor version”.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">A contributor\'s “essential patent claims” are all patent claims owned or controlled by the contributor, whether already acquired or hereafter acquired, that would be infringed by some manner, permitted by this License, of making, using, or selling its contributor version, but do not include claims that would be infringed only as a consequence of further modification of the contributor version. For purposes of this definition, “control” includes the right to grant patent sublicenses in a manner consistent with the requirements of this License.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Each contributor grants you a non-exclusive, worldwide, royalty-free patent license under the contributor\'s essential patent claims, to make, use, sell, offer for sale, import and otherwise run, modify and propagate the contents of its contributor version.</span></p>\n"
@@ -2076,23 +2301,23 @@ class Ui_Form(object):
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">If, pursuant to or in connection with a single transaction or arrangement, you convey, or propagate by procuring conveyance of, a covered work, and grant a patent license to some of the parties receiving the covered work authorizing them to use, propagate, modify or convey a specific copy of the covered work, then the patent license you grant is automatically extended to all recipients of the covered work and works based on it.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">A patent license is “discriminatory” if it does not include within the scope of its coverage, prohibits the exercise of, or is conditioned on the non-exercise of one or more of the rights that are specifically granted under this License. You may not convey a covered work if you are a party to an arrangement with a third party that is in the business of distributing software, under which you make payment to the third party based on the extent of your activity of conveying the work, and under which the third party grants, to any of the parties who would receive the covered work from you, a discriminatory patent license (a) in connection with copies of the covered work conveyed by you (or copies made from those copies), or (b) primarily for and in connection with specific products or compilations that contain the covered work, unless you entered into that arrangement, or that patent license was granted, prior to 28 March 2007.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Nothing in this License shall be construed as excluding or limiting any implied license or other defenses to infringement that may otherwise be available to you under applicable patent law.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section12\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">2. No Surrender of Others\' Freedom.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section12\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">2. No Surrender of Others\' Freedom.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">If conditions are imposed on you (whether by court order, agreement or otherwise) that contradict the conditions of this License, they do not excuse you from the conditions of this License. If you cannot convey a covered work so as to satisfy simultaneously your obligations under this License and any other pertinent obligations, then as a consequence you may not convey it at all. For example, if you agree to terms that obligate you to collect a royalty for further conveying from those to whom you convey the Program, the only way you could satisfy both those terms and this License would be to refrain entirely from conveying the Program.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section13\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">3. Use with the GNU Affero General Public License.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section13\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">3. Use with the GNU Affero General Public License.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Notwithstanding any other provision of this License, you have permission to link or combine any covered work with a work licensed under version 3 of the GNU Affero General Public License into a single combined work, and to convey the resulting work. The terms of this License will continue to apply to the part which is the covered work, but the special requirements of the GNU Affero General Public License, section 13, concerning interaction through a network will apply to the combination as such.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section14\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">4. Revised Versions of this License.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section14\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">4. Revised Versions of this License.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">The Free Software Foundation may publish revised and/or new versions of the GNU General Public License from time to time. Such new versions will be similar in spirit to the present version, but may differ in detail to address new problems or concerns.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Each version is given a distinguishing version number. If the Program specifies that a certain numbered version of the GNU General Public License “or any later version” applies to it, you have the option of following the terms and conditions either of that numbered version or of any later version published by the Free Software Foundation. If the Program does not specify a version number of the GNU General Public License, you may choose any version ever published by the Free Software Foundation.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">If the Program specifies that a proxy can decide which future versions of the GNU General Public License can be used, that proxy\'s public statement of acceptance of a version permanently authorizes you to choose that version for the Program.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">Later license versions may give you additional or different permissions. However, no additional obligations are imposed on any author or copyright holder as a result of your choosing to follow a later version.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section15\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">5. Disclaimer of Warranty.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section15\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">5. Disclaimer of Warranty.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section16\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">6. Limitation of Liability.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section16\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">6. Limitation of Liability.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR CONVEYS THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section17\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">7. Interpretation of Sections 15 and 16.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"section17\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">1</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">7. Interpretation of Sections 15 and 16.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">If the disclaimer of warranty and limitation of liability provided above cannot be given local legal effect according to their terms, reviewing courts shall apply local law that most closely approximates an absolute waiver of all civil liability in connection with the Program, unless a warranty or assumption of liability accompanies a copy of the Program in return for a fee.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">END OF TERMS AND CONDITIONS</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"howto\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">H</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">ow to Apply These Terms to Your New Programs</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a name=\"howto\"></a><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">H</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:600; color:#000000;\">ow to Apply These Terms to Your New Programs</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">If you develop a new program, and you want it to be of the greatest possible use to the public, the best way to achieve this is to make it free software which everyone can redistribute and change under these terms.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">To do so, attach the following notices to the program. It is safest to attach them to the start of each source file to most effectively state the exclusion of warranty; and each file should have at least the “copyright” line and a pointer to where the full notice is found.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Courier New\'; font-size:12pt; color:#000000;\">    &lt;one line to give the program\'s name and a brief idea of what it does.&gt;</span></p>\n"
@@ -2117,13 +2342,13 @@ class Ui_Form(object):
 "<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Courier New\'; font-size:12pt; color:#000000;\">    This is free software, and you are welcome to redistribute it</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Courier New\'; font-size:12pt; color:#000000;\">    under certain conditions; type `show c\' for details.</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">The hypothetical commands `show w\' and `show c\' should show the appropriate parts of the General Public License. Of course, your program\'s commands might be different; for a GUI interface, you would use an “about box”.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">You should also get your employer (if you work as a programmer) or school, if any, to sign a “copyright disclaimer” for the program, if necessary. For more information on this, and how to apply and follow the GNU GPL, see &lt;</span><span style=\" font-size:12pt;\">https://www.gnu.org/licenses/</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">&gt;.</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">The GNU General Public License does not permit incorporating your program into proprietary programs. If your program is a subroutine library, you may consider it more useful to permit linking proprietary applications with the library. If this is what you want to do, use the GNU Lesser General Public License instead of this License. But first, please read &lt;</span><span style=\" font-size:12pt;\">https://www.gnu.org/licenses/why-not-lgpl.html</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">&gt;.</span></p></body></html>"))
+"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">You should also get your employer (if you work as a programmer) or school, if any, to sign a “copyright disclaimer” for the program, if necessary. For more information on this, and how to apply and follow the GNU GPL, see &lt;</span><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt;\">https://www.gnu.org/licenses/</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">&gt;.</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">The GNU General Public License does not permit incorporating your program into proprietary programs. If your program is a subroutine library, you may consider it more useful to permit linking proprietary applications with the library. If this is what you want to do, use the GNU Lesser General Public License instead of this License. But first, please read &lt;</span><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt;\">https://www.gnu.org/licenses/why-not-lgpl.html</span><span style=\" font-family:\'Times New Roman\'; font-size:12pt; color:#000000;\">&gt;.</span></p></body></html>"))
         self.tabWidget_5.setTabText(self.tabWidget_5.indexOf(self.tab_22), _translate("Form", "License"))
         self.textBrowser_2.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:600; font-style:italic;\">Created by:</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:600; font-style:italic;\">Yücel KILIÇ: </span><span style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:600; font-style:italic; text-decoration: underline;\">yucelkilic@myrafproject.org</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:600; font-style:italic;\">Muhammed SHEMUNI: </span><span style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:600; font-style:italic; text-decoration: underline;\">m.shemuni@myrafproject.org</span></p></body></html>"))
@@ -2136,3 +2361,5 @@ class Ui_Form(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), _translate("Form", "Help"))
 
 from gingawidgetFile import gingaWidget
+from matplotlibwidgetFile import matplotlibWidget
+import sources_rc

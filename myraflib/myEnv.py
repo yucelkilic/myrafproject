@@ -33,9 +33,16 @@ from platform import system
 from inspect import currentframe
 from inspect import getouterframes
 
-from  numpy import genfromtxt
-from  numpy import savetxt
-from  numpy import asarray
+import webbrowser
+
+try:
+    from numpy import genfromtxt
+    from numpy import savetxt
+    from numpy import asarray
+    from numpy import zeros
+except Exception as e:
+    print("{}. Numpy is not installed?".format(e))
+    exit(0)
 
 
 class etc():
@@ -45,8 +52,27 @@ class etc():
         self.log_file = abspath("{}/log.my".format(self.log_dir))
         self.mini_log_file = abspath("{}/mlog.my".format(self.log_dir))
         
+        self.setting_file = abspath("{}/.myset.set".format(expanduser("~")))
+        self.def_setting_file = abspath("./def_myset.set")
+        
+        
+        self.observat_dir = abspath("./observat/")
+        
         if not((not isfile(self.log_dir)) and exists(self.log_dir)):
             mkdir(self.log_dir)
+        
+    def zeros(self, x, y):
+        try:
+            return(zeros((x, y)))
+        except Exception as e:
+            self.log(e)
+        
+    def user_is_a_monkey(self):
+        try:
+            a_website = "https://www.youtube.com/watch?v=hTWKbfoikeg"
+            webbrowser.open_new(a_website)
+        except:
+            self.log("DEVELOPER IS A MONKEY")
         
     def time_stamp(self):
         return(str(datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")))
@@ -67,25 +93,29 @@ class etc():
         caller = calframe
         self.system_info()
         if pri:
-            return("{}>{}>{}".format(caller[0][3], caller[1][3], caller[2][3]))
+            return("{}>{}>{}".format(
+                    caller[0][3], caller[1][3], caller[2][3]))
         else:
             return(caller)
             
     def print_if(self, text):
         if self.verb:
-            print("[{}|{}]{}".format(self.time_stamp(), self.system_info(),
-                   text))
+            print("[{}|{}] --> {}".format(self.time_stamp(),
+                  self.system_info(), text))
             
     def log(self, text):
-        log_file = open(self.log_file, "a")
-        log_file.write("Time: {}\n".format(self.time_stamp()))
-        log_file.write("System Info: {}\n".format(self.system_info()))
-        log_file.write("Log: {}\n".format(text))
-        log_file.write("Function: {}\n\n\n".format((self.caller_function())))
-        log_file.close()
-        
-        self.mini_log(text)
-        self.print_if(text)
+        try:
+            log_file = open(self.log_file, "a")
+            log_file.write("Time: {}\n".format(self.time_stamp()))
+            log_file.write("System Info: {}\n".format(self.system_info()))
+            log_file.write("Log: {}\n".format(text))
+            log_file.write("Function: {}\n\n\n".format(self.caller_function()))
+            log_file.close()
+            
+            self.mini_log(text)
+            self.print_if(text)
+        except Exception as e:
+            print(e)
         
     def mini_log(self, text):
         mini_log_file = open(self.mini_log_file, "a")
@@ -94,20 +124,31 @@ class etc():
         mini_log_file.close()
         
     def dump_mlog(self):
-        mini_log_file = open(self.mini_log_file, "w")
-        mini_log_file.close()
+        try:
+            self.log("Deleting the Mini Log file.")
+            mini_log_file = open(self.mini_log_file, "w")
+            mini_log_file.close()
+        except Exception as e:
+            print(e)
         
     def dump_log(self):
-        log_file = open(self.log_file, "w")
-        log_file.close()
+        try:
+            self.log("Deleting the Log file.")
+            log_file = open(self.log_file, "w")
+            log_file.close()
+        except Exception as e:
+            print(e)
         
     def is_it_windows(self):
+        self.log("Checking if the OS is Windows")
         return(system() == 'Windows')
         
     def is_it_linux(self):
+        self.log("Checking if the OS is Linux")
         return(system() == 'Linux')
         
     def is_it_other(self):
+        self.log("Checking if the OS is Other")
         return(not (self.is_it_linux() or self.is_it_windows()))
         
     def beep(self):
@@ -175,7 +216,7 @@ class file_op():
     def get_extension(self, src):
         self.etc.log("Finding extension for {0}".format(src))
         try:
-            return(splitext(src)[1])
+            return(splitext(src))
         except Exception as e:
             self.etc.log(e)
             
@@ -183,7 +224,7 @@ class file_op():
         self.etc.log("Chopping path {0}".format(src))
         try:
             path, name = self.get_base_name(src)
-            name , extension = self.get_extension(name)
+            name, extension = self.get_extension(name)
             return(path, name, extension)
         except Exception as e:
             self.etc.log(e)
@@ -230,6 +271,12 @@ class file_op():
             savetxt(src, arr, delimiter=dm, newline='\n', header=h)
         except Exception as e:
             self.etc.log(e)
+    def write_list(self, dest, the_list):
+        f = open(dest, "w")
+        for i in the_list:
+            f.write("{}\n".format(i))
+        
+        f.close()
             
 
 class converter():

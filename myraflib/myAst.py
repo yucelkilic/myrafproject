@@ -209,7 +209,7 @@ class fits():
         images_to_align = sorted(glob(in_file))
         ref_image = ref_file
         
-        ids = alipy.ident.run(ref_image, images_to_align, visu=True)
+        ids = alipy.ident.run(ref_image, images_to_align, visu=False)
         print("============================")
         print(ids)
         outputshape = alipy.align.shape(ref_image)
@@ -218,9 +218,10 @@ class fits():
                 self.etc.log("{} : {} flux ratio {}".format(
                         the_id.ukn.name, the_id.trans,
                         the_id.medfluxratio))
-                alipy.align.affineremap(the_id.ukn.filepath,
-                                        the_id.trans, shape=outputshape,
-                                        makepng=False)
+
+                alipy.align.affineremap(the_id.ukn.filepath, the_id.trans,
+                                        shape=outputshape, outdir=out_file,
+                                        makepng=False, verbose=False)
             else:
                 self.etc.log("{} : no transformation found !".format(
                         the_id.ukn.name))

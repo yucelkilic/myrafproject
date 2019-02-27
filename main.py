@@ -2168,7 +2168,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                         circ.center = x, y
                         #Add iteration value as label
                         self.ui.disp_photometry.canvas.fig.gca().annotate(
-                                it, xy = (x, y), xytext=(int(ap)/3,int(ap)/3),
+                                it + 1, xy = (x, y), xytext=(int(ap)/3,int(ap)/3),
                                 textcoords='offset points', color = "red",
                                 fontsize = 10)
                     except Exception as e:
@@ -2212,7 +2212,7 @@ class MyForm(QtWidgets.QWidget, Ui_Form):
                             circ.center = x, y
                             #Add iteration value as label
                             self.ui.disp_photometry.canvas.fig.gca().annotate(
-                                    it, xy = (x, y),
+                                    it + 1, xy = (x, y),
                                     xytext=(int(ap)/3,int(ap)/3),
                                     textcoords='offset points', color = "red",
                                     fontsize = 10)
